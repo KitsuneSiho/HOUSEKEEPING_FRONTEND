@@ -1,0 +1,74 @@
+/* 기본 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* 모달이 표시될 때 적용될 스타일 */
+.modal.show {
+    display: flex;
+}
+
+/* 모달 컨텐츠 스타일 */
+.modal-content {
+    background-color: rgb(231, 206, 255);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 0.3s ease-in-out;
+    font-weight: bold;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+/* 모달 제목 스타일 */
+.modal-title {
+    font-size: 1.5em;
+    color: #4b0082; /* 진한 인디고 */
+    margin-bottom: 20px;
+}
+
+/* 모달 본문 스타일 */
+.modal-body {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 닫기 버튼 스타일 */
+.close-button {
+    background-color:  #8a2be2;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #7a1bbd;
+}
+
+/* 키프레임 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
