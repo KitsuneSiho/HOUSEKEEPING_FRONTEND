@@ -6,12 +6,15 @@ const ModalExample = () => {
 
     return (
         <div>
-            <select onChange={(e) => {
-                setModalType(e.target.value)
-            }}>
-                <option value={""}>-</option>
-                <option value={"inform"}>inform</option>
-            </select>
+            <div>
+                모달 종류:
+                <select onChange={(e) => {
+                    setModalType(e.target.value)
+                }}>
+                    <option value={""}>-</option>
+                    <option value={"inform"}>inform</option>
+                </select>
+            </div>
             <div>
                 모달 제목:
                 <input onChange={(e) => {
