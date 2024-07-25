@@ -1,0 +1,167 @@
+.container {
+    padding: 0;
+    margin: 0;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.routineTitle {
+    margin-bottom: 20px;
+}
+
+.routineEditAdd {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit {
+    cursor: pointer;
+}
+
+.add {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add img {
+    width: 20px;
+    height: auto;
+    margin-left: 5px;
+}
+
+.routine {
+    width: 80%;
+    margin-top: 10%;
+}
+
+.onRoutine {
+    margin: 0;
+    padding: 0;
+}
+
+.roomRoutine {
+    background-color: #c5f1ff;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.myRoutine {
+    background-color: #ffebc5;
+    border: 3px solid #ff2c2c;
+    border-radius: 10px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.roomRoutine:hover, .myRoutine:hover {
+    border: 3px solid #ff2c2c;
+}
+
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+.colorOptions {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.colorBox {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.colorBox:hover {
+    border: 2px solid #000;
+}
+
+.modalAddBtn, .modalCancelBtn {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modalAddBtn {
+    background-color: #000000;
+    color: white;
+}
+
+.modalCancelBtn {
+    background-color: #ffffff;
+    color: black;
+}
+
+.routineName {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#routineName {
+    width: 70%;
+    border: none;
+    border-bottom: 1px solid #535353;
+}
+
+.routineColor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

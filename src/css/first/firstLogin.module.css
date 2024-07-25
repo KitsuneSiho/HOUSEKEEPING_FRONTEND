@@ -1,0 +1,61 @@
+.container {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+
+}
+
+.firstLoginTitle {
+    margin-bottom: 5%;
+}
+
+.profileImg {
+    text-align: center;
+    margin-bottom: 15%;
+}
+
+.profileImg img {
+    display: block;
+    margin: 0 auto;
+}
+
+.information {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20%;
+}
+
+.inputContainer label {
+    width: 30%;
+}
+
+.inputContainer input {
+    width: 65%;
+    border: none;
+    border-bottom: 1px solid #535353;
+    outline: none;
+}
+
+.submit {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 15%;
+}
+
+.submit button {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}

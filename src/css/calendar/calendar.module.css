@@ -1,0 +1,149 @@
+/* Calendar.module.css */
+
+.container {
+    padding: 0 0 17%;
+    margin: 10% 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.calendarHeader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+    gap: 15px;
+}
+
+.calendarHeader h2 {
+    margin: 0;
+}
+
+.calendar {
+    width: 90%;
+    height: 400px;
+    border: 1px solid black;
+    margin: 5% 0;
+}
+
+.routineContainer {
+    width: 95%;
+    position: relative;
+}
+
+.routineContainer::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+.routineSection {
+    width: 95%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    position: relative;
+}
+
+.routineHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.routineTitle {
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
+}
+
+.roomColor {
+    background-color: #ffc5f2;
+}
+
+.livingRoomColor {
+    background-color: #ffebc5;
+}
+
+.toiletColor {
+    background-color: #c5f1ff;
+}
+
+.routineTitle img {
+    width: 20px;
+    height: 20px;
+}
+
+.routineTitle p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.alramOnOff {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.alramOnOff p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.alramOnOff img {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.routineInfo {
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.routineInfo ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: calc(30px * 4); /* Height for 4 items, adjust if necessary */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.routineInfo li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative; /* Ensure that absolute positioning works within this context */
+}
+
+.routineInfo input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.routineInfo label {
+    flex-grow: 1; /* Allow the label to take up available space */
+}
+
+.routineInfo img {
+    width: 20px; /* Set a fixed size for the images */
+    height: 20px;
+    margin-left: 10px; /* Add margin to create space between the label and the image */
+    position: relative;
+}
+
+.plusIcon {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
