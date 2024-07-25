@@ -1,0 +1,81 @@
+.container {
+    padding: 0;
+    margin: 10% 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 100%; /* Use 100% width for full container */
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.header img {
+    position: absolute; /* Position absolutely within header */
+    left: 10px; /* Adjust position to the left as needed */
+    cursor: pointer;
+}
+
+.header h2 {
+    margin: 0; /* Reset margin for proper centering */
+}
+
+.roomDesign {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    margin-top: 10%; /* Add margin if needed */
+}
+
+.roomDesign .myRoom {
+    width: 80%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.furniture{
+    width: 80%;
+    height: 200px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+}
+
+.furniture table{
+    width: 100%;
+}
+
+.furniture table th{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px 10px 0 0;
+
+    padding: 10px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.submit {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 15%;
+}
+
+.submit button {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}

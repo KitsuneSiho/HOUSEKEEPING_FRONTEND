@@ -1,0 +1,72 @@
+.container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.mainImg {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.mainImg img {
+    max-width: 80%;
+    height: auto;
+    margin-right: 6%;
+}
+
+.loginButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin: 20% 0;
+}
+
+.loginButton button {
+    width: 65px;
+    height: 65px;
+    border: none;
+    border-radius: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kakao {
+    background-color: #fee500;
+}
+
+.kakao img {
+    max-width: 55%;
+    height: auto;
+}
+
+.naver {
+    background-color: #03c75a;
+}
+
+.naver img {
+    max-width: 100%;
+    height: auto;
+}
+
+.google {
+    background-color: #f3f3f3;
+}
+
+.google img {
+    max-width: 55%;
+    height: auto;
+}
+
+.loginPageText p {
+    font-size: 20px;
+    text-align: center;
+}

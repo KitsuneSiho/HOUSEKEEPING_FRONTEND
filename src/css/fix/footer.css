@@ -1,0 +1,53 @@
+.footer {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    background-color: #c5f1ff;
+    padding: 10px 0;
+    z-index: 1000;
+    left: 0;
+}
+
+.footer img {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.popup {
+    display: none;
+}
+
+.popupBackground img {
+    bottom: 60px;
+    position: absolute;
+    left: 25%;
+}
+
+.popup .mainRoom {
+    bottom: 120px;
+    position: absolute;
+    left: 46.5%;
+}
+
+.popup .tip {
+    bottom: 68px;
+    position: absolute;
+    left: 46%;
+}
+
+.popup .livingRoom {
+    bottom: 70px;
+    position: absolute;
+    left: 28%;
+}
+
+.popup .closetRoom {
+    bottom: 70px;
+    position: absolute;
+    right: 28%;
+}
+

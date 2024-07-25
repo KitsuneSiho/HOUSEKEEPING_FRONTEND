@@ -1,0 +1,182 @@
+/* foodList.module.css */
+.container {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.header img {
+    cursor: pointer;
+}
+
+.searchBar {
+    width: 70%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+}
+
+.searchBar.visible {
+    max-height: 50px;
+    opacity: 1;
+    padding: 5px 10px;
+}
+
+.searchBar input {
+    width: 85%;
+    border: none !important;
+    outline: none;
+    font-size: 16px;
+}
+
+.searchIcon {
+    cursor: pointer;
+}
+
+.foodTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.foodTable th, .foodTable td {
+    border: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.foodTable th {
+    background: none;
+}
+
+.editAddButton {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.editAddButton .editBtn,
+.editAddButton .addBtn {
+    width: 30%;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid black;
+    color: black;
+    background: none;
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    width: 90%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #535353;
+    text-align: center;
+}
+
+.quantityCell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantityBtn {
+    background: #ffebc5;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: black;
+    margin: 0 5px;
+}
+
+.removeBtn{
+    border: none;
+    background: none;
+    color: red;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modalContent {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 20px;
+    border: none;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.modalContent h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modalField {
+    margin-bottom: 15px;
+}
+
+.modalField label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modalField input {
+    width: 100%;
+    padding: 8px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modalButtons button {
+    width: 45%;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid black;
+    color: black;
+    cursor: pointer;
+    background: none;
+}

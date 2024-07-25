@@ -1,0 +1,58 @@
+/* FriendRoom.module.css */
+
+.container {
+    padding: 0;
+    margin: 10% 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 10% 0;
+    position: relative;
+}
+
+.header img {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.dirtyBar {
+    margin-top: 5%;
+}
+
+.roomDesign {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.roomDesign .myRoom {
+    width: 85%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.visitorBoard {
+    width: 80%;
+}
+
+.visitorBoard button {
+    width: 100%;
+    height: 200px;
+    background-color: white;
+    border: 10px solid burlywood;
+}
