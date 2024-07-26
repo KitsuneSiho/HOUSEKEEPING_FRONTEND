@@ -1,0 +1,235 @@
+.container {
+    padding: 0;
+    margin: 0;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.friendsContainer {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden; /* Hide vertical overflow */
+    display: flex;
+    justify-content: flex-start; /* Align items to the start */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    white-space: nowrap;
+}
+
+.friendsContainer::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.friendsList {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.friend, .addFriend {
+    border-radius: 100%;
+    background-color: #c5f1ff;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.friend img, .addFriend img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend p, .addFriend p {
+    font-size: 12px;
+    text-align: center;
+    margin: 0;
+}
+
+.dirtyBar{
+    margin-top: 5%;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.header img {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.roomDesign {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+}
+
+.roomDesign .myRoom {
+    width: 85%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.furniture {
+    width: 80%;
+    height: 200px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.furniture table {
+    width: 100%;
+}
+
+.furniture table th {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.submit {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 15%;
+}
+
+.submit button {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.routinecontainer {
+    width: 95%;
+    position: relative;
+}
+
+.routineContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.roomRoutine {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 10px;
+    position: relative;
+}
+
+.roomRoutine .roomRoutineHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.roomRoutine .roomRoutineTitle {
+    display: flex;
+    align-items: center;
+    background-color: #ffc5f2;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
+    height: 25px;
+}
+
+.roomRoutine .roomRoutineTitle img {
+    width: 20px;
+    height: 20px;
+}
+
+.roomRoutine .alramOnOff {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.roomRoutine .alramOnOff {
+    margin: 0;
+    font-size: 14px;
+}
+
+.roomRoutine .alramOnOff img {
+    width: 15px;
+    height: 15px;
+    bottom: 5px;
+    position: absolute;
+}
+
+.roomRoutine .roomRoutineInfo {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.roomRoutine .roomRoutineInfo ul::-webkit-scrollbar {
+    display: none;
+}
+
+.roomRoutine .roomRoutineInfo ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: calc(30px * 4);
+    overflow-y: auto;
+}
+
+.roomRoutine .roomRoutineInfo li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.roomRoutine .roomRoutineInfo input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.roomRoutine .roomRoutineInfo label {
+    flex-grow: 1;
+}
+
+.roomRoutine .roomRoutineInfo img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    position: relative;
+}
+
+.roomRoutine .plusIcon {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+}

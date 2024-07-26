@@ -1,0 +1,296 @@
+.container {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.header img {
+    cursor: pointer;
+}
+
+.tabs {
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+.tab.active {
+    border-bottom: 2px solid black;
+    font-weight: bold;
+}
+
+.routineContainer {
+    width: 95%;
+    position: relative;
+}
+
+.roomRoutine,
+.livingRoomRoutine,
+.toiletRoutine {
+    width: 95%;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    position: relative;
+}
+
+.roomRoutine .roomRoutineHeader,
+.livingRoomRoutine .livingRoomRoutineHeader,
+.toiletRoutine .toiletRoutineHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.roomRoutine .roomRoutineTitle,
+.livingRoomRoutine .livingRoomRoutineTitle,
+.toiletRoutine .toiletRoutineTitle {
+    display: flex;
+    align-items: center;
+    background-color: #ffc5f2;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
+}
+
+.livingRoomRoutine .livingRoomRoutineTitle {
+    background-color: #ffebc5;
+}
+
+.toiletRoutine .toiletRoutineTitle {
+    background-color: #c5f1ff;
+}
+
+.roomRoutine .roomRoutineTitle img,
+.livingRoomRoutine .livingRoomRoutineTitle img,
+.toiletRoutine .toiletRoutineTitle img {
+    width: 20px;
+    height: 20px;
+}
+
+.roomRoutine .roomRoutineTitle p,
+.livingRoomRoutine .livingRoomRoutineTitle p,
+.toiletRoutine .toiletRoutineTitle p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.roomRoutine .alramOnOff,
+.livingRoomRoutine .alramOnOff,
+.toiletRoutine .alramOnOff {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.roomRoutine .alramOnOff p,
+.livingRoomRoutine .alramOnOff p,
+.toiletRoutine .alramOnOff p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.roomRoutine .alramOnOff img,
+.livingRoomRoutine .alramOnOff img,
+.toiletRoutine .alramOnOff img {
+    width: 15px;
+    height: 15px;
+    bottom: 5px;
+    position: absolute;
+}
+
+.roomRoutine .roomRoutineInfo,
+.livingRoomRoutine .livingRoomRoutineInfo,
+.toiletRoutine .toiletRoutineInfo {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.roomRoutine .roomRoutineInfo ul::-webkit-scrollbar,
+.livingRoomRoutine .livingRoomRoutineInfo ul::-webkit-scrollbar,
+.toiletRoutine .toiletRoutineInfo ul::-webkit-scrollbar {
+    display: none;
+}
+
+.roomRoutine .roomRoutineInfo ul,
+.livingRoomRoutine .livingRoomRoutineInfo ul,
+.toiletRoutine .toiletRoutineInfo ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: calc(30px * 4);
+    overflow-y: auto;
+}
+
+.roomRoutine .roomRoutineInfo li,
+.livingRoomRoutine .livingRoomRoutineInfo li,
+.toiletRoutine .toiletRoutineInfo li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.roomRoutine .roomRoutineInfo input[type="checkbox"],
+.livingRoomRoutine .livingRoomRoutineInfo input[type="checkbox"],
+.toiletRoutine .toiletRoutineInfo input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.roomRoutine .roomRoutineInfo label,
+.livingRoomRoutine .livingRoomRoutineInfo label,
+.toiletRoutine .toiletRoutineInfo label {
+    flex-grow: 1;
+}
+
+.roomRoutine .roomRoutineInfo img,
+.livingRoomRoutine .livingRoomRoutineInfo img,
+.toiletRoutine .toiletRoutineInfo img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    position: relative;
+}
+
+.roomRoutine .plusIcon,
+.livingRoomRoutine .plusIcon,
+.toiletRoutine .plusIcon {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalContent {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+.modalAddBtn,
+.modalCancelBtn {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modalAddBtn {
+    background-color: #000000;
+    color: white;
+}
+
+.modalCancelBtn {
+    background-color: #ffffff;
+    color: black;
+}
+
+.routineName{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10% 0;
+}
+
+#routineName{
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid #535353;
+}
+
+.routineDate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10% 0;
+}
+
+.routineDate label {
+    margin-bottom: 10px;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.calendar th,
+.calendar td {
+    width: 14.28%; /* Equal width for all columns */
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.calendar th {
+    background-color: #f2f2f2;
+}
+
+.calendar td.sat {
+    color: blue;
+}
+
+.calendar td.sun {
+    color: red;
+}
+
+.calendar td.selected {
+    background-color: #000;
+    color: #fff;
+}

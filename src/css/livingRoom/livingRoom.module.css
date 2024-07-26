@@ -1,0 +1,59 @@
+/* LivingRoom.module.css */
+
+.container {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+.livingRoomHeader {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.categories {
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    justify-items: center;
+    margin-bottom: 20px;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 85px; /* Fixed width for uniform size */
+    margin: 10px 0;
+    justify-content: center; /* Center items vertically */
+    cursor: pointer;
+}
+
+.category img {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.category p {
+    margin: 10px 0 0 0;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+    word-wrap: break-word;
+    max-width: 80px; /* Ensure text wraps within the category box */
+}
+
+.category:nth-child(8) p { /* 조미료, 향신료 */
+    font-size: 12px;
+}

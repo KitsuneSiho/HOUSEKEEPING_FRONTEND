@@ -1,0 +1,17 @@
+.container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.mainImg {
+    text-align: center;
+}
+
+.firstMainImg {
+    max-width: 80%;
+    height: auto;
+}

@@ -1,0 +1,118 @@
+.container {
+    padding: 0;
+    margin: 0;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.header img {
+    cursor: pointer;
+}
+
+.searchBar {
+    width: 70%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+}
+
+.searchBar input {
+    width: 85%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.searchBar img {
+    cursor: pointer;
+}
+
+.searchBar.visible {
+    max-height: 50px;
+    opacity: 1;
+    padding: 5px 10px;
+}
+
+.postContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.sortOptions {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sortOptions select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.postList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #ccc;
+}
+
+.postItem {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.postInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.postContent {
+    font-size: 16px;
+}
+
+.createButton {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #ffc5f2;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.createButton img {
+    margin-right: 10px;
+}

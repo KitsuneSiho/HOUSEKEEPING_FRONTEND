@@ -1,0 +1,64 @@
+/* UploadFoodListCheck.module.css */
+
+.container {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.header img {
+    cursor: pointer;
+}
+
+.foodTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.foodTable th, .foodTable td {
+    border: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.foodTable th {
+    background: none;
+}
+
+.addBtn {
+    width: 30%;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px solid black;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="text"] {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #535353;
+    text-align: center;
+}
+
+.xBtn button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: red;
+    font-size: 18px;
+}
