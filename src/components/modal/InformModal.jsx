@@ -1,15 +1,7 @@
 import '../../css/modal/InformModal.css';
 import PropTypes from "prop-types";
 
-const InformModal = ({ modalState, modalTitle, modalBody, hideModal }) => {
-
-    // 받은 props의 타입 확인. 매치되지 않으면 오류 발생
-    InformModal.propTypes = {
-        modalState: PropTypes.string,
-        modalTitle: PropTypes.string,
-        modalBody: PropTypes.string,
-        hideModal: PropTypes.func,
-    }
+const InformModal = ({modalState, modalTitle, modalBody, hideModal}) => {
 
     return (
         <div className={`modal ${modalState}`}>
@@ -21,5 +13,13 @@ const InformModal = ({ modalState, modalTitle, modalBody, hideModal }) => {
         </div>
     );
 };
+
+// 받은 props의 타입 확인. 매치되지 않으면 오류 발생
+InformModal.propTypes = {
+    modalState: PropTypes.string,
+    modalTitle: PropTypes.string,
+    modalBody: PropTypes.string,
+    hideModal: PropTypes.func,
+}
 
 export default InformModal;

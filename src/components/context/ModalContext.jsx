@@ -1,6 +1,7 @@
 import {createContext, useState, useContext} from 'react';
 import InformModal from "../modal/InformModal.jsx";
 import PropTypes from "prop-types";
+import ChatRoomCreateModal from "../modal/ChatRoomCreateModal.jsx";
 
 // Context 생성
 const ModalContext = createContext();
@@ -26,6 +27,8 @@ export const ModalProvider = ({children}) => {
             {modalType === "inform" &&
                 <InformModal modalState={modalState} modalTitle={modalTitle} modalBody={modalBody}
                              hideModal={hideModal}/>}
+            {modalType === "chatRoomCreate" &&
+                <ChatRoomCreateModal modalState={modalState} hideModal={hideModal}/>}
             {children}
         </ModalContext.Provider>
     );

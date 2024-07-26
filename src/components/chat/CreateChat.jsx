@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
@@ -32,7 +32,7 @@ const CreateChat = () => {
                 <img
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/chatList')}
+                    onClick={() => navigate('/chat')}
                 />
                 <h2>대화 상대 선택</h2>
                 <h4 onClick={handleAddChat}>추가</h4>
