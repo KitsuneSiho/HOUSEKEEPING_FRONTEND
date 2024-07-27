@@ -2,6 +2,8 @@ import '../../css/modal/InformModal.css';
 import PropTypes from "prop-types";
 import {useNavigate} from "react-router-dom";
 
+// 만들었다가 피드백을 받아서 일단 사용하고 있지 않은 모달.
+// 채팅 방 생성 시 1대1 채팅인지 그룹 채팅인지 확인
 const ChatRoomCreateModal = ({modalState, hideModal}) => {
 
     const navigate = useNavigate();

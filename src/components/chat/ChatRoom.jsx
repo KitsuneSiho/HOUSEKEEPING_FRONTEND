@@ -6,7 +6,7 @@ import axios from "axios";
 import MessageElement from "./elements/MessageElement.jsx";
 
 const ChatRoom = () => {
-    const { chatRoomId } = useParams();
+    const { chatRoomId, chatRoomName  } = useParams();
     const [userId, setUserId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [isReady, setIsReady] = useState(false);
@@ -31,7 +31,6 @@ const ChatRoom = () => {
         try {
             const response = await axios.get(`${BACK_URL}/chat/message/list?chatRoomId=${chatRoomId}`)
             setMessages(response.data);
-            console.log(response.data);
 
             const dates = {};
             response.data.forEach((message) => {
@@ -79,7 +78,7 @@ const ChatRoom = () => {
                     alt="back"
                     onClick={() => navigate('/chat')}
                 />
-                <h2>채팅방</h2>
+                <h2>{chatRoomName}</h2>
             </div>
             <div className={styles.chatRoom}>
                 <div className={styles.messageContainer}>

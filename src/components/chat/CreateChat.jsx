@@ -1,20 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BACK_URL } from "../../Constraints.js";
 import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import axios from "axios";
+import FriendElement from "./elements/FriendElement.jsx";
+import { useModal } from "../context/ModalContext.jsx";
 
 const CreateChat = () => {
     const navigate = useNavigate();
+    const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
+    const [userId, setUserId] = useState(null);
     const [selectedFriends, setSelectedFriends] = useState([]);
-    const friends = [
-        { name: '문재영', img: '/lib/마이페이지아이콘.svg' },
-        { name: '이호준', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강보현', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강현욱', img: '/lib/마이페이지아이콘.svg' },
-        { name: '김상우', img: '/lib/마이페이지아이콘.svg' },
-        { name: '최시호', img: '/lib/마이페이지아이콘.svg' },
-        { name: '엄지훈', img: '/lib/마이페이지아이콘.svg' },
-    ];
+    const [friends, setFriends] = useState([]);
+    const [isReady, setIsReady] = useState(false);
+    const [chatRoomTitle, setChatRoomTitle] = useState("");
+
+    useEffect(() => {
+        setUserId(sessionStorage.getItem("userId"));
+    }, []);
+
+    useEffect(() => {
+        if (userId !== null) {
+            getFriends().then(() => setIsReady(true));
+        }
+    }, [userId]);
+
+    useEffect(() => {
+        if (chatRoomTitle !== "") {
+            createRoom(chatRoomTitle, "GROUP").then(() => setModalTitle(""));
+        }
+    }, [chatRoomTitle]);
+
+    const getFriends = async () => {
+        try {
+            const response = await axios.get(BACK_URL + `/friend/list?userId=${userId}`);
+            setFriends(response.data);
+        } catch (error) {
+            console.log("Error fetching friends: ", error);
+        }
+    }
+
+    const createRoom = async (name, type) => {
+        try {
+            const response = await axios.post(BACK_URL + `/chat/room/create`, {
+                chatRoomName: name,
+                chatRoomType: type,
+                userIdList: [userId, ...selectedFriends],
+            });
+
+            navigate(`/chat/${response.data.chatRoomId}`);
+
+        } catch {
+            console.log("Error creating room");
+        }
+    }
 
     const handleCheckboxChange = (name) => {
         setSelectedFriends(prev =>
@@ -23,7 +63,18 @@ const CreateChat = () => {
     };
 
     const handleAddChat = () => {
-        navigate('/chatRoom');
+        if (selectedFriends.length === 0) {
+            setModalType("inform");
+            setModalTitle("방 생성 불가");
+            setModalBody("한 명 이상의 친구를 선택해주세요!");
+            showModal();
+        } else if (selectedFriends.length === 1) {
+            createRoom("", "SINGLE");
+        } else if (selectedFriends.length >= 2) {
+            setModalType("namingChatRoom");
+            setModalCallback(() => setChatRoomTitle);
+            showModal();
+        }
     };
 
     return (
@@ -38,22 +89,12 @@ const CreateChat = () => {
                 <h4 onClick={handleAddChat}>추가</h4>
             </div>
             <div className={styles.friendList}>
-                {friends.map((friend, index) => (
-                    <div key={index} className={styles.friendItem}>
-                        <img src={friend.img} alt="profile" />
-                        <div className={styles.friendInfo}>
-                            <div className={styles.friendName}>{friend.name}</div>
-                        </div>
-                        <input
-                            type="checkbox"
-                            className={styles.friendCheckbox}
-                            checked={selectedFriends.includes(friend.name)}
-                            onChange={() => handleCheckboxChange(friend.name)}
-                        />
-                    </div>
+                {isReady && friends.map((friend, index) => (
+                    <FriendElement key={index} friend={friend} selectedFriends={selectedFriends}
+                        handleCheckboxChange={handleCheckboxChange} />
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

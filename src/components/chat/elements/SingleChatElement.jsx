@@ -12,7 +12,7 @@ const SingleChatElement = ({chatRoom, timeFormatter}) => {
             <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
             <div
                 className={styles.chatInfo}
-                onClick={() => navigate(`/chat/${chatRoom.chatRoomId}`)}
+                onClick={() => navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.nickNameList[0]}`)}
             >
                 <div className={styles.chatName}>{chatRoom.nickNameList[0]}</div>
                 <div className={styles.chatMessage}>

@@ -49,56 +49,58 @@ function App() {
     return (
         // 소켓 관련 코드를 전역으로 관리
         <SocketProvider>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/Footer" element={<Footer/>}/>
-                    <Route path="/FirstMain" element={<FirstMain/>}/>
-                    <Route path="/Login" element={<Login/>}/>
-                    <Route path="/FirstLogin" element={<FirstLogin/>}/>
-                    <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/>
-                    <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/>
-                    <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/>
-                    <Route path="/MainPage" element={<MainPage/>}/>
-                    <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/>
-                    <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/>
-                    <Route path="/AddFriend" element={<AddFriend/>}/>
-                    <Route path="/FriendRoom" element={<FriendRoom/>}/>
-                    <Route path="/VisitorBoard" element={<VisitorBoard/>}/>
-                    <Route path="/Calendar" element={<Calendar/>}/>
-                    <Route path="/LivingRoom" element={<LivingRoom/>}/>
-                    <Route path="/UploadFood" element={<UploadFood/>}/>
-                    <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/>
-                    <Route path="/SearchRecipe" element={<SearchRecipe/>}/>
-                    <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/>
-                    <Route path="/FoodList" element={<FoodList/>}/>
-                    <Route path="/Routine" element={<Routine/>}/>
-                    <Route path="/RoutineEdit" element={<RoutineEdit/>}/>
-                    <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/>
-                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/>
-                    <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/>
-                    <Route path="/Tip" element={<Tip/>}/>
-                    <Route path="/RoomeTip" element={<RoomeTip/>}/>
-                    <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/>
-                    <Route path="/WasteTip" element={<WasteTip/>}/>
-                    <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/>
-                    <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/>
-                    <Route path="/LifeTip" element={<LifeTip/>}/>
-                    <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/>
-                    <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/>
+            <ModalProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/Footer" element={<Footer/>}/>
+                        <Route path="/FirstMain" element={<FirstMain/>}/>
+                        <Route path="/Login" element={<Login/>}/>
+                        <Route path="/FirstLogin" element={<FirstLogin/>}/>
+                        <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/>
+                        <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/>
+                        <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/>
+                        <Route path="/MainPage" element={<MainPage/>}/>
+                        <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/>
+                        <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/>
+                        <Route path="/AddFriend" element={<AddFriend/>}/>
+                        <Route path="/FriendRoom" element={<FriendRoom/>}/>
+                        <Route path="/VisitorBoard" element={<VisitorBoard/>}/>
+                        <Route path="/Calendar" element={<Calendar/>}/>
+                        <Route path="/LivingRoom" element={<LivingRoom/>}/>
+                        <Route path="/UploadFood" element={<UploadFood/>}/>
+                        <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/>
+                        <Route path="/SearchRecipe" element={<SearchRecipe/>}/>
+                        <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/>
+                        <Route path="/FoodList" element={<FoodList/>}/>
+                        <Route path="/Routine" element={<Routine/>}/>
+                        <Route path="/RoutineEdit" element={<RoutineEdit/>}/>
+                        <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/>
+                        <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/>
+                        <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/>
+                        <Route path="/Tip" element={<Tip/>}/>
+                        <Route path="/RoomeTip" element={<RoomeTip/>}/>
+                        <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/>
+                        <Route path="/WasteTip" element={<WasteTip/>}/>
+                        <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/>
+                        <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/>
+                        <Route path="/LifeTip" element={<LifeTip/>}/>
+                        <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/>
+                        <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/>
 
-                    {/* 채팅 */}
-                    <Route path="/chatlogin" element={<ChatLogin/>}/>
-                    <Route path="/chat" element={<ChatRoomList/>}/>
-                    <Route path="/chat/:chatRoomId" element={<ChatRoom/>}/>
-                    <Route path="/chat/create" element={<CreateChat/>}/>
+                        {/* 채팅 */}
+                        <Route path="/chatlogin" element={<ChatLogin/>}/>
+                        <Route path="/chat" element={<ChatRoomList/>}/>
+                        <Route path="/chat/:chatRoomId/:chatRoomName" element={<ChatRoom/>}/>
+                        <Route path="/chat/create" element={<CreateChat/>}/>
 
-                    {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
-                    <Route path="/test/modal" element={<ModalProvider><ModalExample/></ModalProvider>}/>
-                    <Route path="/test/chat" element={<ChatPrototype/>}/>
-                    <Route path="/test/chat/123" element={<ChatRoom123/>}/>
-                </Routes>
-            </Router>
+                        {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
+                        <Route path="/test/modal" element={<ModalExample/>}/>
+                        <Route path="/test/chat" element={<ChatPrototype/>}/>
+                        <Route path="/test/chat/123" element={<ChatRoom123/>}/>
+                    </Routes>
+                </Router>
+            </ModalProvider>
         </SocketProvider>
     )
 }

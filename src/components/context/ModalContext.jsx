@@ -1,7 +1,7 @@
 import {createContext, useState, useContext} from 'react';
 import InformModal from "../modal/InformModal.jsx";
 import PropTypes from "prop-types";
-import ChatRoomCreateModal from "../modal/ChatRoomCreateModal.jsx";
+import NamingChatRoomModal from "../modal/NamingChatRoomModal.jsx";
 
 // Context 생성
 const ModalContext = createContext();
@@ -12,6 +12,7 @@ export const ModalProvider = ({children}) => {
     const [modalTitle, setModalTitle] = useState("");
     const [modalBody, setModalBody] = useState("");
     const [modalState, setModalState] = useState("hide");
+    const [modalCallback, setModalCallback] = useState(null);
 
     const showModal = () => {
         setModalState("show");
@@ -22,13 +23,14 @@ export const ModalProvider = ({children}) => {
     }
 
     return (
-        <ModalContext.Provider value={{setModalType, setModalTitle, setModalBody, showModal, hideModal}}>
+        <ModalContext.Provider
+            value={{setModalType, setModalTitle, setModalBody, setModalCallback, showModal, hideModal}}>
             {/*제작한 모달 컴포넌트를 여기에 넣어서 한번에 관리 가능*/}
             {modalType === "inform" &&
                 <InformModal modalState={modalState} modalTitle={modalTitle} modalBody={modalBody}
                              hideModal={hideModal}/>}
-            {modalType === "chatRoomCreate" &&
-                <ChatRoomCreateModal modalState={modalState} hideModal={hideModal}/>}
+            {modalType === "namingChatRoom" &&
+                <NamingChatRoomModal modalState={modalState} modalCallback={modalCallback} hideModal={hideModal} />}
             {children}
         </ModalContext.Provider>
     );
