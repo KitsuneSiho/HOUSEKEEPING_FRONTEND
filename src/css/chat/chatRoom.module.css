@@ -48,16 +48,20 @@
     gap: 10px;
 }
 
+/*메시지 타입이 정해지기 전에는 안보임*/
+
 .message {
-    display: flex;
+    display: none;
     align-items: flex-end;
 }
 
 .message.received {
+    display: flex;
     flex-direction: row;
 }
 
 .message.sent {
+    display: flex;
     flex-direction: row-reverse;
 }
 

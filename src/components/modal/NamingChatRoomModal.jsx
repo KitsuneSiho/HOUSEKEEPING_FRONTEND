@@ -11,6 +11,8 @@ const NamingChatRoomModal = ({ modalState, modalCallback, hideModal }) => {
             return;
         }
 
+        setTitle("");
+
         modalCallback(title);
         hideModal();
     }
@@ -20,7 +22,7 @@ const NamingChatRoomModal = ({ modalState, modalCallback, hideModal }) => {
             <div className="modal-content">
                 <span className="modal-title">그룹 채팅 방 이름 입력</span>
                 <p className="modal-body">
-                    <input onChange={(e) => setTitle(e.target.value)} placeholder={"채팅 방 이름을 입력해주세요"} />
+                    <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder={"채팅 방 이름을 입력해주세요"} />
                 </p>
                 <button className="close-button" onClick={handleCreate}>생성</button>
                 <button className="close-button" onClick={hideModal}>취소</button>

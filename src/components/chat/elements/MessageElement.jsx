@@ -5,14 +5,24 @@ import {useEffect, useState} from "react";
 const MessageElement = ({message, userId}) => {
 
     const [messageType, setMessageType] = useState("");
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
+
         if (Number(message.messageSenderId) === Number(userId)) {
             setMessageType("sent");
         } else {
             setMessageType("received");
         }
+
     }, [message]);
+
+    useEffect(() => {
+
+        if (messageType !== "") {
+            setTimeout(() => setIsReady(true), 100);
+        }
+    }, [messageType])
 
     // LocalDateTime을 알맞은 형태로 가공
     const timeFormatter = (dateTimeString) => {
@@ -33,22 +43,21 @@ const MessageElement = ({message, userId}) => {
     }
 
     return (
-        <>
-            <div className={`${styles.message} ${styles[messageType]}`}>
-                <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
-                <div>{message.messageSenderNickname}</div>
-                <div className={styles.messageContent}>
-                    <p>{message.messageContent}</p>
-                </div>
-                <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
+
+        isReady && <div className={`${styles.message} ${styles[messageType]}`}>
+            <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
+            <div>{message.messageSenderNickname}</div>
+            <div className={styles.messageContent}>
+                <p>{message.messageContent}</p>
             </div>
-        </>
-    )
+            <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
+        </div>
+    );
 }
 
 MessageElement.propTypes = {
-    message: PropTypes.object,
-    userId: PropTypes.string,
+    message: PropTypes.object.isRequired,
+    userId: PropTypes.string.isRequired,
 }
 
-export default MessageElement
+export default MessageElement;

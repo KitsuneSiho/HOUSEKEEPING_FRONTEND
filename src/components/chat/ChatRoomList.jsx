@@ -6,6 +6,7 @@ import axios from "axios";
 import {BACK_URL} from "../../Constraints.js"
 import SingleChatElement from "./elements/SingleChatElement.jsx";
 import GroupChatElement from "./elements/GroupChatElement.jsx";
+import ChatAlarm from "./ChatAlarm.jsx";
 
 const ChatRoomList = () => {
 
@@ -100,6 +101,7 @@ const ChatRoomList = () => {
                     </div>
                 ))}
             </div>
+            <ChatAlarm />
             <Footer/>
         </div>
     );

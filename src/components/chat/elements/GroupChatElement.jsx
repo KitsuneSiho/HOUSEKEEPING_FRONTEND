@@ -7,13 +7,18 @@ const GroupChatElement = ({chatRoom, timeFormatter}) => {
 
     const navigate = useNavigate();
 
+    const enterChatRoom = () => {
+
+        navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.chatRoomName}`)
+    }
+
     return (
         <>
             {/*그룹체팅 아이콘도 따로 만들어야 할듯*/}
             <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
             <div
                 className={styles.chatInfo}
-                onClick={() => navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.chatRoomName}`)}
+                onClick={enterChatRoom}
             >
                 <div className={styles.chatName}>{chatRoom.chatRoomName}</div>
                 <div className={styles.chatMessage}>

@@ -12,6 +12,7 @@ const CreateChat = () => {
     const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
     const [userId, setUserId] = useState(null);
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [selectedNickname, setSelectedNickname] = useState("");
     const [friends, setFriends] = useState([]);
     const [isReady, setIsReady] = useState(false);
     const [chatRoomTitle, setChatRoomTitle] = useState("");
@@ -49,7 +50,13 @@ const CreateChat = () => {
                 userIdList: [userId, ...selectedFriends],
             });
 
-            navigate(`/chat/${response.data.chatRoomId}`);
+            if (type === "SINGLE") {
+                navigate(`/chat/${response.data.chatRoomId}/${selectedNickname}`);
+            } else {
+                navigate(`/chat/${response.data.chatRoomId}/${name}`);
+            }
+
+
 
         } catch {
             console.log("Error creating room");
@@ -91,7 +98,7 @@ const CreateChat = () => {
             <div className={styles.friendList}>
                 {isReady && friends.map((friend, index) => (
                     <FriendElement key={index} friend={friend} selectedFriends={selectedFriends}
-                        handleCheckboxChange={handleCheckboxChange} />
+                        handleCheckboxChange={handleCheckboxChange} setSelectedNickname={setSelectedNickname} />
                 ))}
             </div>
             <Footer />

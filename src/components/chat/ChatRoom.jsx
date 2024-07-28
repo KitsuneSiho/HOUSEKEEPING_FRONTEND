@@ -1,12 +1,24 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { BACK_URL } from "../../Constraints.js";
+import {useNavigate, useParams} from 'react-router-dom';
+import {BACK_URL} from "../../Constraints.js";
 import styles from '../../css/chat/chatRoom.module.css';
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import MessageElement from "./elements/MessageElement.jsx";
+import {useSocket} from "../context/SocketContext.jsx";
 
 const ChatRoom = () => {
-    const { chatRoomId, chatRoomName  } = useParams();
+
+    const {
+        sendMessageUsingSocket,
+        receivedMessage,
+        setReceivedMessage,
+        messageSender,
+        setMessageSender,
+        nickname,
+        joinRoom,
+        isConnected
+    } = useSocket();
+    const {chatRoomId, chatRoomName} = useParams();
     const [userId, setUserId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [isReady, setIsReady] = useState(false);
@@ -19,12 +31,43 @@ const ChatRoom = () => {
         setUserId(sessionStorage.getItem("userId"));
     }, []);
 
+    useEffect(() => {
+
+        if (isConnected) {
+            joinRoom(chatRoomId);
+        }
+    }, [isConnected])
+
     // 채팅 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
         if (userId !== null) {
             getMessages().then(readAll).then(() => setIsReady(true));
         }
     }, [userId]);
+
+    // 채팅을 소켓으로 받을 경우
+    useEffect(() => {
+
+        if (receivedMessage !== "" && messageSender !== "") {
+
+            setMessages([
+                ...messages,
+                {
+                    messageSenderId: -1,
+                    messageSenderNickname: messageSender,
+                    messageContent: receivedMessage,
+                    messageTimestamp: Date.now(),
+                }
+            ]);
+
+            setReceivedMessage("");
+            setMessageSender("");
+
+            setTimeout(() => readAll(), [300]);
+
+        }
+
+    }, [receivedMessage, messageSender])
 
     // 채팅 리스트를 받아오는 함수
     const getMessages = async () => {
@@ -45,6 +88,9 @@ const ChatRoom = () => {
     }
 
     const sendMessage = async () => {
+
+        sendMessageUsingSocket(input);
+
         try {
             await axios.post(`${BACK_URL}/chat/message/send`, {
                 "chatRoomId": chatRoomId,
@@ -52,6 +98,16 @@ const ChatRoom = () => {
                 "messageContent": input,
             });
             setInput("");
+
+            setMessages([
+                ...messages,
+                {
+                    messageSenderId: userId,
+                    messageSenderNickname: nickname,
+                    messageContent: input,
+                    messageTimestamp: Date.now(),
+                }
+            ]);
         } catch (error) {
             console.error('Error getting RoomList: ', error);
         }
@@ -59,7 +115,7 @@ const ChatRoom = () => {
 
     const readAll = async () => {
         try {
-            axios.put(`${BACK_URL}/chat/message/read/all?roomId=${chatRoomId}&userId=${userId}`, {});
+            await axios.put(`${BACK_URL}/chat/message/read/all?roomId=${chatRoomId}&userId=${userId}`, {});
         } catch (error) {
             console.error('Error reading messages: ', error);
         }
@@ -88,7 +144,7 @@ const ChatRoom = () => {
                         return (
                             <div key={index}>
                                 {showDate && <div className={styles.chatDate}>{formattedDate}</div>}
-                                <MessageElement message={message} userId={userId} />
+                                <MessageElement message={message} userId={userId}/>
                             </div>
                         );
                     })}
@@ -96,8 +152,8 @@ const ChatRoom = () => {
             </div>
             <div className={styles.inputContainer}>
                 <input type="text" onChange={(e) => setInput(e.target.value)} value={input}
-                       placeholder="메시지를 입력하세요..." />
-                <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send" /></button>
+                       placeholder="메시지를 입력하세요..."/>
+                <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send"/></button>
             </div>
         </div>
     );
