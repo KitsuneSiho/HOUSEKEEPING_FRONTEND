@@ -1,41 +1,40 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';  // React Router v6 사용 시
-
+import { useNavigate } from 'react-router-dom';
 import styles from '../../css/first/login.module.css';
 
 const Login = () => {
     const navigate = useNavigate();
 
-    const navigateTo = (path) => {
-        navigate(path);
+    const handleOAuth2Login = (provider) => {
+        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.mainImg}>
-                <img src="public/lib/루미.png" alt="Main Image" />
+                <img src="/lib/루미.png" alt="Main Image" />
             </div>
             <div className={styles.loginButton}>
                 <button
                     type="button"
                     className={styles.kakao}
-                    onClick={() => navigateTo('/firstLogin')}
+                    onClick={() => handleOAuth2Login('kakao')}
                 >
-                    <img src="public/lib/카카오아이콘.png" alt="Kakao Login" />
+                    <img src="/lib/카카오아이콘.png" alt="Kakao Login" />
                 </button>
                 <button
                     type="button"
                     className={styles.naver}
-                    onClick={() => navigateTo('/firstLogin')}
+                    onClick={() => handleOAuth2Login('naver')}
                 >
-                    <img src="public/lib/네이버아이콘.png" alt="Naver Login" />
+                    <img src="/lib/네이버아이콘.png" alt="Naver Login" />
                 </button>
                 <button
                     type="button"
                     className={styles.google}
-                    onClick={() => navigateTo('/firstLogin')}
+                    onClick={() => handleOAuth2Login('google')}
                 >
-                    <img src="public/lib/구글아이콘.png" alt="Google Login" />
+                    <img src="/lib/구글아이콘.png" alt="Google Login" />
                 </button>
             </div>
             <div className={styles.loginPageText}>
