@@ -3,10 +3,12 @@ import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import * as propTypes from "prop-types";
 
+// 1대1 채팅 element
 const SingleChatElement = ({chatRoom, timeFormatter}) => {
 
     const navigate = useNavigate();
 
+    // 1대1 채팅 방에 입장
     const enterChatRoom = () => {
 
         navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.nickNameList[0]}`)
@@ -22,7 +24,7 @@ const SingleChatElement = ({chatRoom, timeFormatter}) => {
                 <div className={styles.chatName}>{chatRoom.nickNameList[0]}</div>
                 <div className={styles.chatMessage}>
                     {chatRoom.recentMessage}
-                    {chatRoom.unreadMessageCount > 0 ? <>(N)</> : <></>}
+                    {chatRoom.unreadMessageCount > 0 ? <>{` (N: ${chatRoom.unreadMessageCount})`}</> : <></>}
                 </div>
             </div>
             <div className={styles.chatTime}>

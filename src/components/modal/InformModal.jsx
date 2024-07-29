@@ -1,6 +1,7 @@
 import '../../css/modal/InformModal.css';
 import PropTypes from "prop-types";
 
+// props로 받은 제목, 내용을 출력하는 모달
 const InformModal = ({modalState, modalTitle, modalBody, hideModal}) => {
 
     return (

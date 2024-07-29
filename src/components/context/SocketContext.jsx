@@ -1,36 +1,38 @@
-import {createContext, useContext, useEffect, useRef, useState} from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
+import { BACK_URL } from "../../Constraints.js";
 
+// Context 생성
 const SocketContext = createContext();
 
-export const SocketProvider = ({children}) => {
-
+// Context Provider
+export const SocketProvider = ({ children }) => {
     const socketRef = useRef(null);
     const [receivedMessage, setReceivedMessage] = useState("");
     const [messageSender, setMessageSender] = useState("");
+    const [friendMessage, setFriendMessage] = useState("");
+    const [friendMessageSender, setFriendMessageSender] = useState("");
     const [room, setRoom] = useState("");
     const [nickname, setNickname] = useState("");
     const [isConnected, setIsConnected] = useState(false);
     const [onlineFriends, setOnlineFriends] = useState([]);
 
+    // 소켓 연결 및 이벤트 핸들러 설정
     useEffect(() => {
         const socket = io('http://localhost:3000', {
             reconnection: true,
-            reconnectionAttempts: 10,      // 재연결 시도 횟수
-            reconnectionDelay: 1000,       // 처음 재연결 시도 전 대기 시간 (밀리초)
-            reconnectionDelayMax: 5000,    // 최대 재연결 대기 시간 (밀리초)
-            randomizationFactor: 0.5       // 재연결 시도 간 대기 시간의 무작위 요소
+            reconnectionAttempts: 10,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            randomizationFactor: 0.5
         });
 
         socketRef.current = socket;
 
         socket.on('connect', () => {
-
             const sessionNickname = sessionStorage.getItem("nickname");
-
             setIsConnected(true);
             console.log(`Socket connected: ${socket.id}, ${nickname}`);
 
@@ -41,31 +43,35 @@ export const SocketProvider = ({children}) => {
         });
 
         socket.on('receive_message', (data) => {
-
-            console.log("data:", data);
-
             const { nickname, message } = data;
             setMessageSender(nickname);
             setReceivedMessage(message);
         });
 
-        socket.on('friend_login', (data) => {
-
-            console.log('friend login:', data);
+        socket.on('friend_message', (data) => {
+            const { nickname, message } = data;
+            setFriendMessageSender(nickname);
+            setFriendMessage(message);
         });
 
-        socket.on('message_alarm', (data) => {
+        socket.on('friend_login', (data) => {
 
-            console.log('message alarm:', data);
+            setOnlineFriends(prevFriends => {
+                const friendExists = prevFriends.some(nickname => nickname === data.nickname);
+                if (!friendExists) {
+                    console.log('friend login:', data.nickname);
+                    return [...prevFriends, data.nickname];
+                }
+                return prevFriends;
+            });
         });
 
         socket.on('friend_logout', (data) => {
-
-            console.log('friend logout:', data);
+            console.log('friend logout:', data.nickname);
+            setOnlineFriends(prevFriends => prevFriends.filter(friend => friend !== data.nickname));
         });
 
         socket.on('disconnect', () => {
-
             setIsConnected(false);
             console.log('Socket disconnected');
         });
@@ -73,14 +79,16 @@ export const SocketProvider = ({children}) => {
         return () => {
             socket.off('connect');
             socket.off('receive_message');
+            socket.off('friend_login');
+            socket.off('friend_logout');
             socket.off('disconnect');
         };
     }, []);
 
     const socketLogin = (nickname) => {
-
         setNickname(nickname);
         socketRef.current.emit('login', nickname);
+        getOnlineFriends(nickname);
         console.log("login: ", nickname);
     }
 
@@ -97,36 +105,22 @@ export const SocketProvider = ({children}) => {
 
     const sendMessageUsingSocket = (message) => {
         if (room) {
-            socketRef.current.emit('send_message', {room, nickname, message});
+            socketRef.current.emit('send_message', { room, nickname, message });
+            socketRef.current.emit('send_message_to_friends', { nickname, message });
         } else {
             alert('Please join a room first.');
         }
     };
 
-    const setOnline = async (userId, isOnline) => {
-
+    const getOnlineFriends = async (nickname) => {
         try {
-
-            await axios.put(BACK_URL + `/user/status/update?userId=${userId}&isOnline=${isOnline}`, {});
-
-        } catch (error) {
-            console.error("error setting online:", error);
-        }
-    }
-
-    const getOnlineFriends = async (userId) => {
-
-        try {
-
-            const response = await axios.get(BACK_URL + `/friend/list/online?userId=${userId}`);
-
-            setOnlineFriends(response.data);
-            console.log(response.data);
-
+            const response = await axios.get(BACK_URL + `/friend/list/online2?nickname=${nickname}`);
+            const nicknames = response.data.map(friend => friend.nickname);
+            setOnlineFriends(nicknames);
+            console.log("loginNicknames:", nicknames);
         } catch (error) {
             console.error("error fetching online friends list:", error);
         }
-
     }
 
     return (
@@ -142,11 +136,14 @@ export const SocketProvider = ({children}) => {
             isConnected,
             onlineFriends,
             setOnlineFriends,
+            friendMessage,
+            setFriendMessage,
+            friendMessageSender,
+            setFriendMessageSender,
             socketLogin,
             joinRoom,
             leaveRoom,
             sendMessageUsingSocket,
-            setOnline,
             getOnlineFriends,
         }}>
             {children}

@@ -3,10 +3,12 @@ import styles from "../../../css/chat/chatList.module.css";
 import PropTypes from "prop-types";
 import * as propTypes from "prop-types";
 
+// 그룹채팅 element
 const GroupChatElement = ({chatRoom, timeFormatter}) => {
 
     const navigate = useNavigate();
 
+    // 그룹채팅 방 입장
     const enterChatRoom = () => {
 
         navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.chatRoomName}`)
@@ -23,7 +25,7 @@ const GroupChatElement = ({chatRoom, timeFormatter}) => {
                 <div className={styles.chatName}>{chatRoom.chatRoomName}</div>
                 <div className={styles.chatMessage}>
                     {chatRoom.recentMessage}
-                    {chatRoom.unreadMessageCount > 0 ? <>(N)</> : <></>}
+                    {chatRoom.unreadMessageCount > 0 ? <>{` (N: ${chatRoom.unreadMessageCount})`}</> : <></>}
                 </div>
             </div>
             <div className={styles.chatTime}>

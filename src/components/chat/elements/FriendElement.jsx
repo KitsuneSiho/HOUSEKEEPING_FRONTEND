@@ -1,6 +1,7 @@
 import styles from "../../../css/chat/createChat.module.css";
 import PropTypes from "prop-types";
 
+// 친구 element
 const FriendElement = ({index, friend, selectedFriends, handleCheckboxChange, setSelectedNickname}) => {
 
     return (

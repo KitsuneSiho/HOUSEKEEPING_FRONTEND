@@ -7,6 +7,7 @@ import axios from "axios";
 import FriendElement from "./elements/FriendElement.jsx";
 import { useModal } from "../context/ModalContext.jsx";
 
+// 채팅 방 생성
 const CreateChat = () => {
     const navigate = useNavigate();
     const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
@@ -17,22 +18,26 @@ const CreateChat = () => {
     const [isReady, setIsReady] = useState(false);
     const [chatRoomTitle, setChatRoomTitle] = useState("");
 
+    // 마운트 시 세션에서 유저 아이디를 받아옴
     useEffect(() => {
         setUserId(sessionStorage.getItem("userId"));
     }, []);
 
+    // 유저 아이디를 받아오는 데 성공하면 준비 완료 신호를 보냄
     useEffect(() => {
         if (userId !== null) {
             getFriends().then(() => setIsReady(true));
         }
     }, [userId]);
 
+    // 1대1 채팅인지 그룹 채팅인지 판별
     useEffect(() => {
         if (chatRoomTitle !== "") {
             createRoom(chatRoomTitle, "GROUP").then(() => setModalTitle(""));
         }
     }, [chatRoomTitle]);
 
+    // 친구 목록을 DB에서 받아옴
     const getFriends = async () => {
         try {
             const response = await axios.get(BACK_URL + `/friend/list?userId=${userId}`);
@@ -42,6 +47,7 @@ const CreateChat = () => {
         }
     }
 
+    // 방 정보를 DB에 저장
     const createRoom = async (name, type) => {
         try {
             const response = await axios.post(BACK_URL + `/chat/room/create`, {
@@ -56,19 +62,19 @@ const CreateChat = () => {
                 navigate(`/chat/${response.data.chatRoomId}/${name}`);
             }
 
-
-
         } catch {
             console.log("Error creating room");
         }
     }
 
+    // 체크박스 체크 시
     const handleCheckboxChange = (name) => {
         setSelectedFriends(prev =>
             prev.includes(name) ? prev.filter(friend => friend !== name) : [...prev, name]
         );
     };
 
+    // 채팅 방 생성 버튼 클릭 시
     const handleAddChat = () => {
         if (selectedFriends.length === 0) {
             setModalType("inform");
@@ -96,6 +102,7 @@ const CreateChat = () => {
                 <h4 onClick={handleAddChat}>추가</h4>
             </div>
             <div className={styles.friendList}>
+                {/* 준비 완료되기 전에는 친구 목록을 출력 안함 */}
                 {isReady && friends.map((friend, index) => (
                     <FriendElement key={index} friend={friend} selectedFriends={selectedFriends}
                         handleCheckboxChange={handleCheckboxChange} setSelectedNickname={setSelectedNickname} />

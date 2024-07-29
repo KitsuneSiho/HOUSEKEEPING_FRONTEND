@@ -2,11 +2,13 @@ import styles from "../../../css/chat/chatRoom.module.css";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 
+// 메시지 element
 const MessageElement = ({message, userId}) => {
 
     const [messageType, setMessageType] = useState("");
     const [isReady, setIsReady] = useState(false);
 
+    // 내가 보낸 메시지인지, 받은 메시지인지 구별
     useEffect(() => {
 
         if (Number(message.messageSenderId) === Number(userId)) {
@@ -17,6 +19,7 @@ const MessageElement = ({message, userId}) => {
 
     }, [message]);
 
+    // 처음 마운트 시 무조건 한번은 received 타입으로 지정되는 이슈 때문에 0.1초 동안은 메시지를 표시하지 않음
     useEffect(() => {
 
         if (messageType !== "") {

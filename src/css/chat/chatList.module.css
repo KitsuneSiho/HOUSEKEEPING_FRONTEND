@@ -70,3 +70,34 @@
     color: red;
     font-size: 12px;
 }
+
+/* ChatAlarm.module.css */
+/* 일단 임시로 해둠 */
+
+.chatAlarm {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensure it is on top of other elements */
+    border-radius: 5px;
+    animation: fadeInOut 3s;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

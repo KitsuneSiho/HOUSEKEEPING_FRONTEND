@@ -7,9 +7,13 @@ import {BACK_URL} from "../../Constraints.js"
 import SingleChatElement from "./elements/SingleChatElement.jsx";
 import GroupChatElement from "./elements/GroupChatElement.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
+import FriendTop from "../friend/FriendTop.jsx";
+import {useSocket} from "../context/SocketContext.jsx";
 
+// 채팅 방 리스르 출력
 const ChatRoomList = () => {
 
+    const {receivedMessage, setReceivedMessage} = useSocket();
     const [userId, setUserId] = useState(null);
     const [chatRooms, setChatRooms] = useState(null);
     const [isReady, setIsReady] = useState(false);
@@ -28,6 +32,16 @@ const ChatRoomList = () => {
             });
         }
     }, [userId]);
+
+    // 채팅 수신 시 실행
+    useEffect(() => {
+
+        if (receivedMessage !== "") {
+
+            getRoomList().then(() => setReceivedMessage(""));
+        }
+
+    }, [receivedMessage]);
 
     // 방의 리스트를 받아오는 함수
     const getRoomList = async () => {
@@ -72,6 +86,7 @@ const ChatRoomList = () => {
 
     return (
         <div className={styles.container}>
+            <FriendTop />
             <div className={styles.header}>
                 <img
                     src="/lib/back.svg"

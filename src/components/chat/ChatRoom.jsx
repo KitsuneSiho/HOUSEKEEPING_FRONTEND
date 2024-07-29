@@ -32,11 +32,10 @@ const ChatRoom = () => {
     }, []);
 
     useEffect(() => {
-
         if (isConnected) {
             joinRoom(chatRoomId);
         }
-    }, [isConnected])
+    }, [isConnected]);
 
     // 채팅 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
@@ -47,27 +46,27 @@ const ChatRoom = () => {
 
     // 채팅을 소켓으로 받을 경우
     useEffect(() => {
+        if (receivedMessage !== "" && messageSender !== "" && messageSender !== nickname) {
+            const newMessage = {
+                messageSenderId: -1,
+                messageSenderNickname: messageSender,
+                messageContent: receivedMessage,
+                messageTimestamp: new Date().toISOString(),
+                messageId: Date.now(), // 가상의 고유 ID 생성
+            };
+            setMessages(prevMessages => [...prevMessages, newMessage]);
 
-        if (receivedMessage !== "" && messageSender !== "") {
-
-            setMessages([
-                ...messages,
-                {
-                    messageSenderId: -1,
-                    messageSenderNickname: messageSender,
-                    messageContent: receivedMessage,
-                    messageTimestamp: Date.now(),
-                }
-            ]);
+            setMessageDates(prevDates => ({
+                ...prevDates,
+                [newMessage.messageId]: formatDate(newMessage.messageTimestamp)
+            }));
 
             setReceivedMessage("");
             setMessageSender("");
 
             setTimeout(() => readAll(), [300]);
-
         }
-
-    }, [receivedMessage, messageSender])
+    }, [receivedMessage, messageSender]);
 
     // 채팅 리스트를 받아오는 함수
     const getMessages = async () => {
@@ -88,8 +87,7 @@ const ChatRoom = () => {
     }
 
     const sendMessage = async () => {
-
-        sendMessageUsingSocket(input);
+        const timestamp = new Date().toISOString();
 
         try {
             await axios.post(`${BACK_URL}/chat/message/send`, {
@@ -99,15 +97,22 @@ const ChatRoom = () => {
             });
             setInput("");
 
-            setMessages([
-                ...messages,
-                {
-                    messageSenderId: userId,
-                    messageSenderNickname: nickname,
-                    messageContent: input,
-                    messageTimestamp: Date.now(),
-                }
-            ]);
+            sendMessageUsingSocket(input);
+
+            const newMessage = {
+                messageSenderId: userId,
+                messageSenderNickname: nickname,
+                messageContent: input,
+                messageTimestamp: timestamp,
+                messageId: Date.now(), // 가상의 고유 ID 생성
+            };
+            setMessages(prevMessages => [...prevMessages, newMessage]);
+
+            setMessageDates(prevDates => ({
+                ...prevDates,
+                [newMessage.messageId]: formatDate(newMessage.messageTimestamp)
+            }));
+
         } catch (error) {
             console.error('Error getting RoomList: ', error);
         }

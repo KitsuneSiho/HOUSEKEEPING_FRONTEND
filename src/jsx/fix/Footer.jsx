@@ -34,7 +34,7 @@ const Footer = () => {
                 <div className="roome-container">
                     <img className="roome" src="public/lib/루미.png" alt="Roome Icon" onClick={togglePopup} />
                 </div>
-                <img className="chatIcon" src="public/lib/채팅아이콘.svg" alt="Chat Icon" onClick={() => navigate('/chatList')} />
+                <img className="chatIcon" src="public/lib/채팅아이콘.svg" alt="Chat Icon" onClick={() => navigate('/chat')} />
                 <img className="myPageIcon" src="public/lib/마이페이지아이콘.svg" alt="My Page Icon" onClick={() => navigate('/myPage')} />
             </div>
 
