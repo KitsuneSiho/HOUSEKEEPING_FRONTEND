@@ -13,7 +13,7 @@ import {useSocket} from "../context/SocketContext.jsx";
 // 채팅 방 리스르 출력
 const ChatRoomList = () => {
 
-    const {receivedMessage, setReceivedMessage} = useSocket();
+    const {friendMessage, setFriendMessage} = useSocket();
     const [userId, setUserId] = useState(null);
     const [chatRooms, setChatRooms] = useState(null);
     const [isReady, setIsReady] = useState(false);
@@ -36,12 +36,12 @@ const ChatRoomList = () => {
     // 채팅 수신 시 실행
     useEffect(() => {
 
-        if (receivedMessage !== "") {
+        if (friendMessage !== "") {
 
-            getRoomList().then(() => setReceivedMessage(""));
+            getRoomList().then(() => setFriendMessage(""));
         }
 
-    }, [receivedMessage]);
+    }, [friendMessage]);
 
     // 방의 리스트를 받아오는 함수
     const getRoomList = async () => {
