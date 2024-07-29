@@ -1,5 +1,7 @@
 import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
 import Home from "./components/Home.jsx";
+import Garbage from "./components/garbage.jsx";
+import Calendar from "./jsx/calendar/Calendar.jsx";
 import FirstMain from "./jsx/first/FirstMain.jsx";
 import Login from "./jsx/first/Login.jsx";
 import FirstLogin from "./jsx/first/FirstLogin.jsx";
@@ -13,7 +15,6 @@ import MainToiletRoom from "./jsx/main/MainToiletRoom.jsx";
 import AddFriend from "./jsx/main/AddFriend.jsx";
 import FriendRoom from "./jsx/main/FriendRoom.jsx";
 import VisitorBoard from "./jsx/main/VisitorBoard.jsx";
-import Calendar from "./jsx/calendar/Calendar.jsx";
 import ChatList from "./jsx/chat/ChatList.jsx";
 import ChatRoom from "./jsx/chat/ChatRoom.jsx";
 import CreateChat from "./jsx/chat/CreateChat.jsx";
@@ -45,6 +46,44 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/Footer" element={<Footer/>}/>
+                    <Route path="/FirstMain" element={<FirstMain/>}/>
+                    <Route path="/Login" element={<Login/>}/>
+                    <Route path="/FirstLogin" element={<FirstLogin/>}/>
+                    <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/>
+                    <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/>
+                    <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/>
+                    <Route path="/MainPage" element={<MainPage/>}/>
+                    <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/>
+                    <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/>
+                    <Route path="/AddFriend" element={<AddFriend/>}/>
+                    <Route path="/FriendRoom" element={<FriendRoom/>}/>
+                    <Route path="/VisitorBoard" element={<VisitorBoard/>}/>
+                    <Route path="/Garbage" element={<Garbage/>}/>
+                    <Route path="/Calendar" element={<Calendar/>}/>
+                    <Route path="/ChatList" element={<ChatList/>}/>
+                    <Route path="/ChatRoom" element={<ChatRoom/>}/>
+                    <Route path="/CreateChat" element={<CreateChat/>}/>
+                    <Route path="/LivingRoom" element={<LivingRoom/>}/>
+                    <Route path="/UploadFood" element={<UploadFood/>}/>
+                    <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/>
+                    <Route path="/SearchRecipe" element={<SearchRecipe/>}/>
+                    <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/>
+                    <Route path="/FoodList" element={<FoodList/>}/>
+                    <Route path="/Routine" element={<Routine/>}/>
+                    <Route path="/RoutineEdit" element={<RoutineEdit/>}/>
+                    <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/>
+                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/>
+                    <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/>
+                    <Route path="/Tip" element={<Tip/>}/>
+                    <Route path="/RoomeTip" element={<RoomeTip/>}/>
+                    <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/>
+                    <Route path="/WasteTip" element={<WasteTip/>}/>
+                    <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/>
+                    <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/>
+                    <Route path="/LifeTip" element={<LifeTip/>}/>
+                    <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/>
+                    <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/>
                 </Routes>
             </Router>
         </div>

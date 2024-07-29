@@ -1,4 +1,4 @@
-/* src/Calendar.css */
+/* src/Garbage.css */
 .calendar-container {
     display: flex;
     flex-direction: column;
@@ -77,17 +77,17 @@
     text-align: center;
 }
 
-.room-1 h3 {
+.room-0 h3 {
     background-color: #FFB6C1; /* 연분홍색 */
     color: black;
 }
 
-.room-2 h3 {
+.room-1 h3 {
     background-color: #FFFFE0; /* 연노랑색 */
     color: black;
 }
 
-.room-3 h3 {
+.room-2 h3 {
     background-color: #ADD8E6; /* 연파랑색 */
     color: black;
 }
@@ -107,7 +107,7 @@ ul li input {
     margin-right: 10px;
 }
 
-/* src/Calendar.css */
+/* src/Garbage.css */
 
 /* 날짜 셀의 동그라미 스타일 */
 .fc-daygrid-day-number {

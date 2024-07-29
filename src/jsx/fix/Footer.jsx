@@ -30,7 +30,7 @@ const Footer = () => {
         <div>
             <div className="footer">
                 <img className="routineIcon" src="public/lib/루틴아이콘.svg" alt="Routine Icon" onClick={() => navigate('/routine')} />
-                <img className="calendarIcon" src="public/lib/달력아이콘.svg" alt="Calendar Icon" onClick={() => navigate('/calendar')} />
+                <img className="calendarIcon" src="public/lib/달력아이콘.svg" alt="Garbage Icon" onClick={() => navigate('/calendar')} />
                 <div className="roome-container">
                     <img className="roome" src="public/lib/루미.png" alt="Roome Icon" onClick={togglePopup} />
                 </div>
