@@ -37,6 +37,17 @@ import WasteTipWrite from "./jsx/tip/WasteTipWrite.jsx";
 import LifeTip from "./jsx/tip/LifeTIp.jsx";
 import LifeTipDetail from "./jsx/tip/LifeTipDetail.jsx";
 import LifeTipWrite from "./jsx/tip/LifeTipWrite.jsx";
+import MyPage from "./jsx/myPage/MyPage.jsx";
+import MyInfo from "./jsx/myPage/MyInfo.jsx";
+import FriendList from "./jsx/myPage/FriendList.jsx";
+import GuestBook from "./jsx/myPage/GuestBook.jsx";
+import Setting from "./jsx/myPage/Setting.jsx";
+import DeleteUser from "./jsx/myPage/DeleteUser.jsx";
+import ClosetRoom from "./jsx/clothes/ClosetRoom.jsx";
+import UploadCloset from "./jsx/clothes/UploadCloset.jsx";
+import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
+import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
+import TopList from "./jsx/clothes/TopList.jsx";
 
 function App() {
 
@@ -82,6 +93,17 @@ function App() {
                     <Route path="/LifeTip" element={<LifeTip/>}/>
                     <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/>
                     <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/>
+                    <Route path="/MyPage" element={<MyPage/>}/>
+                    <Route path="/MyInfo" element={<MyInfo/>}/>
+                    <Route path="/FriendList" element={<FriendList/>}/>
+                    <Route path="/GuestBook" element={<GuestBook/>}/>
+                    <Route path="/Setting" element={<Setting/>}/>
+                    <Route path="/DeleteUser" element={<DeleteUser/>}/>
+                    <Route path="/ClosetRoom" element={<ClosetRoom/>}/>
+                    <Route path="/UploadCloset" element={<UploadCloset/>}/>
+                    <Route path="/UploadClosetCheck" element={<UploadClosetCheck/>}/>
+                    <Route path="/RecommendCloset" element={<RecommendCloset/>}/>
+                    <Route path="/TopList" element={<TopList/>}/>
 
                 </Routes>
             </Router>
