@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import MessageElement from "./elements/MessageElement.jsx";
 import { useSocket } from "../context/SocketContext.jsx";
+import ChatRoomHeader from "./elements/ChatRoomHeader.jsx";
 
 const ChatRoom = () => {
     const {
@@ -155,14 +156,7 @@ const ChatRoom = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <img
-                    src="/lib/back.svg"
-                    alt="back"
-                    onClick={() => navigate('/chat')}
-                />
-                <h2>{chatRoomName}</h2>
-            </div>
+            <ChatRoomHeader chatRoomName={chatRoomName} />
             <div className={styles.chatRoom}>
                 <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
                     {isReady && messages.map((message, index) => {

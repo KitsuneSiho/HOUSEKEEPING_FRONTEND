@@ -117,7 +117,6 @@ export const SocketProvider = ({ children }) => {
             const response = await axios.get(BACK_URL + `/friend/list/online2?nickname=${nickname}`);
             const nicknames = response.data.map(friend => friend.nickname);
             setOnlineFriends(nicknames);
-            console.log("loginNicknames:", nicknames);
         } catch (error) {
             console.error("error fetching online friends list:", error);
         }

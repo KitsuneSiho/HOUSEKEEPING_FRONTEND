@@ -56,11 +56,15 @@ const MessageElement = ({message, userId, scrollToBottom}) => {
 
         isReady && <div className={`${styles.message} ${styles[messageType]}`}>
             <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
-            <div>{message.messageSenderNickname}</div>
-            <div className={styles.messageContent}>
-                <p>{message.messageContent}</p>
+            <div className={styles.nicknameAndMessage}>
+                <div className={styles.nickname}>{message.messageSenderNickname}</div>
+                <div className={styles.messageAndTime}>
+                    <div className={styles.messageContent}>
+                        <p>{message.messageContent}</p>
+                    </div>
+                    <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
+                </div>
             </div>
-            <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
         </div>
     );
 }
