@@ -52,11 +52,16 @@
 }
 
 .chatMessage {
+    display: flex;
     color: #666;
+    margin-left: 2px;
+    width: 100%;
+    background-color: black;
 }
 
 .chatTime {
     display: flex;
+    width: 20%;
     flex-direction: column;
     align-items: flex-end;
 }
@@ -66,7 +71,26 @@
     color: #666;
 }
 
-.unreadIndicator {
-    color: red;
+.unreadCount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #43c4ef; /* 원의 배경색 */
+    color: white; /* 숫자의 색 */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
     font-size: 12px;
+    margin: 0 10px;
+}
+
+.recentMessageArea {
+    width: 100%;
+}
+
+.unreadCountArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: fit-content;
 }

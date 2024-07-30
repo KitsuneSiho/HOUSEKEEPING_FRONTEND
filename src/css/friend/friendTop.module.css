@@ -1,0 +1,74 @@
+.container {
+    padding: 0;
+    margin: 0;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.friendsContainer {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden; /* Hide vertical overflow */
+    display: flex;
+    justify-content: flex-start; /* Align items to the start */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    white-space: nowrap;
+}
+
+.friendsContainer::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.friendsList {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.friend, .addFriend {
+    border-radius: 100%;
+    background-color: #c5f1ff;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent shrinking */
+    position: relative; /* To position status indicator */
+}
+
+.friend img, .addFriend img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend p, .addFriend p {
+    font-size: 12px;
+    text-align: center;
+    margin: 0;
+}
+
+.statusIndicator {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    border: 2px solid white;
+}
+
+.online {
+    background-color: #32CD32;
+}
+
+.offline {
+    background-color: #FB3958;
+}

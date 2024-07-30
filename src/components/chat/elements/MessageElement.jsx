@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 
 // 메시지 element
-const MessageElement = ({message, userId}) => {
+const MessageElement = ({message, userId, scrollToBottom}) => {
 
     const [messageType, setMessageType] = useState("");
     const [isReady, setIsReady] = useState(false);
@@ -27,6 +27,14 @@ const MessageElement = ({message, userId}) => {
         }
     }, [messageType])
 
+    // 준비가 끝나면 스크롤을 맨 밑으로 내림
+    useEffect(() => {
+
+        if (isReady) {
+            scrollToBottom();
+        }
+    }, [isReady]);
+
     // LocalDateTime을 알맞은 형태로 가공
     const timeFormatter = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -41,7 +49,6 @@ const MessageElement = ({message, userId}) => {
         if (minute < 10) {
             minute = "0" + minute;
         }
-
         return `${hour}:${minute}`;
     }
 
@@ -61,6 +68,7 @@ const MessageElement = ({message, userId}) => {
 MessageElement.propTypes = {
     message: PropTypes.object.isRequired,
     userId: PropTypes.string.isRequired,
+    scrollToBottom: PropTypes.func.isRequired,
 }
 
 export default MessageElement;

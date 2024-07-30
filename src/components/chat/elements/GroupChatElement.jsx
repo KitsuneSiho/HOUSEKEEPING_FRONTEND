@@ -24,8 +24,17 @@ const GroupChatElement = ({chatRoom, timeFormatter}) => {
             >
                 <div className={styles.chatName}>{chatRoom.chatRoomName}</div>
                 <div className={styles.chatMessage}>
-                    {chatRoom.recentMessage}
-                    {chatRoom.unreadMessageCount > 0 ? <>{` (N: ${chatRoom.unreadMessageCount})`}</> : <></>}
+                    <div className={styles.recentMessageArea}>
+                        {chatRoom.recentMessage}
+                    </div>
+
+                    <div className={styles.unreadCountArea}>
+                        {chatRoom.unreadMessageCount > 0 &&
+                            <span className={styles.unreadCount}>
+                            {chatRoom.unreadMessageCount}
+                        </span>
+                        }
+                    </div>
                 </div>
             </div>
             <div className={styles.chatTime}>

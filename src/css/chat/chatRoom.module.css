@@ -46,10 +46,49 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: auto; /* 스크롤바 추가 */
+    scrollbar-width: thin; /* 파이어폭스용 */
+    scrollbar-color: transparent transparent; /* 기본 색상은 투명 */
+    transition: scrollbar-color 0.3s; /* 트랜지션 추가 */
 }
 
-/*메시지 타입이 정해지기 전에는 안보임*/
+.messageContainer.scrolling {
+    scrollbar-color: #c5f1ff transparent; /* 스크롤 시 색상 변경 */
+    animation: none;
+}
 
+.messageContainer::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+.messageContainer::-webkit-scrollbar-track {
+    background: transparent; /* 스크롤바 트랙 배경색 */
+}
+
+.messageContainer::-webkit-scrollbar-thumb {
+    background-color: transparent; /* 기본 색상은 투명 */
+    border-radius: 20px; /* 스크롤바 둥글게 */
+    border: 2px solid transparent; /* 스크롤바 주위 공간 */
+    background-clip: content-box; /* 스크롤바 색상만 보이게 */
+    transition: background-color 0.3s, opacity 1s; /* 트랜지션 추가 */
+    animation: fadeOutScrollbar 2s ease-out 3s forwards; /* 페이드아웃 애니메이션 조정 */
+}
+
+.messageContainer.scrolling::-webkit-scrollbar-thumb {
+    background-color: #c5f1ff; /* 스크롤 시 색상 변경 */
+}
+
+/* 페이드아웃 애니메이션 */
+@keyframes fadeOutScrollbar {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* 메시지 타입이 정해지기 전에는 안보임 */
 .message {
     display: none;
     align-items: flex-end;
