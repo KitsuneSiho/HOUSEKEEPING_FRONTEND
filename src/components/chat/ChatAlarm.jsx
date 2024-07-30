@@ -1,6 +1,6 @@
 import {useSocket} from "../context/SocketContext.jsx";
 import {useEffect, useState} from "react";
-import styles from "../../css/chat/chatList.module.css";
+import styles from "../../css/chat/chatAlarm.module.css";
 
 // 친구가 채팅을 보냈을 때 알람
 const ChatAlarm = () => {
