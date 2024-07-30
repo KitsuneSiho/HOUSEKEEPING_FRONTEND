@@ -51,14 +51,15 @@ import UploadCloset from "./jsx/clothes/UploadCloset.jsx";
 import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
 import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
 import TopList from "./jsx/clothes/TopList.jsx";
+import ChatLogin from "./components/chat/ChatLogin.jsx";
 
 function App() {
 
     return (
-            <ModalProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
+        <ModalProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
                     <Route path="/Footer" element={<Footer/>}/> {/* 하단바 */}
                     <Route path="/FirstMain" element={<FirstMain/>}/> {/* HouseKeeping로고만 있는 첫 화면 */}
                     <Route path="/Login" element={<Login/>}/> {/* 로그인 화면 */}
@@ -73,9 +74,6 @@ function App() {
                     <Route path="/FriendRoom" element={<FriendRoom/>}/> {/* 친구방 화면 */}
                     <Route path="/VisitorBoard" element={<VisitorBoard/>}/> {/* 친구방 방명록 */}
                     <Route path="/Calendar" element={<Calendar/>}/> {/* 달력 */}
-                    <Route path="/ChatList" element={<ChatList/>}/> {/* 채팅 목록 화면 */}
-                    <Route path="/ChatRoom" element={<ChatRoom/>}/> {/* 채팅방 화면 */}
-                    <Route path="/CreateChat" element={<CreateChat/>}/> {/* 채팅방 생성 화면 */}
                     <Route path="/LivingRoom" element={<LivingRoom/>}/> {/* 냉장고 메인 화면 */}
                     <Route path="/UploadFood" element={<UploadFood/>}/> {/* 냉장고 재료 등록(카메라만있음) */}
                     <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/> {/* 냉장고 재료 등록 확인 화면 */}
@@ -85,7 +83,7 @@ function App() {
                     <Route path="/Routine" element={<Routine/>}/> {/* 루틴 메인 화면 */}
                     <Route path="/RoutineEdit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
                     <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
-                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/>  {/* 주간 루틴 */}
+                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
                     <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
                     <Route path="/Tip" element={<Tip/>}/> {/* 팁 메인 화면 */}
                     <Route path="/RoomeTip" element={<RoomeTip/>}/> {/* 루미`s 팁 */}
@@ -108,30 +106,29 @@ function App() {
                     <Route path="/RecommendCloset" element={<RecommendCloset/>}/> {/* 옷 추천 */}
                     <Route path="/TopList" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
 
-                        {/* 채팅 */}
-                        <Route path="/chatlogin" element={
-                            <SocketProvider>
-                                <ChatLogin/>
-                            </SocketProvider>}/>
-                        <Route path="/chat" element={
-                            <SocketProvider>
-                                <ChatRoomList/>
-                            </SocketProvider>}/>
-                        <Route path="/chat/:chatRoomId/:chatRoomName" element={
-                            <SocketProvider>
-                                <ChatRoom/>
-                            </SocketProvider>}/>
-                        <Route path="/chat/create" element={
-                            <SocketProvider>
-                                <CreateChat/>
-                            </SocketProvider>}/>
+                    {/* 채팅 */}
+                    <Route path="/chatlogin" element={
+                        <SocketProvider>
+                            <ChatLogin/>
+                        </SocketProvider>}/>
+                    <Route path="/chat" element={
+                        <SocketProvider>
+                            <ChatRoomList/>
+                        </SocketProvider>}/>
+                    <Route path="/chat/:chatRoomId/:chatRoomName" element={
+                        <SocketProvider>
+                            <ChatRoom/>
+                        </SocketProvider>}/>
+                    <Route path="/chat/create" element={
+                        <SocketProvider>
+                            <CreateChat/>
+                        </SocketProvider>}/>
 
-                        {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
-                        <Route path="/test/modal" element={<ModalExample/>}/>
-                        <Route path="/test/chat/123" element={<ChatRoom123/>}/>
-                    </Routes>
-                </Router>
-            </ModalProvider>
+                    {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
+                    <Route path="/test/modal" element={<ModalExample/>}/>
+                </Routes>
+            </Router>
+        </ModalProvider>
     )
 }
 
