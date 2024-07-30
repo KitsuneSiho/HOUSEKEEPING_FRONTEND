@@ -1,0 +1,70 @@
+.container {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 10px 0;
+    background-color: white;
+}
+
+.header img {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.guestbookList {
+    width: 90%;
+    margin-top: 20px;
+}
+
+.guestbookItem {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.guestbookHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.guestbookHeader .author {
+    font-weight: bold;
+}
+
+.guestbookHeader .date {
+    font-size: 12px;
+    color: #888;
+}
+
+.guestbookMessage {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.guestbookDelete {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.guestbookDelete span {
+    color: red;
+    cursor: pointer;
+    font-size: 12px;
+}
