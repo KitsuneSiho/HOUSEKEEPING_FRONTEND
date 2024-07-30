@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../css/first/firstLogin.module.css';
 
 const FirstLogin = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [userInfo, setUserInfo] = useState({
         name: '',
         nickname: '',
@@ -15,19 +16,20 @@ const FirstLogin = () => {
     const [nicknameError, setNicknameError] = useState('');
 
     useEffect(() => {
-        // OAuth2 로그인 후 리다이렉트되면서 받은 사용자 정보 가져오기
-        const searchParams = new URLSearchParams(window.location.search);
+        const searchParams = new URLSearchParams(location.search);
         const email = searchParams.get('email');
         const name = searchParams.get('name');
         const provider = searchParams.get('provider');
+        const phoneNumber = searchParams.get('phoneNumber');
 
         setUserInfo(prevState => ({
             ...prevState,
             email,
             name,
-            provider
+            provider,
+            phone: phoneNumber || ''
         }));
-    }, []);
+    }, [location]);
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
