@@ -41,8 +41,15 @@ const FirstLogin = () => {
 
     const handleSubmit = async () => {
         try {
-            await axios.post('/api/user/complete-registration', userInfo);
-            navigate('/firstRoomDesign');
+
+            console.log("Submitting user info:", userInfo);
+
+            const response = await axios.post('http://localhost:8080/api/user/complete-registration', userInfo, {
+                withCredentials: true
+            });
+            if (response.status === 200) {
+                navigate('/firstRoomDesign');
+            }
         } catch (error) {
             if (error.response && error.response.data === "Nickname already exists") {
                 setNicknameError('이미 사용 중인 닉네임입니다.');
