@@ -1,0 +1,176 @@
+.container {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+    overflow: auto; /* Allow the body to scroll */
+}
+
+.header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.header img {
+    cursor: pointer;
+}
+
+.writeButton {
+    cursor: pointer;
+}
+
+.visitorBoard {
+    width: 90%;
+    margin-top: 20px;
+    overflow-y: auto;
+}
+
+.visitorBoard::-webkit-scrollbar {
+    display: none;
+}
+
+.visitorBoard {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.entry {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.entryHeader,
+.entryFooter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.entryFooter button {
+    background: none;
+    border: none;
+    color: #6b6b6b;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.entryContent {
+    margin-bottom: 10px;
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalContent {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+.modalAddBtn,
+.modalCancelBtn {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modalAddBtn {
+    background-color: #000000;
+    color: white;
+}
+
+.modalCancelBtn {
+    background-color: #ffffff;
+    color: black;
+}
+
+.modalTextarea {
+    margin: 5% 0 10% 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.modalTextarea textarea {
+    width: 80%;
+    outline: none;
+}
+
+.colorPicker {
+    display: flex;
+    align-items: center;
+    margin: 5% 0 10% 0;
+    gap: 20px;
+}
+
+.colorOptions {
+    gap: 10px;
+    display: flex;
+    width: 80%;
+}
+
+.colorLabel {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.privateCheckbox {
+    display: flex;
+    align-items: center;
+    margin: 5% 0 10% 0;
+}
+
+.privateCheckbox label {
+    display: flex;
+    align-items: center;
+}
+
+.privateCheckbox img {
+    margin-left: 5px;
+}
+
+.privateCheckbox input {
+    margin-left: 10px;
+}

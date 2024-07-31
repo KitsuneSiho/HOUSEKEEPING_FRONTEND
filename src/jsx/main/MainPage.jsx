@@ -44,6 +44,9 @@ const MainPage = () => {
                 <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방" />
                 <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainLivingRoom')} />
             </div>
+            <div className={styles.guestBook}>
+                <p onClick={() => navigate('/MyGuestBook')}>방명록</p>
+            </div>
             <div className={styles.routineContainer}>
                 <div className={styles.roomRoutine}>
                     <div className={styles.roomRoutineHeader}>
