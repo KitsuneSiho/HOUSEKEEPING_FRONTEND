@@ -56,11 +56,7 @@ const CreateChat = () => {
                 userIdList: [userId, ...selectedFriends],
             });
 
-            if (type === "SINGLE") {
-                navigate(`/chat/${response.data.chatRoomId}/${selectedNickname}`);
-            } else {
-                navigate(`/chat/${response.data.chatRoomId}/${name}`);
-            }
+            navigate(`/chat/${response.data.chatRoomId}`);
 
         } catch {
             console.log("Error creating room");
@@ -82,7 +78,7 @@ const CreateChat = () => {
             setModalBody("한 명 이상의 친구를 선택해주세요!");
             showModal();
         } else if (selectedFriends.length === 1) {
-            createRoom("", "SINGLE");
+            createRoom(selectedNickname, "SINGLE");
         } else if (selectedFriends.length >= 2) {
             setModalType("namingChatRoom");
             setModalCallback(() => setChatRoomTitle);

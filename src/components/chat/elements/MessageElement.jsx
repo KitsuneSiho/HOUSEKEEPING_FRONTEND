@@ -13,6 +13,8 @@ const MessageElement = ({message, userId, scrollToBottom}) => {
 
         if (Number(message.messageSenderId) === Number(userId)) {
             setMessageType("sent");
+        } else if (Number(message.messageSenderId) === 0) {
+            setMessageType("announce");
         } else {
             setMessageType("received");
         }
@@ -53,19 +55,29 @@ const MessageElement = ({message, userId, scrollToBottom}) => {
     }
 
     return (
-
-        isReady && <div className={`${styles.message} ${styles[messageType]}`}>
-            <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
-            <div className={styles.nicknameAndMessage}>
-                <div className={styles.nickname}>{message.messageSenderNickname}</div>
-                <div className={styles.messageAndTime}>
-                    <div className={styles.messageContent}>
-                        <p>{message.messageContent}</p>
+        <>
+            {
+                isReady && messageType !== "announce" &&
+                <div className={`${styles.message} ${styles[messageType]}`}>
+                    <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
+                    <div className={styles.nicknameAndMessage}>
+                        <div className={styles.nickname}>{message.messageSenderNickname}</div>
+                        <div className={styles.messageAndTime}>
+                            <div className={styles.messageContent}>
+                                <p>{message.messageContent}</p>
+                            </div>
+                            <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
+                        </div>
                     </div>
-                    <span className={styles.messageTime}>{timeFormatter(message.messageTimestamp)}</span>
                 </div>
-            </div>
-        </div>
+            }
+            {
+                isReady && messageType === "announce" &&
+                <div className={`${styles.message} ${styles[messageType]}`}>
+                    <div className={styles.announceMessage}>{message.messageContent}</div>
+                </div>
+            }
+        </>
     );
 }
 

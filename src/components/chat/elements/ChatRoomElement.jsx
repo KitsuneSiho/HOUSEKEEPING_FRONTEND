@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import * as propTypes from "prop-types";
 
 // 1대1 채팅 element
-const SingleChatElement = ({chatRoom, timeFormatter}) => {
+const ChatRoomElement = ({chatRoom, timeFormatter}) => {
 
     const navigate = useNavigate();
 
     // 1대1 채팅 방에 입장
     const enterChatRoom = () => {
 
-        navigate(`/chat/${chatRoom.chatRoomId}/${chatRoom.nickNameList[0]}`)
+        navigate(`/chat/${chatRoom.chatRoomId}`)
     }
 
     return (
@@ -21,19 +21,19 @@ const SingleChatElement = ({chatRoom, timeFormatter}) => {
                 className={styles.chatInfo}
                 onClick={enterChatRoom}
             >
-                <div className={styles.chatName}>{chatRoom.nickNameList[0]}</div>
+                <div className={styles.chatName}>{chatRoom.chatRoomName}</div>
                 <div className={styles.chatMessage}>
                     <div className={styles.recentMessageArea}>
                         {chatRoom.recentMessage}
                     </div>
-                    <div className={styles.unreadCountArea}>
-                        {chatRoom.unreadMessageCount > 0 &&
-                            <span className={styles.unreadCount}>
-                            {chatRoom.unreadMessageCount}
-                        </span>
-                        }
-                    </div>
                 </div>
+            </div>
+            <div className={styles.unreadCountArea}>
+                {chatRoom.unreadMessageCount > 0 &&
+                    <span className={styles.unreadCount}>
+                        {chatRoom.unreadMessageCount}
+                    </span>
+                }
             </div>
             <div className={styles.chatTime}>
                 <span>{timeFormatter(chatRoom.chatRoomUpdatedAt)}</span>
@@ -42,9 +42,9 @@ const SingleChatElement = ({chatRoom, timeFormatter}) => {
     )
 }
 
-SingleChatElement.propTypes = {
+ChatRoomElement.propTypes = {
     chatRoom: PropTypes.object.isRequired,
     timeFormatter: propTypes.func.isRequired,
 }
 
-export default SingleChatElement
+export default ChatRoomElement

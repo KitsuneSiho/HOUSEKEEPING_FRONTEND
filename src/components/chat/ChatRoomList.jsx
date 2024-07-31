@@ -4,8 +4,7 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js"
-import SingleChatElement from "./elements/SingleChatElement.jsx";
-import GroupChatElement from "./elements/GroupChatElement.jsx";
+import ChatRoomElement from "./elements/ChatRoomElement.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
 import FriendTop from "../friend/FriendTop.jsx";
 import {useSocket} from "../context/SocketContext.jsx";
@@ -104,10 +103,8 @@ const ChatRoomList = () => {
                 {/*페이지가 준비 상태가 아닐 경우 출력 안함*/}
                 {isReady && chatRooms.map((chatRoom, index) => (
                     <div key={index} className={styles.chatItem}>
-                        {chatRoom.chatRoomType === "SINGLE" ? (
-                            <SingleChatElement chatRoom={chatRoom} timeFormatter={timeFormatter}/>
-                        ) : chatRoom.chatRoomType === "GROUP" ? (
-                            <GroupChatElement chatRoom={chatRoom} timeFormatter={timeFormatter}/>
+                        {chatRoom.chatRoomType === "SINGLE" || chatRoom.chatRoomType === "GROUP" ? (
+                            <ChatRoomElement chatRoom={chatRoom} timeFormatter={timeFormatter}/>
                         ) : (
                             <>
                                 {() => console.log("chat room type error: " + chatRoom.chatRoomType)}

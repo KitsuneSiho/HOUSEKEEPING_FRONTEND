@@ -24,14 +24,6 @@
     cursor: pointer;
 }
 
-.header .menuIcon {
-    position: absolute;
-    right: 5%;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-}
-
 .header h2 {
     margin: 0;
 }
@@ -133,6 +125,16 @@
     flex-direction: row-reverse;
 }
 
+.message.announce {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.announceMessage {
+    color: #505050;
+}
+
 .message img {
     width: 40px;
     height: 40px;
@@ -197,27 +199,83 @@ input:focus {
 
 
 /* 헤더 부분 */
-/* 메뉴 영역 */
-.menuArea {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #fff;
-    transition: transform 0.3s ease-in-out;
-    transform: translateX(100%);
-    z-index: 9;
-}
 
-.menuArea.show {
-    transform: translateX(0);
-}
-
-.menuArea .menuIcon {
+.iconArea {
     position: absolute;
     right: 5%;
+    top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+}
+
+.menuIcon,
+.renameIcon,
+.inviteIcon,
+.exitIcon {
     cursor: pointer;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+}
+
+.renameBackground,
+.inviteBackground,
+.exitBackground {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menuIcon {
+    width: 25px;
+    height: 25px;
+    z-index: 10;
+}
+
+.renameIcon {
+    width: 35px;
+    height: 35px;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.renameBackground.hidden {
+    opacity: 0;
+    transform: translateY(-3.5em);
+}
+
+.inviteBackground.hidden {
+    opacity: 0;
+    transform: translateY(-7em);
+}
+
+.exitBackground.hidden {
+    opacity: 0;
+    transform: translateY(-10.5em);
+}
+
+.inviteBackground.single,
+.renameBackground.single {
+    display: none;
+}
+
+.exitBackground.hidden.single {
+    opacity: 0;
+    transform: translateY(-3.5em);
+}
+
+.renameBackground,
+.inviteBackground,
+.exitBackground {
+    background-color: #c5f1ff;;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9;
 }

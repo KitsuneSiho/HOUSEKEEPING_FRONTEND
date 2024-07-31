@@ -1,10 +1,10 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { BACK_URL } from "../../Constraints.js";
+import {useParams} from 'react-router-dom';
+import {BACK_URL} from "../../Constraints.js";
 import styles from '../../css/chat/chatRoom.module.css';
-import { useEffect, useState, useRef } from "react";
+import {useEffect, useState, useRef} from "react";
 import axios from "axios";
 import MessageElement from "./elements/MessageElement.jsx";
-import { useSocket } from "../context/SocketContext.jsx";
+import {useSocket} from "../context/SocketContext.jsx";
 import ChatRoomHeader from "./elements/ChatRoomHeader.jsx";
 
 const ChatRoom = () => {
@@ -14,23 +14,27 @@ const ChatRoom = () => {
         setReceivedMessage,
         messageSender,
         setMessageSender,
+        announceMessage,
+        setAnnounceMessage,
         nickname,
         joinRoom,
         isConnected
     } = useSocket();
-    const { chatRoomId, chatRoomName } = useParams();
+    const {chatRoomId} = useParams();
+    const [chatRoomType, setChatRoomType] = useState("");
+    const [chatRoomName, setChatRoomName] = useState("");
     const [userId, setUserId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [isReady, setIsReady] = useState(false);
     const [input, setInput] = useState("");
     const [messageDates, setMessageDates] = useState({});
-    const navigate = useNavigate();
     const messageContainerRef = useRef(null); // 메시지 컨테이너 참조
     const scrollTimeoutRef = useRef(null); // 스크롤 타임아웃 참조
 
     // 마운트 시 세션에서 유저 아이디를 받아옴
     useEffect(() => {
         setUserId(sessionStorage.getItem("userId"));
+        getChatRoomInfo();
     }, []);
 
     useEffect(() => {
@@ -45,6 +49,20 @@ const ChatRoom = () => {
             getMessages().then(readAll).then(() => setIsReady(true));
         }
     }, [userId]);
+
+    //채팅 방 정보를 받아옴
+    const getChatRoomInfo = async () => {
+
+        try {
+
+            const response = await axios.get(BACK_URL + `/chat/room/${chatRoomId}`);
+
+            setChatRoomName(response.data.chatRoomName);
+            setChatRoomType(response.data.chatRoomType);
+        } catch (error) {
+            console.error("failed to get chatRoom Info:", error);
+        }
+    }
 
     // 스크롤 이벤트 핸들러
     const handleScroll = () => {
@@ -79,9 +97,32 @@ const ChatRoom = () => {
             setReceivedMessage("");
             setMessageSender("");
 
-            setTimeout(() => readAll(), [300]);
+            setTimeout(() => readAll(), 300);
         }
     }, [receivedMessage, messageSender]);
+
+    // 공지를 소켓으로 받은 경우
+    useEffect(() => {
+        if (announceMessage !== "") {
+            const newAnnounce = {
+                messageSenderId: 0,
+                messageContent: announceMessage,
+                messageTimestamp: new Date().toISOString(),
+                messageId: Date.now(), // 가상의 고유 ID 생성
+            };
+            setMessages(prevMessages => [...prevMessages, newAnnounce]);
+
+            setMessageDates(prevDates => ({
+                ...prevDates,
+                [newAnnounce.messageId]: formatDate(newAnnounce.messageTimestamp)
+            }));
+
+            setAnnounceMessage("");
+            getChatRoomInfo();
+
+            setTimeout(() => readAll(), 300);
+        }
+    }, [announceMessage]);
 
     // 채팅 리스트를 받아오는 함수
     const getMessages = async () => {
@@ -156,26 +197,29 @@ const ChatRoom = () => {
 
     return (
         <div className={styles.container}>
-            <ChatRoomHeader chatRoomName={chatRoomName} />
-            <div className={styles.chatRoom}>
-                <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
-                    {isReady && messages.map((message, index) => {
-                        const formattedDate = messageDates[message.messageId];
-                        const showDate = index === 0 || formattedDate !== messageDates[messages[index - 1].messageId];
-                        return (
-                            <div key={index}>
-                                {showDate && <div className={styles.chatDate}>{formattedDate}</div>}
-                                <MessageElement message={message} userId={userId} scrollToBottom={scrollToBottom}/>
-                            </div>
-                        );
-                    })}
+            { chatRoomType !== "" && chatRoomName !== "" && <>
+                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomName} userId={userId}/>
+                <div className={styles.chatRoom}>
+                    <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
+                        {isReady && messages.map((message, index) => {
+                            const formattedDate = messageDates[message.messageId];
+                            const showDate = index === 0 || formattedDate !== messageDates[messages[index - 1].messageId];
+                            return (
+                                <div key={index}>
+                                    {showDate && <div className={styles.chatDate}>{formattedDate}</div>}
+                                    <MessageElement message={message} userId={userId} scrollToBottom={scrollToBottom}/>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-            <div className={styles.inputContainer}>
-                <input type="text" onChange={(e) => setInput(e.target.value)} value={input}
-                       placeholder="메시지를 입력하세요..."/>
-                <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send"/></button>
-            </div>
+                <div className={styles.inputContainer}>
+                    <input type="text" onChange={(e) => setInput(e.target.value)} value={input}
+                           placeholder="메시지를 입력하세요..."/>
+                    <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send"/></button>
+                </div>
+            </>
+            }
         </div>
     );
 };

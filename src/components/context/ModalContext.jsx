@@ -2,6 +2,9 @@ import {createContext, useState, useContext} from 'react';
 import InformModal from "../modal/InformModal.jsx";
 import PropTypes from "prop-types";
 import NamingChatRoomModal from "../modal/NamingChatRoomModal.jsx";
+import InputModal from "../modal/InputModal.jsx";
+import ConfirmModal from "../modal/ConfirmModal.jsx";
+import InviteFriendModal from "../modal/InviteFriendModal.jsx";
 
 // Context 생성
 const ModalContext = createContext();
@@ -36,6 +39,15 @@ export const ModalProvider = ({children}) => {
             {modalType === "namingChatRoom" &&
                 // 그룹 채팅 방 제목을 설정하는 모달
                 <NamingChatRoomModal modalState={modalState} modalCallback={modalCallback} hideModal={hideModal} />}
+            {modalType === "input" &&
+                // 값을 입력받는 모달
+                <InputModal modalState={modalState} modalTitle={modalTitle} modalBody={modalBody} modalCallback={modalCallback} hideModal={hideModal} />}
+            {modalType === "confirm" &&
+                // 확인 모달
+                <ConfirmModal modalState={modalState} modalTitle={modalTitle} modalBody={modalBody} modalCallback={modalCallback} hideModal={hideModal} />}
+            {modalType === "friend" &&
+                // 친구들을 방에 초대하는 모달
+                <InviteFriendModal modalState={modalState} modalTitle={modalTitle} modalBody={modalBody} modalCallback={modalCallback} hideModal={hideModal} />}
             {children}
         </ModalContext.Provider>
     );

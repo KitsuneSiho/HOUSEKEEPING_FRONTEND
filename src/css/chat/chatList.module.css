@@ -60,7 +60,7 @@
 
 .chatTime {
     display: flex;
-    width: 20%;
+    width: 15%;
     flex-direction: column;
     align-items: flex-end;
 }
@@ -81,7 +81,6 @@
     height: 20px;
     font-size: 12px;
     padding: 0 6px;
-    margin: 0 10px;
 }
 
 .recentMessageArea {

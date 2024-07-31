@@ -115,7 +115,7 @@ function App() {
                         <SocketProvider>
                             <ChatRoomList/>
                         </SocketProvider>}/>
-                    <Route path="/chat/:chatRoomId/:chatRoomName" element={
+                    <Route path="/chat/:chatRoomId" element={
                         <SocketProvider>
                             <ChatRoom/>
                         </SocketProvider>}/>

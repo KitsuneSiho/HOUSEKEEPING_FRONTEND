@@ -13,6 +13,7 @@ export const SocketProvider = ({ children }) => {
     const [receivedMessage, setReceivedMessage] = useState("");
     const [messageSender, setMessageSender] = useState("");
     const [friendMessage, setFriendMessage] = useState("");
+    const [announceMessage, setAnnounceMessage] = useState("");
     const [friendMessageSender, setFriendMessageSender] = useState("");
     const [room, setRoom] = useState("");
     const [nickname, setNickname] = useState("");
@@ -52,6 +53,14 @@ export const SocketProvider = ({ children }) => {
             const { nickname, message } = data;
             setFriendMessageSender(nickname);
             setFriendMessage(message);
+        });
+
+        socket.on('announce_message', (data) => {
+
+            console.log(data);
+
+            const { message } = data;
+            setAnnounceMessage(message);
         });
 
         socket.on('friend_login', (data) => {
@@ -95,13 +104,22 @@ export const SocketProvider = ({ children }) => {
     const joinRoom = (data) => {
         setRoom(data);
         socketRef.current.emit('join_room', data);
-        console.log("joinRoom: ", data);
+        console.log("joinRoom:", data);
     };
 
     const leaveRoom = () => {
         socketRef.current.emit('leave_room', room);
         setRoom('');
     };
+
+    const announceRoom = (message) => {
+
+        if (room) {
+            socketRef.current.emit('announce', { room, message });
+        } else {
+            alert('Please join a room first.');
+        }
+    }
 
     const sendMessageUsingSocket = (message) => {
         if (room) {
@@ -139,9 +157,12 @@ export const SocketProvider = ({ children }) => {
             setFriendMessage,
             friendMessageSender,
             setFriendMessageSender,
+            announceMessage,
+            setAnnounceMessage,
             socketLogin,
             joinRoom,
             leaveRoom,
+            announceRoom,
             sendMessageUsingSocket,
             getOnlineFriends,
         }}>
