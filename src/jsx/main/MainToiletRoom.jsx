@@ -23,54 +23,59 @@ const MainToiletRoom = () => {
         <div className={styles.container}>
             <div className={styles.friendsContainer}>
                 <div className={styles.friendsList}>
-                    {Array.from({ length: 7 }, (_, i) => (
+                    {Array.from({length: 7}, (_, i) => (
                         <div className={styles.friend} key={i} onClick={() => navigate('/friendRoom')}>
-                            <img src={`public/lib/친구${i + 1}.png`} alt={`friend${i + 1}`} />
+                            <img src={`public/lib/친구${i + 1}.png`} alt={`friend${i + 1}`}/>
                             <p>{`friend_${i + 1}`}</p>
                         </div>
                     ))}
                     <div className={styles.addFriend} onClick={() => navigate('/addFriend')}>
-                        <img src="public/lib/plus.svg" alt="add" />
+                        <img src="public/lib/plus.svg" alt="add"/>
                         <p>친구 추가</p>
                     </div>
                 </div>
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="public/lib/오염도바.svg" alt="오염도 바" />
+                <img src="public/lib/오염도바.svg" alt="오염도 바"/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainLivingRoom')} />
-                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방" />
-                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainPage')} />
+                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainLivingRoom')}/>
+                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방"/>
+                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainPage')}/>
+            </div>
+            <div className={styles.guestBook}>
+                <p onClick={() => navigate('/MyGuestBook')}>방명록</p>
             </div>
             <div className={styles.routineContainer}>
                 <div className={styles.roomRoutine}>
                     <div className={styles.roomRoutineHeader}>
                         <div className={styles.roomRoutineTitle}>
-                            <img src="public/lib/빗자루.svg" alt="broom" />
+                            <img src="public/lib/빗자루.svg" alt="broom"/>
                             <p>화장실</p>
-                            <img src="public/lib/연필.svg" alt="edit" />
+                            <img src="public/lib/연필.svg" alt="edit"/>
                         </div>
                         <div className={styles.alramOnOff}>
                             <p>모든 알림 켜기</p>
-                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={addRoutineItem} />
+                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon}
+                                 onClick={addRoutineItem}/>
                         </div>
                     </div>
                     <div className={styles.roomRoutineInfo}>
                         <ul>
                             {routines.map(routine => (
                                 <li key={routine.id}>
-                                    <input type="checkbox" id={`routine${routine.id}`} />
+                                    <input type="checkbox" id={`routine${routine.id}`}/>
                                     <label htmlFor={`routine${routine.id}`}>{routine.text}</label>
-                                    <img src={routine.notification ? "public/lib/알림on.svg" : "public/lib/알림off.svg"} alt="notification" />
+                                    <img src={routine.notification ? "public/lib/알림on.svg" : "public/lib/알림off.svg"}
+                                         alt="notification"/>
                                 </li>
                             ))}
                         </ul>
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
