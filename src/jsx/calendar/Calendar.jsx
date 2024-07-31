@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -20,15 +20,21 @@ const Calendar = () => {
     const [newScheduleName, setNewScheduleName] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState(null);
 
+    // 초기 페이지 로드 시 오늘 날짜의 스케줄을 띄움
+    useEffect(() => {
+        const today = moment().format('YYYY-MM-DD');
+        handleDateClick({ dateStr: today });
+    }, []);
+
     // 날짜 별 스케줄 보여주는 기능
     const handleDateClick = (arg) => {
         setSelectedDate(arg.dateStr);
 
-        const roomIds = JSON.parse(sessionStorage.getItem('roomIds')) || [1, 2, 3];
+        const roomIds = JSON.parse(sessionStorage.getItem('roomIds')) || [4, 5, 6];
         const roomNames = JSON.parse(sessionStorage.getItem('roomNames')) || {
-            1: '주방',
-            2: '내방',
-            3: '화장실'
+            4: '내주방',
+            5: '재영방',
+            6: '화장실'
         };
 
         fetch(`${BACK_URL}/calendar/view`, {

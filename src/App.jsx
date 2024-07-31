@@ -57,8 +57,10 @@ function App() {
                     <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/>
                     <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/>
                     <Route path="/AddFriend" element={<AddFriend/>}/>
-                    <Route path="/FriendRoom" element={<FriendRoom/>}/>
-                    <Route path="/VisitorBoard" element={<VisitorBoard/>}/>
+
+                    <Route path="/friendRoom/:userId" element={<FriendRoom />} />
+                    <Route path="/visitorBoard/:userId" element={<VisitorBoard/>}/>
+
                     <Route path="/Garbage" element={<Garbage/>}/>
                     <Route path="/Calendar" element={<Calendar/>}/>
                     <Route path="/ChatList" element={<ChatList/>}/>
