@@ -1,10 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from '../../css/first/login.module.css';
 
 const Login = () => {
-    const navigate = useNavigate();
-
     const handleOAuth2Login = (provider) => {
         window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
     };
