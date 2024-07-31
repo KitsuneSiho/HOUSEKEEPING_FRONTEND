@@ -13,7 +13,9 @@ const FirstRoomDesign = () => {
     const cameraRef = useRef(null);
     const controlsRef = useRef(null);
     const [selectedFurniture, setSelectedFurniture] = useState(null);
-    const [isFurnitureFloating, setIsFurnitureFloating] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
+    const [rotation, setRotation] = useState({ x: 0, y: 0, z: 0 });
+    const [scale, setScale] = useState(1);
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -43,12 +45,10 @@ const FirstRoomDesign = () => {
         const scene = sceneRef.current;
         scene.background = new THREE.Color(0xffffff);
 
-        // 씬 초기화
         while (scene.children.length > 0) {
             scene.remove(scene.children[0]);
         }
 
-        // Scene setting (lights, floor, etc.)
         const ambientLight = new THREE.AmbientLight(0xffffff, 3);
         scene.add(ambientLight);
 
@@ -56,22 +56,27 @@ const FirstRoomDesign = () => {
         directionalLight.position.set(10, 10, 10);
         scene.add(directionalLight);
 
+        // Floor setup
         const floorGeometry = new THREE.BoxGeometry(20, 0, 20);
         const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.name = 'floor';
+        floor.name = 'floor'; // Naming the floor
         floor.position.set(0, 0, 0);
         scene.add(floor);
 
+        // Left wall setup
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
         const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
+        wallLeft.name = 'wall'; // Naming the wall
         wallLeft.position.set(-10.5, 7.5, 0);
         scene.add(wallLeft);
 
+        // Back wall setup
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
         const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
+        wallBack.name = 'wall'; // Naming the wall
         wallBack.position.set(0, 7.5, -10.5);
         scene.add(wallBack);
 
@@ -95,9 +100,8 @@ const FirstRoomDesign = () => {
         const loader = new GLTFLoader();
         loader.load(path, (gltf) => {
             const model = gltf.scene;
-            model.scale.set(4, 4, 4);
+            model.scale.set(scale, scale, scale);
 
-            // 모델의 위치를 중앙에 맞추기 위해 초기 위치 조정
             const box = new THREE.Box3().setFromObject(model);
             const center = box.getCenter(new THREE.Vector3());
             model.position.sub(center);
@@ -107,112 +111,66 @@ const FirstRoomDesign = () => {
             group.add(model);
             sceneRef.current.add(group);
 
-            console.log('Loaded furniture:', group);
-            console.log('Scene children count:', sceneRef.current.children.length);
-
             setSelectedFurniture(group);
-            setIsFurnitureFloating(false);
+            setPosition({ x: group.position.x, y: group.position.y, z: group.position.z });
+            setRotation({ x: group.rotation.x, y: group.rotation.y, z: group.rotation.z });
         }, undefined, (error) => {
-            console.error('An error happened during loading the model:', error);
+            console.error('Error loading model:', error);
         });
     };
 
-    const handleRotation = () => {
+    const updatePosition = (axis, value) => {
+        setPosition((prev) => ({ ...prev, [axis]: parseFloat(value) }));
+    };
+
+    const updateRotation = (axis, value) => {
+        setRotation((prev) => ({ ...prev, [axis]: parseFloat(value) }));
+    };
+
+    const updateScale = (value) => {
+        setScale(parseFloat(value));
+    };
+
+    useEffect(() => {
         if (selectedFurniture) {
-            selectedFurniture.rotation.y += Math.PI / 2;
+            selectedFurniture.position.set(position.x, position.y, position.z);
+            selectedFurniture.rotation.set(rotation.x, rotation.y, rotation.z);
+            selectedFurniture.scale.set(scale, scale, scale);
+        }
+    }, [position, rotation, scale, selectedFurniture]);
+
+    const handleFurnitureSelection = (event) => {
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const rect = rendererRef.current.domElement.getBoundingClientRect();
+
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, cameraRef.current);
+
+        const intersects = raycaster.intersectObjects(sceneRef.current.children, true);
+        if (intersects.length > 0) {
+            let intersectedObject = intersects[0].object;
+            while (intersectedObject.parent && intersectedObject.parent.type !== "Scene") {
+                intersectedObject = intersectedObject.parent;
+            }
+
+            if (intersectedObject.name !== 'floor' && intersectedObject.name !== 'wall') {
+                setSelectedFurniture(intersectedObject);
+                setPosition({ x: intersectedObject.position.x, y: intersectedObject.position.y, z: intersectedObject.position.z });
+                setRotation({ x: intersectedObject.rotation.x, y: intersectedObject.rotation.y, z: intersectedObject.rotation.z });
+                setScale(intersectedObject.scale.x);
+            }
         }
     };
 
-    const getIntersectedObject = useCallback((event) => {
-        const renderer = rendererRef.current;
-        const camera = cameraRef.current;
-        if (!renderer || !camera) return null;
-
-        const rect = renderer.domElement.getBoundingClientRect();
-        const mouse = new THREE.Vector2(
-            ((event.clientX - rect.left) / rect.width) * 2 - 1,
-            -((event.clientY - rect.top) / rect.height) * 2 + 1
-        );
-
-        console.log("Mouse coordinates:", mouse);
-        console.log("Camera:", camera);
-
-        const raycaster = new THREE.Raycaster();
-        raycaster.near = 0.1;
-        raycaster.far = 1000;
-        raycaster.precision = 0.1;
-        raycaster.setFromCamera(mouse, camera);
-
-        const intersects = raycaster.intersectObjects(sceneRef.current.children, true);
-        console.log("Intersected objects:", intersects);
-
-        if (intersects.length > 0) {
-            let object = intersects[0].object;
-            while (object.parent && object.parent.type !== "Scene") {
-                object = object.parent;
-            }
-            return object;
+    const handleDelete = () => {
+        if (selectedFurniture) {
+            sceneRef.current.remove(selectedFurniture);
+            setSelectedFurniture(null);
         }
-
-        return null;
-    }, []);
-
-    const handleDoubleClick = useCallback((event) => {
-        console.log("Double click detected:", event);
-
-        const intersectedObject = getIntersectedObject(event);
-        if (intersectedObject) {
-            console.log("Selected object:", intersectedObject);
-            setSelectedFurniture(intersectedObject);
-            setIsFurnitureFloating(true);
-        }
-    }, [getIntersectedObject]);
-
-    useEffect(() => {
-        const renderer = rendererRef.current;
-        if (renderer) {
-            renderer.domElement.addEventListener('dblclick', (event) => {
-                console.log('Double click detected on DOM element');
-                handleDoubleClick(event);
-            });
-        }
-
-        return () => {
-            if (renderer) {
-                renderer.domElement.removeEventListener('dblclick', handleDoubleClick);
-            }
-        };
-    }, [handleDoubleClick]);
-
-    const handleMouseMove = useCallback((event) => {
-        if (isFurnitureFloating && selectedFurniture) {
-            const { clientX, clientY } = event;
-            const rect = rendererRef.current.domElement.getBoundingClientRect();
-            const x = ((clientX - rect.left) / rect.width) * 2 - 1;
-            const y = -((clientY - rect.top) / rect.height) * 2 + 1;
-
-            const vector = new THREE.Vector3(x, y, 0.5);
-            vector.unproject(cameraRef.current);
-            const dir = vector.sub(cameraRef.current.position).normalize();
-            const distance = -cameraRef.current.position.y / dir.y;
-            const pos = cameraRef.current.position.clone().add(dir.multiplyScalar(distance));
-
-            selectedFurniture.position.set(pos.x, selectedFurniture.position.y, pos.z);
-        }
-    }, [isFurnitureFloating, selectedFurniture]);
-
-    useEffect(() => {
-        const renderer = rendererRef.current;
-        if (renderer) {
-            renderer.domElement.addEventListener('mousemove', handleMouseMove);
-        }
-
-        return () => {
-            if (renderer) {
-                renderer.domElement.removeEventListener('mousemove', handleMouseMove);
-            }
-        };
-    }, [handleMouseMove]);
+    };
 
     return (
         <div className={styles.container}>
@@ -224,18 +182,93 @@ const FirstRoomDesign = () => {
                 />
                 <h2>내 방 설정</h2>
             </div>
-            <div ref={mountRef} className={styles.roomDesign}></div>
+            <div ref={mountRef} className={styles.roomDesign} onClick={handleFurnitureSelection}></div>
             <div className={styles.furniture}>
                 <div className={styles.furnitureAddButton}>
                     <button onClick={() => loadFurniture('/public/furniture/desk.glb')}>책상 (Desk)</button>
                     <button onClick={() => loadFurniture('/public/furniture/desk2.glb')}>책상2 (Desk2)</button>
+                    <button onClick={() => loadFurniture('/public/furniture/탕구리.glb')}>탕구리</button>
+                    <button onClick={() => loadFurniture('/public/furniture/잠만보.glb')}>잠만보</button>
                 </div>
                 {selectedFurniture && (
                     <div className={styles.controls}>
-                        <button onClick={handleRotation}>회전</button>
-                        {isFurnitureFloating && (
-                            <button onClick={() => setIsFurnitureFloating(false)}>배치</button>
-                        )}
+                        <div className={styles.sliderControls}>
+                            <label>
+                                X축위치:
+                                <input
+                                    type="range"
+                                    min="-10"
+                                    max="10"
+                                    value={position.x}
+                                    onChange={(e) => updatePosition('x', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                Y축위치:
+                                <input
+                                    type="range"
+                                    min="-10"
+                                    max="10"
+                                    value={position.y}
+                                    onChange={(e) => updatePosition('y', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                Z축위치:
+                                <input
+                                    type="range"
+                                    min="-10"
+                                    max="10"
+                                    value={position.z}
+                                    onChange={(e) => updatePosition('z', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                X축회전:
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={Math.PI * 2}
+                                    step={0.01}
+                                    value={rotation.x}
+                                    onChange={(e) => updateRotation('x', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                Y축회전:
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={Math.PI * 2}
+                                    step={0.01}
+                                    value={rotation.y}
+                                    onChange={(e) => updateRotation('y', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                Z축회전:
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max={Math.PI * 2}
+                                    step={0.01}
+                                    value={rotation.z}
+                                    onChange={(e) => updateRotation('z', e.target.value)}
+                                />
+                            </label>
+                            <label>
+                                크기:
+                                <input
+                                    type="range"
+                                    min="0.1"
+                                    max="15"
+                                    step="0.1"
+                                    value={scale}
+                                    onChange={(e) => updateScale(e.target.value)}
+                                />
+                            </label>
+                        </div>
+                        <button onClick={handleDelete}>삭제</button>
                     </div>
                 )}
             </div>
