@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/main/mainPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
@@ -7,7 +7,6 @@ import { BACK_URL } from "../../Constraints.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell, faBellSlash, faCheckSquare, faPlus, faSquare} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-
 const MainPage = () => {
 
     const [selectedDate, setSelectedDate] = useState(null);
@@ -343,19 +342,19 @@ const MainPage = () => {
                         </div>
                     ))}
                     <div className={styles.addFriend} onClick={() => navigate('/addFriend')}>
-                        <img src="public/lib/plus.svg" alt="add" />
+                        <img src="public/lib/plus.svg" alt="add"/>
                         <p>친구 추가</p>
                     </div>
                 </div>
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="public/lib/오염도바.svg" alt="오염도 바" />
+                <img src="public/lib/오염도바.svg" alt="오염도 바"/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainToiletRoom')} />
-                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방" />
-                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainLivingRoom')} />
+                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainToiletRoom')}/>
+                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방"/>
+                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainLivingRoom')}/>
             </div>
             <div className={styles.guestBook}>
                 <p onClick={() => navigate('/MyGuestBook')}>방명록</p>
@@ -364,10 +363,10 @@ const MainPage = () => {
                 <div className="modal-header">
                     <h2>{selectedDate}</h2>
                 </div>
-                <div className="modal-content">
+                <div className={styles.listModal}>
                     {Object.keys(schedules).length > 0 ? (
-                        Object.keys(schedules).map((roomId, idx) => (
-                            <div key={roomId} className={`room-section room-${idx}`}>
+                        Object.keys(schedules).map((roomId) => (
+                            <div key={roomId} className={styles.roomSection}>
                                 <h3>{schedules[roomId].roomName}</h3>
                                 <ul className="routine-list">
                                     {schedules[roomId].schedules.map(schedule => (

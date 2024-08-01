@@ -1,24 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/friendList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import axios from "axios";
+import { BACK_URL } from "../../Constraints.js";
 
 const FriendList = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
-    const [friends] = useState([
-        { name: '문재영', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '강현욱', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '이호준', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '김상우', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '최시호', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '엄지훈', img: 'public/lib/마이페이지아이콘.svg' },
-        { name: '강보현', img: 'public/lib/마이페이지아이콘.svg' },
-    ]);
+    const [friends, setFriends] = useState([]);
 
-    const filteredFriends = friends.filter(friend =>
-        friend.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+
+    // 초기 페이지 로드 시 오늘 날짜의 스케줄을 띄움
+    useEffect(() => {
+
+        // 친구 목록 가져오기
+        const userId = 1;
+        axios.get(`${BACK_URL}/friend/list`, {
+            params: {
+                userId: userId
+            }
+        })
+            .then(response => {
+                setFriends(response.data);
+                console.log(friends);
+            })
+            .catch(error => {
+                console.error('Error fetching friends:', error);
+            });
+    }, []);
+
 
     return (
         <div className={styles.container}>

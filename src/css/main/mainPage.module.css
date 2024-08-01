@@ -154,7 +154,7 @@
     margin-bottom: 10px;
 }
 
-.roomRoutine .roomRoutineTitle {
+.room-section h3 {
     display: flex;
     align-items: center;
     background-color: #ffc5f2;
@@ -164,7 +164,7 @@
     height: 25px;
 }
 
-.roomRoutine .roomRoutineTitle img {
+.roomRoutine h3 img {
     width: 20px;
     height: 20px;
 }

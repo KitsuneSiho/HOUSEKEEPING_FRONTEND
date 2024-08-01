@@ -5,18 +5,24 @@ import styles from '../../css/main/visitorBoard.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
 
+const colorMapping = {
+    BLUE: '#c5f1ff',
+    PINK: '#ffc5f2',
+    YELLOW: '#ffebc5'
+};
+
 const VisitorBoard = () => {
     const navigate = useNavigate();
     const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [content, setContent] = useState('');
-    const [color, setColor] = useState('#c5f1ff');
+    const [color, setColor] = useState(colorMapping.BLUE);
     const [isPrivate, setIsPrivate] = useState(false);
+    const [isArchived, setIsArchived] = useState(false);
 
+    // 현재 로그인 중인 사용자
     const loginUserId = 1;
-    // 지금은 임시로 해둔 것
-    // 현재 로그인한 사용자의 ID
 
     useEffect(() => {
         const fetchGuestbook = async () => {
@@ -36,7 +42,6 @@ const VisitorBoard = () => {
         fetchGuestbook();
     }, [userId]);
 
-    // Add a new entry to the guestbook
     const addEntry = async () => {
         if (content.trim() === '') {
             alert('내용을 입력해주세요.');
@@ -44,12 +49,14 @@ const VisitorBoard = () => {
         }
 
         const newEntry = {
-            guestbookContent: content,  // 방명록 내용
-            guestbookIsSecret: isPrivate, // 비밀글 여부
-            guestbookIsRead: false, // 읽음 여부
+            guestbookContent: content,
+            guestbookIsSecret: isPrivate,
+            guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
-            guestbookOwnerId: userId, // 방명록 소유자의 ID
-            guestbookWriterId: loginUserId // 작성자(즉, 로그인한 사용자의 ID)
+            guestbookOwnerId: userId,
+            guestbookWriterId: loginUserId,
+            guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
+            guestbookIsArchived: isArchived
         };
 
         try {
@@ -57,24 +64,13 @@ const VisitorBoard = () => {
             setGuestbook([...guestbook, response.data]);
             setIsModalOpen(false);
             setContent('');
-            setColor('#c5f1ff');
+            setColor(colorMapping.BLUE);
             setIsPrivate(false);
-            console.log(response);
+            setIsArchived(false);
         } catch (error) {
             console.error('Error adding guestbook entry:', error);
         }
     };
-
-    // Delete a guestbook entry
-    const handleDelete = async (guestbookId) => {
-        try {
-            await axios.delete(`${BACK_URL}/guestbook/delete/${guestbookId}`);
-            setGuestbook(prevEntries => prevEntries.filter(entry => entry.guestbookId !== guestbookId));
-        } catch (error) {
-            console.error('Error deleting guestbook entry:', error);
-        }
-    };
-
 
     return (
         <div className={styles.container}>
@@ -90,20 +86,23 @@ const VisitorBoard = () => {
 
             <div className={styles.visitorBoard}>
                 {guestbook.length > 0 ? (
-                    guestbook.map((entry, index) => (
-                        <div key={entry.guestbookId} className={styles.entry} style={{ backgroundColor: color }}>
-                            <div className={styles.entryHeader}>
-                                <span>{entry.writerNickname}</span>
-                                <span>{new Date(entry.guestbookTimestamp).toLocaleDateString()}</span>
+                    guestbook
+                        .filter(entry => !entry.guestbookIsArchived) // 보관된 항목은 제외
+                        .map((entry) => (
+                            <div
+                                key={entry.guestbookId}
+                                className={styles.entry}
+                                style={{ backgroundColor: colorMapping[entry.guestbookColor] || '#fff' }}
+                            >
+                                <div className={styles.entryHeader}>
+                                    <span>{entry.guestbookIsSecret ? '익명': entry.writerNickname}</span>
+                                    <span>{new Date(entry.guestbookTimestamp).toLocaleDateString()}</span>
+                                </div>
+                                <div className={styles.entryContent}>
+                                    {entry.guestbookIsSecret ? '비밀글입니다.' : entry.guestbookContent}
+                                </div>
                             </div>
-                            <div className={styles.entryContent}>
-                                {entry.guestbookIsSecret ? '비밀글입니다.' : entry.guestbookContent}
-                            </div>
-                            <div className={styles.entryFooter}>
-                                <button className={styles.deleteButton} onClick={() => handleDelete(entry.guestbookId)}>삭제</button>
-                            </div>
-                        </div>
-                    ))
+                        ))
                 ) : (
                     <p>방명록이 없습니다.</p>
                 )}
@@ -120,28 +119,35 @@ const VisitorBoard = () => {
                         <div className={styles.colorPicker}>
                             <label>색상</label>
                             <div className={styles.colorOptions}>
-                                <input type="radio" name="color" value="#c5f1ff" id="color1" checked={color === '#c5f1ff'} onChange={(e) => setColor(e.target.value)} />
-                                <label htmlFor="color1" className={styles.colorLabel} style={{ backgroundColor: '#c5f1ff' }}></label>
+                                <input type="radio" name="color" value={colorMapping.BLUE} id="color1" checked={color === colorMapping.BLUE}
+                                       onChange={(e) => setColor(e.target.value)}/>
+                                <label htmlFor="color1" className={styles.colorLabel}
+                                       style={{backgroundColor: colorMapping.BLUE}}></label>
 
-                                <input type="radio" name="color" value="#ffc5f2" id="color2" checked={color === '#ffc5f2'} onChange={(e) => setColor(e.target.value)} />
-                                <label htmlFor="color2" className={styles.colorLabel} style={{ backgroundColor: '#ffc5f2' }}></label>
+                                <input type="radio" name="color" value={colorMapping.PINK} id="color2" checked={color === colorMapping.PINK}
+                                       onChange={(e) => setColor(e.target.value)}/>
+                                <label htmlFor="color2" className={styles.colorLabel}
+                                       style={{backgroundColor: colorMapping.PINK}}></label>
 
-                                <input type="radio" name="color" value="#ffebc5" id="color3" checked={color === '#ffebc5'} onChange={(e) => setColor(e.target.value)} />
-                                <label htmlFor="color3" className={styles.colorLabel} style={{ backgroundColor: '#ffebc5' }}></label>
+                                <input type="radio" name="color" value={colorMapping.YELLOW} id="color3" checked={color === colorMapping.YELLOW}
+                                       onChange={(e) => setColor(e.target.value)}/>
+                                <label htmlFor="color3" className={styles.colorLabel}
+                                       style={{backgroundColor: colorMapping.YELLOW}}></label>
                             </div>
                         </div>
                         <div className={styles.privateCheckbox}>
                             <label htmlFor="private">비밀글
                                 <img src="/lib/잠금.svg" alt="잠금"/>
                             </label>
-                            <input type="checkbox" id="private" checked={isPrivate} onChange={() => setIsPrivate(!isPrivate)} />
+                            <input type="checkbox" id="private" checked={isPrivate}
+                                   onChange={() => setIsPrivate(!isPrivate)}/>
                         </div>
                         <button className={styles.modalAddBtn} onClick={addEntry}>추가</button>
                     </div>
                 </div>
             )}
 
-            <Footer />
+            <Footer/>
         </div>
     );
 };
