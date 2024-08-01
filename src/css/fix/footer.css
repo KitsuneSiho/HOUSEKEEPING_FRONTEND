@@ -19,36 +19,76 @@
 }
 
 .popup {
-    display: none;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
 }
 
 .popupBackground img {
-    bottom: 60px;
+    max-width: 400px;
     position: absolute;
-    left: 25%;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
 }
 
-.popup .mainRoom {
-    bottom: 120px;
-    position: absolute;
-    left: 46.5%;
+.icon-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: -20px; /* 배경과 겹치지 않도록 조정 */
 }
 
-.popup .tip {
-    bottom: 68px;
-    position: absolute;
-    left: 46%;
+.icon-container .icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    position: relative;
 }
 
-.popup .livingRoom {
-    bottom: 70px;
-    position: absolute;
-    left: 28%;
+.icon-container .livingRoom {
+    bottom: -15px;
+    left: 13.5%;
 }
 
-.popup .closetRoom {
-    bottom: 70px;
-    position: absolute;
-    right: 28%;
+.icon-container .mainRoom {
+    bottom: 38px;
+    left: 12.5%;
 }
 
+.icon-container .tip {
+    bottom: -15px;
+    right: 12.5%;
+}
+
+.icon-container .closetRoom {
+    bottom: -15px;
+    right: 14%;
+}
+
+@media (max-width: 768px) {
+    .footer img,
+    .icon-container .icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .popupBackground img {
+        max-width: 300px;
+    }
+
+    .icon-container {
+        max-width: 300px;
+    }
+}
