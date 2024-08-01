@@ -34,7 +34,7 @@
 }
 
 .furniture {
-    width: 80%;
+    width: 95%;
     height: 250px;
     border: none;
     border-radius: 10px;
@@ -45,9 +45,15 @@
 .furnitureCategories {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding: 5px;
     border-radius: 10px 10px 0 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.furnitureCategories p {
+    padding: 0;
+    margin: 0;
 }
 
 .furnitureCategories img {
@@ -56,7 +62,7 @@
     height: 30px;
 }
 
-.furnitureAddButton{
+.furnitureAddButton {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -100,18 +106,18 @@
     margin-left: 10px;
 }
 
-.controls{
+.controls {
     width: 100%;
     line-height: 1.5;
 }
 
-.furnitureSubmit{
+.furnitureSubmit {
     width: 100%;
     display: flex;
     justify-content: right;
 }
 
-.furnitureSubmit button{
+.furnitureSubmit button {
     width: 50px;
     background-color: #c5f1ff;
     border: none;
@@ -120,7 +126,7 @@
     margin-right: 3%;
 }
 
-.xControls, .yControls, .zControls, .rotation, .scale{
+.xControls, .yControls, .zControls, .rotation, .scale {
     width: 100%;
     display: flex;
     align-items: center;
@@ -133,14 +139,14 @@
 .yControls p,
 .zControls p,
 .rotation p,
-.scale p{
+.scale p {
     width: 30%;
     margin: 0;
     padding: 0;
 }
 
 .sliderControls input[type="range"] {
-    -webkit-appearance: none; /* 기본 웹킷 스타일 제거 */
+    -webkit-appearance: none;
     width: 50%;
     height: 10px;
     background: none;
@@ -151,12 +157,12 @@
 }
 
 .sliderControls input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* 기본 웹킷 슬라이더 썸 제거 */
+    -webkit-appearance: none;
     appearance: none;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #c5f1ff; /* 슬라이더 썸의 색상 */
+    background: #c5f1ff;
     cursor: pointer;
 }
 
@@ -164,7 +170,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4CAF50; /* 슬라이더 썸의 색상 */
+    background: #4CAF50;
     cursor: pointer;
 }
 
@@ -189,4 +195,47 @@
     background: none;
     font-size: 16px;
     cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .container {
+        padding: 20px;
+    }
+
+    .header {
+        width: 90%;
+    }
+
+    .roomDesign {
+        height: 500px; /* 높이 증가 */
+    }
+
+    .furniture {
+        width: 85%;
+        height: 300px;
+    }
+
+    .furnitureAddButton {
+        gap: 20px; /* 더 넓은 화면에서 여유 공간 활용 */
+    }
+
+    .modal {
+        left: 20%;
+        right: 20%;
+        bottom: 10%;
+    }
+
+    .sliderControls input[type="range"] {
+        width: 70%; /* 슬라이더 너비 증가 */
+    }
+
+    .submit {
+        width: 70%;
+        margin-top: 3%;
+    }
+
+    .submit button {
+        font-size: 18px; /* 큰 화면에서 버튼 텍스트 크기 증가 */
+    }
 }

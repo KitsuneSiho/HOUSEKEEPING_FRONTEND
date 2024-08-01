@@ -1,6 +1,6 @@
-/* foodList.module.css */
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -8,15 +8,31 @@
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .searchBar {
@@ -55,6 +71,8 @@
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
+    box-sizing: border-box;
+    padding: 0 20px;
 }
 
 .foodTable th, .foodTable td {
@@ -91,6 +109,7 @@ input[type="text"], input[type="number"], input[type="date"] {
     outline: none;
     border-bottom: 1px solid #535353;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .quantityCell {
@@ -113,7 +132,7 @@ input[type="text"], input[type="number"], input[type="date"] {
     margin: 0 5px;
 }
 
-.removeBtn{
+.removeBtn {
     border: none;
     background: none;
     color: red;
@@ -128,8 +147,9 @@ input[type="text"], input[type="number"], input[type="date"] {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     padding-top: 60px;
+    box-sizing: border-box;
 }
 
 .modalContent {
@@ -138,7 +158,9 @@ input[type="text"], input[type="number"], input[type="date"] {
     padding: 20px;
     border: none;
     width: 80%;
+    max-width: 400px;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .modalContent h2 {
@@ -179,4 +201,20 @@ input[type="text"], input[type="number"], input[type="date"] {
     color: black;
     cursor: pointer;
     background: none;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .foodTable {
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    .editAddButton {
+        width: 50%;
+    }
+
+    .searchBar {
+        width: 50%;
+    }
 }

@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -8,15 +8,31 @@
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .searchBar {
@@ -78,4 +94,43 @@
 
 .lifeTip button {
     background-color: #ffc5f2;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .header {
+        width: 80%;
+    }
+
+    .searchBar {
+        width: 80%;
+    }
+
+    .roomeTip, .wasteTip, .lifeTip {
+        width: 70%;
+        margin: 5% 0;
+    }
+
+    .roomeTip button, .wasteTip button, .lifeTip button {
+        height: 140px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        width: 70%;
+    }
+
+    .searchBar {
+        width: 70%;
+    }
+
+    .roomeTip, .wasteTip, .lifeTip {
+        width: 60%;
+        margin: 3% 0;
+    }
+
+    .roomeTip button, .wasteTip button, .lifeTip button {
+        height: 160px;
+    }
 }

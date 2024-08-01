@@ -1,7 +1,5 @@
 .container {
     padding: 0;
-    margin: 0;
-    margin-top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -11,16 +9,16 @@
 .friendsContainer {
     width: 100%;
     overflow-x: auto;
-    overflow-y: hidden; /* Hide vertical overflow */
+    overflow-y: hidden; /* 수직 스크롤 숨기기 */
     display: flex;
-    justify-content: flex-start; /* Align items to the start */
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    justify-content: flex-start; /* 시작점 정렬 */
+    scrollbar-width: none; /* Firefox 용 */
+    -ms-overflow-style: none;  /* IE 및 Edge 용 */
     white-space: nowrap;
 }
 
 .friendsContainer::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
+    display: none; /* Chrome, Safari, Opera 용 */
 }
 
 .friendsList {
@@ -36,7 +34,7 @@
     width: 60px;
     height: 60px;
     cursor: pointer;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0; /* 축소 방지 */
 }
 
 .friend img, .addFriend img {
@@ -54,27 +52,10 @@
     margin: 0;
 }
 
-.dirtyBar{
+.dirtyBar {
     margin-top: 5%;
-}
-
-.header {
-    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-    position: relative;
-}
-
-.header img {
-    position: absolute;
-    left: 10px;
-    cursor: pointer;
-}
-
-.header h2 {
-    margin: 0;
 }
 
 .roomDesign {
@@ -100,36 +81,7 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.furniture table {
-    width: 100%;
-}
-
-.furniture table th {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 10px 10px 0 0;
-    padding: 10px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-.submit {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    margin-top: 15%;
-}
-
-.submit button {
-    width: 45%;
-    padding: 10px 0;
-    border: none;
-    background: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.routinecontainer {
+.routineContainer {
     width: 95%;
     position: relative;
 }
@@ -175,7 +127,7 @@
     gap: 5px;
 }
 
-.roomRoutine .alramOnOff {
+.roomRoutine .alramOnOff p {
     margin: 0;
     font-size: 14px;
 }
@@ -232,4 +184,75 @@
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
+}
+
+.submit {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 15%;
+}
+
+.submit button {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .container {
+        padding: 20px;
+    }
+
+    .friendsContainer {
+        justify-content: center; /* 큰 화면에서 중앙 정렬 */
+    }
+
+    .friend, .addFriend {
+        width: 80px; /* 큰 화면에서 아이콘 크기 증가 */
+        height: 80px;
+    }
+
+    .friend p, .addFriend p {
+        font-size: 14px;
+    }
+
+    .dirtyBar {
+        margin-top: 3%;
+    }
+
+    .roomDesign .myRoom {
+        width: 60%;
+    }
+
+    .routineContainer {
+        width: 90%;
+    }
+
+    .roomRoutine {
+        padding: 20px;
+        margin: 30px;
+    }
+
+    .roomRoutine .roomRoutineTitle {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+
+    .roomRoutine .roomRoutineInfo ul {
+        max-height: calc(40px * 4); /* 목록 항목 높이 증가 */
+    }
+
+    .submit {
+        width: 60%;
+        margin-top: 5%;
+    }
+
+    .submit button {
+        font-size: 18px; /* 큰 화면에서 버튼 텍스트 크기 증가 */
+    }
 }

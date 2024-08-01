@@ -1,4 +1,5 @@
 import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
+import './font/font.css';
 import Home from "./components/Home.jsx";
 import FirstMain from "./jsx/first/FirstMain.jsx";
 import Login from "./jsx/first/Login.jsx";

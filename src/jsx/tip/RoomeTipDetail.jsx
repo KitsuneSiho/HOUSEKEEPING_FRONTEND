@@ -21,7 +21,7 @@ const RoomeTipDetail = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/roomeTip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/roomeTip')} />
                 <h2>루미`s Tip</h2>
             </div>
 

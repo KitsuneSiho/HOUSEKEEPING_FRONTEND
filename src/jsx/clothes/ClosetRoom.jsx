@@ -8,7 +8,7 @@ const ClosetRoom = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.closetRoomTitle}>
+            <div className={styles.header}>
                 <h2>Dress Room</h2>
             </div>
             <div className={styles.closetRoomHeader}>

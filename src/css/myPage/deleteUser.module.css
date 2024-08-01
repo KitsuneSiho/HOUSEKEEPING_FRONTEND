@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -12,15 +12,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px 0;
     position: relative;
-    padding: 10px 0;
-    background-color: white;
 }
 
 .header img {
     position: absolute;
     left: 10px;
     cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .deleteBox {
@@ -33,6 +38,11 @@
     width: 70%;
 }
 
+.deleteBox h2 {
+    margin-bottom: 20px;
+    color: #d9534f; /* 강렬한 색상으로 경고 강조 */
+}
+
 .deleteBox h4 {
     margin: 10px 0;
     font-size: 16px;
@@ -40,14 +50,19 @@
 }
 
 .deleteButton {
-    background-color: #000;
+    background-color: #d9534f; /* 경고를 나타내는 색상 */
     color: white;
     border: none;
     padding: 10px 20px;
-    margin-top: 20%;
+    margin-top: 20px;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #c9302c; /* 더 짙은 경고색으로 변함 */
 }
 
 .cancelButton {
@@ -59,4 +74,29 @@
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    transition: color 0.3s ease;
+}
+
+.cancelButton:hover {
+    color: #000; /* 글자 색상이 짙어짐 */
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .deleteBox {
+        width: 50%;
+    }
+
+    .deleteBox h4 {
+        font-size: 18px;
+    }
+
+    .deleteButton,
+    .cancelButton {
+        font-size: 1.1em;
+    }
 }

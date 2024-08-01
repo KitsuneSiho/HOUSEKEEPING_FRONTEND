@@ -1,14 +1,31 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
-.closetRoomTitle {
-    margin-top: 20px;
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.header img {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .closetRoomHeader {
@@ -16,7 +33,6 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 20px 0;
 }
 
 .closetRoomHeader h3 {
@@ -30,16 +46,19 @@
 }
 
 .categories {
-    width: 90%;
+    width: 95%;
     display: flex;
     justify-content: space-around;
     margin: 30px 0;
+    flex-wrap: nowrap;
+    gap: 10px;
 }
 
 .category {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .category h4 {
@@ -53,6 +72,7 @@
     border: 1px solid #c5f1ff;
     border-radius: 10px;
     overflow: hidden;
+    gap: 10px;
 }
 
 .itemsGrid img {
@@ -60,4 +80,37 @@
     height: 60px;
     object-fit: cover;
     padding: 10px;
+}
+
+/* 반응형 디자인 추가 */
+@media (min-width: 768px) {
+    .closetRoomHeader {
+        width: 80%;
+    }
+
+    .categories {
+        width: 80%;
+        justify-content: space-around; /* 원래 배치 유지 */
+    }
+
+    .itemsGrid img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .closetRoomHeader {
+        width: 80%;
+    }
+
+    .categories {
+        width: 70%;
+        justify-content: space-around; /* 원래 배치 유지 */
+    }
+
+    .itemsGrid img {
+        width: 100px;
+        height: 100px;
+    }
 }

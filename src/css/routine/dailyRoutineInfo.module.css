@@ -1,28 +1,46 @@
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
     font-family: Fre, sans-serif;
+    overflow: auto; /* Allow the body to scroll */
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.header h3 {
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5%;
 }
 
 .tabs {
     width: 90%;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .tab {
@@ -41,10 +59,6 @@
     position: relative;
 }
 
-.routineContainer::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
-}
-
 .roomRoutine,
 .livingRoomRoutine,
 .toiletRoutine {
@@ -57,18 +71,18 @@
     position: relative;
 }
 
-.roomRoutine .roomRoutineHeader,
-.livingRoomRoutine .livingRoomRoutineHeader,
-.toiletRoutine .toiletRoutineHeader {
+.roomRoutineHeader,
+.livingRoomRoutineHeader,
+.toiletRoutineHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
-.roomRoutine .roomRoutineTitle,
-.livingRoomRoutine .livingRoomRoutineTitle,
-.toiletRoutine .toiletRoutineTitle {
+.roomRoutineTitle,
+.livingRoomRoutineTitle,
+.toiletRoutineTitle {
     display: flex;
     align-items: center;
     background-color: #ffc5f2;
@@ -77,112 +91,114 @@
     gap: 10px;
 }
 
-.livingRoomRoutine .livingRoomRoutineTitle {
+.livingRoomRoutineTitle {
     background-color: #ffebc5;
 }
 
-.toiletRoutine .toiletRoutineTitle {
+.toiletRoutineTitle {
     background-color: #c5f1ff;
 }
 
-.roomRoutine .roomRoutineTitle img,
-.livingRoomRoutine .livingRoomRoutineTitle img,
-.toiletRoutine .toiletRoutineTitle img {
+.roomRoutineTitle img,
+.livingRoomRoutineTitle img,
+.toiletRoutineTitle img {
     width: 20px;
     height: 20px;
 }
 
-.roomRoutine .roomRoutineTitle p,
-.livingRoomRoutine .livingRoomRoutineTitle p,
-.toiletRoutine .toiletRoutineTitle p {
+.roomRoutineTitle p,
+.livingRoomRoutineTitle p,
+.toiletRoutineTitle p {
     font-size: 16px;
     margin: 0;
 }
 
-.roomRoutine .alramOnOff,
-.livingRoomRoutine .alramOnOff,
-.toiletRoutine .alramOnOff {
+.alramOnOff {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.roomRoutine .alramOnOff p,
-.livingRoomRoutine .alramOnOff p,
-.toiletRoutine .alramOnOff p {
+.alramOnOff p {
     margin: 0;
     font-size: 14px;
 }
 
-.roomRoutine .alramOnOff img,
-.livingRoomRoutine .alramOnOff img,
-.toiletRoutine .alramOnOff img {
+.alramOnOff img {
     width: 15px;
     height: 15px;
     bottom: 5px;
     position: absolute;
 }
 
-.roomRoutine .roomRoutineInfo,
-.livingRoomRoutine .livingRoomRoutineInfo,
-.toiletRoutine .toiletRoutineInfo {
-    max-height: 200px; /* Adjust the height as needed */
-    overflow-y: auto; /* Enable vertical scrolling */
+.roomRoutineInfo,
+.livingRoomRoutineInfo,
+.toiletRoutineInfo {
+    max-height: 200px;
+    overflow-y: auto;
 }
 
-.roomRoutine .roomRoutineInfo ul::-webkit-scrollbar,
-.livingRoomRoutine .livingRoomRoutineInfo ul::-webkit-scrollbar,
-.toiletRoutine .toiletRoutineInfo ul::-webkit-scrollbar {
-    display: none; /* Hide scrollbar */
-}
-
-.roomRoutine .roomRoutineInfo ul,
-.livingRoomRoutine .livingRoomRoutineInfo ul,
-.toiletRoutine .toiletRoutineInfo ul {
+.roomRoutineInfo ul,
+.livingRoomRoutineInfo ul,
+.toiletRoutineInfo ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    max-height: calc(30px * 4); /* Height for 4 items, adjust if necessary */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: calc(30px * 4);
+    overflow-y: auto;
 }
 
-.roomRoutine .roomRoutineInfo li,
-.livingRoomRoutine .livingRoomRoutineInfo li,
-.toiletRoutine .toiletRoutineInfo li {
+.roomRoutineInfo li,
+.livingRoomRoutineInfo li,
+.toiletRoutineInfo li {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    position: relative; /* Ensure that absolute positioning works within this context */
-}
-
-.roomRoutine .roomRoutineInfo input[type="checkbox"],
-.livingRoomRoutine .livingRoomRoutineInfo input[type="checkbox"],
-.toiletRoutine .toiletRoutineInfo input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.roomRoutine .roomRoutineInfo label,
-.livingRoomRoutine .livingRoomRoutineInfo label,
-.toiletRoutine .toiletRoutineInfo label {
-    flex-grow: 1; /* Allow the label to take up available space */
-}
-
-.roomRoutine .roomRoutineInfo img,
-.livingRoomRoutine .livingRoomRoutineInfo img,
-.toiletRoutine .toiletRoutineInfo img {
-    width: 20px; /* Set a fixed size for the images */
-    height: 20px;
-    margin-left: 10px; /* Add margin to create space between the label and the image */
     position: relative;
 }
 
-/* 추가된 부분 */
-.roomRoutine .plusIcon,
-.livingRoomRoutine .plusIcon,
-.toiletRoutine .plusIcon {
+.roomRoutineInfo input[type="checkbox"],
+.livingRoomRoutineInfo input[type="checkbox"],
+.toiletRoutineInfo input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.roomRoutineInfo label,
+.livingRoomRoutineInfo label,
+.toiletRoutineInfo label {
+    flex-grow: 1;
+}
+
+.roomRoutineInfo img,
+.livingRoomRoutineInfo img,
+.toiletRoutineInfo img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    position: relative;
+}
+
+.plusIcon {
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .container {
+        width: 80%;
+        margin: auto;
+    }
+
+    .header, .tabs {
+        width: 100%;
+    }
+
+    .routineContainer, .roomRoutine, .livingRoomRoutine, .toiletRoutine {
+        width: 80%;
+        margin: 20px auto;
+    }
 }

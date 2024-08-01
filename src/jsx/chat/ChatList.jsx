@@ -18,13 +18,13 @@ const ChatList = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img
+                <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/mainPage')}
                 />
                 <h2>채팅</h2>
-                <img
+                <img className={styles.createChat}
                     src="/lib/채팅생성.svg"
                     alt="create-chat"
                     onClick={() => navigate('/createChat')}

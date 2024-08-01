@@ -9,7 +9,7 @@ const MyPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/mainPage')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/mainPage')} />
                 <h2>마이페이지</h2>
             </div>
             <div className={styles.profile}>
@@ -43,10 +43,6 @@ const MyPage = () => {
                 </div>
                 <div className={styles.menuItem}>
                     <p>내 방 수정</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
-                </div>
-                <div className={styles.menuItem}>
-                    <p>아바타 수정</p>
                     <img src="public/lib/front.svg" alt="화살표" />
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate('/setting')}>

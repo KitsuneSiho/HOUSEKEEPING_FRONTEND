@@ -29,13 +29,13 @@ const CreateChat = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img
+                <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/chatList')}
                 />
                 <h2>대화 상대 선택</h2>
-                <h4 onClick={handleAddChat}>추가</h4>
+                <h4 className={styles.addChat} onClick={handleAddChat}>추가</h4>
             </div>
             <div className={styles.friendList}>
                 {friends.map((friend, index) => (

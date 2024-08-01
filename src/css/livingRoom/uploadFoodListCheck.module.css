@@ -1,23 +1,39 @@
-/* UploadFoodListCheck.module.css */
-
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
     font-family: Fre, sans-serif;
+    overflow: auto; /* Allow the body to scroll */
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.header h3 {
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5%;
 }
 
 .foodTable {
@@ -37,14 +53,17 @@
 }
 
 .addBtn {
-    width: 30%;
-    height: 30px;
-    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     border: 2px solid black;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 input[type="text"] {
@@ -55,10 +74,26 @@ input[type="text"] {
     text-align: center;
 }
 
-.xBtn button{
+.xBtn button {
     background: none;
     border: none;
     cursor: pointer;
     color: red;
     font-size: 18px;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .header {
+        width: 70%;
+    }
+
+    .foodTable th, .foodTable td {
+        padding: 15px;
+    }
+
+    .addBtn {
+        width: 60px;
+        height: 60px;
+    }
 }

@@ -16,7 +16,7 @@ const LifeTipWrite = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/lifeTip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/lifeTip')} />
                 <h2>생활 Tip</h2>
             </div>
 

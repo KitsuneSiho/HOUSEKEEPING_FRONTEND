@@ -1,30 +1,45 @@
-/* ChatList.module.css */
-
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     font-family: Fre, sans-serif;
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.createChat{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .chatList {
     width: 90%;
     display: flex;
     flex-direction: column;
+    margin-top: 10px;
 }
 
 .chatItem {
@@ -32,13 +47,18 @@
     align-items: center;
     padding: 15px 0;
     border-bottom: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.chatItem:hover {
+    background-color: #f9f9f9;
 }
 
 .chatItem img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .chatInfo {
@@ -59,6 +79,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    white-space: nowrap; /* Prevent line breaks */
 }
 
 .chatTime span {
@@ -66,7 +87,26 @@
     color: #666;
 }
 
-.unreadIndicator {
-    color: red;
-    font-size: 12px;
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .chatItem img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .chatName {
+        font-size: 1.1em;
+    }
+
+    .chatMessage {
+        font-size: 0.95em;
+    }
+
+    .chatTime span {
+        font-size: 14px;
+    }
 }

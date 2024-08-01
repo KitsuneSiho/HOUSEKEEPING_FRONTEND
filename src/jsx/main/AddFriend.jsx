@@ -22,7 +22,7 @@ const AddFriend = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img
+                <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/mainPage')}

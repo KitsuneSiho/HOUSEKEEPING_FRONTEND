@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Fre', sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -22,22 +22,10 @@
     cursor: pointer;
 }
 
-.closetRoomHeader {
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.closetRoomHeader h3 {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.closetRoomHeader img {
-    margin-left: 5px;
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .weather {
@@ -47,7 +35,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .selection {
@@ -56,12 +44,15 @@
     justify-content: space-between;
     align-items: center;
     margin: 20px 0;
+    flex-wrap: wrap; /* Add this line */
 }
 
 .selection label,
 .selection select,
 .selection input {
     font-size: 16px;
+    margin: 5px 0; /* Add this line */
+    width: 100%; /* Add this line */
 }
 
 .recommendations {
@@ -77,4 +68,20 @@
     width: 100%;
     max-width: 300px;
     border-radius: 10px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+    .closetRoomHeader, .weather, .selection, .recommendations {
+        width: 90%;
+    }
+
+    .selection {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .selection label, .selection select, .selection input {
+        width: 100%;
+    }
 }

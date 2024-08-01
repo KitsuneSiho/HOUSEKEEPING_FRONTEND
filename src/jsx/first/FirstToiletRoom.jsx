@@ -228,16 +228,14 @@ const FirstToiletRoom = () => {
             <div ref={mountRef} className={styles.roomDesign} onClick={handleFurnitureSelection}></div>
             <div className={styles.furniture}>
                 <div className={styles.furnitureCategories}>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Wall/Floor"
-                         onClick={() => handleCategoryClick('wallFloor')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Desk" onClick={() => handleCategoryClick('desk')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Bed" onClick={() => handleCategoryClick('bed')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Sofa" onClick={() => handleCategoryClick('sofa')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Closet" onClick={() => handleCategoryClick('closet')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Chair" onClick={() => handleCategoryClick('chair')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Pocketmon"
-                         onClick={() => handleCategoryClick('pocketmon')}/>
-                    <img src="public/lib/카테고리아이콘임시.svg" alt="Etc" onClick={() => handleCategoryClick('etc')}/>
+                    <p onClick={() => handleCategoryClick('wallFloor')}>벽</p>
+                    <p onClick={() => handleCategoryClick('desk')}>책상</p>
+                    <p onClick={() => handleCategoryClick('bed')}>침대</p>
+                    <p onClick={() => handleCategoryClick('sofa')}>소파</p>
+                    <p onClick={() => handleCategoryClick('closet')}>옷장</p>
+                    <p onClick={() => handleCategoryClick('chair')}>의자</p>
+                    <p onClick={() => handleCategoryClick('pocketmon')}>포켓몬</p>
+                    <p onClick={() => handleCategoryClick('etc')}>기타</p>
                 </div>
                 {activeCategory && (
                     <div className={styles.furnitureAddButton}>
