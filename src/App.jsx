@@ -1,4 +1,4 @@
-import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from "./components/Home.jsx";
 import FirstMain from "./jsx/first/FirstMain.jsx";
 import Login from "./jsx/first/Login.jsx";
@@ -50,7 +50,6 @@ import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
 import TopList from "./jsx/clothes/TopList.jsx";
 
 function App() {
-
     return (
         <div>
             <Router>
@@ -110,4 +109,4 @@ function App() {
     )
 }
 
-export default App
+export default App;

@@ -1,10 +1,8 @@
-import axios from "axios";
-import {BACK_URL} from "../Constraints.js"
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../jsx/services/axiosInstance';// axiosInstance 가져오기
 
 const Home = () => {
-
-    const [greeting, setGreeting] = useState(false)
+    const [greeting, setGreeting] = useState('');
 
     useEffect(() => {
         hello();
@@ -12,7 +10,7 @@ const Home = () => {
 
     const hello = async () => {
         try {
-            const response = await axios.get(BACK_URL + '/test/');
+            const response = await axiosInstance.get('/test/');
             setGreeting(response.data);
         } catch (error) {
             console.error('Error fetching greeting', error);
@@ -23,7 +21,7 @@ const Home = () => {
         <>
             <h1>{greeting}</h1>
         </>
-    )
+    );
 }
 
 export default Home;
