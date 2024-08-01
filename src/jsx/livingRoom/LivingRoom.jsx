@@ -8,7 +8,7 @@ const LivingRoom = () => {
     const navigate = useNavigate();
     const categories = [
         { name: '전체보기', img: '/lib/전체보기.svg', route: '/foodList' },
-        { name: '유제품', img: '/lib/유제품.svg' },
+        { name: '유제품', img: '/lib/유제품.svg', route: '/foodList'  },
         { name: '육류', img: '/lib/육류.svg' },
         { name: '해산물', img: '/lib/해산물.svg' },
         { name: '채소', img: '/lib/채소.svg' },
