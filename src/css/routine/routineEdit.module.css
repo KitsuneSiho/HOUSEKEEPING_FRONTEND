@@ -1,36 +1,30 @@
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 .routineTitle {
-    margin: 20px 0;
+    margin-bottom: 20px;
+}
+
+.routineTitle h1{
+    margin: 0;
 }
 
 .routineEditAdd {
     width: 80%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end; /* 수정 버튼을 오른쪽으로 정렬 */
 }
 
-.edit a,
-.edit a:visited {
-    text-decoration: none;
-    color: inherit;
-}
-
-.add img {
-    width: 20px;
-    height: auto;
-}
-
-.add {
-    display: flex;
-    align-items: center;
+.edit {
+    cursor: pointer;
+    color: #333; /* 기본 텍스트 색상 */
 }
 
 .routine {
@@ -43,7 +37,7 @@
     padding: 0;
 }
 
-.roomeRoutine {
+.roomeRoutine, .myRoutine {
     background-color: #c5f1ff;
     border: none;
     border-radius: 10px;
@@ -53,20 +47,25 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: border 0.3s ease;
 }
 
 .myRoutine {
     background-color: #ffebc5;
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
 }
 
 .roomeRoutine:hover, .myRoutine:hover {
     border: 3px solid #ff2c2c;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .routineEditAdd, .routine {
+        width: 60%;
+    }
+
+    .roomeRoutine, .myRoutine {
+        height: 150px; /* 큰 화면에서 높이 증가 */
+        font-size: 1.2em; /* 큰 화면에서 텍스트 크기 증가 */
+    }
 }

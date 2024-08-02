@@ -1,112 +1,60 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Home from "./components/Home.jsx";
-import FirstMain from "./jsx/first/FirstMain.jsx";
-import Login from "./jsx/first/Login.jsx";
-import FirstLogin from "./jsx/first/FirstLogin.jsx";
-import FirstRoomDesign from "./jsx/first/FirstRoomDesign.jsx";
-import FirstLivingRoom from "./jsx/first/FirstLivingRoom.jsx";
-import FirstToiletRoom from "./jsx/first/FirstToiletRoom.jsx";
-import Footer from "./jsx/fix/Footer.jsx";
-import MainPage from "./jsx/main/MainPage.jsx";
-import MainLivingRoom from "./jsx/main/MainLivingRoom.jsx";
-import MainToiletRoom from "./jsx/main/MainToiletRoom.jsx";
-import AddFriend from "./jsx/main/AddFriend.jsx";
-import FriendRoom from "./jsx/main/FriendRoom.jsx";
-import VisitorBoard from "./jsx/main/VisitorBoard.jsx";
-import Calendar from "./jsx/calendar/Calendar.jsx";
-import ChatList from "./jsx/chat/ChatList.jsx";
-import ChatRoom from "./jsx/chat/ChatRoom.jsx";
-import CreateChat from "./jsx/chat/CreateChat.jsx";
-import LivingRoom from "./jsx/livingRoom/LivingRoom.jsx";
-import UploadFood from "./jsx/livingRoom/UploadFood.jsx";
-import UploadFoodListCheck from "./jsx/livingRoom/UploadFoodListCheck.jsx";
-import SearchRecipe from "./jsx/livingRoom/SearchRecipe.jsx";
-import RecommendRecipe from "./jsx/livingRoom/RecommendRecipe.jsx";
-import FoodList from "./jsx/livingRoom/FoodList.jsx";
-import Routine from "./jsx/routine/Routine.jsx";
-import RoutineEdit from "./jsx/routine/RoutineEdit.jsx";
-import DailyRoutineInfo from "./jsx/routine/DailyRoutineInfo.jsx";
-import WeeklyRoutineInfo from "./jsx/routine/WeeklyRoutineInfo.jsx";
-import MonthlyRoutineInfo from "./jsx/routine/MonthlyRoutineInfo.jsx";
-import Tip from "./jsx/tip/Tip.jsx";
-import RoomeTip from "./jsx/tip/RoomeTip.jsx";
-import RoomeTipDetail from "./jsx/tip/RoomeTipDetail.jsx";
-import WasteTip from "./jsx/tip/WasteTip.jsx";
-import WasteTipDetail from "./jsx/tip/WasteTipDetail.jsx";
-import WasteTipWrite from "./jsx/tip/WasteTipWrite.jsx";
-import LifeTip from "./jsx/tip/LifeTIp.jsx";
-import LifeTipDetail from "./jsx/tip/LifeTipDetail.jsx";
-import LifeTipWrite from "./jsx/tip/LifeTipWrite.jsx";
-import MyPage from "./jsx/myPage/MyPage.jsx";
-import MyInfo from "./jsx/myPage/MyInfo.jsx";
-import FriendList from "./jsx/myPage/FriendList.jsx";
-import GuestBook from "./jsx/myPage/GuestBook.jsx";
-import Setting from "./jsx/myPage/Setting.jsx";
-import DeleteUser from "./jsx/myPage/DeleteUser.jsx";
-import ClosetRoom from "./jsx/clothes/ClosetRoom.jsx";
-import UploadCloset from "./jsx/clothes/UploadCloset.jsx";
-import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
-import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
-import TopList from "./jsx/clothes/TopList.jsx";
+import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import './font/font.css';
+import ModalExample from "./components/test/ModalExample.jsx";
+import {ModalProvider} from "./components/context/ModalContext.jsx";
+import ChatRouter from "./router/ChatRouter.jsx";
+import DefaultRouter from "./router/DefaultRouter.jsx";
+import MainRouter from "./router/MainRouter.jsx";
+import FriendRouter from "./router/FriendRouter.jsx";
+import RoutineRouter from "./router/RoutineRouter.jsx";
+import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
+import ClosetRouter from "./router/ClosetRouter.jsx";
+import TipRouter from "./router/TipRouter.jsx";
+import MyPageRouter from "./router/MyPageRouter.jsx";
+import FriendRequest from "./jsx/myPage/FriendRequest.jsx";
 
 function App() {
+
     return (
-        <div>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/Footer" element={<Footer/>}/>
-                    <Route path="/FirstMain" element={<FirstMain/>}/>
-                    <Route path="/Login" element={<Login/>}/>
-                    <Route path="/FirstLogin" element={<FirstLogin/>}/>
-                    <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/>
-                    <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/>
-                    <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/>
-                    <Route path="/MainPage" element={<MainPage/>}/>
-                    <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/>
-                    <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/>
-                    <Route path="/AddFriend" element={<AddFriend/>}/>
-                    <Route path="/FriendRoom" element={<FriendRoom/>}/>
-                    <Route path="/VisitorBoard" element={<VisitorBoard/>}/>
-                    <Route path="/Calendar" element={<Calendar/>}/>
-                    <Route path="/ChatList" element={<ChatList/>}/>
-                    <Route path="/ChatRoom" element={<ChatRoom/>}/>
-                    <Route path="/CreateChat" element={<CreateChat/>}/>
-                    <Route path="/LivingRoom" element={<LivingRoom/>}/>
-                    <Route path="/UploadFood" element={<UploadFood/>}/>
-                    <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/>
-                    <Route path="/SearchRecipe" element={<SearchRecipe/>}/>
-                    <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/>
-                    <Route path="/foodlist/:category" element={<FoodList/>}/>
-                    <Route path="/Routine" element={<Routine/>}/>
-                    <Route path="/RoutineEdit" element={<RoutineEdit/>}/>
-                    <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/>
-                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/>
-                    <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/>
-                    <Route path="/Tip" element={<Tip/>}/>
-                    <Route path="/RoomeTip" element={<RoomeTip/>}/>
-                    <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/>
-                    <Route path="/WasteTip" element={<WasteTip/>}/>
-                    <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/>
-                    <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/>
-                    <Route path="/LifeTip" element={<LifeTip/>}/>
-                    <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/>
-                    <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/>
-                    <Route path="/MyPage" element={<MyPage/>}/>
-                    <Route path="/MyInfo" element={<MyInfo/>}/>
-                    <Route path="/FriendList" element={<FriendList/>}/>
-                    <Route path="/GuestBook" element={<GuestBook/>}/>
-                    <Route path="/Setting" element={<Setting/>}/>
-                    <Route path="/DeleteUser" element={<DeleteUser/>}/>
-                    <Route path="/ClosetRoom" element={<ClosetRoom/>}/>
-                    <Route path="/UploadCloset" element={<UploadCloset/>}/>
-                    <Route path="/UploadClosetCheck" element={<UploadClosetCheck/>}/>
-                    <Route path="/RecommendCloset" element={<RecommendCloset/>}/>
-                    <Route path="/TopList" element={<TopList/>}/>
-                </Routes>
-            </Router>
-        </div>
+        <>
+            <ModalProvider>
+                <Router>
+                    <Routes>
+
+                        {/* 기본 및 로그인, 처음 로그인 시 정보 입력 */}
+                        <Route path="/*" element={<DefaultRouter/>}/>
+
+                        {/* 메인 페이지 및 방명록 */}
+                        <Route path="/main/*" element={<MainRouter/>}/>
+
+                        {/* 친구 관련 기능 */}
+                        <Route path="/friend/*" element={<FriendRouter/>}/>
+
+                        {/* 루틴 관련 기능 */}
+                        <Route path="/routine/*" element={<RoutineRouter/>}/>
+
+                        {/* 냉장고 관련 기능 */}
+                        <Route path="/refrigerator/*" element={<RefrigeratorRouter/>}/>
+
+                        {/* 옷장 관련 기능 */}
+                        <Route path="/refrigerator/*" element={<ClosetRouter/>}/>
+
+                        {/* 팁 관련 기능 */}
+                        <Route path="/tip/*" element={<TipRouter/>}/>
+
+                        {/* 마이페이지 관련 기능 */}
+                        <Route path="/mypage/*" element={<MyPageRouter/>}/>
+
+                        {/* 채팅 라우터 */}
+                        <Route path="/chat/*" element={<ChatRouter/>}/>
+
+                        {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
+                        <Route path="/test/modal" element={<ModalExample/>}/>
+                    </Routes>
+                </Router>
+            </ModalProvider>
+        </>
     )
 }
 
-export default App;
+export default App

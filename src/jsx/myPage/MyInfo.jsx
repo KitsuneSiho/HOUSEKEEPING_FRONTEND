@@ -48,7 +48,7 @@ const MyInfo = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
                 <h2>내 정보</h2>
             </div>
             <div className={styles.profileImg}>

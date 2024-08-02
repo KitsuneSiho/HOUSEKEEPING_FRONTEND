@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: 'Arial', sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -12,15 +12,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px 0;
     position: relative;
-    padding: 10px 0;
-    background-color: white;
 }
 
 .header img {
     position: absolute;
     left: 10px;
     cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .profile {
@@ -32,6 +37,7 @@
     border-radius: 10px;
     margin: 20px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .profileNickname {
@@ -60,7 +66,7 @@
 
 .profileInfo p {
     margin: 0;
-    line-height: 1.5;
+    padding: 5px;
 }
 
 .xpContainer {
@@ -102,7 +108,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background-color: white;
+    background: none;
     margin-top: 10px;
     border-radius: 5px;
     cursor: pointer;
@@ -118,10 +124,37 @@
 }
 
 .footerMenu {
-    width: 80%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
     padding: 10px 0;
     font-size: 14px;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .profile {
+        width: 70%;
+    }
+
+    .menu {
+        width: 80%;
+    }
+
+    .menuItem {
+        padding: 20px;
+    }
+
+    .footerMenu {
+        width: 70%;
+    }
+
+    .footerMenu p {
+        font-size: 16px;
+    }
 }

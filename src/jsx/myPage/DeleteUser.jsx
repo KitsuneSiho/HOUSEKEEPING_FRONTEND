@@ -22,7 +22,7 @@ const DeleteUser = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
                 <h2>회원탈퇴</h2>
             </div>
             <div className={styles.deleteBox}>

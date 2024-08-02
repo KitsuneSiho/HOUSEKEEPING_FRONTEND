@@ -17,7 +17,7 @@ const WasteTipWrite = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/wasteTip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/wasteTip')} />
                 <h2>폐기물 Tip</h2>
             </div>
 

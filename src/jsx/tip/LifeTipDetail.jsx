@@ -21,7 +21,7 @@ const LifeTipDetail = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={goToList} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={goToList} />
                 <h2>생활 Tip</h2>
             </div>
 

@@ -9,7 +9,7 @@ const RecommendRecipe = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="/lib/back.svg" alt="back" onClick={() => navigate('/searchRecipe')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/searchRecipe')} />
                 <h2>추천 레시피</h2>
             </div>
             <div className={styles.recipeImg}>
