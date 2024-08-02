@@ -56,6 +56,7 @@
     margin-top: 5%;
     display: flex;
     justify-content: center;
+
 }
 
 .roomDesign {
@@ -65,11 +66,11 @@
     margin-top: 5%;
 }
 
-.roomDesign .myRoom {
+.roomDesign .roomView {
     width: 85%;
-    height: auto;
     margin: 0;
     padding: 0;
+    height: 350px;
 }
 
 .furniture {

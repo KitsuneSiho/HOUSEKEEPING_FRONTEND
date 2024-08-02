@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/chat/chatRoom.module.css';
 
-const ChatRoom = () => {
+const ChatRoom123 = () => {
     const navigate = useNavigate();
     const messages = [
         { id: 1, type: 'received', text: '잠은 죽어서 자라', time: '오전 10:16' },
@@ -44,4 +44,4 @@ const ChatRoom = () => {
     );
 };
 
-export default ChatRoom;
+export default ChatRoom123;

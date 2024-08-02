@@ -1,0 +1,177 @@
+/* 기본 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+/* 모달이 표시될 때 적용될 스타일 */
+.modal.show {
+    display: flex;
+}
+
+/* 모달 컨텐츠 스타일 */
+.invite-modal-content {
+    background-color: rgb(231, 206, 255);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    height: 60%;
+    animation: fadeIn 0.3s ease-in-out;
+    font-weight: bold;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+/* 모달 제목 스타일 */
+.invite-modal-title {
+    font-size: 1.5em;
+    color: #4b0082; /* 진한 인디고 */
+    margin-bottom: 20px;
+}
+
+/* 모달 본문 스타일 */
+.invite-modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 20px;
+    height: 70%;
+}
+
+.title-area {
+}
+
+.buttons-area {
+
+}
+
+.area-title {
+    margin: 0.5em 0;
+}
+
+.invited-friends-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    width: 80%;
+    height: 50%;
+    border-radius: 10px;
+    overflow-y: auto; /* 스크롤바 추가 */
+    scrollbar-width: thin; /* 파이어폭스용 */
+    scrollbar-color: #c5f1ff transparent;
+    transition: scrollbar-color 0.3s; /* 트랜지션 추가 */
+}
+
+.invite-friends-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    width: 80%;
+    height: 50%;
+    border-radius: 10px;
+    overflow-y: auto; /* 스크롤바 추가 */
+    scrollbar-width: thin; /* 파이어폭스용 */
+    scrollbar-color: #c5f1ff transparent;
+    transition: scrollbar-color 0.3s; /* 트랜지션 추가 */
+}
+
+.user-element {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.5em;
+}
+
+.user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 10px;
+}
+
+.user-nickname {
+    width: 80%;
+    text-align: left;
+}
+
+.invite-checkbox {
+    position: relative;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.invite-friends-area.scrolling,
+.invited-friends-area.scrolling {
+    scrollbar-color: #c5f1ff transparent; /* 스크롤 시 색상 변경 */
+    animation: none;
+}
+
+.invite-friends-area::-webkit-scrollbar
+.invited-friends-area::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+.invite-friends-area::-webkit-scrollbar-track
+.invited-friends-area::-webkit-scrollbar-track {
+    background: transparent; /* 스크롤바 트랙 배경색 */
+}
+
+.invite-friends-area::-webkit-scrollbar-thumb
+.invited-friends-area::-webkit-scrollbar-thumb {
+    background-color: transparent; /* 기본 색상은 투명 */
+    border-radius: 20px; /* 스크롤바 둥글게 */
+    border: 2px solid transparent; /* 스크롤바 주위 공간 */
+    background-clip: content-box; /* 스크롤바 색상만 보이게 */
+    transition: background-color 0.3s, opacity 1s; /* 트랜지션 추가 */
+    animation: fadeOutScrollbar 2s ease-out 3s forwards; /* 페이드아웃 애니메이션 조정 */
+}
+
+.invite-friends-area.scrolling::-webkit-scrollbar-thumb
+.invited-friends-area.scrolling::-webkit-scrollbar-thumb {
+    background-color: #c5f1ff; /* 스크롤 시 색상 변경 */
+}
+
+/* 닫기 버튼 스타일 */
+.close-button {
+    background-color:  #8a2be2;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+    background-color: #7a1bbd;
+}
+
+/* 키프레임 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import styles from '../../css/first/firstRoomDesign.module.css';
 
-const FirstToiletRoom = () => {
+const RoomModel = () => {
     const navigate = useNavigate();
     const mountRef = useRef(null);
     const sceneRef = useRef(new THREE.Scene());
@@ -84,12 +84,6 @@ const FirstToiletRoom = () => {
         wallBack.name = 'backWall'; // Naming the wall
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
-
-        // 로컬 스토리지에서 저장된 가구 위치 불러오기
-        const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
-        savedFurniture.forEach(item => {
-            loadFurniture(item.path, item.position, item.rotation, item.scale);
-        });
 
         const animate = () => {
             requestAnimationFrame(animate);
@@ -221,53 +215,38 @@ const FirstToiletRoom = () => {
         setShowModal(false);
     };
 
-    const saveFurnitureState = () => {
-        const furnitureState = [];
-        sceneRef.current.children.forEach(child => {
-            if (child.type === 'Group' && child.children[0] && child.children[0].type === 'Scene') {
-                furnitureState.push({
-                    path: child.children[0].userData.path,
-                    position: child.position,
-                    rotation: child.rotation.y,
-                    scale: child.scale.x
-                });
-            }
-        });
-        localStorage.setItem('furniture', JSON.stringify(furnitureState));
-    };
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
                     src="public/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/firstLivingRoom')}
+                    onClick={() => navigate('/firstLogin')}
                 />
-                <h2>내 화장실 설정</h2>
+                <h2>내 방 설정</h2>
             </div>
             <div ref={mountRef} className={styles.roomDesign} onClick={handleFurnitureSelection}></div>
             <div className={styles.furniture}>
                 <div className={styles.furnitureCategories}>
-                    <p onClick={() => handleCategoryClick('wallFloor')}>벽</p>
-                    <p onClick={() => handleCategoryClick('desk')}>책상</p>
-                    <p onClick={() => handleCategoryClick('bed')}>침대</p>
-                    <p onClick={() => handleCategoryClick('sofa')}>소파</p>
-                    <p onClick={() => handleCategoryClick('closet')}>옷장</p>
-                    <p onClick={() => handleCategoryClick('chair')}>의자</p>
-                    <p onClick={() => handleCategoryClick('pocketmon')}>포켓몬</p>
-                    <p onClick={() => handleCategoryClick('etc')}>기타</p>
+                    <p onClick={() => handleCategoryClick('WALLFLOOR')}>벽&바닥</p>
+                    <p onClick={() => handleCategoryClick('DESK')}>책상</p>
+                    <p onClick={() => handleCategoryClick('BED')}>침대</p>
+                    <p onClick={() => handleCategoryClick('SOFA')}>소파</p>
+                    <p onClick={() => handleCategoryClick('CLOSET')}>옷장</p>
+                    <p onClick={() => handleCategoryClick('CHAIR')}>의자</p>
+                    <p onClick={() => handleCategoryClick('POCKETMON')}>포켓몬</p>
+                    <p onClick={() => handleCategoryClick('ETC')}>기타</p>
                 </div>
                 {activeCategory && (
                     <div className={styles.furnitureAddButton}>
-                        {activeCategory === 'wallFloor' && (
+                        {activeCategory === 'WALLFLOOR' && (
                             <>
                                 <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
                                 <button onClick={() => openColorModal('backWall')}>오른쪽 벽</button>
                                 <button onClick={() => openColorModal('floor')}>바닥</button>
                             </>
                         )}
-                        {activeCategory === 'desk' && (
+                        {activeCategory === 'DESK' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/책상1.glb')}>책상1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/책상2.glb')}>책상2</button>
@@ -276,7 +255,7 @@ const FirstToiletRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/책상5.glb')}>책상5</button>
                             </>
                         )}
-                        {activeCategory === 'bed' && (
+                        {activeCategory === 'BED' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/침대1.glb')}>침대1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/침대2.glb')}>침대2</button>
@@ -285,7 +264,7 @@ const FirstToiletRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/침대5.glb')}>침대5</button>
                             </>
                         )}
-                        {activeCategory === 'sofa' && (
+                        {activeCategory === 'SOFA' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/소파1.glb')}>소파1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/소파2.glb')}>소파2</button>
@@ -295,13 +274,13 @@ const FirstToiletRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/소파6.glb')}>소파6</button>
                             </>
                         )}
-                        {activeCategory === 'closet' && (
+                        {activeCategory === 'CLOSET' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/옷장1.glb')}>옷장1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/옷장2.glb')}>옷장2</button>
                             </>
                         )}
-                        {activeCategory === 'chair' && (
+                        {activeCategory === 'CHAIR' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/의자1.glb')}>의자1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/의자2.glb')}>의자2</button>
@@ -309,16 +288,7 @@ const FirstToiletRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/의자4.glb')}>의자4</button>
                             </>
                         )}
-                        {activeCategory === 'etc' && (
-                            <>
-                                <button onClick={() => loadFurniture('/public/furniture/게시판.glb')}>게시판</button>
-                                <button onClick={() => loadFurniture('/public/furniture/서랍장1.glb')}>서랍장1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문1.glb')}>문1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문2.glb')}>문2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문4.glb')}>문3</button>
-                            </>
-                        )}
-                        {activeCategory === 'pocketmon' && (
+                        {activeCategory === 'POCKETMON' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/피카츄.glb')}>피카츄</button>
                                 <button onClick={() => loadFurniture('/public/furniture/폴리곤.glb')}>폴리곤</button>
@@ -331,6 +301,15 @@ const FirstToiletRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/꼬지모.glb')}>꼬지모</button>
                                 <button onClick={() => loadFurniture('/public/furniture/뮤.glb')}>뮤</button>
                                 <button onClick={() => loadFurniture('/public/furniture/몬스터볼.glb')}>몬스터볼</button>
+                            </>
+                        )}
+                        {activeCategory === 'ETC' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/게시판.glb')}>게시판</button>
+                                <button onClick={() => loadFurniture('/public/furniture/서랍장1.glb')}>서랍장1</button>
+                                <button onClick={() => loadFurniture('/public/furniture/문1.glb')}>문1</button>
+                                <button onClick={() => loadFurniture('/public/furniture/문2.glb')}>문2</button>
+                                <button onClick={() => loadFurniture('/public/furniture/문3.glb')}>문3</button>
                             </>
                         )}
                     </div>
@@ -441,10 +420,7 @@ const FirstToiletRoom = () => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => {
-                        saveFurnitureState(); // 상태 저장
-                        navigate('/MainPage');
-                    }}
+                    onClick={() => navigate('/firstLivingRoom')}
                 >
                     다음
                 </button>
@@ -453,5 +429,4 @@ const FirstToiletRoom = () => {
     );
 };
 
-export default FirstToiletRoom;
-
+export default RoomModel;
