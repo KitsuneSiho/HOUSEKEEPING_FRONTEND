@@ -31,23 +31,27 @@ const MyPage = () => {
             <div className={styles.menu}>
                 <div className={styles.menuItem} onClick={() => navigate('/myInfo')}>
                     <p>내 정보</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
+                    <img src="public/lib/front.svg" alt="화살표"/>
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate('/friendList')}>
                     <p>친구 관리</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
+                    <img src="public/lib/front.svg" alt="화살표"/>
+                </div>
+                <div className={styles.menuItem} onClick={() => navigate('/friendRequest')}>
+                    <p>친구 요청</p>
+                    <img src="public/lib/front.svg" alt="화살표"/>
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate('/guestBook')}>
                     <p>방명록 보관함</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
+                    <img src="public/lib/front.svg" alt="화살표"/>
                 </div>
                 <div className={styles.menuItem}>
                     <p>내 방 수정</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
+                    <img src="public/lib/front.svg" alt="화살표"/>
                 </div>
                 <div className={styles.menuItem} onClick={() => navigate('/setting')}>
                     <p>설정</p>
-                    <img src="public/lib/front.svg" alt="화살표" />
+                    <img src="public/lib/front.svg" alt="화살표"/>
                 </div>
             </div>
             <div className={styles.footerMenu}>

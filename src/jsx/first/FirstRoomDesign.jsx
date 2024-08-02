@@ -14,12 +14,12 @@ const FirstRoomDesign = () => {
     const controlsRef = useRef(null);
     const [selectedFurniture, setSelectedFurniture] = useState(null);
     const [position, setPosition] = useState({ x: 0, y: 0, z: 0 });
-    const [rotation, setRotation] = useState(0);  // Only Y-axis rotation
+    const [rotation, setRotation] = useState(0);  // Y축 회전만 적용
     const [scale, setScale] = useState(1);
     const [activeCategory, setActiveCategory] = useState(null);
     const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState('furniture'); // 'furniture' or 'color'
-    const [selectedObject, setSelectedObject] = useState(null); // Selected wall or floor for color change
+    const [modalType, setModalType] = useState('furniture'); // 'furniture' 또는 'color'
+    const [selectedObject, setSelectedObject] = useState(null); // 색상 변경을 위한 선택된 벽 또는 바닥
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -60,30 +60,35 @@ const FirstRoomDesign = () => {
         directionalLight.position.set(10, 10, 10);
         scene.add(directionalLight);
 
-        // Floor setup
+        // 바닥 설정
         const floorGeometry = new THREE.BoxGeometry(20, 1, 20);
         const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.name = 'floor'; // Naming the floor
+        floor.name = 'floor'; // 바닥 이름 지정
         floor.position.set(0, 0, 0);
         scene.add(floor);
 
-        // Left wall setup
+        // 왼쪽 벽 설정
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
         const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
-        wallLeft.name = 'leftWall'; // Naming the wall
+        wallLeft.name = 'leftWall'; // 벽 이름 지정
         wallLeft.position.set(-9.5, 7.5, 0);
         scene.add(wallLeft);
 
-
-        // Back wall setup
+        // 뒤쪽 벽 설정
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
         const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
-        wallBack.name = 'backWall'; // Naming the wall
+        wallBack.name = 'backWall'; // 벽 이름 지정
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
+
+        // 로컬 스토리지에서 저장된 가구 위치 불러오기
+        const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
+        savedFurniture.forEach(item => {
+            loadFurniture(item.path, item.position, item.rotation, item.scale);
+        });
 
         const animate = () => {
             requestAnimationFrame(animate);
@@ -98,42 +103,45 @@ const FirstRoomDesign = () => {
         };
     }, []);
 
-    const loadFurniture = (path) => {
+    const loadFurniture = (path, position = { x: 0, y: 0, z: 0 }, rotation = 0, scale = 1) => {
         const loader = new GLTFLoader();
         loader.load(path, (gltf) => {
             const model = gltf.scene;
 
-            // Compute bounding box to determine size
+            // 크기를 결정하기 위한 경계 상자 계산
             const box = new THREE.Box3().setFromObject(model);
             const size = new THREE.Vector3();
             box.getSize(size);
 
-            // Set initial scale based on model size, adjust as needed
+            // 모델 크기를 기반으로 초기 스케일 설정, 필요에 따라 조정
             const initialScale = Math.min(4 / size.x, 4 / size.y, 4 / size.z);
-            model.scale.set(initialScale, initialScale, initialScale);
+            model.scale.set(initialScale * scale, initialScale * scale, initialScale * scale);
 
-            // Center the model
+            // 모델 중앙 설정
             const center = box.getCenter(new THREE.Vector3());
             model.position.sub(center);
             model.position.y = -(box.min.y * model.scale.y);
 
             const group = new THREE.Group();
             group.add(model);
+            group.position.set(position.x, position.y, position.z);
+            group.rotation.y = rotation;
+            group.scale.set(scale, scale, scale);
             sceneRef.current.add(group);
 
             setSelectedFurniture(group);
             setPosition({ x: group.position.x, y: group.position.y, z: group.position.z });
-            setRotation(0); // Reset rotation on Y-axis
-            setScale(1); // Reset scale
+            setRotation(rotation); // Y축 회전 초기화
+            setScale(scale); // 크기 초기화
             setModalType('furniture');
             setShowModal(true);
         }, undefined, (error) => {
-            console.error('Error loading model:', error);
+            console.error('모델 로드 중 오류 발생:', error);
         });
     };
 
     const updatePosition = (axis, value) => {
-        // Ensure the position does not exceed the boundaries
+        // 위치가 경계를 넘지 않도록 보장
         const newValue = Math.max(-10, Math.min(10, parseFloat(value)));
         setPosition((prev) => ({ ...prev, [axis]: newValue }));
     };
@@ -149,7 +157,7 @@ const FirstRoomDesign = () => {
     useEffect(() => {
         if (selectedFurniture) {
             selectedFurniture.position.set(position.x, position.y, position.z);
-            selectedFurniture.rotation.y = rotation; // Only Y-axis rotation
+            selectedFurniture.rotation.y = rotation; // Y축 회전만 적용
             selectedFurniture.scale.set(scale, scale, scale);
         }
     }, [position, rotation, scale, selectedFurniture]);
@@ -213,6 +221,21 @@ const FirstRoomDesign = () => {
 
     const closeModal = () => {
         setShowModal(false);
+    };
+
+    const saveFurnitureState = () => {
+        const furnitureState = [];
+        sceneRef.current.children.forEach(child => {
+            if (child.type === 'Group' && child.children[0] && child.children[0].type === 'Scene') {
+                furnitureState.push({
+                    path: child.children[0].userData.path,
+                    position: child.position,
+                    rotation: child.rotation.y,
+                    scale: child.scale.x
+                });
+            }
+        });
+        localStorage.setItem('furniture', JSON.stringify(furnitureState));
     };
 
     return (
@@ -420,7 +443,10 @@ const FirstRoomDesign = () => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => navigate('/firstLivingRoom')}
+                    onClick={() => {
+                        saveFurnitureState(); // 상태 저장
+                        navigate('/firstLivingRoom');
+                    }}
                 >
                     다음
                 </button>
@@ -430,4 +456,3 @@ const FirstRoomDesign = () => {
 };
 
 export default FirstRoomDesign;
-

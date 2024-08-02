@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/main/mainToiletRoom.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import RoomView from '../../jsx/room/RoomView.jsx';
 
 const MainToiletRoom = () => {
     const navigate = useNavigate();
@@ -41,7 +42,9 @@ const MainToiletRoom = () => {
             </div>
             <div className={styles.roomDesign}>
                 <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainLivingRoom')}/>
-                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방"/>
+                <div className={styles.roomView}>
+                    <RoomView/>
+                </div>
                 <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainPage')}/>
             </div>
             <div className={styles.guestBook}>

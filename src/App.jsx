@@ -49,6 +49,8 @@ function App() {
 
                         {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
                         <Route path="/test/modal" element={<ModalExample/>}/>
+
+                        <Route path="/FriendRequest" element={<FriendRequest/>}/> {/* 친구요청 */}
                     </Routes>
                 </Router>
             </ModalProvider>
