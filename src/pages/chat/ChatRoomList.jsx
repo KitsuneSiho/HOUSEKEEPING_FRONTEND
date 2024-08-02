@@ -4,10 +4,10 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js"
-import ChatRoomElement from "./elements/ChatRoomElement.jsx";
+import ChatRoom from "../../components/chat/ChatRoom.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
-import FriendTop from "../friend/FriendTop.jsx";
-import {useSocket} from "../context/SocketContext.jsx";
+import FriendTop from "../../components/friend/FriendTop.jsx";
+import {useSocket} from "../../components/context/SocketContext.jsx";
 
 // 채팅 방 리스르 출력
 const ChatRoomList = () => {
@@ -106,7 +106,7 @@ const ChatRoomList = () => {
                 {isReady && chatRooms.map((chatRoom, index) => (
                     <div key={index} className={styles.chatItem}>
                         {chatRoom.chatRoomType === "SINGLE" || chatRoom.chatRoomType === "GROUP" ? (
-                            <ChatRoomElement chatRoom={chatRoom} timeFormatter={timeFormatter}/>
+                            <ChatRoom chatRoom={chatRoom} timeFormatter={timeFormatter}/>
                         ) : (
                             <>
                                 {() => console.log("chat room type error: " + chatRoom.chatRoomType)}

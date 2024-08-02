@@ -4,8 +4,8 @@ import { BACK_URL } from "../../Constraints.js";
 import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axios from "axios";
-import FriendElement from "./elements/FriendElement.jsx";
-import { useModal } from "../context/ModalContext.jsx";
+import ChatFriend from "../../components/chat/ChatFriend.jsx";
+import { useModal } from "../../components/context/ModalContext.jsx";
 
 // 채팅 방 생성
 const CreateChat = () => {
@@ -101,8 +101,8 @@ const CreateChat = () => {
             <div className={styles.friendList}>
                 {/* 준비 완료되기 전에는 친구 목록을 출력 안함 */}
                 {isReady && friends.map((friend, index) => (
-                    <FriendElement key={index} friend={friend} selectedFriends={selectedFriends}
-                        handleCheckboxChange={handleCheckboxChange} setSelectedNickname={setSelectedNickname} />
+                    <ChatFriend key={index} friend={friend} selectedFriends={selectedFriends}
+                                handleCheckboxChange={handleCheckboxChange} setSelectedNickname={setSelectedNickname} />
                 ))}
             </div>
             <Footer />

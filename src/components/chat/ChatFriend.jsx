@@ -1,8 +1,8 @@
-import styles from "../../../css/chat/createChat.module.css";
+import styles from "../../css/chat/createChat.module.css";
 import PropTypes from "prop-types";
 
 // 친구 element
-const FriendElement = ({index, friend, selectedFriends, handleCheckboxChange, setSelectedNickname}) => {
+const ChatFriend = ({index, friend, selectedFriends, handleCheckboxChange, setSelectedNickname}) => {
 
     return (
         <>
@@ -25,7 +25,7 @@ const FriendElement = ({index, friend, selectedFriends, handleCheckboxChange, se
     )
 }
 
-FriendElement.propTypes = {
+ChatFriend.propTypes = {
     index: PropTypes.number,
     friend: PropTypes.object,
     selectedFriends: PropTypes.arrayOf(PropTypes.number),
@@ -33,4 +33,4 @@ FriendElement.propTypes = {
     setSelectedNickname: PropTypes.func,
 }
 
-export default FriendElement
+export default ChatFriend

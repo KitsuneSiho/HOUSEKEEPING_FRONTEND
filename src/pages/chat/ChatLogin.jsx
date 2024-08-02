@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useSocket} from "../context/SocketContext.jsx";
+import {useSocket} from "../../components/context/SocketContext.jsx";
 
 // 회원 번호와 닉네임을 입력해서 로그인. 임시로 만든거라서 나중에 삭제 예정
 const ChatLogin = () => {

@@ -1,9 +1,9 @@
-import styles from "../../../css/chat/chatRoom.module.css";
+import styles from "../../css/chat/chatRoom.module.css";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 
 // 메시지 element
-const MessageElement = ({message, userId, scrollToBottom}) => {
+const Message = ({message, userId, scrollToBottom}) => {
 
     const [messageType, setMessageType] = useState("");
     const [isReady, setIsReady] = useState(false);
@@ -81,10 +81,10 @@ const MessageElement = ({message, userId, scrollToBottom}) => {
     );
 }
 
-MessageElement.propTypes = {
+Message.propTypes = {
     message: PropTypes.object.isRequired,
     userId: PropTypes.string.isRequired,
     scrollToBottom: PropTypes.func.isRequired,
 }
 
-export default MessageElement;
+export default Message;
