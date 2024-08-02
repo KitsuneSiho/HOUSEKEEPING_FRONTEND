@@ -2,7 +2,6 @@ import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import Home from "./components/Home.jsx";
 import ModalExample from "./components/test/ModalExample.jsx";
 import {ModalProvider} from "./components/context/ModalContext.jsx";
-import {SocketProvider} from "./components/context/SocketContext.jsx";
 import FirstMain from "./jsx/first/FirstMain.jsx";
 import Login from "./jsx/first/Login.jsx";
 import FirstLogin from "./jsx/first/FirstLogin.jsx";
@@ -17,9 +16,6 @@ import AddFriend from "./jsx/main/AddFriend.jsx";
 import FriendRoom from "./jsx/main/FriendRoom.jsx";
 import VisitorBoard from "./jsx/main/VisitorBoard.jsx";
 import Calendar from "./jsx/calendar/Calendar.jsx";
-import ChatRoomList from "./components/chat/ChatRoomList.jsx";
-import ChatRoom from "./components/chat/ChatRoom.jsx";
-import CreateChat from "./components/chat/CreateChat.jsx";
 import LivingRoom from "./jsx/livingRoom/LivingRoom.jsx";
 import UploadFood from "./jsx/livingRoom/UploadFood.jsx";
 import UploadFoodListCheck from "./jsx/livingRoom/UploadFoodListCheck.jsx";
@@ -52,83 +48,71 @@ import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
 import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
 import TopList from "./jsx/clothes/TopList.jsx";
 import ChatLogin from "./components/chat/ChatLogin.jsx";
+import ChatRouter from "./router/ChatRouter.jsx";
 
 function App() {
 
     return (
-        <ModalProvider>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/Footer" element={<Footer/>}/> {/* 하단바 */}
-                    <Route path="/FirstMain" element={<FirstMain/>}/> {/* HouseKeeping로고만 있는 첫 화면 */}
-                    <Route path="/Login" element={<Login/>}/> {/* 로그인 화면 */}
-                    <Route path="/FirstLogin" element={<FirstLogin/>}/> {/* 첫 로그인시 추가 정보 입력창 */}
-                    <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/> {/* 첫 로그인시 방 디자인 화면 */}
-                    <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/> {/* 첫 로그인시 주방 디자인 화면 */}
-                    <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/> {/* 첫 로그인시 화장실 디자인 화면 */}
-                    <Route path="/MainPage" element={<MainPage/>}/> {/* 메인화면 */}
-                    <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/> {/* 메인 주방 */}
-                    <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/> {/* 메인 화장실 */}
-                    <Route path="/AddFriend" element={<AddFriend/>}/> {/* 친구 추가 화면 */}
-                    <Route path="/FriendRoom" element={<FriendRoom/>}/> {/* 친구방 화면 */}
-                    <Route path="/VisitorBoard" element={<VisitorBoard/>}/> {/* 친구방 방명록 */}
-                    <Route path="/Calendar" element={<Calendar/>}/> {/* 달력 */}
-                    <Route path="/LivingRoom" element={<LivingRoom/>}/> {/* 냉장고 메인 화면 */}
-                    <Route path="/UploadFood" element={<UploadFood/>}/> {/* 냉장고 재료 등록(카메라만있음) */}
-                    <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/> {/* 냉장고 재료 등록 확인 화면 */}
-                    <Route path="/SearchRecipe" element={<SearchRecipe/>}/> {/* 레시피 검색 */}
-                    <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/> {/* 레시피 추천(검색한거 결과나오는화면 */}
-                    <Route path="/FoodList" element={<FoodList/>}/> {/* 재료 목록(카테고리별로 파일 추가 만들어야됨) */}
-                    <Route path="/Routine" element={<Routine/>}/> {/* 루틴 메인 화면 */}
-                    <Route path="/RoutineEdit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
-                    <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
-                    <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
-                    <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
-                    <Route path="/Tip" element={<Tip/>}/> {/* 팁 메인 화면 */}
-                    <Route path="/RoomeTip" element={<RoomeTip/>}/> {/* 루미`s 팁 */}
-                    <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
-                    <Route path="/WasteTip" element={<WasteTip/>}/> {/* 폐기물 팁 */}
-                    <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
-                    <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/> {/* 폐기물 팁 게시글 작성 내용 */}
-                    <Route path="/LifeTip" element={<LifeTip/>}/> {/* 일상 팁 */}
-                    <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
-                    <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
-                    <Route path="/MyPage" element={<MyPage/>}/> {/* 마이페이지 */}
-                    <Route path="/MyInfo" element={<MyInfo/>}/> {/* 내정보  */}
-                    <Route path="/FriendList" element={<FriendList/>}/> {/* 친구관리 */}
-                    <Route path="/GuestBook" element={<GuestBook/>}/> {/* 방명록 보관함 */}
-                    <Route path="/Setting" element={<Setting/>}/> {/* 설정 */}
-                    <Route path="/DeleteUser" element={<DeleteUser/>}/> {/* 회원탈퇴 */}
-                    <Route path="/ClosetRoom" element={<ClosetRoom/>}/> {/* 옷방 메인 화면 */}
-                    <Route path="/UploadCloset" element={<UploadCloset/>}/> {/* 옷 등록(카메라만있음) */}
-                    <Route path="/UploadClosetCheck" element={<UploadClosetCheck/>}/> {/* 옷 등록 확인 */}
-                    <Route path="/RecommendCloset" element={<RecommendCloset/>}/> {/* 옷 추천 */}
-                    <Route path="/TopList" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+        <>
+            <ModalProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/Footer" element={<Footer/>}/> {/* 하단바 */}
+                        <Route path="/FirstMain" element={<FirstMain/>}/> {/* HouseKeeping로고만 있는 첫 화면 */}
+                        <Route path="/Login" element={<Login/>}/> {/* 로그인 화면 */}
+                        <Route path="/FirstLogin" element={<FirstLogin/>}/> {/* 첫 로그인시 추가 정보 입력창 */}
+                        <Route path="/FirstRoomDesign" element={<FirstRoomDesign/>}/> {/* 첫 로그인시 방 디자인 화면 */}
+                        <Route path="/FirstLivingRoom" element={<FirstLivingRoom/>}/> {/* 첫 로그인시 주방 디자인 화면 */}
+                        <Route path="/FirstToiletRoom" element={<FirstToiletRoom/>}/> {/* 첫 로그인시 화장실 디자인 화면 */}
+                        <Route path="/MainPage" element={<MainPage/>}/> {/* 메인화면 */}
+                        <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/> {/* 메인 주방 */}
+                        <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/> {/* 메인 화장실 */}
+                        <Route path="/AddFriend" element={<AddFriend/>}/> {/* 친구 추가 화면 */}
+                        <Route path="/FriendRoom" element={<FriendRoom/>}/> {/* 친구방 화면 */}
+                        <Route path="/VisitorBoard" element={<VisitorBoard/>}/> {/* 친구방 방명록 */}
+                        <Route path="/Calendar" element={<Calendar/>}/> {/* 달력 */}
+                        <Route path="/LivingRoom" element={<LivingRoom/>}/> {/* 냉장고 메인 화면 */}
+                        <Route path="/UploadFood" element={<UploadFood/>}/> {/* 냉장고 재료 등록(카메라만있음) */}
+                        <Route path="/UploadFoodListCheck" element={<UploadFoodListCheck/>}/> {/* 냉장고 재료 등록 확인 화면 */}
+                        <Route path="/SearchRecipe" element={<SearchRecipe/>}/> {/* 레시피 검색 */}
+                        <Route path="/RecommendRecipe" element={<RecommendRecipe/>}/> {/* 레시피 추천(검색한거 결과나오는화면 */}
+                        <Route path="/FoodList" element={<FoodList/>}/> {/* 재료 목록(카테고리별로 파일 추가 만들어야됨) */}
+                        <Route path="/Routine" element={<Routine/>}/> {/* 루틴 메인 화면 */}
+                        <Route path="/RoutineEdit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
+                        <Route path="/DailyRoutineInfo" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
+                        <Route path="/WeeklyRoutineInfo" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
+                        <Route path="/MonthlyRoutineInfo" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
+                        <Route path="/Tip" element={<Tip/>}/> {/* 팁 메인 화면 */}
+                        <Route path="/RoomeTip" element={<RoomeTip/>}/> {/* 루미`s 팁 */}
+                        <Route path="/RoomeTipDetail" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
+                        <Route path="/WasteTip" element={<WasteTip/>}/> {/* 폐기물 팁 */}
+                        <Route path="/WasteTipDetail" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
+                        <Route path="/WasteTipWrite" element={<WasteTipWrite/>}/> {/* 폐기물 팁 게시글 작성 내용 */}
+                        <Route path="/LifeTip" element={<LifeTip/>}/> {/* 일상 팁 */}
+                        <Route path="/LifeTipDetail" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
+                        <Route path="/LifeTipWrite" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/MyPage" element={<MyPage/>}/> {/* 마이페이지 */}
+                        <Route path="/MyInfo" element={<MyInfo/>}/> {/* 내정보  */}
+                        <Route path="/FriendList" element={<FriendList/>}/> {/* 친구관리 */}
+                        <Route path="/GuestBook" element={<GuestBook/>}/> {/* 방명록 보관함 */}
+                        <Route path="/Setting" element={<Setting/>}/> {/* 설정 */}
+                        <Route path="/DeleteUser" element={<DeleteUser/>}/> {/* 회원탈퇴 */}
+                        <Route path="/ClosetRoom" element={<ClosetRoom/>}/> {/* 옷방 메인 화면 */}
+                        <Route path="/UploadCloset" element={<UploadCloset/>}/> {/* 옷 등록(카메라만있음) */}
+                        <Route path="/UploadClosetCheck" element={<UploadClosetCheck/>}/> {/* 옷 등록 확인 */}
+                        <Route path="/RecommendCloset" element={<RecommendCloset/>}/> {/* 옷 추천 */}
+                        <Route path="/TopList" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
 
-                    {/* 채팅 */}
-                    <Route path="/chatlogin" element={
-                        <SocketProvider>
-                            <ChatLogin/>
-                        </SocketProvider>}/>
-                    <Route path="/chat" element={
-                        <SocketProvider>
-                            <ChatRoomList/>
-                        </SocketProvider>}/>
-                    <Route path="/chat/:chatRoomId" element={
-                        <SocketProvider>
-                            <ChatRoom/>
-                        </SocketProvider>}/>
-                    <Route path="/chat/create" element={
-                        <SocketProvider>
-                            <CreateChat/>
-                        </SocketProvider>}/>
+                        {/* 채팅 라우터 */}
+                        <Route path="/chat/*" element={<ChatRouter/>}/>
 
-                    {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
-                    <Route path="/test/modal" element={<ModalExample/>}/>
-                </Routes>
-            </Router>
-        </ModalProvider>
+                        {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
+                        <Route path="/test/modal" element={<ModalExample/>}/>
+                    </Routes>
+                </Router>
+            </ModalProvider>
+        </>
     )
 }
 
