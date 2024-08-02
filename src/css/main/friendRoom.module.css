@@ -1,8 +1,6 @@
-/* FriendRoom.module.css */
-
 .container {
     padding: 0;
-    margin: 10% 0 0;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 10% 0;
+    margin: 10px 0;
     position: relative;
 }
 
@@ -26,17 +24,28 @@
 
 .header h2 {
     margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .dirtyBar {
     margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .roomDesign {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 5%;
+    position: relative;
+}
+
+.roomDesign img {
+    cursor: pointer;
 }
 
 .roomDesign .myRoom {
@@ -48,6 +57,7 @@
 
 .visitorBoard {
     width: 80%;
+    margin-top: 5%;
 }
 
 .visitorBoard button {
@@ -55,4 +65,25 @@
     height: 200px;
     background-color: white;
     border: 10px solid burlywood;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .container {
+        padding: 20px;
+    }
+
+    .header h2 {
+        font-size: 2em;
+    }
+
+    .roomDesign .myRoom {
+        width: 70%;
+    }
+
+    .visitorBoard button {
+        height: 250px; /* 큰 화면에서 버튼 높이 증가 */
+    }
 }

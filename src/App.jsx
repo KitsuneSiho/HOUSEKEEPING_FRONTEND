@@ -1,4 +1,5 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
+import './font/font.css';
 import Home from "./components/Home.jsx";
 import ModalExample from "./components/test/ModalExample.jsx";
 import {ModalProvider} from "./components/context/ModalContext.jsx";
@@ -47,6 +48,7 @@ import UploadCloset from "./jsx/clothes/UploadCloset.jsx";
 import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
 import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
 import TopList from "./jsx/clothes/TopList.jsx";
+import MyGuestBook from "./jsx/main/MyGuestBook.jsx";
 import ChatLogin from "./components/chat/ChatLogin.jsx";
 import ChatRouter from "./router/ChatRouter.jsx";
 
@@ -68,6 +70,7 @@ function App() {
                         <Route path="/MainPage" element={<MainPage/>}/> {/* 메인화면 */}
                         <Route path="/MainLivingRoom" element={<MainLivingRoom/>}/> {/* 메인 주방 */}
                         <Route path="/MainToiletRoom" element={<MainToiletRoom/>}/> {/* 메인 화장실 */}
+                        <Route path="/MyGuestBook" element={<MyGuestBook/>}/> {/* 내방 방명록 */}
                         <Route path="/AddFriend" element={<AddFriend/>}/> {/* 친구 추가 화면 */}
                         <Route path="/FriendRoom" element={<FriendRoom/>}/> {/* 친구방 화면 */}
                         <Route path="/VisitorBoard" element={<VisitorBoard/>}/> {/* 친구방 방명록 */}

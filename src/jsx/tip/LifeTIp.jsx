@@ -14,9 +14,9 @@ const LifeTip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>생활 Tip</h2>
-                <img src="public/lib/검색.svg" alt="search" id="search-icon" onClick={toggleSearchBar} />
+                <img className={styles.searchIcon} src="public/lib/검색.svg" alt="search" id="search-icon" onClick={toggleSearchBar} />
             </div>
             <div className={`${styles.searchBar} ${searchVisible ? styles.visible : ''}`} id="search-bar">
                 <input type="text" placeholder="검색어를 입력하세요" id="search-input" />

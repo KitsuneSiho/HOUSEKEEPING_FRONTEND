@@ -1,8 +1,6 @@
-/* SearchRecipe.module.css */
-
 .container {
     padding: 0;
-    margin: 10% 0 0;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,8 +24,9 @@
 
 .header h2 {
     margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
-
 .searchForm {
     width: 90%;
     display: flex;
@@ -69,6 +68,7 @@
     padding: 5px;
     background: none;
     border: 2px solid black;
+    cursor: pointer;
 }
 
 .ingredients {
@@ -102,4 +102,23 @@
     color: black;
     cursor: pointer;
     background: none;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .searchForm {
+        width: 70%;
+    }
+
+    .formButtons button {
+        width: 30%;
+    }
+
+    .options, .ingredientsContainer {
+        gap: 15px;
+    }
+
+    .section {
+        margin-bottom: 25px;
+    }
 }

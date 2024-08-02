@@ -9,18 +9,8 @@ const RecommendCloset = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
                 <h2>Dress Room</h2>
-            </div>
-            <div className={styles.closetRoomHeader}>
-                <h3 onClick={() => navigate('/uploadCloset')}>
-                    등록하기
-                    <img src="public/lib/카메라.svg" alt="camera icon" />
-                </h3>
-                <h3 onClick={() => navigate('/recommendCloset')}>
-                    추천받기
-                    <img src="public/lib/따봉.svg" alt="thumbs up icon" />
-                </h3>
             </div>
             <div className={styles.weather}>
                 <p>날씨</p>

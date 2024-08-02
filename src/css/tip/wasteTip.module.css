@@ -1,7 +1,6 @@
 .container {
     padding: 0;
-    margin: 0;
-    margin-top: 10%;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -9,15 +8,31 @@
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .searchBar {
@@ -115,4 +130,59 @@
 
 .createButton img {
     margin-right: 10px;
+}
+
+/* 반응형 디자인 추가 */
+@media (min-width: 768px) {
+    .header, .postContainer {
+        width: 80%;
+    }
+
+    .searchBar {
+        width: 75%;
+    }
+
+    .sortOptions select {
+        padding: 7px;
+        font-size: 14px;
+    }
+
+    .postContent {
+        font-size: 18px;
+    }
+
+    .postInfo {
+        font-size: 16px;
+    }
+
+    .createButton {
+        padding: 12px 25px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header, .postContainer {
+        width: 70%;
+    }
+
+    .searchBar {
+        width: 80%;
+    }
+
+    .sortOptions select {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .postContent {
+        font-size: 20px;
+    }
+
+    .postInfo {
+        font-size: 18px;
+    }
+
+    .createButton {
+        padding: 15px 30px;
+    }
 }

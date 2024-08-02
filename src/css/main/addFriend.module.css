@@ -1,5 +1,6 @@
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -9,18 +10,29 @@
 .header {
     width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    box-sizing: border-box;
+    margin: 10px 0;
+    position: relative;
 }
 
-.header h2 {
-    margin: 0;
-}
-
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .searchBar {
@@ -69,6 +81,8 @@
     border: none;
     border-radius: 10px;
     margin-bottom: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .searchResultItem img {
@@ -86,6 +100,27 @@
 .searchResultItem button {
     border: none;
     background: none;
-    color: black;
+    color: #007bff;
     cursor: pointer;
+    font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 2em;
+    }
+
+    .searchResultItem img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .searchResultItem span {
+        font-size: 1.2em;
+    }
+
+    .searchResultItem button {
+        font-size: 1em;
+    }
 }

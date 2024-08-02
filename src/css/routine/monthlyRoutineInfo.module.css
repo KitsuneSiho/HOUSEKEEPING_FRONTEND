@@ -1,28 +1,46 @@
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
     font-family: Fre, sans-serif;
+    overflow: auto; /* Allow the body to scroll */
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.header h3 {
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5%;
 }
 
 .tabs {
     width: 90%;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .tab {
@@ -293,4 +311,65 @@
 .calendar td.selected {
     background-color: #000;
     color: #fff;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .header {
+        width: 80%;
+    }
+
+    .tabs {
+        width: 80%;
+    }
+
+    .routineContainer {
+        width: 80%;
+    }
+
+    .roomRoutine,
+    .livingRoomRoutine,
+    .toiletRoutine {
+        padding: 15px;
+    }
+
+    .roomRoutine .roomRoutineInfo ul,
+    .livingRoomRoutine .livingRoomRoutineInfo ul,
+    .toiletRoutine .toiletRoutineInfo ul {
+        max-height: calc(30px * 5);
+    }
+
+    .modalContent {
+        width: 60%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        width: 70%;
+    }
+
+    .tabs {
+        width: 70%;
+    }
+
+    .routineContainer {
+        width: 70%;
+    }
+
+    .roomRoutine,
+    .livingRoomRoutine,
+    .toiletRoutine {
+        padding: 20px;
+    }
+
+    .roomRoutine .roomRoutineInfo ul,
+    .livingRoomRoutine .livingRoomRoutineInfo ul,
+    .toiletRoutine .toiletRoutineInfo ul {
+        max-height: calc(30px * 6);
+    }
+
+    .modalContent {
+        width: 50%;
+    }
 }

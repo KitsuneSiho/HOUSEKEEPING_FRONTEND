@@ -1,8 +1,6 @@
-/* UploadFood.module.css */
-
 .container {
     padding: 0;
-    margin: 10% 0 0;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +24,8 @@
 
 .header h2 {
     margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .camera {
@@ -36,6 +36,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .cameraButton {
@@ -48,4 +49,22 @@
     height: 50px;
     background-color: white;
     border: 4px double black;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .camera {
+        width: 60%;
+        height: 400px;
+    }
+
+    .cameraButton button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .header {
+        width: 70%;
+    }
 }

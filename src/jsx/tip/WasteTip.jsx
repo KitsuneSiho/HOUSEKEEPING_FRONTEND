@@ -14,9 +14,9 @@ const WasteTip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>폐기물 Tip</h2>
-                <img
+                <img className={styles.searchIcon}
                     src="public/lib/검색.svg"
                     alt="search"
                     id="search-icon"

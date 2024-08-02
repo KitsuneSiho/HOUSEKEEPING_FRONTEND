@@ -73,9 +73,9 @@ const FoodList = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')} />
                 <h2>ALL</h2>
-                <img src="public/lib/검색.svg" alt="search" id={styles.searchIcon} onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)} />
+                <img src="public/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)} />
             </div>
 
             <div className={`${styles.searchBar}`} id="search-bar">

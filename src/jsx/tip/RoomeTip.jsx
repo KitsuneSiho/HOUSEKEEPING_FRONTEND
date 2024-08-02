@@ -14,9 +14,9 @@ const RoomeTip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>루미`s Tip</h2>
-                <img src="public/lib/검색.svg" alt="search" id={styles.searchIcon} onClick={toggleSearchBar} />
+                <img src="public/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={toggleSearchBar} />
             </div>
 
             <div className={`${styles.searchBar} ${isSearchVisible ? styles.visible : ''}`} id={styles.searchBar}>

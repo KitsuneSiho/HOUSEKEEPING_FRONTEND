@@ -1,9 +1,10 @@
 .container {
     padding: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -11,9 +12,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px 0;
     position: relative;
-    padding: 10px 0;
-    background-color: white;
 }
 
 .header img {
@@ -22,19 +22,29 @@
     cursor: pointer;
 }
 
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
 .profileImg {
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .profileImg img {
     display: block;
     margin: 0 auto;
+    width: 80px; /* 적당한 크기로 조정 */
+    height: 80px;
+    border-radius: 50%;
 }
 
 .information {
     width: 80%;
-    margin-bottom: 20px;
+    margin: 20px 0;
+    line-height: 4;
 }
 
 .inputContainer {
@@ -75,20 +85,40 @@
     transition: background-color 0.3s ease;
 }
 
-.submit .cancel {
-    background-color: #e0e0e0;
-    color: #555;
+.submit .cancel,
+.submit .next{
+    background: none;
+    color: black;
 }
 
-.submit .cancel:hover {
-    background-color: #ccc;
-}
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 1.8em;
+    }
 
-.submit .next {
-    background-color: #4caf50;
-    color: white;
-}
+    .profileImg img {
+        width: 120px; /* 큰 화면에서 크기 증가 */
+        height: 120px;
+    }
 
-.submit .next:hover {
-    background-color: #45a049;
+    .information {
+        width: 70%;
+    }
+
+    .submit {
+        width: 70%;
+    }
+
+    .inputContainer label {
+        font-size: 1.1em;
+    }
+
+    .inputContainer input {
+        font-size: 1.1em;
+    }
+
+    .submit button {
+        font-size: 1.1em;
+    }
 }

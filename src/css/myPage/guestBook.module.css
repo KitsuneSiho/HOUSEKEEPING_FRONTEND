@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -12,15 +12,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 10px 0;
     position: relative;
-    padding: 10px 0;
-    background-color: white;
 }
 
 .header img {
     position: absolute;
     left: 10px;
     cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .guestbookList {
@@ -32,9 +37,14 @@
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px;
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.guestbookItem:hover {
+    background-color: #f9f9f9;
 }
 
 .guestbookHeader {
@@ -67,4 +77,32 @@
     color: red;
     cursor: pointer;
     font-size: 12px;
+    transition: color 0.3s;
+}
+
+.guestbookDelete span:hover {
+    color: darkred;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 1.8em;
+    }
+
+    .guestbookItem {
+        padding: 20px;
+    }
+
+    .guestbookMessage {
+        font-size: 16px;
+    }
+
+    .guestbookHeader .date {
+        font-size: 14px;
+    }
+
+    .guestbookDelete span {
+        font-size: 14px;
+    }
 }
