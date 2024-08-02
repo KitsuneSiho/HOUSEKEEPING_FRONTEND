@@ -1,0 +1,126 @@
+.container {
+    padding: 0;
+    margin: 5% 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.header .back {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
+}
+
+.searchBar {
+    width: 90%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+}
+
+.searchBar.visible {
+    max-height: 50px;
+    opacity: 1;
+    padding: 5px 10px;
+}
+
+.searchBar input {
+    width: 85%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.searchBar img {
+    cursor: pointer;
+}
+
+.searchResults {
+    width: 90%;
+    margin-top: 20px;
+}
+
+.searchResultItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.searchResultItem img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.searchResultItem span {
+    flex-grow: 1;
+    font-size: 20px;
+}
+
+.searchResultItem button {
+    border: none;
+    background: none;
+    color: #006fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .header h2 {
+        font-size: 2em;
+    }
+
+    .searchResultItem img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .searchResultItem span {
+        font-size: 1.2em;
+    }
+
+    .searchResultItem button {
+        font-size: 1em;
+    }
+}

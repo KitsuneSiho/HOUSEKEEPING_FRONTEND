@@ -50,6 +50,7 @@ import UploadClosetCheck from "./jsx/clothes/UploadClosetCheck.jsx";
 import RecommendCloset from "./jsx/clothes/RecommendCloset.jsx";
 import TopList from "./jsx/clothes/TopList.jsx";
 import MyGuestBook from "./jsx/main/MyGuestBook.jsx";
+import FriendRequest from "./jsx/myPage/FriendRequest.jsx";
 
 function App() {
 
@@ -99,6 +100,7 @@ function App() {
                     <Route path="/MyPage" element={<MyPage/>}/> {/* 마이페이지 */}
                     <Route path="/MyInfo" element={<MyInfo/>}/> {/* 내정보  */}
                     <Route path="/FriendList" element={<FriendList/>}/> {/* 친구관리 */}
+                    <Route path="/FriendRequest" element={<FriendRequest/>}/> {/* 친구요청 */}
                     <Route path="/GuestBook" element={<GuestBook/>}/> {/* 방명록 보관함 */}
                     <Route path="/Setting" element={<Setting/>}/> {/* 설정 */}
                     <Route path="/DeleteUser" element={<DeleteUser/>}/> {/* 회원탈퇴 */}

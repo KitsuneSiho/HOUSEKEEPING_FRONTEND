@@ -294,7 +294,7 @@ const FirstLivingRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/서랍장1.glb')}>서랍장1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/문1.glb')}>문1</button>
                                 <button onClick={() => loadFurniture('/public/furniture/문2.glb')}>문2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문3.glb')}>문3</button>
+                                <button onClick={() => loadFurniture('/public/furniture/문4.glb')}>문3</button>
                             </>
                         )}
                         {activeCategory === 'pocketmon' && (
