@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Footer from '../fix/Footer.jsx';
 import styles from '../../css/main/addFriend.module.css';
+import { BACK_URL } from "../../Constraints.js";
 
 const AddFriend = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
-    const friends = [
-        { name: '문재영', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강현욱', img: '/lib/마이페이지아이콘.svg' },
-        { name: '이호준', img: '/lib/마이페이지아이콘.svg' },
-        { name: '김상우', img: '/lib/마이페이지아이콘.svg' },
-        { name: '최시호', img: '/lib/마이페이지아이콘.svg' },
-        { name: '엄지훈', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강보현', img: '/lib/마이페이지아이콘.svg' },
-    ];
 
-    const filteredFriends = friends.filter(friend => friend.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    const handleSearch = async () => {
+        if (searchQuery.trim() !== '') {
+            try {
+                const response = await axios.get(`${BACK_URL}/friend/search`, {
+                    params: {
+                        nickname: searchQuery
+                    }
+                });
+                setSearchResults(response.data);
+            } catch (error) {
+                console.error("친구 검색 중 오류가 발생했습니다:", error);
+            }
+        } else {
+            setSearchResults([]);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -41,17 +50,20 @@ const AddFriend = () => {
                     type="text"
                     placeholder="닉네임 검색"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        handleSearch(); // 검색어 변경 시 API 호출
+                    }}
                 />
-                <img src="/lib/검색.svg" alt="search" />
+                <img src="/lib/검색.svg" alt="search" onClick={handleSearch} />
             </div>
 
             {searchQuery && (
                 <div className={styles.searchResults}>
-                    {filteredFriends.map((friend, index) => (
+                    {searchResults.map((friend, index) => (
                         <div key={index} className={styles.searchResultItem}>
-                            <img src={friend.img} alt={friend.name} />
-                            <span>{friend.name}</span>
+                            <img src={friend.img || '/lib/마이페이지아이콘.svg'} alt={friend.nickname} />
+                            <span>{friend.nickname}</span>
                             <button>팔로우</button>
                         </div>
                     ))}
