@@ -5,6 +5,8 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: Fre, sans-serif;
+    animation: fadeIn 2s ease-in-out; /* 페이드 인 효과 */
 }
 
 .mainImg {
@@ -14,4 +16,12 @@
 .firstMainImg {
     max-width: 80%;
     height: auto;
+    opacity: 0;
+    animation: appear 3s forwards; /* 페이드 인 애니메이션 */
+}
+
+@keyframes appear {
+    to {
+        opacity: 1;
+    }
 }

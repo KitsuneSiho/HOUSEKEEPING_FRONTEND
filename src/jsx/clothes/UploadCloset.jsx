@@ -52,7 +52,7 @@ const UploadCloset = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
                 <h2>옷 등록</h2>
             </div>
             <div className={styles.camera}>

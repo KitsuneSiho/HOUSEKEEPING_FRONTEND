@@ -1,22 +1,39 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: 'Fre', sans-serif;
+    font-family: Fre, sans-serif;
+    overflow: auto; /* Allow the body to scroll */
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.header h3 {
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5%;
 }
 
 .closetCheckImg {
@@ -40,12 +57,15 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    flex-wrap: wrap; /* Flex wrap to allow responsive adjustment */
 }
 
 .tag {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 15px; /* Space between rows */
+    width: 45%; /* Approximate width for two columns on small screens */
 }
 
 .tag label {
@@ -57,4 +77,34 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
+    width: 100%;
+}
+
+/* 반응형 디자인 추가 */
+@media (max-width: 600px) {
+    .closetCheckImg {
+        height: 300px;
+    }
+
+    .tags {
+        width: 100%;
+    }
+
+    .tag {
+        width: 100%; /* Full width on small screens */
+    }
+}
+
+@media (min-width: 1200px) {
+    .closetCheckImg {
+        height: 500px;
+    }
+
+    .tags {
+        width: 80%;
+    }
+
+    .tag {
+        width: 30%; /* Approximate width for three columns on large screens */
+    }
 }

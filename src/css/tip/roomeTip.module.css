@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -8,15 +8,31 @@
 }
 
 .header {
-    width: 90%;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 0;
+    position: relative;
 }
 
-.header img {
+.header .back {
+    position: absolute;
+    left: 10px;
     cursor: pointer;
+}
+
+.header h2{
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.searchIcon{
+    cursor: pointer;
+    margin: 0;
+    position: absolute;
+    right: 5% ;
 }
 
 .searchBar {
@@ -34,6 +50,12 @@
     transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
 }
 
+.searchBar.visible {
+    max-height: 50px;
+    opacity: 1;
+    padding: 5px 10px;
+}
+
 .searchBar input {
     width: 85%;
     border: none;
@@ -43,12 +65,6 @@
 
 .searchBar img {
     cursor: pointer;
-}
-
-.searchBar.visible {
-    max-height: 50px;
-    opacity: 1;
-    padding: 5px 10px;
 }
 
 .postContainer {
@@ -114,4 +130,67 @@
 
 .createButton img {
     margin-right: 10px;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .header {
+        width: 80%;
+    }
+
+    .searchBar {
+        width: 80%;
+    }
+
+    .postContainer {
+        width: 80%;
+    }
+
+    .sortOptions select {
+        padding: 10px;
+    }
+
+    .postContent {
+        font-size: 18px;
+    }
+
+    .postInfo {
+        font-size: 16px;
+    }
+
+    .createButton {
+        width: 60%;
+        margin-top: 30px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        width: 70%;
+    }
+
+    .searchBar {
+        width: 70%;
+    }
+
+    .postContainer {
+        width: 70%;
+    }
+
+    .sortOptions select {
+        padding: 10px;
+    }
+
+    .postContent {
+        font-size: 20px;
+    }
+
+    .postInfo {
+        font-size: 18px;
+    }
+
+    .createButton {
+        width: 50%;
+        margin-top: 30px;
+    }
 }

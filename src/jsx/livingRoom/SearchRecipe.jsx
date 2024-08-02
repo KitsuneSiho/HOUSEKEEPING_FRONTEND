@@ -23,7 +23,7 @@ const SearchRecipe = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')} />
                 <h2>레시피 검색</h2>
             </div>
 
