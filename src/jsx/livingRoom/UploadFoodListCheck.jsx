@@ -27,10 +27,10 @@ const UploadFoodListCheck = () => {
                 <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/uploadFood')}
+                    onClick={() => navigate('/refrigerator/uploadFood')}
                 />
                 <h2>재료 등록</h2>
-                <h3 onClick={() => navigate('/livingRoom')}>등록</h3>
+                <h3 onClick={() => navigate('/refrigerator')}>등록</h3>
             </div>
             <table className={styles.foodTable}>
                 <thead>

@@ -23,7 +23,7 @@ const SearchRecipe = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/refrigerator/')} />
                 <h2>레시피 검색</h2>
             </div>
 
@@ -132,8 +132,8 @@ const SearchRecipe = () => {
                 </div>
 
                 <div className={styles.formButtons}>
-                    <button type="button" onClick={() => navigate('/livingRoom')}>취소</button>
-                    <button type="button" onClick={() => navigate('/recommendRecipe')}>레시피 검색</button>
+                    <button type="button" onClick={() => navigate('/refrigerator/')}>취소</button>
+                    <button type="button" onClick={() => navigate('/refrigerator/recommend')}>레시피 검색</button>
                 </div>
             </form>
             <Footer/>

@@ -42,7 +42,7 @@ const Footer = () => {
                 <div className="popupBackground">
                     <img src="/lib/반원팝업.svg" alt="Popup Background" />
                 </div>
-                <img className="livingRoom" src="/lib/냉장고.svg" alt="냉장고 아이콘" onClick={() => navigate('/livingRoom')} />
+                <img className="livingRoom" src="/lib/냉장고.svg" alt="냉장고 아이콘" onClick={() => navigate('/refrigerator')} />
                 <img className="mainRoom" src="/lib/방.svg" alt="방 아이콘" onClick={() => navigate('/mainPage')} />
                 <img className="tip" src="/lib/팁.svg" alt="팁 아이콘" onClick={() => navigate('/tip')} />
                 <img className="closetRoom" src="/lib/옷장.svg" alt="옷장 아이콘" onClick={() => navigate('/closetRoom')} />

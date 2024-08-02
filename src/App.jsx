@@ -11,7 +11,6 @@ import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
 import ClosetRouter from "./router/ClosetRouter.jsx";
 import TipRouter from "./router/TipRouter.jsx";
 import MyPageRouter from "./router/MyPageRouter.jsx";
-import FriendRequest from "./jsx/myPage/FriendRequest.jsx";
 
 function App() {
 
@@ -37,7 +36,7 @@ function App() {
                         <Route path="/refrigerator/*" element={<RefrigeratorRouter/>}/>
 
                         {/* 옷장 관련 기능 */}
-                        <Route path="/refrigerator/*" element={<ClosetRouter/>}/>
+                        <Route path="/closet/*" element={<ClosetRouter/>}/>
 
                         {/* 팁 관련 기능 */}
                         <Route path="/tip/*" element={<TipRouter/>}/>

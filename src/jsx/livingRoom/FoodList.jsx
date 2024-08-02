@@ -234,7 +234,7 @@ const FoodList = () => {
         <div className={styles.container}>
             {/* 헤더 섹션 */}
             <div className={styles.header}>
-                <img src="/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')}/>
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/refrigerator/')}/>
                 <h2>{category}</h2>
                 <img src="/lib/검색.svg" alt="search" id={styles.searchIcon}
                      onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)}/>
