@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams  } from 'react-router-dom';
 import styles from '../../css/main/friendRoom.module.css'; // CSS 모듈 임포트
 import Footer from '../../jsx/fix/Footer.jsx';
-import { BACK_URL } from "../../Constraints.js";
-import axios from "axios";
+
 
 const FriendRoom = () => {
     const navigate = useNavigate();
@@ -42,7 +41,7 @@ const FriendRoom = () => {
             <div className={styles.visitorBoard}>
                 <button
                     type="button"
-                    onClick={() => navigate(`/visitorBoard/${userId}`)} // 수정된 부분
+                    onClick={() => navigate(`/friend/visitorBoard/${userId}`)} // 수정된 부분
                 />
             </div>
             <Footer />

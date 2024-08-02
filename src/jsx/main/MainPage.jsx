@@ -336,7 +336,7 @@ const MainPage = () => {
                 <div className={styles.friendsList}>
                     {friends.map(friend => (
                         <div className={styles.friend} key={friend.userId}
-                             onClick={() => navigate(`/friendRoom/${friend.userId}`)}>
+                             onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
                             <img src={`public/lib/${friend.userId}.png`} alt={friend.userId}/>
                             <p>{friend.nickname}</p>
                         </div>
