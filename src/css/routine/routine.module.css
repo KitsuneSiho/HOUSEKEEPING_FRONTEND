@@ -1,15 +1,19 @@
 .container {
     padding: 0;
-    margin: 0;
-    margin-top: 10%;
+    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: Fre, sans-serif;
 }
 
+
 .routineTitle {
     margin-bottom: 20px;
+}
+
+.routineTitle h1{
+    margin: 0;
 }
 
 .routineEditAdd {
@@ -45,9 +49,7 @@
     padding: 0;
 }
 
-.roomRoutine {
-    background-color: #c5f1ff;
-    border: none;
+.roomRoutine, .myRoutine {
     border-radius: 10px;
     width: 100%;
     height: 120px;
@@ -57,16 +59,14 @@
     cursor: pointer;
 }
 
+.roomRoutine {
+    background-color: #c5f1ff;
+    border: none;
+}
+
 .myRoutine {
     background-color: #ffebc5;
     border: 3px solid #ff2c2c;
-    border-radius: 10px;
-    width: 100%;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
 }
 
 .roomRoutine:hover, .myRoutine:hover {
@@ -164,4 +164,35 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .routineEditAdd, .routine {
+        width: 60%;
+    }
+
+    .routineTitle h1 {
+        font-size: 2em;
+    }
+
+    .roomRoutine, .myRoutine {
+        height: 150px;
+        font-size: 1.2em;
+    }
+
+    .modalContent {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .routineEditAdd, .routine {
+        width: 50%;
+    }
+
+    .roomRoutine, .myRoutine {
+        height: 180px;
+        font-size: 1.4em;
+    }
 }

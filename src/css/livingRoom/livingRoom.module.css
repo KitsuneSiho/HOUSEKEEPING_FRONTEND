@@ -1,12 +1,25 @@
-/* LivingRoom.module.css */
-
 .container {
     padding: 0;
-    margin: 0;
+    margin: 5% 0 0;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    position: relative;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 .livingRoomHeader {
@@ -14,25 +27,24 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .categories {
     width: 90%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-    justify-items: center;
-    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
 .category {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 85px; /* Fixed width for uniform size */
+    width: 85px; /* Ensures consistent size for each category */
     margin: 10px 0;
-    justify-content: center; /* Center items vertically */
+    justify-content: center;
     cursor: pointer;
 }
 
@@ -51,9 +63,12 @@
     text-align: center;
     font-size: 14px;
     word-wrap: break-word;
-    max-width: 80px; /* Ensure text wraps within the category box */
+    max-width: 80px;
 }
 
-.category:nth-child(8) p { /* 조미료, 향신료 */
-    font-size: 12px;
+/* Responsive Design for larger screens */
+@media (min-width: 768px) {
+    .categories {
+        justify-content: space-around;
+    }
 }

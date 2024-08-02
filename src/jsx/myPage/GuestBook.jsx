@@ -40,7 +40,7 @@ const GuestBook = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
                 <h2>방명록 보관함</h2>
             </div>
             <div className={styles.guestbookList}>

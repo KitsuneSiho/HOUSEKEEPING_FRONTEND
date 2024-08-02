@@ -3,8 +3,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: Arial, sans-serif;
-
+    font-family: Fre, sans-serif;
 }
 
 .firstLoginTitle {
@@ -58,4 +57,44 @@
     background: none;
     font-size: 16px;
     cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .container {
+        padding: 20px;
+    }
+
+    .firstLoginTitle {
+        margin-bottom: 3%;
+    }
+
+    .profileImg {
+        margin-bottom: 10%;
+    }
+
+    .information {
+        width: 70%;
+    }
+
+    .inputContainer {
+        margin-bottom: 10%;
+    }
+
+    .inputContainer label {
+        width: 35%;
+    }
+
+    .inputContainer input {
+        width: 60%;
+    }
+
+    .submit {
+        width: 70%;
+        margin-top: 10%;
+    }
+
+    .submit button {
+        font-size: 18px; /* 버튼 텍스트 크기 증가 */
+    }
 }
