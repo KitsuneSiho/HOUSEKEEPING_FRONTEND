@@ -90,12 +90,13 @@ const CreateChat = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
+                    className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/chat')}
                 />
                 <h2>대화 상대 선택</h2>
-                <h4 onClick={handleAddChat}>추가</h4>
+                <h4 className={styles.addChat} onClick={handleAddChat}>추가</h4>
             </div>
             <div className={styles.friendList}>
                 {/* 준비 완료되기 전에는 친구 목록을 출력 안함 */}

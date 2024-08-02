@@ -11,7 +11,7 @@ const ChatRouter = () => {
     return (
         <>
             <SocketProvider>
-            <ModalProvider>
+                <ModalProvider>
                     <Routes>
                         {/* 채팅 */}
                         <Route path="/login" element={<ChatLogin/>}/>
@@ -19,7 +19,7 @@ const ChatRouter = () => {
                         <Route path="/:chatRoomId" element={<ChatRoom/>}/>
                         <Route path="/create" element={<CreateChat/>}/>
                     </Routes>
-            </ModalProvider>
+                </ModalProvider>
             </SocketProvider>
         </>
     )

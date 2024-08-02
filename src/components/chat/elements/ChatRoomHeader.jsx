@@ -128,7 +128,7 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
         <>
             <div className={styles.header}>
                 <img
-                    className={styles.backIcon}
+                    className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/chat')}

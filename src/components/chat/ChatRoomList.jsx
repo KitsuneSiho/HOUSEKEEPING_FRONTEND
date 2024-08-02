@@ -85,15 +85,17 @@ const ChatRoomList = () => {
 
     return (
         <div className={styles.container}>
-            <FriendTop />
+            {/*<FriendTop />*/}
             <div className={styles.header}>
                 <img
+                    className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/mainPage')}
                 />
                 <h2>채팅</h2>
                 <img
+                    className={styles.createChat}
                     src="/lib/채팅생성.svg"
                     alt="create-chat"
                     onClick={createChatRoom}

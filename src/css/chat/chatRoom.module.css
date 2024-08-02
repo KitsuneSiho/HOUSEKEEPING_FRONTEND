@@ -18,7 +18,7 @@
     position: relative;
 }
 
-.header .backIcon {
+.header .back {
     position: absolute;
     left: 5%;
     cursor: pointer;
@@ -154,10 +154,6 @@
 }
 
 .messageContent {
-    max-width: 60%;
-    background: #c5f1ff;
-    border-radius: 8px;
-    padding: 6px 10px;
     max-width: 70%;
     background: #f1f1f1;
     border-radius: 10px;
@@ -215,7 +211,7 @@ input:focus {
 .iconArea {
     position: absolute;
     right: 5%;
-    top: 1em;
+    top: 0.27em;
     display: flex;
     flex-direction: column;
     align-items: center;
