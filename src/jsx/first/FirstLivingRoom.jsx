@@ -85,6 +85,12 @@ const FirstLivingRoom = () => {
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
 
+        // 로컬 스토리지에서 저장된 가구 위치 불러오기
+        const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
+        savedFurniture.forEach(item => {
+            loadFurniture(item.path, item.position, item.rotation, item.scale);
+        });
+
         const animate = () => {
             requestAnimationFrame(animate);
             controlsRef.current.update();
@@ -213,6 +219,21 @@ const FirstLivingRoom = () => {
 
     const closeModal = () => {
         setShowModal(false);
+    };
+
+    const saveFurnitureState = () => {
+        const furnitureState = [];
+        sceneRef.current.children.forEach(child => {
+            if (child.type === 'Group' && child.children[0] && child.children[0].type === 'Scene') {
+                furnitureState.push({
+                    path: child.children[0].userData.path,
+                    position: child.position,
+                    rotation: child.rotation.y,
+                    scale: child.scale.x
+                });
+            }
+        });
+        localStorage.setItem('furniture', JSON.stringify(furnitureState));
     };
 
     return (
@@ -420,7 +441,10 @@ const FirstLivingRoom = () => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => navigate('/firstToiletRoom')}
+                    onClick={() => {
+                        saveFurnitureState(); // 상태 저장
+                        navigate('/firstToiletRoom');
+                    }}
                 >
                     다음
                 </button>
