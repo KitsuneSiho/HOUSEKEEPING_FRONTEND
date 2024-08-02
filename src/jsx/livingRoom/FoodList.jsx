@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from '../../css/livingRoom/foodList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import {BACK_URL} from "../../Constraints.js";
 
 const FoodList = () => {
     // useState를 사용하여 컴포넌트의 상태 정의
     // [현재 값, 값을 변경하는 함수]
+    const {category} = useParams();
     const [isEditMode, setIsEditMode] = useState(false); //편집 모드 여부
     const [currentRow, setCurrentRow] = useState(null); //현재 선택된 행
     const [foods, setFoods] = useState([]);
@@ -29,14 +31,14 @@ const FoodList = () => {
     // useEffect를 사용하여 컴포넌트가 마운트될 때 실행될 작업 정의
     useEffect(() => {
         fetchCategories();  // 카테고리 목록 불러오기
-        fetchFoods();  // 식품 목록 불러오기
+        fetchFoodsByCategory(category);
     }, []);  // 빈 배열을 넣어 컴포넌트가 처음 렌더링될 때만 실행되도록 함
 
     // 카테고리 목록을 가져오는 함수
     const fetchCategories = async () => {
         try {
             // axios를 사용하여 GET 요청
-            const response = await axios.get(`/api/foods/categories?userId=${userId}`);
+            const response = await axios.get(BACK_URL + `/food/livingroom?userId=${userId}`);
             // 'ALL' 카테고리를 추가하고 받아온 카테고리 목록 설정
             setCategories(['ALL', ...response.data]);
         } catch (error) {
@@ -47,8 +49,9 @@ const FoodList = () => {
 
     // 모든 식품 목록을 가져오는 함수
     const fetchFoods = async () => {
+
         try {
-            const response = await axios.get(`/api/foods/all?userId=${userId}`);
+            const response = await axios.get(BACK_URL + `/food/foodlist/all?userId=${userId}`);
             console.log('Fetched foods data:', response.data);  // 추가된 로그
             setFoods(Array.isArray(response.data) ? response.data : []);  // 배열 체크 추가
         } catch (error) {
@@ -59,11 +62,12 @@ const FoodList = () => {
 
     // 특정 카테고리의 식품 목록을 가져오는 함수
     const fetchFoodsByCategory = async (category) => {
-        if (category === 'ALL') {
+
+        if (category === 'all') {
             fetchFoods();  // 'ALL' 카테고리면 모든 식품을 가져온다
         } else {
             try {
-                const response = await axios.get(`/api/foods/category?userId=${userId}&category=${category}`);
+                const response = await axios.get(BACK_URL + `/food/foodlist/${category}?userId=${userId}`);
                 setFoods(response.data || []);  // 받아온 카테고리별 식품 목록을 설정 / 데이터 없을 시 빈 배열 반환
             } catch (error) {
                 console.error('카테고리별 식품 목록을 가져오는데 실패했습니다:', error);
@@ -72,15 +76,32 @@ const FoodList = () => {
         }
     };
 
+    // // 식재료 수동 추가 함수
+    // const addFood = async (foodName, foodQuantity) => {
+    //     try {
+    //         const response = await axios.post(BACK_URL + `/food/foodlist/${category}/add`, null, {
+    //             params: {
+    //                 userId: userId,
+    //                 foodName: foodName,
+    //                 foodQuantity: foodQuantity
+    //             }
+    //         });
+    //         setFoods(response.data);
+    //     } catch (error) {
+    //         console.error('식재료 추가에 실패했습니다:', error);
+    //         // 에러 처리 (예: 사용자에게 알림)
+    //     }
+    // };
+
     //편집 모드 토글 함수
     const toggleEditMode = () => {
         setIsEditMode(!isEditMode);
     };
 
-    // 행 추가 함수
-    const addRow = () => {
-        setFoods([...foods, { category: '', name: '', quantity: '0' }]);
-    };
+    // // 행 추가 함수
+    // const addRow = () => {
+    //     setFoods([...foods, { foodCategory: category, foodName: '', foodQuantity: 1 }]);
+    // };
 
     // 특정 행을 제거하는 함수
     const removeRow = (index) => {
@@ -88,18 +109,24 @@ const FoodList = () => {
         setFoods(newFoods);
     };
 
+    // const removeLastRow = () => {
+    //     setFoods(prevFoods => prevFoods.slice(0, -1));
+    // };
+
     // 모달 창 여는 함수
     const openModal = (row, index) => {
-        if (!row.name.trim()) return; //이름이 비어있으면 모달을 열지 않는다
-        setCurrentRow(index);
-        setModalData({
-            category: row.category,
-            name: row.name,
-            quantity: row.quantity,
-            expiry: '',
-            memo: '',
-        });
-        document.getElementById('modal').style.display = 'block';
+        // row와 row.foodName이 존재하는지 확인
+        if (row && row.foodName && row.foodName.trim()) {
+            setCurrentRow(index);
+            setModalData({
+                category: row.foodCategory || '',
+                name: row.foodName || '',
+                quantity: row.foodQuantity || '',
+                expiry: row.foodExpirationDate || '',
+                memo: row.foodMemo || '',
+            });
+            document.getElementById('modal').style.display = 'block';
+        }
     };
 
     //모달 창 닫는 함수
@@ -108,21 +135,57 @@ const FoodList = () => {
     };
 
     // 모달에서 변경된 내용을 적용하는 함수
-    const applyModalChanges = () => {
-        const newFoods = foods.map((food, i) =>
-            i === currentRow ? { ...food, ...modalData } : food
-        );
-        setFoods(newFoods);
-        closeModal();
-    };
+    const applyModalChanges = async () => {
+        try {
+            if (currentRow === null) {
+                // 새로운 항목 추가
 
+                const response = await axios.post(BACK_URL + `/food/foodlist/add`, {
+                    userId: userId,
+                    foodName: modalData.name,
+                    foodQuantity: modalData.quantity,
+                    foodCategory: modalData.category.toUpperCase(),
+                    foodExpirationDate: modalData.expiry + 'T00:00:00' || null,
+                    foodMemo: modalData.memo
+                });
 
-    // 식품 수량을 업데이트하는 함수
-    const updateQuantity = (index, change) => {
-        const newFoods = foods.map((food, i) =>
-            i === index ? { ...food, foodQuantity: Math.max(0, parseInt(food.foodQuantity) + change) } : food
-        );
-        setFoods(newFoods);
+                // 서버 응답으로 받은 새 데이터로 상태 업데이트
+                setFoods(prevFoods => [...prevFoods, response.data]);
+
+                // 카테고리가 변경되었을 수 있으므로 전체 목록을 다시 불러옴
+                await fetchFoodsByCategory(category);
+
+            } else {
+
+                // 기존 항목 수정
+                const foodToUpdate = foods[currentRow];
+
+                console.log(modalData, userId, foodToUpdate.foodId);
+                const response = await axios.put(BACK_URL + `/food/foodlist/update`, {
+                    userId: userId,
+                    foodId: foodToUpdate.foodId,
+                    foodName: modalData.name,
+                    foodQuantity: modalData.quantity,
+                    foodCategory: modalData.category,
+                    foodExpirationDate: modalData.expiry + 'T00:00:00' || null,
+                    foodMemo: modalData.memo
+                });
+
+                // 서버 응답으로 받은 업데이트된 데이터로 상태 업데이트
+                const newFoods = foods.map((food, i) =>
+                    i === currentRow ? response.data : food
+                );
+                setFoods(newFoods);
+            }
+            closeModal();
+
+            // 변경 사항이 제대로 반영되었는지 확인하기 위해 전체 목록을 다시 불러옴
+            await fetchFoodsByCategory(category);
+        } catch (error) {
+            console.error('식품 정보 업데이트 중 오류 발생:', error);
+            // 에러 처리 (예: 사용자에게 알림)
+            alert('식품 정보 업데이트에 실패했습니다. 다시 시도해 주세요.');
+        }
     };
 
     // 추가 또는 적용 버튼 클릭 시 실행되는 함수
@@ -130,42 +193,59 @@ const FoodList = () => {
         if (isEditMode) {
             toggleEditMode();
         } else {
-            addRow();
+            // 새로운 빈 식재료 데이터 생성
+            const newFood = {
+                foodCategory: category,
+                foodName: '',
+                foodQuantity: '',
+                foodExpirationDate: '',
+                foodMemo: ''
+            };
+
+            // 모달 데이터 설정
+            setModalData({
+                category: newFood.foodCategory || '',
+                name: newFood.foodName || '',
+                quantity: newFood.foodQuantity || '',
+                expiry: newFood.foodExpirationDate || '',
+                memo: newFood.foodMemo || '',
+            });
+
+            // 현재 행을 null로 설정 (새로운 항목 추가임을 나타냄)
+            setCurrentRow(null);
+
+            // 모달 창 열기
+            document.getElementById('modal').style.display = 'block';
         }
     };
+
+
+    // 식품 수량을 업데이트하는 함수
+    const updateQuantity = (index, change) => {
+        const newFoods = foods.map((food, i) =>
+            i === index ? {...food, foodQuantity: Math.max(0, parseInt(food.foodQuantity) + change)} : food
+        );
+        setFoods(newFoods);
+    };
+
 
     // 컴포넌트 UI 반환
     return (
         <div className={styles.container}>
             {/* 헤더 섹션 */}
             <div className={styles.header}>
-                <img src="public/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')}/>
-                <h2>{selectedCategory}</h2>
-                <img src="public/lib/검색.svg" alt="search" id={styles.searchIcon}
+                <img src="/lib/back.svg" alt="back" onClick={() => navigate('/livingRoom')}/>
+                <h2>{category}</h2>
+                <img src="/lib/검색.svg" alt="search" id={styles.searchIcon}
                      onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)}/>
             </div>
 
             {/* 검색 바 */}
             <div className={`${styles.searchBar}`} id="search-bar">
                 <input type="text" placeholder="재료명 검색" id="search-input"/>
-                <img src="public/lib/검색.svg" alt="search"/>
+                <img src="/lib/검색.svg" alt="search"/>
             </div>
 
-            {/* 카테고리 버튼 */}
-            <div className={styles.categoryButtons}>
-                {categories.map((category, index) => (
-                    <button
-                        key={`category-${index}`}
-                        onClick={() => {
-                            setSelectedCategory(category);
-                            fetchFoodsByCategory(category);
-                        }}
-                        className={selectedCategory === category ? styles.active : ''}
-                    >
-                        {category}
-                    </button>
-                ))}
-            </div>
 
             {/* 식품 목록 테이블 */}
             <table className={styles.foodTable}>
@@ -182,7 +262,20 @@ const FoodList = () => {
                     foods.map((food, index) => (
                         <tr key={`food-${food.foodId || index}`}>
                             <td>{food.foodCategory}</td>
-                            <td onClick={() => openModal(food, index)}>{food.foodName}</td>
+                            <td onClick={() => openModal(food, index)}>
+                                {isEditMode && index === foods.length - 1 ?
+                                    <input
+                                        type="text"
+                                        value={food.foodName}
+                                        onChange={(e) => {
+                                            const newFoods = [...foods];
+                                            newFoods[index].foodName = e.target.value;
+                                            setFoods(newFoods);
+                                        }}
+                                    />
+                                    : food.foodName
+                                }
+                            </td>
                             <td className={styles.quantityCell}>
                                 {isEditMode ? (
                                     <>
