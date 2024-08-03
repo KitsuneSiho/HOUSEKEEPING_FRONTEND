@@ -33,13 +33,13 @@ const FriendList = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
-                    src="public/lib/back.svg"
+                    src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/myPage')}
                 />
                 <h2>친구 관리</h2>
                 <img
-                    src="public/lib/검색.svg"
+                    src="/lib/검색.svg"
                     alt="search"
                     id="search-icon"
                     onClick={() => {

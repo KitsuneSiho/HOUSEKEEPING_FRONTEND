@@ -13,7 +13,7 @@ const Setting = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
                 <h2>설정</h2>
             </div>
             <div className={styles.settingsList}>
@@ -40,7 +40,7 @@ const Setting = () => {
                     </label>
                 </div>
                 <p className={styles.description}>
-                    <img src="public/lib/물음표.svg" alt="info" />
+                    <img src="/lib/물음표.svg" alt="info" />
                     청소를 안할 시 일정 오염도가 되면 전송되는 알림입니다.
                 </p>
                 <div className={styles.settingsItem}>

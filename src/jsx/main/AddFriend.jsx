@@ -93,7 +93,7 @@ const AddFriend = () => {
                 <img className={styles.back}
                      src="/lib/back.svg"
                      alt="back"
-                     onClick={() => navigate('/mainPage')}
+                     onClick={() => navigate('/main')}
                 />
                 <h2>친구 추가</h2>
                 <img

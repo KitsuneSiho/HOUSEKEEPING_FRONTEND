@@ -15,7 +15,7 @@ const FriendRoom = () => {
                 <img
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/mainPage')}
+                    onClick={() => navigate('/main')}
                 />
                 <h2>님의 House</h2>
             </div>

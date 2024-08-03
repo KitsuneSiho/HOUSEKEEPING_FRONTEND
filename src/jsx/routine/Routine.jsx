@@ -21,11 +21,11 @@ const Routine = () => {
                 <h1>내 청소 루틴</h1>
             </div>
             <div className={styles.routineEditAdd}>
-                <p className={styles.edit} onClick={() => navigate('/routineEdit')}>적용 루틴 수정</p>
-                <p className={styles.add} onClick={openModal}>루틴 추가<img src="public/lib/plus.svg" alt="add" /></p>
+                <p className={styles.edit} onClick={() => navigate('/routine/edit')}>적용 루틴 수정</p>
+                <p className={styles.add} onClick={openModal}>루틴 추가<img src="/lib/plus.svg" alt="add" /></p>
             </div>
             <div className={styles.routine}>
-                <button type="button" className={styles.roomRoutine} onClick={() => navigate('/dailyRoutineInfo')}>
+                <button type="button" className={styles.roomRoutine} onClick={() => navigate('/routine/daily')}>
                     <p>루미가 추천해주는 루틴♬</p>
                 </button>
             </div>

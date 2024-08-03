@@ -11,13 +11,13 @@ const WasteTipWrite = () => {
     const submitForm = () => {
         // Logic to handle form submission
         alert("등록되었습니다!");
-        navigate('/wasteTip');
+        navigate('/tip/waste');
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/wasteTip')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/waste')} />
                 <h2>폐기물 Tip</h2>
             </div>
 

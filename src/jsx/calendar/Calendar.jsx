@@ -30,11 +30,11 @@ const Calendar = () => {
     const handleDateClick = (arg) => {
         setSelectedDate(arg.dateStr);
 
-        const roomIds = JSON.parse(sessionStorage.getItem('roomIds')) || [4, 5, 6];
+        const roomIds = JSON.parse(sessionStorage.getItem('roomIds')) || [1, 2, 3];
         const roomNames = JSON.parse(sessionStorage.getItem('roomNames')) || {
-            4: '내주방',
-            5: '재영방',
-            6: '화장실'
+            1: '주방',
+            2: '내방',
+            3: '화장실'
         };
 
         fetch(`${BACK_URL}/calendar/view`, {

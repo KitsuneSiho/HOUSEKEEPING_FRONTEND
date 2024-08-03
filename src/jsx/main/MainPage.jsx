@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/main/mainPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -341,23 +342,25 @@ const MainPage = () => {
                             <p>{friend.nickname}</p>
                         </div>
                     ))}
-                    <div className={styles.addFriend} onClick={() => navigate('/addFriend')}>
-                        <img src="public/lib/plus.svg" alt="add"/>
+                    <div className={styles.addFriend} onClick={() => navigate('/friend/add')}>
+                        <img src="/lib/plus.svg" alt="add"/>
                         <p>친구 추가</p>
                     </div>
                 </div>
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="public/lib/오염도바.svg" alt="오염도 바"/>
+                <img src="/lib/오염도바.svg" alt="오염도 바"/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainToiletRoom')}/>
-                <img className={styles.myRoom} src="public/lib/내방.png" alt="내 방"/>
-                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainLivingRoom')}/>
+                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
+                <div className={styles.roomView}>
+                    <RoomView/>
+                </div>
+                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
             </div>
             <div className={styles.guestBook}>
-                <p onClick={() => navigate('/MyGuestBook')}>방명록</p>
+                <p onClick={() => navigate('/main/guestbook')}>방명록</p>
             </div>
             <div className="list-modal">
                 <div className="modal-header">

@@ -9,7 +9,7 @@ const RecommendCloset = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
                 <h2>Dress Room</h2>
             </div>
             <div className={styles.weather}>
@@ -27,8 +27,8 @@ const RecommendCloset = () => {
                 <input type="date" id="date" name="date" />
             </div>
             <div className={styles.recommendations}>
-                <img src="public/lib/추천옷.svg" alt="추천 옷 1" />
-                <img src="public/lib/추천옷.svg" alt="추천 옷 2" />
+                <img src="/lib/추천옷.svg" alt="추천 옷 1" />
+                <img src="/lib/추천옷.svg" alt="추천 옷 2" />
             </div>
             <Footer />
         </div>

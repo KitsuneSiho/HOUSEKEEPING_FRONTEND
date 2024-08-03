@@ -78,7 +78,7 @@ const VisitorBoard = () => {
                 <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate(`/friendRoom/${userId}`)}
+                    onClick={() => navigate(`/friend/friendRoom/${userId}`)}
                 />
                 <h2>님의 방명록</h2>
                 <h3 className={styles.writeButton} onClick={() => setIsModalOpen(true)}>작성</h3>

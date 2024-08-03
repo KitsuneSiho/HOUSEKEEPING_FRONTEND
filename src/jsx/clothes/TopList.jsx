@@ -20,14 +20,14 @@ const TopList = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
                 <h2>Top</h2>
             </div>
             <div className={styles.itemList}>
                 {Array.from({ length: 8 }).map((_, index) => (
                     <img
                         key={index}
-                        src="public/lib/상의1.svg"
+                        src="/lib/상의1.svg"
                         alt={`옷 ${index + 1}`}
                         onClick={() => openModal(`옷 ${index + 1}`, '반팔', '초록, 검정, 회색, 흰색', '면', '여름', '세탁기')}
                     />

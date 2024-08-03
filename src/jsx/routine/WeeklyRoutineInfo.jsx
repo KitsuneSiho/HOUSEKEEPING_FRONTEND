@@ -60,26 +60,26 @@ const WeeklyRoutineInfo = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/routine')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')} />
                 <h2>루미 추천 루틴</h2>
                 <h3>저장</h3>
             </div>
             <div className={styles.tabs}>
-                <div className={styles.tab} onClick={() => navigate('/dailyRoutineInfo')}>일간</div>
-                <div className={`${styles.tab} ${styles.active}`} onClick={() => navigate('/weeklyRoutineInfo')}>주간</div>
-                <div className={styles.tab} onClick={() => navigate('/monthlyRoutineInfo')}>월간</div>
+                <div className={styles.tab} onClick={() => navigate('/routine/daily')}>일간</div>
+                <div className={`${styles.tab} ${styles.active}`} onClick={() => navigate('/routine/weekly')}>주간</div>
+                <div className={styles.tab} onClick={() => navigate('/routine/monthly')}>월간</div>
             </div>
             <div className={styles.routineContainer}>
                 <div className={styles.roomRoutine}>
                     <div className={styles.roomRoutineHeader}>
                         <div className={styles.roomRoutineTitle}>
-                            <img src="public/lib/빗자루.svg" alt="broom" />
+                            <img src="/lib/빗자루.svg" alt="broom" />
                             <p>방</p>
-                            <img src="public/lib/연필.svg" alt="edit" />
+                            <img src="/lib/연필.svg" alt="edit" />
                         </div>
                         <div className={styles.alramOnOff}>
                             <p>모든 알림 켜기</p>
-                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('roomRoutine')} />
+                            <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('roomRoutine')} />
                         </div>
                     </div>
                     <div className={styles.roomRoutineInfo}>
@@ -88,7 +88,7 @@ const WeeklyRoutineInfo = () => {
                                 <li key={item.id}>
                                     <input type="checkbox" id={`routine-${item.id}`} />
                                     <label htmlFor={`routine-${item.id}`}>{item.text}</label>
-                                    <img src={`public/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                    <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
                                 </li>
                             ))}
                         </ul>
@@ -98,13 +98,13 @@ const WeeklyRoutineInfo = () => {
                 <div className={styles.livingRoomRoutine}>
                     <div className={styles.livingRoomRoutineHeader}>
                         <div className={styles.livingRoomRoutineTitle}>
-                            <img src="public/lib/빗자루.svg" alt="broom" />
+                            <img src="/lib/빗자루.svg" alt="broom" />
                             <p>주방</p>
-                            <img src="public/lib/연필.svg" alt="edit" />
+                            <img src="/lib/연필.svg" alt="edit" />
                         </div>
                         <div className={styles.alramOnOff}>
                             <p>모든 알림 켜기</p>
-                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('livingRoomRoutine')} />
+                            <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('livingRoomRoutine')} />
                         </div>
                     </div>
                     <div className={styles.livingRoomRoutineInfo}>
@@ -113,7 +113,7 @@ const WeeklyRoutineInfo = () => {
                                 <li key={item.id}>
                                     <input type="checkbox" id={`living-routine-${item.id}`} />
                                     <label htmlFor={`living-routine-${item.id}`}>{item.text}</label>
-                                    <img src={`public/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                    <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
                                 </li>
                             ))}
                         </ul>
@@ -123,13 +123,13 @@ const WeeklyRoutineInfo = () => {
                 <div className={styles.toiletRoutine}>
                     <div className={styles.toiletRoutineHeader}>
                         <div className={styles.toiletRoutineTitle}>
-                            <img src="public/lib/빗자루.svg" alt="broom" />
+                            <img src="/lib/빗자루.svg" alt="broom" />
                             <p>화장실</p>
-                            <img src="public/lib/연필.svg" alt="edit" />
+                            <img src="/lib/연필.svg" alt="edit" />
                         </div>
                         <div className={styles.alramOnOff}>
                             <p>모든 알림 켜기</p>
-                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('toiletRoutine')} />
+                            <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openModal('toiletRoutine')} />
                         </div>
                     </div>
                     <div className={styles.toiletRoutineInfo}>
@@ -138,7 +138,7 @@ const WeeklyRoutineInfo = () => {
                                 <li key={item.id}>
                                     <input type="checkbox" id={`toilet-routine-${item.id}`} />
                                     <label htmlFor={`toilet-routine-${item.id}`}>{item.text}</label>
-                                    <img src={`public/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                    <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
                                 </li>
                             ))}
                         </ul>

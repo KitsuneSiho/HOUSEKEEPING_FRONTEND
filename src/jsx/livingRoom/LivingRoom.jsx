@@ -7,7 +7,7 @@ import Footer from '../../jsx/fix/Footer.jsx';
 const LivingRoom = () => {
     const navigate = useNavigate();
     const categories = [
-        { name: '전체보기', img: '/lib/전체보기.svg', route: '/foodList' },
+        { name: '전체보기', img: '/lib/전체보기.svg', route: '/refrigerator/list' },
         { name: '유제품', img: '/lib/유제품.svg' },
         { name: '육류', img: '/lib/육류.svg' },
         { name: '해산물', img: '/lib/해산물.svg' },
@@ -27,8 +27,8 @@ const LivingRoom = () => {
                 <h2>Living Room</h2>
             </div>
             <div className={styles.livingRoomHeader}>
-                <h3 onClick={() => navigate('/uploadFood')}>재료 등록</h3>
-                <h3 onClick={() => navigate('/searchRecipe')}>레시피 검색</h3>
+                <h3 onClick={() => navigate('/refrigerator/register')}>재료 등록</h3>
+                <h3 onClick={() => navigate('/refrigerator/search')}>레시피 검색</h3>
             </div>
             <div className={styles.categories}>
                 {categories.map((category, index) => (
