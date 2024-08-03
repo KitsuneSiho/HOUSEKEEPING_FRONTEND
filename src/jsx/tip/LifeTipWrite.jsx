@@ -10,13 +10,13 @@ const LifeTipWrite = () => {
 
     const submitForm = () => {
         alert("등록되었습니다!");
-        navigate('/lifeTip');
+        navigate('/tip/listfacks');
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/lifeTip')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/listfacks')} />
                 <h2>생활 Tip</h2>
             </div>
 

@@ -16,7 +16,7 @@ const ClosetRouter = () => {
                 <Route path="/list" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
                 <Route path="/register" element={<UploadCloset/>}/> {/* 옷 등록(카메라만있음) */}
                 <Route path="/register/check" element={<UploadClosetCheck/>}/> {/* 옷 등록 확인 */}
-                <Route path="/recommand" element={<RecommendCloset/>}/> {/* 옷 추천 */}
+                <Route path="/recommend" element={<RecommendCloset/>}/> {/* 옷 추천 */}
             </Routes>
         </>
     )

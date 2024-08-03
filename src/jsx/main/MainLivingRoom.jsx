@@ -25,42 +25,42 @@ const MainLivingRoom = () => {
             <div className={styles.friendsContainer}>
                 <div className={styles.friendsList}>
                     {Array.from({length: 7}, (_, i) => (
-                        <div className={styles.friend} key={i} onClick={() => navigate('/friendRoom')}>
-                            <img src={`public/lib/친구${i + 1}.png`} alt={`friend${i + 1}`}/>
+                        <div className={styles.friend} key={i} onClick={() => navigate('/friend/friendroom/:userId')}>
+                            <img src={`/lib/친구${i + 1}.png`} alt={`friend${i + 1}`}/>
                             <p>{`friend_${i + 1}`}</p>
                         </div>
                     ))}
-                    <div className={styles.addFriend} onClick={() => navigate('/addFriend')}>
-                        <img src="public/lib/plus.svg" alt="add"/>
+                    <div className={styles.addFriend} onClick={() => navigate('/friend/add')}>
+                        <img src="/lib/plus.svg" alt="add"/>
                         <p>친구 추가</p>
                     </div>
                 </div>
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="public/lib/오염도바.svg" alt="오염도 바"/>
+                <img src="/lib/오염도바.svg" alt="오염도 바"/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="public/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/mainPage')}/>
+                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main')}/>
                 <div className={styles.roomView}>
                     <RoomView/>
                 </div>
-                <img src="public/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/mainToiletRoom')}/>
+                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/toilet')}/>
             </div>
             <div className={styles.guestBook}>
-                <p onClick={() => navigate('/MyGuestBook')}>방명록</p>
+                <p onClick={() => navigate('/main/guestbook')}>방명록</p>
             </div>
             <div className={styles.routineContainer}>
                 <div className={styles.roomRoutine}>
                     <div className={styles.roomRoutineHeader}>
                         <div className={styles.roomRoutineTitle}>
-                            <img src="public/lib/빗자루.svg" alt="broom"/>
+                            <img src="/lib/빗자루.svg" alt="broom"/>
                             <p>주방</p>
-                            <img src="public/lib/연필.svg" alt="edit"/>
+                            <img src="/lib/연필.svg" alt="edit"/>
                         </div>
                         <div className={styles.alramOnOff}>
                             <p>모든 알림 켜기</p>
-                            <img src="public/lib/plus.svg" alt="plus" className={styles.plusIcon}
+                            <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
                                  onClick={addRoutineItem}/>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ const MainLivingRoom = () => {
                                 <li key={routine.id}>
                                     <input type="checkbox" id={`routine${routine.id}`}/>
                                     <label htmlFor={`routine${routine.id}`}>{routine.text}</label>
-                                    <img src={routine.notification ? "public/lib/알림on.svg" : "public/lib/알림off.svg"}
+                                    <img src={routine.notification ? "/lib/알림on.svg" : "/lib/알림off.svg"}
                                          alt="notification"/>
                                 </li>
                             ))}

@@ -14,13 +14,13 @@ const LifeTip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>생활 Tip</h2>
-                <img className={styles.searchIcon} src="public/lib/검색.svg" alt="search" id="search-icon" onClick={toggleSearchBar} />
+                <img className={styles.searchIcon} src="/lib/검색.svg" alt="search" id="search-icon" onClick={toggleSearchBar} />
             </div>
             <div className={`${styles.searchBar} ${searchVisible ? styles.visible : ''}`} id="search-bar">
                 <input type="text" placeholder="검색어를 입력하세요" id="search-input" />
-                <img src="public/lib/검색.svg" alt="search" />
+                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.postContainer}>
@@ -32,7 +32,7 @@ const LifeTip = () => {
                 </div>
 
                 <div className={styles.postList}>
-                    <div className={styles.postItem} onClick={() => navigate('/lifeTipDetail')}>
+                    <div className={styles.postItem} onClick={() => navigate('/tip/listfacks/detail')}>
                         <div className={styles.postContent}>바나나껍질은 어디 버리게요~ ~??</div>
                         <div className={styles.postInfo}>
                             <span>24.07.18</span>
@@ -56,8 +56,8 @@ const LifeTip = () => {
                     {/* Additional post items */}
                 </div>
 
-                <div className={styles.createButton} onClick={() => navigate('/lifeTipWrite')}>
-                    <img src="public/lib/연필.svg" alt="write" />
+                <div className={styles.createButton} onClick={() => navigate('/tip/listfacks/post')}>
+                    <img src="/lib/연필.svg" alt="write" />
                     <span>작성</span>
                 </div>
             </div>

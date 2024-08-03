@@ -91,7 +91,7 @@ const ChatRoomList = () => {
                     className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/mainPage')}
+                    onClick={() => navigate('/main')}
                 />
                 <h2>채팅</h2>
                 <img

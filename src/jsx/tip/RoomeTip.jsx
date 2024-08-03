@@ -14,14 +14,14 @@ const RoomeTip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>루미`s Tip</h2>
-                <img src="public/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={toggleSearchBar} />
+                <img src="/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={toggleSearchBar} />
             </div>
 
             <div className={`${styles.searchBar} ${isSearchVisible ? styles.visible : ''}`} id={styles.searchBar}>
                 <input type="text" placeholder="검색어를 입력하세요" id={styles.searchInput} />
-                <img src="public/lib/검색.svg" alt="search" />
+                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.postContainer}>
@@ -34,7 +34,7 @@ const RoomeTip = () => {
 
                 <div className={styles.postList}>
                     <div className={styles.postItem}>
-                        <div className={styles.postContent} onClick={() => navigate('/roomeTipDetail')}>
+                        <div className={styles.postContent} onClick={() => navigate('/tip/roome/detail')}>
                             바나나껍질은 어디 버리게요~ ~??
                         </div>
                         <div className={styles.postInfo}>

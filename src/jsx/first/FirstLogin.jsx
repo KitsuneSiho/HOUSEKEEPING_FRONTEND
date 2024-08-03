@@ -15,7 +15,7 @@ const FirstLogin = () => {
                 <h1>가입 정보</h1>
             </div>
             <div className={styles.profileImg}>
-                <img src="public/lib/profileImg.svg" alt="프로필 이미지" />
+                <img src="/lib/profileImg.svg" alt="프로필 이미지" />
                 <p>프로필 이미지 설정</p>
             </div>
             <div className={styles.information}>
@@ -45,7 +45,7 @@ const FirstLogin = () => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => navigateTo('/firstRoomDesign')}
+                    onClick={() => navigateTo('/design/myroom')}
                 >다음</button>
             </div>
         </div>
