@@ -9,17 +9,17 @@ const MyPage = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/mainPage')} />
+                <img className={styles.back} src="/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/main')} />
                 <h2>마이페이지</h2>
             </div>
             <div className={styles.profile}>
                 <div className={styles.profileInfo}>
                     <p className={styles.profileNickname}>
-                        <img src="public/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
+                        <img src="/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
                         ddak님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
-                        <img src="public/lib/루미.png" alt="아바타" />
+                        <img src="/lib/루미.png" alt="아바타" />
                         Lv.01 자린이
                     </p>
                     <div className={styles.xpContainer}>
@@ -29,34 +29,34 @@ const MyPage = () => {
                 </div>
             </div>
             <div className={styles.menu}>
-                <div className={styles.menuItem} onClick={() => navigate('/myInfo')}>
+                <div className={styles.menuItem} onClick={() => navigate('/mypage/info')}>
                     <p>내 정보</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem} onClick={() => navigate('/friendList')}>
+                <div className={styles.menuItem} onClick={() => navigate('/friend')}>
                     <p>친구 관리</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem} onClick={() => navigate('/friendRequest')}>
+                <div className={styles.menuItem} onClick={() => navigate('/friend/request')}>
                     <p>친구 요청</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem} onClick={() => navigate('/guestBook')}>
+                <div className={styles.menuItem} onClick={() => navigate('/mypage/guestBook/storage')}>
                     <p>방명록 보관함</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
                 <div className={styles.menuItem}>
                     <p>내 방 수정</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem} onClick={() => navigate('/setting')}>
+                <div className={styles.menuItem} onClick={() => navigate('/mypage/setting')}>
                     <p>설정</p>
-                    <img src="public/lib/front.svg" alt="화살표"/>
+                    <img src="/lib/front.svg" alt="화살표"/>
                 </div>
             </div>
             <div className={styles.footerMenu}>
                 <p onClick={() => navigate('/login')}>로그아웃</p>
-                <p onClick={() => navigate('/deleteUser')}>회원탈퇴</p>
+                <p onClick={() => navigate('/mypage/delete')}>회원탈퇴</p>
             </div>
             <Footer />
         </div>

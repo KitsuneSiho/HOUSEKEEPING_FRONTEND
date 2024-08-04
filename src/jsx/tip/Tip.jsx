@@ -14,28 +14,28 @@ const Tip = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/mainPage')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/main')} />
                 <h2>Tip</h2>
-                <img src="public/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={toggleSearchBar} />
+                <img src="/lib/검색.svg" alt="search" className={styles.searchIcon} onClick={toggleSearchBar} />
             </div>
 
             <div className={`${styles.searchBar} ${isSearchVisible ? styles.visible : ''}`} id={styles.searchBar}>
                 <input type="text" placeholder="닉네임 검색" id={styles.searchInput} />
-                <img src="public/lib/검색.svg" alt="search" />
+                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.roomeTip}>
-                <button type="button" onClick={() => navigate('/roomeTip')}>
+                <button type="button" onClick={() => navigate('/tip/roome')}>
                     <p>루미`s Tip</p>
                 </button>
             </div>
             <div className={styles.wasteTip}>
-                <button type="button" onClick={() => navigate('/wasteTip')}>
+                <button type="button" onClick={() => navigate('/tip/waste')}>
                     <p>폐기물 Tip</p>
                 </button>
             </div>
             <div className={styles.lifeTip}>
-                <button type="button" onClick={() => navigate('/lifeTip')}>
+                <button type="button" onClick={() => navigate('/tip/listfacks')}>
                     <p>생활 Tip</p>
                 </button>
             </div>

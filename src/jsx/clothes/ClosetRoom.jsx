@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/closetRoom.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';

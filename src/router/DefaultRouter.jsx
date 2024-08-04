@@ -17,7 +17,7 @@ const DefaultRouter = () => {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/first" element={<FirstMain/>}/> {/* HouseKeeping로고만 있는 첫 화면 */}
                 <Route path="/login" element={<Login/>}/> {/* 로그인 화면 */}
-                <Route path="/information/input" element={<FirstLogin/>}/> {/* 첫 로그인시 추가 정보 입력창 */}
+                <Route path="/*" element={<FirstLogin/>}/> {/* 첫 로그인시 추가 정보 입력창 */}
                 <Route path="/design/myroom" element={<FirstRoomDesign/>}/> {/* 첫 로그인시 방 디자인 화면 */}
                 <Route path="/design/livingroom" element={<FirstLivingRoom/>}/> {/* 첫 로그인시 주방 디자인 화면 */}
                 <Route path="/design/toilet" element={<FirstToiletRoom/>}/> {/* 첫 로그인시 화장실 디자인 화면 */}

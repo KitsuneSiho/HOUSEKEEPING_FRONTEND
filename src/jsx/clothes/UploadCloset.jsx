@@ -53,7 +53,7 @@ const UploadCloset = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closetRoom')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
                 <h2>옷 등록</h2>
             </div>
             <div className={styles.camera}>
@@ -64,8 +64,8 @@ const UploadCloset = () => {
                         업로드 버튼을 눌러주세요</p>
                 )}
             </div>
-            <div className={styles.buttons}>
-                <button type="button" onClick={() => navigate('/uploadClosetCheck')}>
+            <div className={styles.cameraButton}>
+                <button type="button" onClick={() => navigate('/closet/register/check')}>
                     촬영
                 </button>
                 <input

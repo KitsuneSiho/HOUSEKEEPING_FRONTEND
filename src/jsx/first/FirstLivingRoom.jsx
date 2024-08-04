@@ -240,9 +240,9 @@ const FirstLivingRoom = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
-                    src="public/lib/back.svg"
+                    src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/firstRoomDesign')}
+                    onClick={() => navigate('/design/myroom')}
                 />
                 <h2>내 주방 설정</h2>
             </div>
@@ -443,7 +443,7 @@ const FirstLivingRoom = () => {
                     className={styles.next}
                     onClick={() => {
                         saveFurnitureState(); // 상태 저장
-                        navigate('/firstToiletRoom');
+                        navigate('/design/toilet');
                     }}
                 >
                     다음

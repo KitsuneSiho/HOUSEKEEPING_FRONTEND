@@ -1,10 +1,13 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams  } from 'react-router-dom';
 import styles from '../../css/main/friendRoom.module.css'; // CSS 모듈 임포트
 import Footer from '../../jsx/fix/Footer.jsx';
 
+
 const FriendRoom = () => {
     const navigate = useNavigate();
+    const {userId} = useParams(); // URL 파라미터로부터 userId를 추출
+
 
     return (
         <div className={styles.container}>
@@ -12,9 +15,9 @@ const FriendRoom = () => {
                 <img
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/mainPage')}
+                    onClick={() => navigate('/main')}
                 />
-                <h2>___님의 House</h2>
+                <h2>님의 House</h2>
             </div>
 
             <div className={styles.dirtyBar}>
@@ -36,7 +39,10 @@ const FriendRoom = () => {
             </div>
 
             <div className={styles.visitorBoard}>
-                <button type="button" onClick={() => navigate('/visitorBoard')}></button>
+                <button
+                    type="button"
+                    onClick={() => navigate(`/friend/visitorBoard/${userId}`)} // 수정된 부분
+                />
             </div>
             <Footer />
         </div>
