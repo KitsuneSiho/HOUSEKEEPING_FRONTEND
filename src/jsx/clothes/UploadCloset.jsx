@@ -4,6 +4,7 @@ import styles from '../../css/clothes/uploadCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
 
+
 const UploadCloset = () => {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
@@ -43,7 +44,7 @@ const UploadCloset = () => {
             setFileUrl(uploadedUrl); // URL 저장
 
             // 업로드 후 업로드된 파일의 URL을 상태로 전달하며 페이지 이동
-            navigate('/uploadClosetCheck', { state: { fileUrl: uploadedUrl } });
+            navigate('/closet/register/check', { state: { fileUrl: uploadedUrl } });
         } catch (error) {
             console.error('파일 업로드 실패:', error);
         }

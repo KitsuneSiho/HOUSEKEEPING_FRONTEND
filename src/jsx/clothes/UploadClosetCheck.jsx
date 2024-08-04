@@ -74,7 +74,7 @@ const UploadClosetCheck = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/uploadCloset')} />
+                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closet/register')} />
                 <h2>옷 등록</h2>
                 <h3 onClick={handleSave}>등록</h3>
             </div>
