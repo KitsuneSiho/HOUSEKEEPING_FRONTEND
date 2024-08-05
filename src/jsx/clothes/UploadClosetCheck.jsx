@@ -9,7 +9,7 @@ const UploadClosetCheck = () => {
     const location = useLocation();
     const [fileUrl, setFileUrl] = useState('');
     const [isSaved, setIsSaved] = useState(false);
-    const [category, setCategory] = useState(''); // 선택된 카테고리 저장
+    const [category, setCategory] = useState('outer'); // 기본값을 'outer'로 설정
     const [clothDetails, setClothDetails] = useState({
         clothId: "1",
         clothName: '새 옷',
@@ -17,7 +17,8 @@ const UploadClosetCheck = () => {
         clothColor: '초록',
         clothMaterial: '면',
         clothSeason: 'SUMMER',
-        clothCustomTag: ''
+        clothCustomTag: '',
+        howWash : '세탁기'
     });
 
     useEffect(() => {
@@ -26,9 +27,16 @@ const UploadClosetCheck = () => {
         }
     }, [location.state]);
 
+    useEffect(() => {
+        if (category) {
+            const defaultType = getOptions(category)[0] || '';
+            setClothDetails(prevDetails => ({ ...prevDetails, clothType: defaultType }));
+        }
+    }, [category]);
+
     const handleCategoryChange = (event) => {
-        setCategory(event.target.value);
-        setClothDetails({ ...clothDetails, clothType: '' });
+        const selectedCategory = event.target.value;
+        setCategory(selectedCategory);
     };
 
     const handleInputChange = (event) => {
@@ -49,7 +57,7 @@ const UploadClosetCheck = () => {
         }
     };
 
-    const getOptions = () => {
+    const getOptions = (category) => {
         switch (category) {
             case 'outer':
                 return ['후드 집업', '가디건', '코트', '패딩', '바람막이'];
@@ -82,7 +90,6 @@ const UploadClosetCheck = () => {
                 <div className={styles.tag}>
                     <label htmlFor="category">카테고리</label>
                     <select id="category" value={category} onChange={handleCategoryChange}>
-                        <option value="">선택하세요</option>
                         <option value="outer">아우터</option>
                         <option value="top">상의</option>
                         <option value="bottom">하의</option>
@@ -95,8 +102,7 @@ const UploadClosetCheck = () => {
                     <div className={styles.tag}>
                         <label htmlFor="clothType">종류</label>
                         <select id="clothType" value={clothDetails.clothType} onChange={handleInputChange}>
-                            <option value="">선택하세요</option>
-                            {getOptions().map(option => (
+                            {getOptions(category).map(option => (
                                 <option key={option} value={option}>{option}</option>
                             ))}
                         </select>

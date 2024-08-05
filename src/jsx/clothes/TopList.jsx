@@ -8,6 +8,8 @@ const TopList = () => {
     const navigate = useNavigate();
     const [clothes, setClothes] = useState([]);
     const [modalData, setModalData] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [currentEdit, setCurrentEdit] = useState(null);
 
     useEffect(() => {
         const fetchClothes = async () => {
@@ -35,19 +37,65 @@ const TopList = () => {
         }
     }, [modalData]);
 
-    const openModal = (title, type, color, material, season, howWash) => {
-        setModalData({ title, type, color, material, season, howWash });
+    const openModal = (cloth) => {
+        setModalData(cloth);
+        setEditMode(false);
+        setCurrentEdit({ ...cloth }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
         document.getElementById("myModal").style.display = "none";
         setModalData(null);
+        setCurrentEdit(null);
     };
 
     const handleClickOutside = (event) => {
         if (event.target.id === "myModal") {
             closeModal();
         }
+    };
+
+    const handleEdit = () => {
+        setEditMode(true);
+    };
+
+    const handleSave = async () => {
+        try {
+            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit); // 수정된 부분: currentEdit.clothId 사용
+            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth)); // 수정된 부분: clothId 사용
+            closeModal();
+        } catch (error) {
+            console.error('수정 중 오류 발생:', error);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await apiClient.delete(`/ware/items/${currentEdit.clothId}`);
+            const fileName = currentEdit.imageUrl.split('/').pop();
+            await apiClient.delete(`/files/delete?fileName=${encodeURIComponent(fileName)}`);
+            setClothes(clothes.filter(cloth => cloth.clothId !== currentEdit.clothId));
+            closeModal();
+        } catch (error) {
+            console.error('삭제 중 오류 발생:', error);
+        }
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setCurrentEdit({ ...currentEdit, [name]: value });
+    };
+
+    const getOptions = () => {
+        return ['반팔', '긴팔', '셔츠', '민소매', '카라티', '니트'];
+    };
+
+    const getColorOptions = () => {
+        return ['초록', '검정', '회색', '흰색'];
+    };
+
+    const getMaterialOptions = () => {
+        return ['면', '폴리에스터', '나일론'];
     };
 
     return (
@@ -60,24 +108,110 @@ const TopList = () => {
                 {clothes.map((cloth, index) => (
                     <img
                         key={index}
-                        src={cloth.imageUrl || '/lib/상의1.svg'} // DB에서 가져온 imageUrl이 없으면 기본 이미지 사용
+                        src={cloth.imageUrl || '/lib/상의1.svg'}
                         alt={cloth.clothName || `상의 ${index + 1}`}
-                        onClick={() => openModal(cloth.clothName, cloth.clothType, cloth.clothColor, cloth.material, cloth.clothSeason, '세탁기')}
+                        onClick={() => openModal(cloth)}
                     />
                 ))}
             </div>
 
-            {/* Modal */}
             {modalData && (
                 <div id="myModal" className={styles.modal} onClick={handleClickOutside}>
                     <div className={styles.modalContent}>
                         <span className={styles.close} onClick={closeModal}>&times;</span>
-                        <h2>{modalData.title}</h2>
-                        <p>종류: {modalData.type}</p>
-                        <p>색상: {modalData.color}</p>
-                        <p>소재: {modalData.material}</p>
-                        <p>계절: {modalData.season}</p>
-                        <p>세탁 방법: {modalData.howWash}</p>
+                        {!editMode ? (
+                            <>
+                                <h2>{modalData.clothName}</h2>
+                                <p>종류: {modalData.clothType}</p>
+                                <p>색상: {modalData.clothColor}</p>
+                                <p>소재: {modalData.clothMaterial}</p>
+                                <p>계절: {modalData.clothSeason}</p>
+                                <p>세탁 방법: {modalData.howWash}</p>
+                                <p>커스텀 태그: {modalData.clothCustomTag}</p>
+                                <button onClick={handleEdit}>수정</button>
+                                <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
+
+                            </>
+                        ) : (
+                            <>
+                                <h2>수정 모드</h2>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothName">옷 이름</label>
+                                    <input
+                                        type="text"
+                                        id="clothName"
+                                        name="clothName"
+                                        value={currentEdit.clothName}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothType">종류</label>
+                                    <select
+                                        id="clothType"
+                                        name="clothType"
+                                        value={currentEdit.clothType}
+                                        onChange={handleChange}
+                                    >
+                                        {getOptions().map(option => (
+                                            <option key={option} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothColor">색상</label>
+                                    <select
+                                        id="clothColor"
+                                        name="clothColor"
+                                        value={currentEdit.clothColor}
+                                        onChange={handleChange}
+                                    >
+                                        {getColorOptions().map(color => (
+                                            <option key={color} value={color}>{color}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothMaterial">소재</label>
+                                    <select
+                                        id="clothMaterial"
+                                        name="clothMaterial"
+                                        value={currentEdit.clothMaterial}
+                                        onChange={handleChange}
+                                    >
+                                        {getMaterialOptions().map(material => (
+                                            <option key={material} value={material}>{material}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothSeason">계절</label>
+                                    <select
+                                        id="clothSeason"
+                                        name="clothSeason"
+                                        value={currentEdit.clothSeason}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="SUMMER">여름</option>
+                                        <option value="SPRING_FALL">봄/가을</option>
+                                        <option value="WINTER">겨울</option>
+                                    </select>
+                                    <div className={styles.tag}>
+                                        <label htmlFor="clothCustomTag">커스텀 태그</label>
+                                        <input
+                                            type="text"
+                                            id="clothCustomTag"
+                                            name="clothCustomTag"
+                                            value={currentEdit.clothCustomTag}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+                                <button onClick={handleSave}>저장</button>
+                                <button onClick={closeModal}>취소</button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
