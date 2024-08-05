@@ -14,7 +14,7 @@
     width: 90%;
     max-width: 600px;  /* 캘린더 크기 줄이기 */
     margin-bottom: 20px;  /* 캘린더 아래에 공간 추가 */
-    overflow: hidden; /* 스크롤 제거 */
+
 }
 
 .list-modal {
@@ -71,7 +71,7 @@
     display: inline-block;
     padding: 10px 20px;
     border-radius: 20px; /* 동그란 배경 */
-    color: white;
+    color: black;
     font-size: 1rem;
     margin: 0;
     text-align: center;

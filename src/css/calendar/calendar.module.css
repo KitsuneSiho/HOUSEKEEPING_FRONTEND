@@ -1,169 +1,182 @@
+/* 전체 컨테이너 */
 .container {
-    padding: 0 0 15%;
-    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    font-family: Fre, sans-serif;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    padding: 20px;
 }
 
-.calendarHeader {
+/* 캘린더 스타일 */
+.fullCalendarContainer {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-    position: relative;
-    gap: 15px;
-}
-
-.calendarHeader h2 {
-    margin: 0;
-}
-
-.calendarHeader img {
-    cursor: pointer;
-}
-
-.calendar {
-    width: 90%;
-    height: 400px;
-    border: 1px solid black;
-    margin: 5% 0;
-}
-
-.routineContainer {
-    width: 95%;
-    position: relative;
-}
-
-.routineSection {
-    width: 95%;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    max-width: 1000px;  /* 캘린더 크기 줄이기 */
+    flex: 1;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* 캘린더를 중앙 정렬 */
+}
+
+/* 캘린더 스타일 */
+.fc {
+    width: 100%;
+}
+
+/* 선택된 날짜 배경 색상 */
+.selectedDate {
+    background-color: #007bff !important; /* 선택된 날짜 배경색 */
+    color: #fff !important; /* 텍스트 색상 */
+    border-radius: 4px;
+}
+
+/* 스케줄 목록 */
+.scheduleList {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.roomSection {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.roomSection h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* 스케줄 아이템 */
+.scheduleItem {
+    display: flex;
+    align-items: center;
     padding: 10px;
-    position: relative;
-}
-
-.routineHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.routineTitle {
-    display: flex;
-    align-items: center;
-    border-radius: 30px;
-    padding: 5px 15px;
-    gap: 10px;
-}
-
-.roomColor {
-    background-color: #ffc5f2;
-}
-
-.livingRoomColor {
-    background-color: #ffebc5;
-}
-
-.toiletColor {
-    background-color: #c5f1ff;
-}
-
-.routineTitle img {
-    width: 20px;
-    height: 20px;
-}
-
-.routineTitle p {
-    font-size: 16px;
-    margin: 0;
-}
-
-.alramOnOff {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.alramOnOff p {
-    margin: 0;
-    font-size: 14px;
-}
-
-.alramOnOff img {
-    width: 15px;
-    height: 15px;
+    border-bottom: 1px solid #eee;
     cursor: pointer;
 }
 
-.routineInfo {
-    max-height: 200px;
-    overflow-y: auto;
+.scheduleItem:hover {
+    background-color: #f0f0f0;
 }
 
-.routineInfo ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.routineInfo li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.routineInfo input[type="checkbox"] {
+.checkbox, .alarm {
     margin-right: 10px;
-}
-
-.routineInfo label {
-    flex-grow: 1;
-}
-
-.routineInfo img {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-}
-
-.plusIcon {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
     cursor: pointer;
-    width: 24px;
-    height: 24px;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .calendar {
-        width: 100%;
-        height: auto;
-    }
-
-    .routineInfo {
-        max-height: 150px;
-    }
+.scheduleName {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
 }
 
-@media (max-width: 480px) {
-    .calendarHeader h2 {
-        font-size: 1.2em;
-    }
+/* 추가 버튼 */
+.addButton {
+    background-color: lavender;
+    color: black;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0 auto; /* 수평 가운데 정렬 */
+    display: block; /* 블록 요소로 변경 */
+    max-width: 200px;
+}
 
-    .routineTitle p {
-        font-size: 14px;
-    }
+/* 모달 스타일 */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 560px; /* 최대 너비 설정 */
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000; /* 다른 요소들 위에 표시 */
+}
 
-    .routineInfo {
-        max-height: 100px;
-    }
+/* 모달의 컨텐츠 */
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수평 가운데 정렬 */
+    gap: 10px; /* 버튼과 입력 필드 사이의 간격 */
+    background-color: white;
+    border: 1px solid #ddd; /* 연한 회색 테두리 */
+    border-radius: 10px; /* 둥글게 처리된 테두리 */
+    padding: 20px; /* 내부 여백 */
+}
+
+/* 버튼들을 포함할 컨테이너 */
+.buttonGroup {
+    display: flex;
+    gap: 10px; /* 버튼 사이의 간격 */
+}
+
+/* 버튼 스타일 */
+.modalContent button {
+    background-color: lavender;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.modalContent h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.modalContent input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* 각 방의 제목 스타일 */
+.roomSection h3 {
+    display: inline;
+    padding: 10px 20px;
+    border-radius: 20px; /* 둥글게 */
+    color: black;
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+    background-color: #FFB6C1;
+    max-width: 50px;
+}
+
+/* 방 별 배경 색상 */
+.room-0 h3 {
+    background-color: #ffc5f2; /* 연분홍색 */
+    color: black;
+}
+
+.room-1 h3 {
+    background-color: #ffebc5; /* 연노랑색 */
+    color: black;
+}
+
+.room-2 h3 {
+    background-color: #c5f1ff; /* 연파랑색 */
+    color: black;
+}
+
+.scheduleList ul {
+    list-style-type: none; /* 불릿 포인트 제거 */
+    padding-left: 10px; /* ul 요소의 기본 패딩 제거 */
+    margin-left: 0; /* ul 요소의 기본 마진 제거 */
 }

@@ -10,7 +10,7 @@ const AddFriend = () => {
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
-    const loginUserId = 1; // 실제 userId를 적절히 설정해야 합니다.
+    const loginUserId = 3; // 실제 userId를 적절히 설정해야 합니다.
 
     const handleSearch = async () => {
         if (searchQuery.trim() !== '') {
@@ -22,7 +22,7 @@ const AddFriend = () => {
                     }
                 });
 
-                // 검색 결과에서 자기 자신을 제외합니다.
+                // 검색 결과에서 자기 자신을 제외
                 const filteredResults = response.data.filter(user => user.userId !== loginUserId);
 
                 // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
@@ -49,6 +49,7 @@ const AddFriend = () => {
         }
     };
 
+    // 친구 요청 보내기
     const sendFriendRequest = async (receiverId) => {
         try {
             const requestDTO = {
@@ -72,18 +73,19 @@ const AddFriend = () => {
         }
     };
 
+    // 팔로우 취소
     const cancelFriendRequest = async (receiverId) => {
         try {
-            const response = await axios.post(`${BACK_URL}/friendRequest/cancel`, {
-                senderId: loginUserId,
-                receiverId: receiverId
+            const response = await axios.post(`${BACK_URL}/friendRequest/cancel`, null, {
+                params: {
+                    senderId: loginUserId,  // 올바르게 설정된 senderId
+                    receiverId: receiverId  // 올바르게 설정된 receiverId
+                }
             });
-
-            console.log('Response from server:', response); // 서버 응답 로그
             alert('팔로우를 취소했습니다.');
             handleSearch(); // 상태 갱신을 위해 다시 검색
         } catch (error) {
-            console.error('Error cancelling friend request:', error); // 오류 로그
+            console.error('Error cancelling friend request:', error);
         }
     };
 
