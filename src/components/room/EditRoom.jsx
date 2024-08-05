@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import FurnitureList from "./FurnitureList.jsx";
 import FurnitureController from "./FurnitureController.jsx";
 
-const EditRoom = ({room, placementList, furniture, userLevel}) => {
+const EditRoom = ({room, placementList, furniture, userLevel, savePlacement, deletePlacement}) => {
     const navigate = useNavigate();
     const mountRef = useRef(null);
     const sceneRef = useRef(new THREE.Scene());
@@ -26,6 +26,7 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
     const [floorAndWallsColor, setFloorAndWallsColor] = useState(null);
     const [changedFloorAndWallsColor, setChangedFloorAndWallsColor] = useState({});
     const [changedPlacementList, setChangedPlacementList] = useState([]);
+    const [deletedPlacementList, setDeletedPlacementList] = useState([]);
 
     useEffect(() => {
 
@@ -145,6 +146,12 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
             return;
         }
 
+        const deletedPlacement = deletedPlacementList.find(deletedPlacement => deletedPlacement.furnitureName === placement.furnitureName);
+
+        if (deletedPlacement) {
+            setDeletedPlacementList(deletedPlacementList.filter(deletedPlacement => deletedPlacement.furnitureName !== placement.furnitureName));
+        }
+
         const loader = new GLTFLoader();
         loader.load(`/furniture/${placement.furnitureType}/${placement.furnitureName}.glb`, (gltf) => {
             const model = gltf.scene;
@@ -165,6 +172,16 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
 
             const group = new THREE.Group();
             group.add(model);
+
+            if (deletedPlacement) {
+                placement = {
+                    ...placement,
+                    placementId: deletedPlacement.placementId,
+                }
+                console.log("deleted:", deletedPlacement);
+            }
+
+
             group.placement = placement // Add type information
             updatePlacementList(placement);
             sceneRef.current.add(group);
@@ -233,6 +250,14 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
         if (selectedFurniture) {
             sceneRef.current.remove(selectedFurniture);
             removeFurnitureFromList(selectedFurniture.placement.furnitureName);
+
+            if (selectedFurniture.placement.placementId !== undefined) {
+                setDeletedPlacementList([
+                    ...deletedPlacementList,
+                    selectedFurniture.placement,
+                ])
+            }
+
             setSelectedFurniture(null);
             setShowModal(false);
         }
@@ -335,49 +360,25 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
         });
     };
 
-    const compareFurniturePlacements = (originalList, changedList) => {
-        const deletedPlacementIds = [];
-        const updatedPlacements = [];
+    // 변경사항 저장
+    const savePlacements = () => {
 
-        // originalList에 존재하지만 changedList에는 없는 항목의 placementId를 삭제 리스트에 추가
-        originalList.forEach(original => {
-            const isStillPresent = changedList.some(changed =>
-                changed.furnitureName === original.furnitureName
-            );
-            if (!isStillPresent) {
-                deletedPlacementIds.push(original.placementId);
-            }
-        });
+        if (deletedPlacementList.length > 0) {
 
-        // changedList에서 위치, 각도, 크기가 변경된 항목을 업데이트 리스트에 추가
-        changedList.forEach(changed => {
-            const original = originalList.find(original =>
-                original.furnitureName === changed.furnitureName
-            );
-            if (original) {
-                const hasChanged = (
-                    original.placementLocation.x !== changed.placementLocation.x ||
-                    original.placementLocation.y !== changed.placementLocation.y ||
-                    original.placementLocation.z !== changed.placementLocation.z ||
-                    original.placementAngle !== changed.placementAngle ||
-                    original.placementSize !== changed.placementSize
-                );
-                if (hasChanged) {
-                    updatedPlacements.push(changed);
-                }
-            } else {
-                // 변경된 리스트에만 존재하는 항목, 즉 새로 추가된 항목을 업데이트 리스트에 추가
-                updatedPlacements.push(changed);
-            }
-        });
+            deletedPlacementList.forEach(placement => {
+                deletePlacement(placement.placementId);
+            })
+        }
 
-        console.log("deletedPlacementIds:", deletedPlacementIds);
-        console.log("updatedPlacements:", updatedPlacements);
+        if (changedPlacementList.length > 0) {
 
-        // return {
-        //     deletedPlacementIds,
-        //     updatedPlacements
-        // };
+            changedPlacementList.forEach(placement => {
+                savePlacement(placement, room.roomId);
+            });
+        }
+
+        console.log("deletedPlacementList:", deletedPlacementList);
+        console.log("savePlacement:", changedPlacementList);
     };
 
     //임시
@@ -422,7 +423,7 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => compareFurniturePlacements(placementList, changedPlacementList)}
+                    onClick={() => savePlacements()}
                 >
                     저장
                 </button>
@@ -436,6 +437,8 @@ EditRoom.propTypes = {
     placementList: PropTypes.array,
     furniture: PropTypes.array,
     userLevel: PropTypes.string,
+    savePlacement: PropTypes.func,
+    deletePlacement: PropTypes.func,
 }
 
 export default EditRoom;

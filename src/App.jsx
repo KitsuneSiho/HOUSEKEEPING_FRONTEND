@@ -11,7 +11,7 @@ import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
 import ClosetRouter from "./router/ClosetRouter.jsx";
 import TipRouter from "./router/TipRouter.jsx";
 import MyPageRouter from "./router/MyPageRouter.jsx";
-import TempLogin from "./pages/room/TempLogin.jsx";
+import TempLogin from "./pages/first/TempLogin.jsx";
 import RoomDisplayTest from "./pages/room/RoomDisplayTest.jsx";
 import RoomEditTest from "./pages/room/RoomEditTest.jsx";
 
@@ -52,7 +52,6 @@ function App() {
 
                         {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
                         <Route path="/test/modal" element={<ModalExample/>}/>
-                        <Route path="/test/login" element={<TempLogin/>}/>
                         <Route path="/test/room" element={<RoomDisplayTest/>}/>
                         <Route path="/test/room/edit" element={<RoomEditTest/>}/>
                     </Routes>

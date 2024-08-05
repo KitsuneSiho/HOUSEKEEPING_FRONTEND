@@ -50,6 +50,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                                 &&
                                 furniture.filter(furniture => (furniture.furnitureType === furnitureType.furnitureType)).map((furniture, index) => (
                                     <button key={index} onClick={() => loadFurniture({
+                                        furnitureId: furniture.furnitureId,
                                         furnitureType: furniture.furnitureType,
                                         furnitureName: furniture.furnitureName,
                                         placementLocation: JSON.stringify({x: 0, y: 0, z: 0}),

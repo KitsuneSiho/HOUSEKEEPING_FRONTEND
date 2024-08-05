@@ -78,9 +78,36 @@ const RoomEditTest = () => {
         }
     }
 
+    const savePlacement = async (placement, roomId) => {
+
+        try {
+            console.log("adf", JSON.stringify(placement.placementLocation));
+
+            await axios.post(BACK_URL + `/placement/register`, {
+                ...placement,
+                roomId: roomId,
+                placementLocation: JSON.stringify(placement.placementLocation),
+            })
+        } catch (error) {
+            console.error("error saving placemnet:", error)
+        }
+    }
+
+    const deletePlacement = async (placementId) => {
+
+        try {
+
+            await axios.delete(BACK_URL + `/placement/delete?placementId=${placementId}`)
+        } catch (error) {
+            console.error("error deleting placemnet:", error)
+        }
+    }
+
     return (
         <>
-            {isReady && <EditRoom room={rooms[0]} placementList={placementLists[0]} furniture={furniture} userLevel={userLevel} /> }
+            {isReady &&
+                <EditRoom room={rooms[0]} placementList={placementLists[0]} furniture={furniture} userLevel={userLevel}
+                          savePlacement={savePlacement} deletePlacement={deletePlacement}/>}
         </>
     )
 }
