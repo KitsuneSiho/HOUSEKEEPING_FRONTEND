@@ -5,6 +5,29 @@ import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {BACK_URL} from "../../Constraints.js";
 
+const FoodCategory = {
+    MILK: '유제품',
+    MEAT: '육류',
+    SEAFOOD: '해산물',
+    VEGETABLE: '채소',
+    FRUIT: '과일',
+    NUTS: '견과류',
+    SEASONING: '조미료',
+    OIL: '기름',
+    FLOUR: '밀가루',
+    BEVERAGE: '음료',
+    ETC: '기타'
+};
+
+// 날짜 검증 함수 추가
+const isValidDate = (date) => {
+    if (!date) return true; // 날짜가 없으면 유효하다고 간주
+    const inputDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간을 00:00:00으로 설정
+    return inputDate >= today;
+};
+
 const FoodList = () => {
     // useState를 사용하여 컴포넌트의 상태 정의
     // [현재 값, 값을 변경하는 함수]
@@ -14,6 +37,9 @@ const FoodList = () => {
     const [foods, setFoods] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('ALL');
+    const [deletedFoods, setDeletedFoods] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredFoods, setFilteredFoods] = useState([]);
     const [modalData, setModalData] = useState({ //모달창에 뜰 데이터
         category: '',
         name: '',
@@ -32,7 +58,14 @@ const FoodList = () => {
     useEffect(() => {
         fetchCategories();  // 카테고리 목록 불러오기
         fetchFoodsByCategory(category);
-    }, []);  // 빈 배열을 넣어 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+    }, [category]);  // 빈 배열을 넣어 컴포넌트가 처음 렌더링될 때만 실행되도록 함
+
+    useEffect(() => {
+        setFilteredFoods(foods);
+    }, [foods]);
+
+    // 카테고리가 'all'인지 확인하는 함수 -> 전체보기에서 '+'버튼 지울 때 사용
+    const isAllCategory = () => category.toLowerCase() === 'all';
 
     // 카테고리 목록을 가져오는 함수
     const fetchCategories = async () => {
@@ -62,56 +95,29 @@ const FoodList = () => {
 
     // 특정 카테고리의 식품 목록을 가져오는 함수
     const fetchFoodsByCategory = async (category) => {
-
-        if (category === 'all') {
-            fetchFoods();  // 'ALL' 카테고리면 모든 식품을 가져온다
-        } else {
-            try {
-                const response = await axios.get(BACK_URL + `/food/foodlist/${category}?userId=${userId}`);
-                setFoods(response.data || []);  // 받아온 카테고리별 식품 목록을 설정 / 데이터 없을 시 빈 배열 반환
-            } catch (error) {
-                console.error('카테고리별 식품 목록을 가져오는데 실패했습니다:', error);
-                setFoods([]); // 에러 시 빈 배열 반환
+        try {
+            let response;
+            if (category.toLowerCase() === 'all') {
+                response = await axios.get(BACK_URL + `/food/foodlist/all?userId=${userId}`);
+            } else {
+                response = await axios.get(BACK_URL + `/food/foodlist/${category}?userId=${userId}`);
             }
+            setFoods(response.data || []);
+        } catch (error) {
+            console.error('식품 목록을 가져오는데 실패했습니다:', error);
+            setFoods([]);
         }
     };
 
-    // // 식재료 수동 추가 함수
-    // const addFood = async (foodName, foodQuantity) => {
-    //     try {
-    //         const response = await axios.post(BACK_URL + `/food/foodlist/${category}/add`, null, {
-    //             params: {
-    //                 userId: userId,
-    //                 foodName: foodName,
-    //                 foodQuantity: foodQuantity
-    //             }
-    //         });
-    //         setFoods(response.data);
-    //     } catch (error) {
-    //         console.error('식재료 추가에 실패했습니다:', error);
-    //         // 에러 처리 (예: 사용자에게 알림)
-    //     }
-    // };
-
     //편집 모드 토글 함수
     const toggleEditMode = () => {
+        if (isEditMode) {
+            // 편집 모드 종료 시 임시 삭제 상태 초기화
+            setFoods([...foods, ...deletedFoods]);
+            setDeletedFoods([]);
+        }
         setIsEditMode(!isEditMode);
     };
-
-    // // 행 추가 함수
-    // const addRow = () => {
-    //     setFoods([...foods, { foodCategory: category, foodName: '', foodQuantity: 1 }]);
-    // };
-
-    // 특정 행을 제거하는 함수
-    const removeRow = (index) => {
-        const newFoods = foods.filter((_, i) => i !== index);
-        setFoods(newFoods);
-    };
-
-    // const removeLastRow = () => {
-    //     setFoods(prevFoods => prevFoods.slice(0, -1));
-    // };
 
     // 모달 창 여는 함수
     const openModal = (row, index) => {
@@ -119,10 +125,10 @@ const FoodList = () => {
         if (row && row.foodName && row.foodName.trim()) {
             setCurrentRow(index);
             setModalData({
-                category: row.foodCategory || '',
+                category: row.foodCategory || category.toUpperCase(),
                 name: row.foodName || '',
                 quantity: row.foodQuantity || '',
-                expiry: row.foodExpirationDate || '',
+                expiry: row.foodExpirationDate ? row.foodExpirationDate.split('T')[0] : '',
                 memo: row.foodMemo || '',
             });
             document.getElementById('modal').style.display = 'block';
@@ -136,42 +142,31 @@ const FoodList = () => {
 
     // 모달에서 변경된 내용을 적용하는 함수
     const applyModalChanges = async () => {
+
+        if (!isValidDate(modalData.expiry)) {
+            alert('날짜를 다시 설정해주세요. 유통기한은 오늘 이후의 날짜여야 합니다.');
+            return;
+        }
+
         try {
+            const foodData = {
+                userId: userId,
+                foodName: modalData.name,
+                foodQuantity: modalData.quantity,
+                foodCategory: modalData.category.toUpperCase(),
+                foodExpirationDate: modalData.expiry ? modalData.expiry + 'T00:00:00' : null, // 여기를 수정
+                foodMemo: modalData.memo
+            };
+
             if (currentRow === null) {
                 // 새로운 항목 추가
-
-                const response = await axios.post(BACK_URL + `/food/foodlist/add`, {
-                    userId: userId,
-                    foodName: modalData.name,
-                    foodQuantity: modalData.quantity,
-                    foodCategory: modalData.category.toUpperCase(),
-                    foodExpirationDate: modalData.expiry + 'T00:00:00' || null,
-                    foodMemo: modalData.memo
-                });
-
-                // 서버 응답으로 받은 새 데이터로 상태 업데이트
+                const response = await axios.post(BACK_URL + `/food/foodlist/add`, foodData);
                 setFoods(prevFoods => [...prevFoods, response.data]);
-
-                // 카테고리가 변경되었을 수 있으므로 전체 목록을 다시 불러옴
-                await fetchFoodsByCategory(category);
-
             } else {
-
                 // 기존 항목 수정
                 const foodToUpdate = foods[currentRow];
-
-                console.log(modalData, userId, foodToUpdate.foodId);
-                const response = await axios.put(BACK_URL + `/food/foodlist/update`, {
-                    userId: userId,
-                    foodId: foodToUpdate.foodId,
-                    foodName: modalData.name,
-                    foodQuantity: modalData.quantity,
-                    foodCategory: modalData.category,
-                    foodExpirationDate: modalData.expiry + 'T00:00:00' || null,
-                    foodMemo: modalData.memo
-                });
-
-                // 서버 응답으로 받은 업데이트된 데이터로 상태 업데이트
+                foodData.foodId = foodToUpdate.foodId;
+                const response = await axios.put(BACK_URL + `/food/foodlist/update`, foodData);
                 const newFoods = foods.map((food, i) =>
                     i === currentRow ? response.data : food
                 );
@@ -182,33 +177,51 @@ const FoodList = () => {
             // 변경 사항이 제대로 반영되었는지 확인하기 위해 전체 목록을 다시 불러옴
             await fetchFoodsByCategory(category);
         } catch (error) {
-            console.error('식품 정보 업데이트 중 오류 발생:', error);
-            // 에러 처리 (예: 사용자에게 알림)
-            alert('식품 정보 업데이트에 실패했습니다. 다시 시도해 주세요.');
+            console.error('식재료 수정/추가 중 오류 발생:', error);
+            alert('식재료 수정/추가에 실패했습니다. 다시 시도해 주세요.');
+
+            // 실패 시 deletedFoods 를 foods 에 다시 추가
+            setFoods([...foods, ...deletedFoods]);
+            setDeletedFoods([]);
         }
     };
 
     // 추가 또는 적용 버튼 클릭 시 실행되는 함수
-    const handleAddOrApply = () => {
+    const handleAddOrApply = async () => {
         if (isEditMode) {
-            toggleEditMode();
-        } else {
-            // 새로운 빈 식재료 데이터 생성
-            const newFood = {
-                foodCategory: category,
-                foodName: '',
-                foodQuantity: '',
-                foodExpirationDate: '',
-                foodMemo: ''
-            };
+            try {
+                // 수정된 모든 식재료 정보를 DB에 업데이트
+                for (const food of foods) {
+                    await axios.put(BACK_URL + `/food/foodlist/update`, {
+                        userId: userId,
+                        foodId: food.foodId,
+                        foodName: food.foodName,
+                        foodQuantity: food.foodQuantity,
+                        foodCategory: food.foodCategory,
+                        foodExpirationDate: food.foodExpirationDate,
+                        foodMemo: food.foodMemo
+                    });
+                }
 
-            // 모달 데이터 설정
+                // 삭제된 항목 처리
+                await performDelete();
+
+                // 변경 사항이 제대로 반영되었는지 확인하기 위해 전체 목록을 다시 불러옴
+                await fetchFoodsByCategory(category);
+
+                setIsEditMode(false);
+            } catch (error) {
+                console.error('식재료 수정 중 오류 발생:', error);
+                alert('식재료 수정에 실패했습니다. 다시 시도해 주세요.');
+            }
+        } else {
+            // 새로운 항목 추가 로직
             setModalData({
-                category: newFood.foodCategory || '',
-                name: newFood.foodName || '',
-                quantity: newFood.foodQuantity || '',
-                expiry: newFood.foodExpirationDate || '',
-                memo: newFood.foodMemo || '',
+                category: category.toUpperCase(),
+                name: '',
+                quantity: '',
+                expiry: '',
+                memo: '',
             });
 
             // 현재 행을 null로 설정 (새로운 항목 추가임을 나타냄)
@@ -219,13 +232,48 @@ const FoodList = () => {
         }
     };
 
-
     // 식품 수량을 업데이트하는 함수
     const updateQuantity = (index, change) => {
         const newFoods = foods.map((food, i) =>
             i === index ? {...food, foodQuantity: Math.max(0, parseInt(food.foodQuantity) + change)} : food
         );
         setFoods(newFoods);
+    };
+
+    // 식재료 임시 삭제 함수
+    const tempDeleteFood = (index) => {
+        const foodToDelete = foods[index];
+        setDeletedFoods([...deletedFoods, foodToDelete]);
+        const newFoods = foods.filter((_, i) => i !== index);
+        setFoods(newFoods);
+    };
+
+    // 실제 삭제 수행 함수
+    const performDelete = async () => {
+        try {
+            for (const food of deletedFoods) {
+                await axios.delete(`${BACK_URL}/food/foodlist/delete/${food.foodId}`, {
+                    params: { userId: userId }
+                });
+            }
+            setDeletedFoods([]);
+        } catch (error) {
+            console.error('식재료 삭제 중 오류 발생:', error);
+            alert('일부 식재료 삭제에 실패했습니다. 다시 시도해 주세요.');
+        }
+    };
+
+    //검색 수행 함수
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+        if (term.trim() === '') {
+            setFilteredFoods(foods);
+        } else {
+            const filtered = foods.filter(food =>
+                food.foodName.toLowerCase().includes(term.toLowerCase())
+            );
+            setFilteredFoods(filtered);
+        }
     };
 
 
@@ -242,7 +290,12 @@ const FoodList = () => {
 
             {/* 검색 바 */}
             <div className={`${styles.searchBar}`} id="search-bar">
-                <input type="text" placeholder="재료명 검색" id="search-input"/>
+                <input
+                    type="text"
+                    placeholder="재료명 검색"
+                    value={searchTerm}
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
                 <img src="/lib/검색.svg" alt="search"/>
             </div>
 
@@ -256,35 +309,31 @@ const FoodList = () => {
                     <th>수량</th>
                 </tr>
                 </thead>
-                {/* 수정된 부분: 빈 배열 처리 추가 */}
+
                 <tbody>
-                {Array.isArray(foods) && foods.length > 0 ? (
-                    foods.map((food, index) => (
+                {filteredFoods.length > 0 ? (
+                    filteredFoods.map((food, index) => (
                         <tr key={`food-${food.foodId || index}`}>
                             <td>{food.foodCategory}</td>
                             <td onClick={() => openModal(food, index)}>
-                                {isEditMode && index === foods.length - 1 ?
-                                    <input
-                                        type="text"
-                                        value={food.foodName}
-                                        onChange={(e) => {
-                                            const newFoods = [...foods];
-                                            newFoods[index].foodName = e.target.value;
-                                            setFoods(newFoods);
-                                        }}
-                                    />
-                                    : food.foodName
-                                }
+                                {food.foodName}
                             </td>
                             <td className={styles.quantityCell}>
                                 {isEditMode ? (
                                     <>
-                                        <button className={styles.quantityBtn}
-                                                onClick={() => updateQuantity(index, -1)}>-
+                                        <button
+                                            className={styles.quantityBtn}
+                                            onClick={() => updateQuantity(index, -1)}
+                                            disabled={food.foodQuantity <= 1}
+                                        >
+                                            -
                                         </button>
                                         <span>{food.foodQuantity}</span>
-                                        <button className={styles.quantityBtn}
-                                                onClick={() => updateQuantity(index, 1)}>+
+                                        <button
+                                            className={styles.quantityBtn}
+                                            onClick={() => updateQuantity(index, 1)}
+                                        >
+                                            +
                                         </button>
                                     </>
                                 ) : (
@@ -293,13 +342,14 @@ const FoodList = () => {
                             </td>
                             <td>
                                 {isEditMode &&
-                                    <button className={styles.removeBtn} onClick={() => removeRow(index)}>✖</button>}
+                                    <button className={styles.removeBtn}
+                                            onClick={() => tempDeleteFood(index)}>✖</button>}
                             </td>
                         </tr>
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="4">식품 목록이 없습니다.</td>
+                        <td colSpan="4">검색 결과가 없습니다.</td>
                     </tr>
                 )}
                 </tbody>
@@ -307,8 +357,14 @@ const FoodList = () => {
 
             {/* 편집/추가 버튼 */}
             <div className={styles.editAddButton}>
-                <button className={styles.editBtn} onClick={toggleEditMode}>{isEditMode ? '취소' : '수정'}</button>
-                <button className={styles.addBtn} onClick={handleAddOrApply}>{isEditMode ? '적용' : '+'}</button>
+                <button className={styles.editBtn} onClick={toggleEditMode}>
+                    {isEditMode ? '취소' : '수정'}
+                </button>
+                {(isEditMode || !isAllCategory()) && (
+                    <button className={styles.addBtn} onClick={handleAddOrApply}>
+                        {isEditMode ? '적용' : '+'}
+                    </button>
+                )}
             </div>
 
             {/* 모달 창 */}
@@ -318,8 +374,15 @@ const FoodList = () => {
                     <form id="modal-form">
                         <div className={styles.modalField}>
                             <label htmlFor="modal-category">분류</label>
-                            <input type="text" id="modal-category" name="modal-category" value={modalData.category}
-                                   onChange={(e) => setModalData({...modalData, category: e.target.value})}/>
+                            <select
+                                id="modal-category"
+                                value={modalData.category}
+                                onChange={(e) => setModalData({...modalData, category: e.target.value})}
+                            >
+                                {Object.entries(FoodCategory).map(([key, value]) => (
+                                    <option key={key} value={key}>{value}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className={styles.modalField}>
                             <label htmlFor="modal-name">이름</label>
@@ -333,8 +396,13 @@ const FoodList = () => {
                         </div>
                         <div className={styles.modalField}>
                             <label htmlFor="modal-expiry">유통기한</label>
-                            <input type="date" id="modal-expiry" name="modal-expiry" value={modalData.expiry}
-                                   onChange={(e) => setModalData({...modalData, expiry: e.target.value})}/>
+                            <input
+                                type="date"
+                                id="modal-expiry"
+                                name="modal-expiry"
+                                value={modalData.expiry || ''}
+                                onChange={(e) => setModalData({...modalData, expiry: e.target.value || null})}
+                            />
                         </div>
                         <div className={styles.modalField}>
                             <label htmlFor="modal-memo">메모</label>
