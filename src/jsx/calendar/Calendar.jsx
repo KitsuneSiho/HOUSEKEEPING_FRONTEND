@@ -10,7 +10,7 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import moment from 'moment-timezone';
 
 const Calendar = () => {
-    const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD')); // 기본 날짜를 오늘로 설정
+    const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
     const [events, setEvents] = useState([]);
     const [schedules, setSchedules] = useState({});
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -22,7 +22,7 @@ const Calendar = () => {
     const [roomIds, setRoomIds] = useState([]);
     const [roomNames, setRoomNames] = useState({});
 
-    const loginUserId = 2; // 로그인한 유저의 ID
+    const loginUserId = 2;
 
     const fetchRoomData = async () => {
         try {
@@ -89,9 +89,8 @@ const Calendar = () => {
     }, [events, selectedDate, roomIds, roomNames]);
 
     const handleDateClick = (arg) => {
-        setSelectedDate(moment(arg.dateStr).format('YYYY-MM-DD')); // 정확한 날짜를 설정합니다.
+        setSelectedDate(moment(arg.dateStr).format('YYYY-MM-DD'));
     };
-
 
     const handleCheckboxChange = async (scheduleId, isChecked) => {
         try {
@@ -105,7 +104,7 @@ const Calendar = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            await fetchRoomData(); // 전체 데이터를 다시 가져옵니다.
+            await fetchRoomData();
         } catch (error) {
             console.error('Error updating schedule checked status:', error);
         }
@@ -131,7 +130,7 @@ const Calendar = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            await fetchRoomData(); // 전체 데이터를 다시 가져옵니다.
+            await fetchRoomData();
         } catch (error) {
             console.error('Error updating schedule alarm status:', error);
         }
@@ -154,14 +153,13 @@ const Calendar = () => {
                 },
                 body: JSON.stringify({ scheduleName: updatedScheduleName })
             });
-            fetchRoomData(); // 데이터 새로 고침
+            fetchRoomData();
             closeEditModal();
         } catch (error) {
             console.error('Error updating schedule name:', error);
         }
     };
 
-    // 일정 삭제 기능
     const handleDelete = (scheduleId) => {
         fetch(`${BACK_URL}/calendar/delete/${scheduleId}`, {
             method: 'DELETE',
@@ -203,14 +201,12 @@ const Calendar = () => {
     };
 
     const handleAddSchedule = async () => {
-
         if (!newScheduleName.trim()) {
             alert("일정 이름을 입력해주세요.");
             return;
         }
 
         let date;
-
         if (typeof selectedDate === 'string') {
             let dateParts = selectedDate.split("-");
             date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
@@ -223,7 +219,6 @@ const Calendar = () => {
         }
 
         const isoDate = date.toISOString();
-
 
         try {
             await fetch(`${BACK_URL}/calendar/add`, {
@@ -240,7 +235,7 @@ const Calendar = () => {
                     roomId: selectedRoomId
                 })
             });
-            fetchRoomData(); // 데이터 새로 고침
+            fetchRoomData();
             closeAddModal();
         } catch (error) {
             console.error('Error adding new schedule:', error);
@@ -249,6 +244,12 @@ const Calendar = () => {
 
     const dayCellClassNames = (info) => {
         return moment(info.date).format('YYYY-MM-DD') === selectedDate ? [styles.selectedDate] : [];
+    };
+
+    const getBackgroundColor = (index) => {
+        // 방 순서에 따라 색상을 동적으로 결정합니다.
+        const colors = ['#ffebc5', '#ffc5f2', '#c5f1ff']; // 색상 배열: 노랑, 핑크, 파랑
+        return colors[index % colors.length] || '#ffffff'; // 기본 색상
     };
 
     return (
@@ -269,13 +270,27 @@ const Calendar = () => {
                             scheduleIsAlarm: schedule.alarm
                         });
                     }}
-                    dayCellClassNames={dayCellClassNames} // 날짜 셀에 클래스 이름 추가
+                    dayCellClassNames={dayCellClassNames}
                 />
             </div>
             <div className={styles.scheduleList}>
-                {Object.keys(schedules).map((roomId, idx) => (
-                    <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
-                    <h3>{schedules[roomId].roomName}</h3>
+                {Object.keys(schedules).map((roomId, index) => (
+                    <div
+                        key={roomId}
+                        className={styles.roomSection}
+                    >
+                        <div
+                            className={styles.roomHeader}
+                            style={{
+                                backgroundColor: getBackgroundColor(index),
+                                padding: '10px 20px',
+                                borderRadius: '20px',
+                                marginBottom: '10px',
+                                color: '#000'
+                            }}
+                        >
+                            {schedules[roomId].roomName}
+                        </div>
                         <ul>
                             {schedules[roomId].schedules.map(schedule => (
                                 <li key={schedule.scheduleId} className={styles.scheduleItem}>

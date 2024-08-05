@@ -147,7 +147,7 @@
 }
 
 /* 각 방의 제목 스타일 */
-.roomSection h3 {
+.roomHeader {
     display: inline;
     padding: 10px 20px;
     border-radius: 20px; /* 둥글게 */
@@ -155,22 +155,22 @@
     font-size: 1rem;
     margin: 0;
     text-align: center;
-    background-color: #FFB6C1;
     max-width: 50px;
+    background-color: gold;
 }
 
 /* 방 별 배경 색상 */
-.room-0 h3 {
+.room-0 {
     background-color: #ffc5f2; /* 연분홍색 */
     color: black;
 }
 
-.room-1 h3 {
+.room-1 {
     background-color: #ffebc5; /* 연노랑색 */
     color: black;
 }
 
-.room-2 h3 {
+.room-2 {
     background-color: #c5f1ff; /* 연파랑색 */
     color: black;
 }
