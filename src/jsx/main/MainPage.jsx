@@ -24,7 +24,7 @@ const MainPage = () => {
     const [roomNames, setRoomNames] = useState({});
 
 
-    const loginUserId = 2; // 로그인한 유저의 ID
+    const loginUserId = 1; // 로그인한 유저의 ID
 
     useEffect(() => {
         axios.get(`${BACK_URL}/friend/list`, {
