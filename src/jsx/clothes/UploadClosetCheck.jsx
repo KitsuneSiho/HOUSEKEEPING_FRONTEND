@@ -1,21 +1,21 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/uploadClosetCheck.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
-import BottomList from "./BottomList.jsx";
 
 const UploadClosetCheck = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [fileUrl, setFileUrl] = useState('');
     const [isSaved, setIsSaved] = useState(false);
+    const [category, setCategory] = useState(''); // 선택된 카테고리 저장
     const [clothDetails, setClothDetails] = useState({
-        clothId : "1",
+        clothId: "1",
         clothName: '새 옷',
-        clothType: '반팔',
+        clothType: '',
         clothColor: '초록',
+        clothMaterial: '면',
         clothSeason: 'SUMMER',
         clothCustomTag: ''
     });
@@ -26,26 +26,10 @@ const UploadClosetCheck = () => {
         }
     }, [location.state]);
 
-    useEffect(() => {
-        const handleBeforeUnload = () => {
-            if (!isSaved && fileUrl) {
-                apiClient.delete('/files/delete', { params: { fileName: encodeURIComponent(fileUrl.split('/').pop()) } })
-                    .then(response => console.log(response.data))
-                    .catch(error => console.error('파일 삭제 실패:', error));
-            }
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-            if (!isSaved && fileUrl) {
-                apiClient.delete('/files/delete', { params: { fileName: encodeURIComponent(fileUrl.split('/').pop()) } })
-                    .then(response => console.log(response.data))
-                    .catch(error => console.error('파일 삭제 실패:', error));
-            }
-        };
-    }, [fileUrl, isSaved]);
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+        setClothDetails({ ...clothDetails, clothType: '' });
+    };
 
     const handleInputChange = (event) => {
         const { id, value } = event.target;
@@ -58,23 +42,35 @@ const UploadClosetCheck = () => {
         try {
             const response = await apiClient.post('/ware/items', clothData);
             console.log('Cloth saved:', response.data);
-            setIsSaved(true);
-
-            // clothType에 따라 적절한 카테고리 페이지로 이동
-            if (clothDetails.clothType === '반팔' || clothDetails.clothType === '긴팔' || clothDetails.clothType === '셔츠') {
-                navigate('/topList'); // '상의' 카테고리 페이지로 이동
-            } else if (BottomList) {
-                // 다른 카테고리 페이지로 이동
-            }
+            setIsSaved(true); // 이미지가 저장된 것으로 간주
+            navigate('/closet'); // 저장 후 이동
         } catch (error) {
             console.error('옷 정보 저장 실패:', error);
+        }
+    };
+
+    const getOptions = () => {
+        switch (category) {
+            case 'outer':
+                return ['후드 집업', '가디건', '코트', '패딩', '바람막이'];
+            case 'top':
+                return ['반팔', '긴팔', '셔츠', '민소매', '카라티', '니트'];
+            case 'bottom':
+                return ['반바지', '긴바지', '원피스', '스커트'];
+            case 'shoes':
+                return ['운동화', '스니커즈', '구두', '샌들/슬리퍼'];
+            case 'bag':
+                return ['백팩', '크로스백', '토드백', '숄더백', '웨이스트백'];
+            case 'accessory':
+                return ['모자', '선글라스', '양말'];
+            default:
+                return [];
         }
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/closet/register')} />
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet/register')} />
                 <h2>옷 등록</h2>
                 <h3 onClick={handleSave}>등록</h3>
@@ -84,13 +80,28 @@ const UploadClosetCheck = () => {
             </div>
             <div className={styles.tags}>
                 <div className={styles.tag}>
-                    <label htmlFor="clothType">종류</label>
-                    <select id="clothType" value={clothDetails.clothType} onChange={handleInputChange}>
-                        <option value="반팔">반팔</option>
-                        <option value="긴팔">긴팔</option>
-                        <option value="셔츠">셔츠</option>
+                    <label htmlFor="category">카테고리</label>
+                    <select id="category" value={category} onChange={handleCategoryChange}>
+                        <option value="">선택하세요</option>
+                        <option value="outer">아우터</option>
+                        <option value="top">상의</option>
+                        <option value="bottom">하의</option>
+                        <option value="shoes">신발</option>
+                        <option value="bag">가방</option>
+                        <option value="accessory">악세사리</option>
                     </select>
                 </div>
+                {category && (
+                    <div className={styles.tag}>
+                        <label htmlFor="clothType">종류</label>
+                        <select id="clothType" value={clothDetails.clothType} onChange={handleInputChange}>
+                            <option value="">선택하세요</option>
+                            {getOptions().map(option => (
+                                <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
+                    </div>
+                )}
                 <div className={styles.tag}>
                     <label htmlFor="clothColor">색상</label>
                     <select id="clothColor" value={clothDetails.clothColor} onChange={handleInputChange}>
@@ -102,7 +113,7 @@ const UploadClosetCheck = () => {
                 </div>
                 <div className={styles.tag}>
                     <label htmlFor="clothMaterial">소재</label>
-                    <select id="clothMaterial" value={clothDetails.material} onChange={handleInputChange}>
+                    <select id="clothMaterial" value={clothDetails.clothMaterial} onChange={handleInputChange}>
                         <option value="면">면</option>
                         <option value="폴리에스터">폴리에스터</option>
                         <option value="나일론">나일론</option>

@@ -4,6 +4,11 @@ import UploadCloset from "../jsx/clothes/UploadCloset.jsx";
 import UploadClosetCheck from "../jsx/clothes/UploadClosetCheck.jsx";
 import RecommendCloset from "../jsx/clothes/RecommendCloset.jsx";
 import TopList from "../jsx/clothes/TopList.jsx";
+import BottomList from "../jsx/clothes/BottomList.jsx";
+import OuterList from "../jsx/clothes/OuterList.jsx";
+import ShoesList from "../jsx/clothes/ShoesList.jsx";
+import BagList from "../jsx/clothes/BagList.jsx";
+import AccessoryList from "../jsx/clothes/AccessoryList.jsx";
 
 const ClosetRouter = () => {
 
@@ -13,7 +18,12 @@ const ClosetRouter = () => {
             {/* /closet */}
             <Routes>
                 <Route path="/" element={<ClosetRoom/>}/> {/* 옷방 메인 화면 */}
-                <Route path="/list" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/outer" element={<OuterList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/top" element={<TopList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/bottom" element={<BottomList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/shoes" element={<ShoesList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/bag" element={<BagList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
+                <Route path="/accessory" element={<AccessoryList/>}/> {/* 내 옷 리스트 (카테고리별 파일 만들어야됨) */}
                 <Route path="/register" element={<UploadCloset/>}/> {/* 옷 등록(카메라만있음) */}
                 <Route path="/register/check" element={<UploadClosetCheck/>}/> {/* 옷 등록 확인 */}
                 <Route path="/recommend" element={<RecommendCloset/>}/> {/* 옷 추천 */}
