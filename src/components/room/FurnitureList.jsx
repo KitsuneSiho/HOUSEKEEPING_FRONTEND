@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
 
-const FurnitureList = ({userId, furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
+const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
 
     const [furnitureTypes, setFurnitureTypes] = useState([]);
 
@@ -55,7 +55,7 @@ const FurnitureList = ({userId, furniture, activeCategory, userLevel, handleCate
                                         placementLocation: JSON.stringify({x: 0, y: 0, z: 0}),
                                         placementAngle: 0,
                                         placementSize: 1
-                                    })}>{furniture.furnitureName}</button>
+                                    }, true)}>{furniture.furnitureName}</button>
                                 ))}
                         </div>
                     ))}
@@ -66,7 +66,6 @@ const FurnitureList = ({userId, furniture, activeCategory, userLevel, handleCate
 }
 
 FurnitureList.propTypes = {
-    userId: PropTypes.number,
     furniture: PropTypes.array,
     activeCategory: PropTypes.string,
     userLevel: PropTypes.string,

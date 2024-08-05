@@ -23,8 +23,9 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
     const [modalType, setModalType] = useState('furniture'); // 'furniture' or 'color'
     const [activeCategory, setActiveCategory] = useState(null);
     const [selectedObject, setSelectedObject] = useState(null); // Selected wall or floor for color change
-
     const [floorAndWallsColor, setFloorAndWallsColor] = useState(null);
+    const [changedFloorAndWallsColor, setChangedFloorAndWallsColor] = useState({});
+    const [changedPlacementList, setChangedPlacementList] = useState([]);
 
     useEffect(() => {
 
@@ -97,7 +98,7 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
         const wallBackMaterial = new THREE.MeshStandardMaterial({color: floorAndWallsColor.backWall});
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
         wallBack.name = 'backWall'; // Naming the wall
-        wallBack.position.set(0, 7.5, -9.5);
+        wallBack.position.set(0, 7.5, -9.5)
         scene.add(wallBack);
 
         const animate = () => {
@@ -108,7 +109,7 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
 
         animate();
 
-        placementList.map(placement => loadFurniture(placement));
+        placementList.map(placement => loadFurniture(placement, false));
 
         return () => {
             rendererRef.current.dispose();
@@ -123,7 +124,27 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
         }
     }, [position, rotation, scale, selectedFurniture]);
 
-    const loadFurniture = (placement) => {
+    const loadFurniture = (placement, isModalOpen) => {
+
+        const existingPlacement = changedPlacementList.find(changePlacement => changePlacement.furnitureName === placement.furnitureName);
+
+        if (existingPlacement) {
+            // 이미 존재하는 가구가 있을 경우 해당 가구를 선택하고 편집 모드로 진입
+            const existingFurniture = sceneRef.current.children.find(child => child.placement && child.placement.furnitureName === placement.furnitureName);
+            if (existingFurniture) {
+                setSelectedFurniture(existingFurniture);
+                setPosition(existingPlacement.placementLocation);
+                setRotation(existingPlacement.placementAngle);
+                setScale(existingPlacement.placementSize);
+
+                if (isModalOpen) {
+                    setModalType('furniture');
+                    setShowModal(true);
+                }
+            }
+            return;
+        }
+
         const loader = new GLTFLoader();
         loader.load(`/furniture/${placement.furnitureType}/${placement.furnitureName}.glb`, (gltf) => {
             const model = gltf.scene;
@@ -144,17 +165,26 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
 
             const group = new THREE.Group();
             group.add(model);
+            group.placement = placement // Add type information
+            updatePlacementList(placement);
             sceneRef.current.add(group);
 
             // 좌표를 JSON화
-            const position = JSON.parse(placement.placementLocation);
+            placement.placementLocation = JSON.parse(placement.placementLocation);
 
             setSelectedFurniture(group);
-            setPosition({x: position.x, y: position.y, z: position.z});
+            setPosition({
+                x: placement.placementLocation.x,
+                y: placement.placementLocation.y,
+                z: placement.placementLocation.z
+            });
             setRotation(placement.placementAngle); // Reset rotation on Y-axis
             setScale(placement.placementSize); // Reset scale
             setModalType('furniture');
-            setShowModal(true);
+
+            if (isModalOpen) {
+                setShowModal(true);
+            }
         }, undefined, (error) => {
             console.error('Error loading model:', error);
         });
@@ -188,6 +218,8 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
                 setScale(intersectedObject.scale.x);
                 setModalType('furniture');
                 setShowModal(true);
+
+                console.log("info:", intersectedObject.placement);
             }
         }
     };
@@ -200,10 +232,23 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
     const handleDelete = () => {
         if (selectedFurniture) {
             sceneRef.current.remove(selectedFurniture);
+            removeFurnitureFromList(selectedFurniture.placement.furnitureName);
             setSelectedFurniture(null);
             setShowModal(false);
         }
     };
+
+    const cancelColorChange = () => {
+        if (selectedObject) {
+            const newColor = new THREE.Color(floorAndWallsColor[selectedObject.name]);
+            selectedObject.material.color.set(newColor);
+            setChangedFloorAndWallsColor({
+                ...changedFloorAndWallsColor,
+                [selectedObject.name]: floorAndWallsColor[selectedObject.name],
+            });
+            setShowModal(false);
+        }
+    }
 
     const openColorModal = (objectName) => {
         const selected = sceneRef.current.getObjectByName(objectName);
@@ -218,26 +263,131 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
         // Ensure the position does not exceed the boundaries
         const newValue = Math.max(-10, Math.min(10, parseFloat(value)));
         setPosition((prev) => ({...prev, [axis]: newValue}));
+
+        const newPosition = selectedFurniture.placement;
+        newPosition.placementLocation = {
+            ...newPosition.placementLocation,
+            [axis]: newValue,
+        }
+
+        updatePlacementList(newPosition);
     };
 
     const updateRotation = (value) => {
         setRotation(parseFloat(value));
+
+        const newPosition = selectedFurniture.placement;
+        newPosition.placementAngle = value;
+
+        updatePlacementList(newPosition);
     };
 
     const updateScale = (value) => {
         setScale(parseFloat(value));
+
+        const newPosition = selectedFurniture.placement;
+        newPosition.placementSize = value;
+
+        updatePlacementList(newPosition);
     };
 
     const handleColorChange = (event) => {
         if (selectedObject) {
             const newColor = new THREE.Color(event.target.value);
             selectedObject.material.color.set(newColor);
+            setChangedFloorAndWallsColor({
+                ...changedFloorAndWallsColor,
+                [selectedObject.name]: event.target.value,
+            });
         }
     };
 
     const closeModal = () => {
         setShowModal(false);
     };
+
+    // 가구 정보를 업데이트하거나 추가하는 함수
+    const updatePlacementList = (newPlacement) => {
+        setChangedPlacementList(prevList => {
+            // 가구가 이미 배열에 존재하는지 확인
+            const index = prevList.findIndex(item => item.furnitureName === newPlacement.furnitureName);
+
+            if (index !== -1) {
+                // 가구가 존재하면 해당 가구의 정보를 업데이트
+                const updatedList = [...prevList];
+                updatedList[index] = {
+                    ...updatedList[index],
+                    ...newPlacement // 변경된 정보를 덮어씀
+                };
+                return updatedList;
+            } else {
+                // 가구가 존재하지 않으면 새로운 정보를 배열에 추가
+                return [...prevList, newPlacement];
+            }
+        });
+    };
+
+    // 가구 정보를 삭제하는 함수
+    const removeFurnitureFromList = (furnitureName) => {
+        setChangedPlacementList(prevList => {
+            // 가구의 이름을 기준으로 배열에서 해당 항목을 필터링하여 제거
+            return prevList.filter(item => item.furnitureName !== furnitureName);
+        });
+    };
+
+    const compareFurniturePlacements = (originalList, changedList) => {
+        const deletedPlacementIds = [];
+        const updatedPlacements = [];
+
+        // originalList에 존재하지만 changedList에는 없는 항목의 placementId를 삭제 리스트에 추가
+        originalList.forEach(original => {
+            const isStillPresent = changedList.some(changed =>
+                changed.furnitureName === original.furnitureName
+            );
+            if (!isStillPresent) {
+                deletedPlacementIds.push(original.placementId);
+            }
+        });
+
+        // changedList에서 위치, 각도, 크기가 변경된 항목을 업데이트 리스트에 추가
+        changedList.forEach(changed => {
+            const original = originalList.find(original =>
+                original.furnitureName === changed.furnitureName
+            );
+            if (original) {
+                const hasChanged = (
+                    original.placementLocation.x !== changed.placementLocation.x ||
+                    original.placementLocation.y !== changed.placementLocation.y ||
+                    original.placementLocation.z !== changed.placementLocation.z ||
+                    original.placementAngle !== changed.placementAngle ||
+                    original.placementSize !== changed.placementSize
+                );
+                if (hasChanged) {
+                    updatedPlacements.push(changed);
+                }
+            } else {
+                // 변경된 리스트에만 존재하는 항목, 즉 새로 추가된 항목을 업데이트 리스트에 추가
+                updatedPlacements.push(changed);
+            }
+        });
+
+        console.log("deletedPlacementIds:", deletedPlacementIds);
+        console.log("updatedPlacements:", updatedPlacements);
+
+        // return {
+        //     deletedPlacementIds,
+        //     updatedPlacements
+        // };
+    };
+
+    //임시
+    useEffect(() => {
+        console.log("changedFloorAndWallsColor:", changedFloorAndWallsColor);
+    }, [changedFloorAndWallsColor]);
+
+    useEffect(() => {
+        console.log("changedPlacementList:", changedPlacementList);
+    }, [changedPlacementList])
 
     return (
         <div className={styles.container}>
@@ -257,7 +407,9 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
                                loadFurniture={loadFurniture}/>
                 <FurnitureController showModal={showModal} modalType={modalType} position={position} rotation={rotation}
                                      scale={scale} updatePosition={updatePosition} updateRotation={updateRotation}
-                updateScale={updateScale} handleColorChange={handleColorChange} handleDelete={handleDelete} closeModal={closeModal}/>
+                                     updateScale={updateScale} handleColorChange={handleColorChange}
+                                     handleDelete={handleDelete} closeModal={closeModal}
+                                     cancelColorChange={cancelColorChange}/>
             </div>
             <div className={styles.submit}>
                 <button
@@ -270,9 +422,9 @@ const EditRoom = ({room, placementList, furniture, userLevel}) => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => navigate('/firstLivingRoom')}
+                    onClick={() => compareFurniturePlacements(placementList, changedPlacementList)}
                 >
-                    다음
+                    저장
                 </button>
             </div>
         </div>

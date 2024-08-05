@@ -133,10 +133,10 @@ const RoomModel = ({room, placementList}) => {
             sceneRef.current.add(group);
 
             // 좌표를 JSON화
-            const position = JSON.parse(placement.placementLocation);
+            placement.placementLocation = JSON.parse(placement.placementLocation);
 
             setSelectedFurniture(group);
-            setPosition({x: position.x, y: position.y, z: position.z});
+            setPosition({x: placement.placementLocation.x, y: placement.placementLocation.y, z: placement.placementLocation.z});
             setRotation(placement.placementAngle); // Reset rotation on Y-axis
             setScale(placement.placementSize); // Reset scale
         }, undefined, (error) => {
