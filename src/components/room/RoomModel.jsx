@@ -19,6 +19,8 @@ const RoomModel = ({room, placementList}) => {
 
     const [floorAndWallsColor, setFloorAndWallsColor] = useState(null);
 
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     useEffect(() => {
 
         setFloorAndWallsColor(JSON.parse(room.roomWallsColor));
@@ -101,7 +103,14 @@ const RoomModel = ({room, placementList}) => {
 
         animate();
 
-        placementList.map(placement => loadFurniture(placement));
+        const loadAllFurniture = async () => {
+            for (const placement of placementList) {
+                loadFurniture(placement, false);
+                await delay(50); // 50ms의 딜레이를 추가
+            }
+        };
+
+        loadAllFurniture();
 
         return () => {
             rendererRef.current.dispose();
@@ -133,10 +142,10 @@ const RoomModel = ({room, placementList}) => {
             sceneRef.current.add(group);
 
             // 좌표를 JSON화
-            placement.placementLocation = JSON.parse(placement.placementLocation);
+            const coordinate = JSON.parse(placement.placementLocation);
 
             setSelectedFurniture(group);
-            setPosition({x: placement.placementLocation.x, y: placement.placementLocation.y, z: placement.placementLocation.z});
+            setPosition({x: coordinate.x, y: coordinate.y, z: coordinate.z});
             setRotation(placement.placementAngle); // Reset rotation on Y-axis
             setScale(placement.placementSize); // Reset scale
         }, undefined, (error) => {

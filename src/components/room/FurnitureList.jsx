@@ -18,7 +18,6 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
 
             const response = await axios.get(BACK_URL + `/furniture/type/list/${userLevel}`)
             setFurnitureTypes(response.data);
-            console.log(response.data);
 
         } catch (error) {
             console.error("error getting furniture types", error);

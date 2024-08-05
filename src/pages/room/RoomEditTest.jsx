@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
-import EditRoom from "../../components/room/EditRoom.jsx";
+import EditRoomModel from "../../components/room/EditRoomModel.jsx";
 
 const RoomEditTest = () => {
 
@@ -45,8 +45,7 @@ const RoomEditTest = () => {
 
             const response = await axios.get(BACK_URL + `/room/list?userId=${userId}`);
 
-            setRooms(response.data);
-            console.log(response.data);
+            setRooms(response.data)
         } catch (error) {
             console.error("Error fetching room:", error);
         }
@@ -59,7 +58,6 @@ const RoomEditTest = () => {
             const response = await axios.get(BACK_URL + `/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
 
             setPlacementLists(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching placementLists", error);
         }
@@ -72,7 +70,6 @@ const RoomEditTest = () => {
             const response = await axios.get(BACK_URL + `/furniture/list/${userLevel}`);
 
             setFurniture(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching available furnitures:", error);
         }
@@ -81,7 +78,6 @@ const RoomEditTest = () => {
     const savePlacement = async (placement, roomId) => {
 
         try {
-            console.log("adf", JSON.stringify(placement.placementLocation));
 
             await axios.post(BACK_URL + `/placement/register`, {
                 ...placement,
@@ -106,8 +102,8 @@ const RoomEditTest = () => {
     return (
         <>
             {isReady &&
-                <EditRoom room={rooms[0]} placementList={placementLists[0]} furniture={furniture} userLevel={userLevel}
-                          savePlacement={savePlacement} deletePlacement={deletePlacement}/>}
+                <EditRoomModel room={rooms[0]} placementList={placementLists[0]} furniture={furniture} userLevel={userLevel}
+                               savePlacement={savePlacement} deletePlacement={deletePlacement}/>}
         </>
     )
 }

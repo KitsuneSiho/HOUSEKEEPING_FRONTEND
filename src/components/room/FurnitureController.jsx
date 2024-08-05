@@ -13,7 +13,8 @@ const FurnitureController = ({
                                  handleColorChange,
                                  handleDelete,
                                  closeModal,
-                                 cancelColorChange
+                                 cancelColorChange,
+                                 selectedFurniture
                              }) => {
 
     return (
@@ -23,6 +24,7 @@ const FurnitureController = ({
                     {modalType === 'furniture' ? (
                         <>
                             <div className={styles.sliderControls}>
+                                <p>{selectedFurniture.placement.furnitureName}</p>
                                 <label className={styles.xControls}>
                                     <p>X축위치:</p>
                                     <input
