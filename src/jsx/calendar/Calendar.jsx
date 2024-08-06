@@ -248,7 +248,7 @@ const Calendar = () => {
 
     const getBackgroundColor = (index) => {
         // 방 순서에 따라 색상을 동적으로 결정합니다.
-        const colors = ['#ffebc5', '#ffc5f2', '#c5f1ff']; // 색상 배열: 노랑, 핑크, 파랑
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff']; // 색상 배열: 노랑, 핑크, 파랑
         return colors[index % colors.length] || '#ffffff'; // 기본 색상
     };
 
