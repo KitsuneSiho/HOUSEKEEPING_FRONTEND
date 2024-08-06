@@ -50,6 +50,19 @@ const RoomModel = ({room, placementList}) => {
 
         if (!controlsRef.current) {
             const controls = new OrbitControls(cameraRef.current, rendererRef.current.domElement);
+
+            // 회전 각도 제한 (고도)
+            controls.minPolarAngle = Math.PI / 8; // 최소 고도 각도
+            controls.maxPolarAngle = Math.PI / 2; // 최대 고도 각도
+
+            // 회전 각도 제한 (방위각)
+            controls.minAzimuthAngle = -Math.PI / 8; // 좌우 최소 회전 각도
+            controls.maxAzimuthAngle = Math.PI / 2;  // 좌우 최대 회전 각도
+
+            // 확대/축소 제한
+            controls.minDistance = 30; // 최소 거리
+            controls.maxDistance = 70; // 최대 거리
+
             controls.enableDamping = true;
             controls.dampingFactor = 0.25;
             controls.enableZoom = true;

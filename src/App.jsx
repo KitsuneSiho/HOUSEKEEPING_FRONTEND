@@ -11,7 +11,6 @@ import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
 import ClosetRouter from "./router/ClosetRouter.jsx";
 import TipRouter from "./router/TipRouter.jsx";
 import MyPageRouter from "./router/MyPageRouter.jsx";
-import TempLogin from "./pages/first/TempLogin.jsx";
 import RoomDisplayTest from "./pages/room/RoomDisplayTest.jsx";
 import RoomEditTest from "./pages/room/RoomEditTest.jsx";
 import MyRoom from "./pages/room/MyRoom.jsx";

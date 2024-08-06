@@ -90,8 +90,8 @@ const FurnitureController = ({
                                     <p>크기:</p>
                                     <input
                                         type="range"
-                                        min="0.1"
-                                        max="15"
+                                        min="0.5"
+                                        max="5"
                                         step="0.1"
                                         value={scale}
                                         onChange={(e) => updateScale(e.target.value)}
@@ -139,6 +139,7 @@ FurnitureController.propTypes = {
     handleDelete: propTypes.func,
     closeModal: propTypes.func,
     cancelColorChange: propTypes.func,
+    selectedFurniture: propTypes.object,
 }
 
 export default FurnitureController
