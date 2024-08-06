@@ -28,6 +28,7 @@ const TopList = () => {
         fetchClothes();
     }, []);
 
+
     useEffect(() => {
         if (modalData) {
             const modalElement = document.getElementById("myModal");

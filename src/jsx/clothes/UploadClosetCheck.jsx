@@ -20,6 +20,7 @@ const UploadClosetCheck = () => {
         clothCustomTag: ''
     });
 
+
     useEffect(() => {
         if (location.state && location.state.fileUrl) {
             setFileUrl(location.state.fileUrl);

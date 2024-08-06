@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../services/axiosInstance';
 import styles from '../../css/myPage/myInfo.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 
 const MyInfo = () => {
     const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState({
+        userId: '', // userId 추가
+        name: '',
+        nickname: '',
+        email: '',
+        phone: '',
+    });
+
+    useEffect(() => {
+        const loadUserInfo = async () => {
+            try {
+                const response = await axiosInstance.get('/api/user/info', {
+                    params: { userId: 1 } // 사용자의 ID를 여기에 설정해야 합니다.
+                });
+                setUserInfo(response.data);
+            } catch (error) {
+                console.error('Error loading user info', error);
+            }
+        };
+        loadUserInfo();
+    }, []);
+
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setUserInfo(prevState => ({
+            ...prevState,
+            [id]: value
+        }));
+    };
+
+    const handleUpdate = async () => {
+        try {
+            await axiosInstance.put('/api/user/update', userInfo);
+            navigate('/myPage');
+        } catch (error) {
+            console.error('Error updating user info', error);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -19,24 +58,24 @@ const MyInfo = () => {
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" placeholder="이름을 입력하세요" />
+                    <input type="text" id="name" value={userInfo.name} onChange={handleInputChange} />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
-                    <input type="text" id="nickname" placeholder="닉네임을 입력하세요" />
+                    <input type="text" id="nickname" value={userInfo.nickname} onChange={handleInputChange} />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="email" id="email" placeholder="이메일을 입력하세요" />
+                    <input type="email" id="email" value={userInfo.email} onChange={handleInputChange} />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" placeholder="전화번호를 입력하세요" />
+                    <input type="text" id="phone" value={userInfo.phone} onChange={handleInputChange} />
                 </div>
             </div>
             <div className={styles.submit}>
                 <button type="button" className={styles.cancel} onClick={() => navigate('/myPage')}>취소</button>
-                <button type="button" className={styles.next} onClick={() => navigate('/myPage')}>수정</button>
+                <button type="button" className={styles.next} onClick={handleUpdate}>수정</button>
             </div>
             <Footer />
         </div>
