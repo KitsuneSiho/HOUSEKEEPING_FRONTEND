@@ -73,14 +73,7 @@
     height: 350px;
 }
 
-.furniture {
-    width: 80%;
-    height: 200px;
-    border: none;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
+
 
 .routineContainer {
     width: 95%;
@@ -107,7 +100,7 @@
     margin-bottom: 10px;
 }
 
-.room-section h3 {
+.roomSection h3 {
     display: flex;
     align-items: center;
     background-color: #ffc5f2;

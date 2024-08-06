@@ -362,8 +362,8 @@ const MainPage = () => {
             <div className={styles.guestBook}>
                 <p onClick={() => navigate('/main/guestbook')}>방명록</p>
             </div>
-            <div className="list-modal">
-                <div className="modal-header">
+            <div className={styles.routineContainer}>
+                <div className={styles.roomRoutineHeader}>
                     <h2>{selectedDate}</h2>
                 </div>
                 <div className={styles.listModal}>
@@ -371,7 +371,7 @@ const MainPage = () => {
                         Object.keys(schedules).map((roomId) => (
                             <div key={roomId} className={styles.roomSection}>
                                 <h3>{schedules[roomId].roomName}</h3>
-                                <ul className="routine-list">
+                                <ul className={styles.roomRoutineInfo}>
                                     {schedules[roomId].schedules.map(schedule => (
                                         <li key={schedule.scheduleId} className="schedule-item">
                                             <FontAwesomeIcon
