@@ -10,7 +10,7 @@ const GuestBook = () => {
     const [guestBooks, setGuestBooks] = useState([]);
 
     // 현재 로그인 한 사용자
-    const ownerId = 4;
+    const ownerId = 2;
 
     // API 호출하여 보관된 방명록을 가져오는 함수
     const fetchArchivedGuestBooks = async () => {
