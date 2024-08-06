@@ -54,6 +54,7 @@
 
 .dirtyBar {
     margin-top: 5%;
+    width: 95%;
     display: flex;
     justify-content: center;
 }

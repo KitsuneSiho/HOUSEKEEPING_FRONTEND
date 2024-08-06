@@ -6,6 +6,7 @@ import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
 import axios from "axios";
+import PullutionBar from '../../components/test/PollutionBar.jsx';
 
 const MainPage = () => {
 
@@ -282,7 +283,7 @@ const MainPage = () => {
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="/lib/오염도바.svg" alt="오염도 바"/>
+                <PullutionBar pollution={100}/>
             </div>
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
