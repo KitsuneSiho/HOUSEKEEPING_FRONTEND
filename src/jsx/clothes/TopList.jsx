@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/topList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
+import { DetermineHowWash } from "./DetermineHowWash.jsx";
 
 const TopList = () => {
     const navigate = useNavigate();
@@ -28,7 +29,6 @@ const TopList = () => {
         fetchClothes();
     }, []);
 
-
     useEffect(() => {
         if (modalData) {
             const modalElement = document.getElementById("myModal");
@@ -38,10 +38,12 @@ const TopList = () => {
         }
     }, [modalData]);
 
+
     const openModal = (cloth) => {
-        setModalData(cloth);
+        const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
+        setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth }); // 편집 중인 옷 데이터 복사
+        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
@@ -62,8 +64,8 @@ const TopList = () => {
 
     const handleSave = async () => {
         try {
-            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit); // 수정된 부분: currentEdit.clothId 사용
-            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth)); // 수정된 부분: clothId 사용
+            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit);
+            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth));
             closeModal();
         } catch (error) {
             console.error('수정 중 오류 발생:', error);
@@ -96,7 +98,7 @@ const TopList = () => {
     };
 
     const getMaterialOptions = () => {
-        return ['면', '폴리에스터', '나일론'];
+        return ['면', '폴리에스터', '나일론','울','실크','가죽'];
     };
 
     return (
@@ -127,11 +129,10 @@ const TopList = () => {
                                 <p>색상: {modalData.clothColor}</p>
                                 <p>소재: {modalData.clothMaterial}</p>
                                 <p>계절: {modalData.clothSeason}</p>
-                                <p>세탁 방법: {modalData.howWash}</p>
+                                <p>세탁 방법: {modalData.clothHowWash}</p>
                                 <p>커스텀 태그: {modalData.clothCustomTag}</p>
                                 <button onClick={handleEdit}>수정</button>
                                 <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
-
                             </>
                         ) : (
                             <>
@@ -185,7 +186,6 @@ const TopList = () => {
                                         ))}
                                     </select>
                                 </div>
-
                                 <div className={styles.tag}>
                                     <label htmlFor="clothSeason">계절</label>
                                     <select
@@ -198,6 +198,17 @@ const TopList = () => {
                                         <option value="SPRING_FALL">봄/가을</option>
                                         <option value="WINTER">겨울</option>
                                     </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothHowWash">세탁방법</label>
+                                    <input
+                                        type="text"
+                                        id="clothHowWash"
+                                        name="clothHowWash"
+                                        value={currentEdit.clothHowWash}
+                                        readOnly
+                                    />
+                                </div>
                                     <div className={styles.tag}>
                                         <label htmlFor="clothCustomTag">커스텀 태그</label>
                                         <input
@@ -208,7 +219,7 @@ const TopList = () => {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                </div>
+
                                 <button onClick={handleSave}>저장</button>
                                 <button onClick={closeModal}>취소</button>
                             </>

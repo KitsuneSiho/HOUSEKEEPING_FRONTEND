@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/accessoryList.module.css'; // 액세서리 전용 스타일 시트
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
+import { DetermineHowWash } from "./DetermineHowWash.jsx";
+
 
 const AccessoryList = () => {
     const navigate = useNavigate();
@@ -37,9 +39,10 @@ const AccessoryList = () => {
     }, [modalData]);
 
     const openModal = (cloth) => {
-        setModalData(cloth);
+        const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
+        setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth });
+        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
@@ -125,7 +128,7 @@ const AccessoryList = () => {
                                 <p>색상: {modalData.clothColor}</p>
                                 <p>소재: {modalData.clothMaterial}</p>
                                 <p>계절: {modalData.clothSeason}</p>
-                                <p>세탁 방법: {modalData.howWash}</p>
+                                <p>세탁 방법: {modalData.clothHowWash}</p>
                                 <p>커스텀 태그: {modalData.clothCustomTag}</p>
                                 <button onClick={handleEdit}>수정</button>
                                 <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
@@ -196,6 +199,16 @@ const AccessoryList = () => {
                                     </select>
                                 </div>
                                 <div className={styles.tag}>
+                                    <label htmlFor="clothHowWash">세탁방법</label>
+                                    <input
+                                        type="text"
+                                        id="clothHowWash"
+                                        name="clothHowWash"
+                                        value={currentEdit.clothHowWash}
+                                        readOnly
+                                    />
+                                </div>
+                                <div className={styles.tag}>
                                     <label htmlFor="clothCustomTag">커스텀 태그</label>
                                     <input
                                         type="text"
@@ -212,7 +225,7 @@ const AccessoryList = () => {
                     </div>
                 </div>
             )}
-            <Footer />
+            <Footer/>
         </div>
     );
 };

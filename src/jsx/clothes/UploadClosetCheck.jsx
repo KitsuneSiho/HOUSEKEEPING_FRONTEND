@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/uploadClosetCheck.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
+import { DetermineHowWash } from "./DetermineHowWash.jsx";
 
 const UploadClosetCheck = () => {
     const navigate = useNavigate();
@@ -17,8 +18,19 @@ const UploadClosetCheck = () => {
         clothColor: '초록',
         clothMaterial: '면',
         clothSeason: 'SUMMER',
+        clothHowWash : '일반 세탁',
         clothCustomTag: ''
     });
+
+    useEffect(() => {
+        // clothType 또는 clothMaterial이 변경될 때 세탁 방법 설정
+        if (clothDetails.clothType && clothDetails.clothMaterial) {
+            setClothDetails((prevDetails) => ({
+                ...prevDetails,
+                clothHowWash: DetermineHowWash(prevDetails.clothType, prevDetails.clothMaterial) || "Unknown",
+            }));
+        }
+    }, [clothDetails.clothType, clothDetails.clothMaterial]);
 
 
     useEffect(() => {
@@ -45,7 +57,7 @@ const UploadClosetCheck = () => {
     };
 
     const handleSave = async () => {
-        const clothData = { ...clothDetails, userId: 1, imageUrl: fileUrl };
+        const clothData = { ...clothDetails, userId: 1, imageUrl: fileUrl, clothHowWash: clothDetails.clothHowWash };
 
 
         try {
@@ -124,6 +136,10 @@ const UploadClosetCheck = () => {
                         <option value="면">면</option>
                         <option value="폴리에스터">폴리에스터</option>
                         <option value="나일론">나일론</option>
+                        <option value="울">울</option>
+                        <option value="실크">실크</option>
+                        <option value="가죽">가죽</option>
+
                     </select>
                 </div>
                 <div className={styles.tag}>
@@ -136,10 +152,12 @@ const UploadClosetCheck = () => {
                 </div>
                 <div className={styles.tag}>
                     <label htmlFor="clothCustomTag">커스텀 태그</label>
-                    <input type="text" id="clothCustomTag" value={clothDetails.clothCustomTag} onChange={handleInputChange} />
+                    <input type="text" id="clothCustomTag" value={clothDetails.clothCustomTag}
+                           onChange={handleInputChange}/>
                 </div>
+                <input type="hidden" id="clothHowWash" value={clothDetails.clothHowWash}/>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
