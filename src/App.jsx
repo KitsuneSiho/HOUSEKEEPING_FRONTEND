@@ -1,5 +1,6 @@
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import './font/font.css';
+import AuthProvider from './contexts/AuthContext';
 import ModalExample from "./components/test/ModalExample.jsx";
 import {ModalProvider} from "./components/context/ModalContext.jsx";
 import ChatRouter from "./router/ChatRouter.jsx";
@@ -20,6 +21,7 @@ function App() {
 
     return (
         <>
+            <AuthProvider>
             <ModalProvider>
                 <Router>
                     <Routes>
@@ -60,6 +62,7 @@ function App() {
                     </Routes>
                 </Router>
             </ModalProvider>
+            </AuthProvider>
         </>
     )
 }

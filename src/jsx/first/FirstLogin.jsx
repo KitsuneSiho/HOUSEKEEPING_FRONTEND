@@ -10,24 +10,18 @@ const FirstLogin = () => {
         name: '',
         nickname: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
         provider: ''
     });
     const [nicknameError, setNicknameError] = useState('');
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const email = searchParams.get('email');
-        const name = searchParams.get('name');
-        const provider = searchParams.get('provider');
-        const phoneNumber = searchParams.get('phoneNumber');
-
+        const { name, email, provider } = location.state || {};
         setUserInfo(prevState => ({
             ...prevState,
-            email,
             name,
-            provider,
-            phone: phoneNumber || ''
+            email,
+            provider
         }));
     }, [location]);
 
@@ -41,14 +35,13 @@ const FirstLogin = () => {
 
     const handleSubmit = async () => {
         try {
-
-            console.log("Submitting user info:", userInfo);
-
-            const response = await axios.post('http://localhost:8080/api/user/complete-registration', userInfo, {
-                withCredentials: true
+            const response = await axios.post('http://localhost:8080/api/auth/complete-registration', userInfo, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access')}`
+                }
             });
             if (response.status === 200) {
-                navigate('/firstRoomDesign');
+                navigate('/design/myroom');
             }
         } catch (error) {
             if (error.response && error.response.data === "Nickname already exists") {
@@ -84,7 +77,7 @@ const FirstLogin = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" value={userInfo.phone} onChange={handleInputChange} />
+                    <input type="text" id="phone" value={userInfo.phoneNumber} onChange={handleInputChange} />
                 </div>
             </div>
             <div className={styles.submit}>
