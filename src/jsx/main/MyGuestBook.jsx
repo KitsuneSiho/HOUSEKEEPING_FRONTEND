@@ -22,7 +22,7 @@ const MyGuestBook = () => {
     const [isArchived, setIsArchived] = useState(false);
 
     // 현재 로그인 중인 사용자
-    const ownerId = 2;
+    const ownerId = 1;
 
     useEffect(() => {
         const fetchGuestbook = async () => {

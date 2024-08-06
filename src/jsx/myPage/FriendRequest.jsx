@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 const FriendRequest = () => {
     const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
+    const userId = 2; // 현재 로그인한 사용자 ID로 대체해야 함
 
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const userId = 3; // 현재 로그인한 사용자 ID로 대체해야 함
+
                 const response = await axios.get(`${BACK_URL}/friendRequest/received`, {
                     params: { userId }
                 });
@@ -36,6 +37,22 @@ const FriendRequest = () => {
         }
     };
 
+    const handleRejectRequest = async (requestSenderId) => {
+        console.log(requestSenderId);
+        console.log(userId);
+        try {
+            await axios.post(`${BACK_URL}/friendRequest/reject`, null, {
+                params: {
+                    senderId: requestSenderId,  // 요청 걸었던 유저 아이디
+                    receiverId: userId  // 로그인 한 유저 아이디
+                }
+            });
+            setRequests(requests.filter(req => req.requestSenderId !== requestSenderId));
+        } catch (error) {
+            console.error("친구 요청 거부 실패:", error);
+        }
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -50,14 +67,15 @@ const FriendRequest = () => {
             <div className={styles.searchResults}>
                 {requests.map((request) => (
                     <div key={request.requestId} className={styles.searchResultItem}>
-                        <img src="/lib/마이페이지아이콘.svg" alt={request.senderNickname} />
+                        <img src="/lib/마이페이지아이콘.svg" alt={request.senderNickname}/>
                         <span>{request.senderNickname}</span>
-                        <button onClick={() => handleAcceptRequest(request.requestId)}>팔로우 승인</button>
+                        <button onClick={() => handleAcceptRequest(request.requestId)}>승인</button>
+                        <button onClick={() => handleRejectRequest(request.requestSenderId)}>거부</button>
                     </div>
                 ))}
             </div>
 
-            <Footer />
+            <Footer/>
         </div>
     );
 };
