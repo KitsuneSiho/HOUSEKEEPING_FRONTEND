@@ -17,8 +17,7 @@ const UploadClosetCheck = () => {
         clothColor: '초록',
         clothMaterial: '면',
         clothSeason: 'SUMMER',
-        clothCustomTag: '',
-        howWash : '세탁기'
+        clothCustomTag: ''
     });
 
     useEffect(() => {
@@ -46,6 +45,7 @@ const UploadClosetCheck = () => {
 
     const handleSave = async () => {
         const clothData = { ...clothDetails, userId: 1, imageUrl: fileUrl };
+
 
         try {
             const response = await apiClient.post('/ware/items', clothData);
