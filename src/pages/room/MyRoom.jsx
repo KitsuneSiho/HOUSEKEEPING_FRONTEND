@@ -48,7 +48,6 @@ const MyRoom = () => {
             const response = await axios.get(BACK_URL + `/room/list?userId=${userId}`);
 
             setRooms(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching room:", error);
         }
@@ -61,7 +60,6 @@ const MyRoom = () => {
             const response = await axios.get(BACK_URL + `/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
 
             setPlacementLists(response.data);
-            console.log(response.data);
         } catch (error) {
             console.error("Error fetching placementLists", error);
         }

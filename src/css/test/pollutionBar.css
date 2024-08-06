@@ -1,0 +1,124 @@
+.loader-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cursor-container {
+    width: 100%;
+}
+
+.loader {
+    display: block;
+    position: relative;
+    height: 25px;
+    width: 90%;
+    /*background: #fff;*/
+    /*background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
+    background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); /* 녹색, 노란색, 빨간색 그라데이션 */
+    /*background: linear-gradient(90deg, #8CF064, #FFE146, #FF3232); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
+    border-radius: 20px;
+    overflow: hidden;
+    --loader-width: 0%;
+    --loader-content: "0%";
+    margin: 0;
+}
+
+.loader-behind {
+    display: block;
+    position: relative;
+    height: 25px;
+    width: 100%;
+    background-color: transparent;
+    overflow: hidden;
+    --loader-width: 0%;
+    --loader-content: "0%";
+    margin: 0;
+}
+
+.cursor {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 20px solid #000;
+    margin-left: var(--loader-width);
+}
+
+.cursor-content {
+    position: relative;
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    color: black;
+    margin-left: var(--loader-width);
+}
+
+.cursor-content::after {
+    content: var(--loader-content);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px;
+    color: rgb(0, 0, 0);
+}
+
+.loader-behind::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--loader-width);
+    height: 100%;
+    /*background: linear-gradient(90deg, #00FF00, #FFFF00, #FF0000); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
+    background-color: transparent;
+    border-right: 1px solid black;
+}
+
+/*.loader::after {*/
+/*  content: var(--loader-content);*/
+/*  position: absolute;*/
+/*  left: 0;*/
+/*  top: 0;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  text-align: center;*/
+/*  font-size: 18px;*/
+/*  line-height: 32px;*/
+/*  color: rgb(0, 0, 0);*/
+/*}*/
+
+.speech-bubble {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    top: 11px;
+}
+
+.triangle-top {
+    position: absolute;
+    top: -20px; /* 삼각형이 말풍선의 위쪽으로 나오게 설정 */
+    left: 0; /* 삼각형의 위치를 조정 */
+    width: 0;
+    height: 10px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #f0f0f0; /* 말풍선과 동일한 배경색 */
+    z-index: 1;
+    margin-left: var(--loader-width);
+}
+
+.bubble-text {
+    padding: 10px;
+    background-color: #f0f0f0; /* 말풍선의 배경색 */
+    color: #333;
+    border-radius: 5px;
+    position: relative;
+    width: fit-content;
+    margin-left: var(--loader-width);
+}
