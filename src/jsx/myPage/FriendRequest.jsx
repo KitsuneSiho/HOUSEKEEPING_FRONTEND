@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const FriendRequest = () => {
     const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
-    const userId = 7; // 현재 로그인한 사용자 ID로 대체해야 함
+    const userId = 2; // 현재 로그인한 사용자 ID로 대체해야 함
 
     useEffect(() => {
         const fetchRequests = async () => {

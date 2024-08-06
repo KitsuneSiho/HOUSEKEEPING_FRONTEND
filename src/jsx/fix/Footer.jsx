@@ -30,7 +30,7 @@ const Footer = () => {
         <div>
             <div className="footer">
                 <img className="routineIcon" src="/lib/루틴아이콘.svg" alt="Routine Icon" onClick={() => navigate('/routine')} />
-                <img className="calendarIcon" src="/lib/달력아이콘.svg" alt="Calendar Icon" onClick={() => navigate('/calendar')} />
+                <img className="calendarIcon" src="/lib/달력아이콘.svg" alt="Garbage Icon" onClick={() => navigate('/routine/calendar')} />
                 <div className="roome-container">
                     <img className="roome" src="/lib/루미.png" alt="Roome Icon" onClick={togglePopup} />
                 </div>
@@ -42,10 +42,12 @@ const Footer = () => {
                 <div className="popupBackground">
                     <img src="/lib/반원팝업.svg" alt="Popup Background" />
                 </div>
-                <img className="livingRoom" src="/lib/냉장고.svg" alt="냉장고 아이콘" onClick={() => navigate('/refrigerator')} />
-                <img className="mainRoom" src="/lib/방.svg" alt="방 아이콘" onClick={() => navigate('/mainPage')} />
-                <img className="tip" src="/lib/팁.svg" alt="팁 아이콘" onClick={() => navigate('/tip')} />
-                <img className="closetRoom" src="/lib/옷장.svg" alt="옷장 아이콘" onClick={() => navigate('/closetRoom')} />
+                <div className="icon-container">
+                    <img className="icon livingRoom" src="/lib/냉장고.svg" alt="냉장고 아이콘" onClick={() => navigate('/refrigerator')} />
+                    <img className="icon mainRoom" src="/lib/방.svg" alt="방 아이콘" onClick={() => navigate('/main')} />
+                    <img className="icon tip" src="/lib/팁.svg" alt="팁 아이콘" onClick={() => navigate('/tip')} />
+                    <img className="icon closetRoom" src="/lib/옷장.svg" alt="옷장 아이콘" onClick={() => navigate('/closet')} />
+                </div>
             </div>
         </div>
     );
