@@ -22,7 +22,7 @@ const Calendar = () => {
     const [roomIds, setRoomIds] = useState([]);
     const [roomNames, setRoomNames] = useState({});
 
-    const loginUserId = 2;
+    const loginUserId = 1;
 
     const fetchRoomData = async () => {
         try {
