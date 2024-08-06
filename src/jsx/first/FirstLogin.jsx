@@ -16,13 +16,14 @@ const FirstLogin = () => {
     const [nicknameError, setNicknameError] = useState('');
 
     useEffect(() => {
-        const { name, email, provider } = location.state || {};
-        setUserInfo(prevState => ({
-            ...prevState,
-            name,
-            email,
-            provider
-        }));
+        const params = new URLSearchParams(location.search);
+        setUserInfo({
+            name: decodeURIComponent(params.get('name') || ''),
+            email: decodeURIComponent(params.get('email') || ''),
+            phoneNumber: decodeURIComponent(params.get('phoneNumber') || ''),
+            provider: params.get('provider') || '',
+            nickname: ''
+        });
     }, [location]);
 
     const handleInputChange = (e) => {
@@ -37,7 +38,7 @@ const FirstLogin = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/auth/complete-registration', userInfo, {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access')}`
+                    'Authorization': `Bearer ${new URLSearchParams(location.search).get('token')}`
                 }
             });
             if (response.status === 200) {
@@ -64,7 +65,7 @@ const FirstLogin = () => {
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" value={userInfo.name} onChange={handleInputChange} readOnly />
+                    <input type="text" id="name" value={userInfo.name} readOnly />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
@@ -73,11 +74,17 @@ const FirstLogin = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="text" id="email" value={userInfo.email} onChange={handleInputChange} readOnly />
+                    <input type="text" id="email" value={userInfo.email} readOnly />
                 </div>
                 <div className={styles.inputContainer}>
-                    <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" value={userInfo.phoneNumber} onChange={handleInputChange} />
+                    <label htmlFor="phoneNumber">전화번호</label>
+                    <input
+                        type="text"
+                        id="phoneNumber"
+                        value={userInfo.phoneNumber}
+                        onChange={handleInputChange}
+                        readOnly={userInfo.provider !== 'GOOGLE'}
+                    />
                 </div>
             </div>
             <div className={styles.submit}>
