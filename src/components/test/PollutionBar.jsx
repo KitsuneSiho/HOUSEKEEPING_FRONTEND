@@ -17,9 +17,19 @@ const PollutionBar = ({pollution}) => {
                 {/*    <div className="cursor" style={loaderStyle}></div>*/}
                 {/*    <div className="cursor-content" style={loaderStyle}></div>*/}
                 {/*</div>*/}
-                <div className="speech-bubble">
-                    <div className="bubble-text" style={loaderStyle}>{`${pollution}%`}</div>
-                    <div className="triangle-top" style={loaderStyle}></div>
+                {/*<div className="speech-bubble">*/}
+                {/*    <div className="bubble-text" style={loaderStyle}>{`${pollution}%`}</div>*/}
+                {/*    <div className="triangle-top" style={loaderStyle}></div>*/}
+                {/*</div>*/}
+                <div className="chat-icon-container">
+                    {pollution < 34 ?
+                        <img className="chat-icon" src="/pollution/good_icon.png" style={loaderStyle}
+                             alt="not found"/> :
+                        pollution < 67 ?
+                            <img className="chat-icon" src="/pollution/normal_icon.png" style={loaderStyle}
+                                 alt="not found"/> :
+                            <img className="chat-icon" src="/pollution/angry_icon.png" style={loaderStyle}
+                                 alt="not found"/>}
                 </div>
             </div>
         </>

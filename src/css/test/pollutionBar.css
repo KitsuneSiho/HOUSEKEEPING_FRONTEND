@@ -1,6 +1,6 @@
 .loader-container {
     display: flex;
-    width: 100%;
+    width: 90%;
     flex-direction: column;
     align-items: center;
 }
@@ -13,7 +13,7 @@
     display: block;
     position: relative;
     height: 25px;
-    width: 90%;
+    width: 100%;
     /*background: #fff;*/
     /*background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
     background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); /* 녹색, 노란색, 빨간색 그라데이션 */
@@ -120,5 +120,16 @@
     border-radius: 5px;
     position: relative;
     width: fit-content;
+    margin-left: var(--loader-width);
+}
+
+.chat-icon-container {
+    width: 100%;
+}
+
+.chat-icon {
+    position: relative;
+    width: 70px;
+    height: 70px;
     margin-left: var(--loader-width);
 }
