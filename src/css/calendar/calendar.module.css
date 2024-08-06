@@ -1,6 +1,7 @@
 /* 전체 컨테이너 */
 .container {
     padding: 0;
+    margin-top: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,6 +19,16 @@
 /* 캘린더 스타일 */
 .fc {
     width: 100%;
+}
+
+.fc .fc-toolbar-title{
+    font-size: 1.2em !important;
+    margin: 10px !important;
+}
+
+.fc .fc-view-harness{
+    height: 438px !important;
+    width: 350px !important;
 }
 
 /* 선택된 날짜 배경 색상 */
