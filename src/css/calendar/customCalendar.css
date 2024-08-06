@@ -29,6 +29,30 @@
     margin: 0 !important;
 }
 
+.fc .fc-toolbar-chunk button{
+    background: none;
+    color: black;
+    border: none;
+}
+
+.fc .fc-button-primary{
+    background: none;
+    color: black;
+    border: none;
+}
+
+.fc .fc-button-primary:hover{
+    background: none;
+    color: black;
+    border: none;
+}
+
+.fc .fc-button-primary:disabled{
+    background: none;
+    color: black;
+    border: none;
+}
+
 .fc .fc-view-harness {
     height: 438px !important;
     width: 95% !important;
