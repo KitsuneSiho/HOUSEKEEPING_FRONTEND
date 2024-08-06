@@ -21,6 +21,7 @@ const UploadClosetCheck = () => {
         howWash : '세탁기'
     });
 
+
     useEffect(() => {
         if (location.state && location.state.fileUrl) {
             setFileUrl(location.state.fileUrl);
