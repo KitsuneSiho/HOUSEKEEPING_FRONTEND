@@ -1,18 +1,16 @@
 /* 전체 컨테이너 */
 .container {
+    padding: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-    padding: 20px;
+    align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 /* 캘린더 스타일 */
 .fullCalendarContainer {
     width: 100%;
-    max-width: 1000px;  /* 캘린더 크기 줄이기 */
     flex: 1;
-    margin-bottom: 20px;
     display: flex;
     justify-content: center; /* 캘린더를 중앙 정렬 */
 }
@@ -24,14 +22,14 @@
 
 /* 선택된 날짜 배경 색상 */
 .selectedDate {
-    background-color: #007bff !important; /* 선택된 날짜 배경색 */
-    color: #fff !important; /* 텍스트 색상 */
-    border-radius: 4px;
+    background-color: #c5f1ff !important; /* 선택된 날짜 배경색 */
+    color: black !important; /* 텍스트 색상 */
 }
 
 /* 스케줄 목록 */
 .scheduleList {
-    margin-top: 20px;
+    width: 90%;
+    margin: 20px 0 12% 0;
     display: flex;
     flex-direction: column;
 }
@@ -39,7 +37,7 @@
 .roomSection {
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     padding: 20px;
     margin-bottom: 20px;
     flex: 1;
@@ -47,10 +45,6 @@
     flex-direction: column;
 }
 
-.roomSection h3 {
-    margin-top: 0;
-    color: #333;
-}
 
 /* 스케줄 아이템 */
 .scheduleItem {
@@ -148,15 +142,22 @@
 
 /* 각 방의 제목 스타일 */
 .roomHeader {
-    display: inline;
-    padding: 10px 20px;
-    border-radius: 20px; /* 둥글게 */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 20px;
     color: black;
     font-size: 1rem;
     margin: 0;
+    padding: 10px;
     text-align: center;
-    max-width: 50px;
     background-color: gold;
+    justify-content: space-between;
+    width: 35%;
+}
+
+.roomHeader h3{
+    margin: 0;
 }
 
 /* 방 별 배경 색상 */
