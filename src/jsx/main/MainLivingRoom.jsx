@@ -300,7 +300,11 @@ const MainToiletRoom = () => {
                     // 두 번째 방(KITCHEN)만 렌더링
                     idx === 1 && (
                         <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
-                            <h3>{schedules[roomId].roomName}</h3>
+                            <div className={styles.roomSectionTitle}>
+                                <img src="/lib/빗자루.svg" alt="빗자루"/>
+                                <h3>{schedules[roomId].roomName}</h3>
+                                <img src="/lib/연필.svg" alt="연필"/>
+                            </div>
                             <ul>
                                 {schedules[roomId].schedules.map(schedule => (
                                     <li key={schedule.scheduleId} className={styles.scheduleItem}>
