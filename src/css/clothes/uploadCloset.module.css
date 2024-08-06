@@ -36,7 +36,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden; /* 이미지를 컨테이너에 맞춰 자르기 위해 추가 */
 }
+.camera img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 이미지가 컨테이너에 맞게 조절되도록 */
+}
+
 
 .cameraButton {
     margin-top: 10%;
