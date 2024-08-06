@@ -3,11 +3,11 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { BACK_URL } from "../../Constraints.js";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckSquare, faSquare, faPlus, faBell, faBellSlash } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../css/calendar/calendar.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import moment from 'moment-timezone';
+import '../../css/calendar/customCalendar.css'; // 커스텀 CSS 파일을 import
+
 
 const Calendar = () => {
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
@@ -247,9 +247,24 @@ const Calendar = () => {
     };
 
     const getBackgroundColor = (index) => {
-        // 방 순서에 따라 색상을 동적으로 결정합니다.
-        const colors = ['#ffebc5', '#ffc5f2', '#c5f1ff']; // 색상 배열: 노랑, 핑크, 파랑
-        return colors[index % colors.length] || '#ffffff'; // 기본 색상
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
+    };
+
+    const getCheckboxImage = (isChecked, roomIndex) => {
+        const images = [
+            { checked: "/lib/내방체크on.svg", unchecked: "/lib/내방체크off.svg" },
+            { checked: "/lib/주방체크on.svg", unchecked: "/lib/주방체크off.svg" },
+            { checked: "/lib/화장실체크on.svg", unchecked: "/lib/화장실체크off.svg" }
+        ];
+
+        const typeImages = images[roomIndex % images.length];
+        return isChecked ? typeImages.checked : typeImages.unchecked;
+    };
+
+    const getAddButtonBackgroundColor = (index) => {
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
     };
 
     return (
@@ -286,7 +301,6 @@ const Calendar = () => {
                                 color: '#000'
                             }}
                         >
-                            <img src="/lib/빗자루.svg" alt="빗자루"/>
                             <h3>{schedules[roomId].roomName}</h3>
                             <img src="/lib/연필.svg" alt="연필"/>
                         </div>
@@ -297,7 +311,7 @@ const Calendar = () => {
                                         className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
                                         onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
                                     >
-                                        <FontAwesomeIcon icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}/>
+                                        <img src={getCheckboxImage(schedule.scheduleIsChecked, index)} alt="check"/>
                                     </span>
                                     <span
                                         className={styles.scheduleName}
@@ -309,13 +323,21 @@ const Calendar = () => {
                                         className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                         onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                     >
-                                        <FontAwesomeIcon icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}/>
+                                        <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"}
+                                             alt="alarm"/>
                                     </span>
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={() => openAddModal(parseInt(roomId, 10))} className={styles.addButton}>
-                            <FontAwesomeIcon icon={faPlus}/> 일정 추가
+                        <button
+                            onClick={() => openAddModal(parseInt(roomId, 10))}
+                            className={styles.addButton}
+                            style={{
+                                backgroundColor: getAddButtonBackgroundColor(index),
+                                color: '#000'
+                            }}
+                        >
+                            <img src="/lib/plus.svg" alt="add"/> 일정 추가
                         </button>
                     </div>
                 ))}
@@ -332,7 +354,9 @@ const Calendar = () => {
                         />
                         <div className={styles.buttonGroup}>
                             <button onClick={handleScheduleUpdate}>저장</button>
-                            <button onClick={() => handleDelete(selectedSchedule.scheduleId)} className={styles.deleteButton}>삭제</button>
+                            <button onClick={() => handleDelete(selectedSchedule.scheduleId)}
+                                    className={styles.deleteButton}>삭제
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -354,7 +378,7 @@ const Calendar = () => {
                     </div>
                 </div>
             )}
-            <Footer />
+            <Footer/>
         </div>
     );
 };

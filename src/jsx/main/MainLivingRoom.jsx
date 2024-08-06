@@ -6,8 +6,6 @@ import RoomView from '../../jsx/room/RoomView.jsx';
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
 import moment from "moment-timezone";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faBellSlash, faCheckSquare, faPlus, faSquare} from "@fortawesome/free-solid-svg-icons";
 
 const MainToiletRoom = () => {
 
@@ -301,36 +299,35 @@ const MainToiletRoom = () => {
                     idx === 1 && (
                         <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
                             <div className={styles.roomSectionTitle}>
-                                <img src="/lib/빗자루.svg" alt="빗자루"/>
                                 <h3>{schedules[roomId].roomName}</h3>
                                 <img src="/lib/연필.svg" alt="연필"/>
                             </div>
                             <ul>
                                 {schedules[roomId].schedules.map(schedule => (
                                     <li key={schedule.scheduleId} className={styles.scheduleItem}>
-                            <span
-                                className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
-                                onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
-                            >
-                                <FontAwesomeIcon icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}/>
-                            </span>
+                                        <span
+                                            className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
+                                            onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
+                                        >
+                                            <img src={schedule.scheduleIsChecked ? "/lib/주방체크on.svg" : "/lib/주방체크off.svg"} alt="check"/>
+                                        </span>
                                         <span
                                             className={styles.scheduleName}
                                             onClick={() => openEditModal(schedule)}
                                         >
-                                {schedule.scheduleName}
-                            </span>
+                                            {schedule.scheduleName}
+                                        </span>
                                         <span
                                             className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                             onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                         >
-                                <FontAwesomeIcon icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}/>
-                            </span>
+                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"} alt="alarm"/>
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
                             <button onClick={() => openAddModal(parseInt(roomId, 10))} className={styles.addButton}>
-                                <FontAwesomeIcon icon={faPlus}/> 일정 추가
+                                <img src="/lib/plus.svg" alt="add"/> 일정 추가
                             </button>
                         </div>
                     )
