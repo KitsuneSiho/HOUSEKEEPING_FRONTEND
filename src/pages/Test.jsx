@@ -4,7 +4,9 @@ const Test = () => {
 
     return (
         <>
-            <PollutionBar pollution={40} />
+            <div>
+                <PollutionBar pollution={20}/>
+            </div>
         </>
     )
 }
