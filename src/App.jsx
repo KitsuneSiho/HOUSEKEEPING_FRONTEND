@@ -11,7 +11,6 @@ import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
 import ClosetRouter from "./router/ClosetRouter.jsx";
 import TipRouter from "./router/TipRouter.jsx";
 import MyPageRouter from "./router/MyPageRouter.jsx";
-import FriendRequest from "./jsx/myPage/FriendRequest.jsx";
 
 function App() {
 
