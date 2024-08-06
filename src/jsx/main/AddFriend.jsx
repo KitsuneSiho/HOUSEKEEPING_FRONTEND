@@ -27,12 +27,18 @@ const AddFriend = () => {
 
                     // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                     const userIds = filteredResults.map(user => user.userId).join(',');
+
+                    console.log(loginUserId);
+                    console.log(userIds);
+
                     const requestStatusResponse = await axios.get(`${BACK_URL}/friendRequest/status`, {
                         params: {
                             senderId: loginUserId,
                             receiverIds: userIds
                         }
                     });
+
+
 
                     const requestStatusMap = requestStatusResponse.data;
                     const updatedResults = filteredResults.map(user => ({

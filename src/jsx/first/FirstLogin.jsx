@@ -96,7 +96,7 @@ const FirstLogin = () => {
                 <button
                     type="button"
                     className={styles.next}
-                    onClick={() => navigate('/design/myroom')}
+                    onClick={handleSubmit}
                 >다음</button>
             </div>
         </div>

@@ -22,7 +22,7 @@ const Calendar = () => {
     const [roomIds, setRoomIds] = useState([]);
     const [roomNames, setRoomNames] = useState({});
 
-    const loginUserId = 2;
+    const loginUserId = 1;
 
     const fetchRoomData = async () => {
         try {
@@ -283,13 +283,12 @@ const Calendar = () => {
                             className={styles.roomHeader}
                             style={{
                                 backgroundColor: getBackgroundColor(index),
-                                padding: '10px 20px',
-                                borderRadius: '20px',
-                                marginBottom: '10px',
                                 color: '#000'
                             }}
                         >
-                            {schedules[roomId].roomName}
+                            <img src="/lib/빗자루.svg" alt="빗자루"/>
+                            <h3>{schedules[roomId].roomName}</h3>
+                            <img src="/lib/연필.svg" alt="연필"/>
                         </div>
                         <ul>
                             {schedules[roomId].schedules.map(schedule => (

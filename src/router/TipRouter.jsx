@@ -5,7 +5,7 @@ import RoomeTipDetail from "../jsx/tip/RoomeTipDetail.jsx";
 import WasteTip from "../jsx/tip/WasteTip.jsx";
 import WasteTipDetail from "../jsx/tip/WasteTipDetail.jsx";
 import WasteTipWrite from "../jsx/tip/WasteTipWrite.jsx";
-import LifeTip from "../jsx/tip/LifeTIp.jsx";
+import LifeTip from "../jsx/tip/LifeTip.jsx";
 import LifeTipDetail from "../jsx/tip/LifeTipDetail.jsx";
 import LifeTipWrite from "../jsx/tip/LifeTipWrite.jsx";
 
