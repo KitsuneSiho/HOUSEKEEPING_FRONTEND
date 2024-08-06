@@ -1,19 +1,40 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BACK_URL } from '../../Constraints.js';
 import styles from '../../css/myPage/friendRequest.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const FriendRequest = () => {
+    const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
-    const friends = [
-        { name: '문재영', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강현욱', img: '/lib/마이페이지아이콘.svg' },
-        { name: '이호준', img: '/lib/마이페이지아이콘.svg' },
-        { name: '김상우', img: '/lib/마이페이지아이콘.svg' },
-        { name: '최시호', img: '/lib/마이페이지아이콘.svg' },
-        { name: '엄지훈', img: '/lib/마이페이지아이콘.svg' },
-        { name: '강보현', img: '/lib/마이페이지아이콘.svg' },
-    ];
+
+    useEffect(() => {
+        const fetchRequests = async () => {
+            try {
+                const userId = 3; // 현재 로그인한 사용자 ID로 대체해야 함
+                const response = await axios.get(`${BACK_URL}/friendRequest/received`, {
+                    params: { userId }
+                });
+                setRequests(response.data);
+            } catch (error) {
+                console.error("친구 요청 가져오기 실패:", error);
+            }
+        };
+
+        fetchRequests();
+    }, []);
+
+    const handleAcceptRequest = async (requestId) => {
+        try {
+            await axios.post(`${BACK_URL}/friendRequest/accept`, null, {
+                params: { requestId }
+            });
+            setRequests(requests.filter(req => req.requestId !== requestId));
+        } catch (error) {
+            console.error("친구 요청 수락 실패:", error);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -27,11 +48,11 @@ const FriendRequest = () => {
             </div>
 
             <div className={styles.searchResults}>
-                {friends.map((friend, index) => (
-                    <div key={index} className={styles.searchResultItem}>
-                        <img src={friend.img} alt={friend.name} />
-                        <span>{friend.name}</span>
-                        <button>팔로우 승인</button>
+                {requests.map((request) => (
+                    <div key={request.requestId} className={styles.searchResultItem}>
+                        <img src="/lib/마이페이지아이콘.svg" alt={request.senderNickname} />
+                        <span>{request.senderNickname}</span>
+                        <button onClick={() => handleAcceptRequest(request.requestId)}>팔로우 승인</button>
                     </div>
                 ))}
             </div>

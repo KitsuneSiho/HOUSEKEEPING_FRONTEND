@@ -14,8 +14,8 @@ const FriendRouter = () => {
             <Routes>
                 <Route path="/" element={<FriendList/>}/> {/* 친구관리 */}
                 <Route path="/add" element={<AddFriend/>}/> {/* 친구 추가 화면 */}
-                <Route path="/room" element={<FriendRoom/>}/> {/* 친구방 화면 */}
-                <Route path="/guestbook" element={<VisitorBoard/>}/> {/* 친구방 방명록 */}
+                <Route path="/friendRoom/:userId" element={<FriendRoom />} />
+                <Route path="/visitorBoard/:userId" element={<VisitorBoard/>}/>
                 <Route path="/request" element={<FriendRequest/>}/> {/* 친구요청 */}
             </Routes>
         </>

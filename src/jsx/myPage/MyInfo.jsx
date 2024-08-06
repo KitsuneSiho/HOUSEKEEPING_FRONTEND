@@ -48,11 +48,11 @@ const MyInfo = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
                 <h2>내 정보</h2>
             </div>
             <div className={styles.profileImg}>
-                <img src="public/lib/profileImg.svg" alt="프로필 이미지" />
+                <img src="/lib/profileImg.svg" alt="프로필 이미지" />
                 <p>프로필 이미지 수정</p>
             </div>
             <div className={styles.information}>

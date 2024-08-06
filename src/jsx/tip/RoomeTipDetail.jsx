@@ -15,13 +15,13 @@ const RoomeTipDetail = () => {
     };
 
     const goToList = () => {
-        navigate('/roomeTip');
+        navigate('/tip/roome');
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/roomeTip')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/roome')} />
                 <h2>루미`s Tip</h2>
             </div>
 
@@ -48,13 +48,13 @@ const RoomeTipDetail = () => {
                 <div className={styles.commentInput}>
                     <input type="text" placeholder="댓글을 입력하세요" />
                     <button>
-                        <img src="public/lib/채팅보내기.svg" alt="send" />
+                        <img src="/lib/채팅보내기.svg" alt="send" />
                     </button>
                 </div>
                 {[...Array(5)].map((_, index) => (
                     <div className={styles.comment} key={index}>
                         <div className={styles.commentUser}>
-                            <img src="public/lib/마이페이지아이콘.svg" alt="user icon" />
+                            <img src="/lib/마이페이지아이콘.svg" alt="user icon" />
                             <p>Lv.3 ddak</p>
                             <div className={styles.commentActions}>
                                 <span>수정</span>

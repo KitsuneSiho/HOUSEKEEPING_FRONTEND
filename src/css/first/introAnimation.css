@@ -1,0 +1,59 @@
+/* introAnimation.css */
+.image-container {
+}
+
+.image-container img {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translateY(-50%);
+    transition: transform 0.05s linear;
+}
+
+.roomie {
+    width: 150px; /* 원하는 너비 */
+    height: auto; /* 높이는 비율에 맞게 자동 조정 */
+    translate: 0 -40px;
+    z-index: 5;
+}
+
+.door-area {
+    cursor: pointer;
+}
+
+.door-closed {
+    width: 150px;
+    height: auto;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.door-closed.open {
+    display: none;
+}
+
+.door-frame-left {
+    width: 150px;
+    height: auto;
+    translate: 1.5px 4px;
+    z-index: 7;
+}
+
+.door-frame-right {
+    width: 150px;
+    height: auto;
+    z-index: 1;
+}
+
+.door-panel {
+    width: 180px;
+    height: auto;
+    translate: -12px 1px;
+    z-index: 10;
+}
+
+.door-panel.close,
+.door-frame-left.close,
+.door-frame-right.close {
+    display: none;
+}

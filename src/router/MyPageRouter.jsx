@@ -3,6 +3,7 @@ import MyPage from "../jsx/myPage/MyPage.jsx";
 import MyInfo from "../jsx/myPage/MyInfo.jsx";
 import Setting from "../jsx/myPage/Setting.jsx";
 import DeleteUser from "../jsx/myPage/DeleteUser.jsx";
+import GuestBook from "../jsx/myPage/GuestBook.jsx";
 
 const MyPageRouter = () => {
 
@@ -15,6 +16,7 @@ const MyPageRouter = () => {
                 <Route path="/info" element={<MyInfo/>}/> {/* 내정보  */}
                 <Route path="/setting" element={<Setting/>}/> {/* 설정 */}
                 <Route path="/delete" element={<DeleteUser/>}/> {/* 회원탈퇴 */}
+                <Route path="/guestBook/storage" element={<GuestBook/>}/> {/* 방명록 보관함 */}
             </Routes>
         </>
     )

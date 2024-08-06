@@ -11,6 +11,10 @@ import RefrigeratorRouter from "./router/RefrigeratorRouter.jsx";
 import ClosetRouter from "./router/ClosetRouter.jsx";
 import TipRouter from "./router/TipRouter.jsx";
 import MyPageRouter from "./router/MyPageRouter.jsx";
+import RoomDisplayTest from "./pages/room/RoomDisplayTest.jsx";
+import RoomEditTest from "./pages/room/RoomEditTest.jsx";
+import MyRoom from "./pages/room/MyRoom.jsx";
+import EditRoom from "./pages/room/EditRoom.jsx";
 
 function App() {
 
@@ -49,6 +53,10 @@ function App() {
 
                         {/*    테스트 컴포넌트를 라우팅하는 부분입니다*/}
                         <Route path="/test/modal" element={<ModalExample/>}/>
+                        <Route path="/test/room" element={<RoomDisplayTest/>}/>
+                        <Route path="/test/room/edit" element={<RoomEditTest/>}/>
+                        <Route path="/test/myroom" element={<MyRoom/>}/>
+                        <Route path="/test/myroom/edit" element={<EditRoom/>}/>
                     </Routes>
                 </Router>
             </ModalProvider>

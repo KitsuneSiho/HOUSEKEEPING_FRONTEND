@@ -9,12 +9,12 @@ const UploadClosetCheck = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="public/lib/back.svg" alt="back" onClick={() => navigate('/uploadCloset')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet/register')} />
                 <h2>옷 등록</h2>
-                <h3 onClick={() => navigate('/closetRoom')}>등록</h3>
+                <h3 onClick={() => navigate('/closet')}>등록</h3>
             </div>
             <div className={styles.closetCheckImg}>
-                <img src="public/lib/상의1.svg" alt="Clothing Item" />
+                <img src="/lib/상의1.svg" alt="Clothing Item" />
             </div>
             <div className={styles.tags}>
                 <div className={styles.tag}>
