@@ -1,138 +1,115 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { BACK_URL } from "../../Constraints.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare, faSquare, faPlus, faBell, faBellSlash } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../css/calendar/calendar.module.css'; // 기존 CSS 파일을 사용합니다
-import Footer from '../../jsx/fix/Footer.jsx'; // 기존 Footer 컴포넌트를 사용합니다
+import styles from '../../css/calendar/calendar.module.css';
+import Footer from '../../jsx/fix/Footer.jsx';
 import moment from 'moment-timezone';
 
 const Calendar = () => {
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
     const [events, setEvents] = useState([]);
-    const [schedules, setSchedules] = useState([]);
+    const [schedules, setSchedules] = useState({});
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [addModalIsOpen, setAddModalIsOpen] = useState(false);
     const [selectedSchedule, setSelectedSchedule] = useState(null);
     const [updatedScheduleName, setUpdatedScheduleName] = useState('');
     const [newScheduleName, setNewScheduleName] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState(null);
+    const [roomIds, setRoomIds] = useState([]);
+    const [roomNames, setRoomNames] = useState({});
 
-    // 초기 페이지 로드 시 오늘 날짜의 스케줄을 띄움
+    const loginUserId = 2;
+
+    const fetchRoomData = async () => {
+        try {
+            const response = await fetch(`${BACK_URL}/room/details`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginUserId)
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const roomData = await response.json();
+            setRoomIds(roomData.map(room => room.roomId));
+            setRoomNames(roomData.reduce((acc, room) => {
+                acc[room.roomId] = room.roomName;
+                return acc;
+            }, {}));
+
+            const fetchedEvents = roomData.flatMap(room =>
+                room.schedules.map(schedule => ({
+                    title: schedule.scheduleName,
+                    start: schedule.scheduleDate,
+                    extendedProps: {
+                        roomId: room.roomId,
+                        details: schedule.scheduleDetail,
+                        scheduleId: schedule.scheduleId,
+                        checked: schedule.scheduleIsChecked,
+                        alarm: schedule.scheduleIsAlarm
+                    }
+                }))
+            );
+            setEvents(fetchedEvents);
+        } catch (error) {
+            console.error('Error fetching room data:', error);
+        }
+    };
+
     useEffect(() => {
-        const today = moment().format('YYYY-MM-DD');
-        handleDateClick({ dateStr: today });
+        fetchRoomData();
     }, []);
 
-    // 날짜 별 스케줄 보여주는 기능
-    const handleDateClick = (arg) => {
-        setSelectedDate(arg.dateStr);
-
-        const roomIds = JSON.parse(sessionStorage.getItem('roomIds')) || [1, 2, 3];
-        const roomNames = JSON.parse(sessionStorage.getItem('roomNames')) || {
-            1: '주방',
-            2: '내방',
-            3: '화장실'
-        };
-
-        fetch(`${BACK_URL}/calendar/view`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(roomIds)
-        })
-            .then(response => response.json())
-            .then(data => {
-                const fetchedEvents = [];
-                for (const roomId in data) {
-                    data[roomId].forEach(schedule => {
-                        fetchedEvents.push({
-                            title: schedule.scheduleName,
-                            start: schedule.scheduleDate,
-                            extendedProps: {
-                                roomId: parseInt(roomId, 10),
-                                details: schedule.scheduleDetail,
-                                scheduleId: schedule.scheduleId,
-                                checked: schedule.scheduleIsChecked,
-                                alarm: schedule.scheduleIsAlarm // 알람 상태 추가
-                            }
-                        });
-                    });
-                }
-                setEvents(fetchedEvents);
-
-                const filteredSchedules = fetchedEvents.filter(event =>
-                    moment(event.start).format('YYYY-MM-DD') === arg.dateStr
+    useEffect(() => {
+        const updatedSchedules = roomIds.reduce((acc, roomId) => {
+            acc[roomId] = {
+                roomName: roomNames[roomId] || 'Unknown Room',
+                schedules: events.filter(event =>
+                    event.extendedProps.roomId === parseInt(roomId, 10) &&
+                    moment(event.start).format('YYYY-MM-DD') === selectedDate
                 ).map(event => ({
                     roomId: event.extendedProps.roomId,
                     scheduleId: event.extendedProps.scheduleId,
                     scheduleDetail: event.extendedProps.details,
                     scheduleName: event.title,
                     scheduleIsChecked: event.extendedProps.checked,
-                    scheduleIsAlarm: event.extendedProps.alarm // 알람 상태 추가
-                }));
-
-                const groupedSchedules = roomIds.reduce((acc, roomId) => {
-                    acc[roomId] = {
-                        roomName: roomNames[roomId],
-                        schedules: filteredSchedules
-                            .filter(schedule => schedule.roomId === parseInt(roomId, 10))
-                            .sort((a, b) => a.scheduleName.localeCompare(b.scheduleName))
-                    };
-                    return acc;
-                }, {});
-
-                setSchedules(groupedSchedules);
-            })
-            .catch(error => {
-                console.error('Error fetching schedules:', error);
-            });
-    };
-
-    // 체크 박스 기능
-    const handleCheckboxChange = (scheduleId, isChecked) => {
-        // schedules 객체의 모든 스케줄을 평탄화
-        const updatedSchedules = Object.keys(schedules).reduce((acc, roomId) => {
-            const updatedRoomSchedules = schedules[roomId].schedules.map(sch =>
-                sch.scheduleId === scheduleId ? { ...sch, scheduleIsChecked: isChecked } : sch
-            );
-            acc[roomId] = { ...schedules[roomId], schedules: updatedRoomSchedules };
+                    scheduleIsAlarm: event.extendedProps.alarm
+                }))
+            };
             return acc;
         }, {});
 
-
         setSchedules(updatedSchedules);
+    }, [events, selectedDate, roomIds, roomNames]);
 
-        fetch(`${BACK_URL}/calendar/updateChecked/${scheduleId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ checked: isChecked })
-        })
-            .then(response => response.json())
-            .then(data => {
-                setEvents(events.map(event =>
-                    event.extendedProps.scheduleId === data.scheduleId ?
-                        { ...event, extendedProps: { ...event.extendedProps, checked: data.checked } } : event
-                ));
-            })
-            .catch(error => {
-                console.error('Error updating schedule checked status:', error);
-                setSchedules(schedules.map(room => ({
-                    ...room,
-                    schedules: room.schedules.map(sch =>
-                        sch.scheduleId === scheduleId ?
-                            { ...sch, scheduleIsChecked: !isChecked } : sch
-                    )
-                })));
-            });
+    const handleDateClick = (arg) => {
+        setSelectedDate(moment(arg.dateStr).format('YYYY-MM-DD'));
     };
 
-    // 체크 박스 기능
+    const handleCheckboxChange = async (scheduleId, isChecked) => {
+        try {
+            const response = await fetch(`${BACK_URL}/calendar/updateChecked/${scheduleId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ checked: isChecked })
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            await fetchRoomData();
+        } catch (error) {
+            console.error('Error updating schedule checked status:', error);
+        }
+    };
+
     const handleCheckboxToggle = (scheduleId, e) => {
         e.stopPropagation();
         const schedule = Object.values(schedules).flatMap(room => room.schedules).find(sch => sch.scheduleId === scheduleId);
@@ -141,50 +118,24 @@ const Calendar = () => {
         }
     };
 
-    // 알람 기능
-    const handleAlarmChange = (scheduleId, isAlarmed) => {
-        // schedules 객체의 모든 스케줄을 평탄화
-        const updatedSchedules = Object.keys(schedules).reduce((acc, roomId) => {
-            const updatedRoomSchedules = schedules[roomId].schedules.map(sch =>
-                sch.scheduleId === scheduleId ? { ...sch, scheduleIsAlarm: isAlarmed } : sch
-            );
-            acc[roomId] = { ...schedules[roomId], schedules: updatedRoomSchedules };
-            return acc;
-        }, {});
-
-
-        setSchedules(updatedSchedules);
-
-        console.log(scheduleId);
-        console.log(isAlarmed);
-
-        fetch(`${BACK_URL}/calendar/alarm/${scheduleId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ alarm: isAlarmed })
-        })
-            .then(response => response.json())
-            .then(data => {
-                setEvents(events.map(event =>
-                    event.extendedProps.scheduleId === data.scheduleId ?
-                        { ...event, extendedProps: { ...event.extendedProps, alarm: data.alarm } } : event
-                ));
-            })
-            .catch(error => {
-                console.error('Error updating schedule alarm status:', error);
-                setSchedules(schedules.map(room => ({
-                    ...room,
-                    schedules: room.schedules.map(sch =>
-                        sch.scheduleId === scheduleId ?
-                            { ...sch, scheduleIsAlarm: !isAlarmed } : sch
-                    )
-                })));
+    const handleAlarmChange = async (scheduleId, isAlarmed) => {
+        try {
+            const response = await fetch(`${BACK_URL}/calendar/alarm/${scheduleId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ alarm: isAlarmed })
             });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            await fetchRoomData();
+        } catch (error) {
+            console.error('Error updating schedule alarm status:', error);
+        }
     };
 
-    // 알람 기능
     const handleAlarmToggle = (scheduleId, e) => {
         e.stopPropagation();
         const schedule = Object.values(schedules).flatMap(room => room.schedules).find(sch => sch.scheduleId === scheduleId);
@@ -193,26 +144,22 @@ const Calendar = () => {
         }
     };
 
-    // 일정 이름 수정 기능
-    const handleScheduleUpdate = () => {
-        fetch(`${BACK_URL}/calendar/updateName/${selectedSchedule.scheduleId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ scheduleName: updatedScheduleName })
-        })
-            .then(response => response.json())
-            .then(() => {
-                handleDateClick({ dateStr: selectedDate });
-                closeEditModal();
-            })
-            .catch(error => {
-                console.error('Error updating schedule name:', error);
+    const handleScheduleUpdate = async () => {
+        try {
+            await fetch(`${BACK_URL}/calendar/updateName/${selectedSchedule.scheduleId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ scheduleName: updatedScheduleName })
             });
+            fetchRoomData();
+            closeEditModal();
+        } catch (error) {
+            console.error('Error updating schedule name:', error);
+        }
     };
 
-    // 일정 삭제 기능
     const handleDelete = (scheduleId) => {
         fetch(`${BACK_URL}/calendar/delete/${scheduleId}`, {
             method: 'DELETE',
@@ -224,7 +171,7 @@ const Calendar = () => {
                 return response.text();
             })
             .then(() => {
-                handleDateClick({ dateStr: selectedDate });
+                fetchRoomData();
                 closeEditModal();
             })
             .catch(error => {
@@ -232,186 +179,183 @@ const Calendar = () => {
             });
     };
 
-    // 일정 추가 기능
-    const handleAddSchedule = () => {
-        console.log("selectedDate:", selectedDate);
-        console.log("Type of selectedDate:", typeof selectedDate);
-
-        let date;
-        try {
-            if (typeof selectedDate === 'string') {
-                let dateParts = selectedDate.split("-");
-                date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
-            } else {
-                date = new Date(selectedDate);
-            }
-
-            if (isNaN(date.getTime())) {
-                throw new Error("Invalid date format");
-            }
-
-            const isoDate = date.toISOString();
-
-            const newSchedule = {
-                scheduleName: newScheduleName,
-                scheduleDate: isoDate,
-                scheduleDetail: "",
-                scheduleIsChecked: false,
-                scheduleIsAlarm: false, // 알람 기본값 설정
-                roomId: selectedRoomId,
-            };
-
-            fetch(`${BACK_URL}/calendar/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newSchedule)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    handleDateClick({ dateStr: selectedDate });
-                    closeAddModal();
-                })
-                .catch(error => {
-                    console.error('Error adding new schedule:', error);
-                });
-        } catch (error) {
-            console.error('Error processing date:', error);
-        }
+    const openEditModal = (schedule) => {
+        setSelectedSchedule(schedule);
+        setUpdatedScheduleName(schedule.scheduleName);
+        setEditModalIsOpen(true);
     };
 
     const closeEditModal = () => {
         setEditModalIsOpen(false);
         setSelectedSchedule(null);
-        setUpdatedScheduleName('');
+    };
+
+    const openAddModal = (roomId) => {
+        setNewScheduleName('');
+        setSelectedRoomId(roomId);
+        setAddModalIsOpen(true);
     };
 
     const closeAddModal = () => {
         setAddModalIsOpen(false);
     };
 
+    const handleAddSchedule = async () => {
+        if (!newScheduleName.trim()) {
+            alert("일정 이름을 입력해주세요.");
+            return;
+        }
 
-    const openEditModal = (schedule, e) => {
-        e.stopPropagation();
-        setSelectedSchedule(schedule);
-        setUpdatedScheduleName(schedule.scheduleName);
-        setEditModalIsOpen(true);
+        let date;
+        if (typeof selectedDate === 'string') {
+            let dateParts = selectedDate.split("-");
+            date = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2]));
+        } else {
+            date = new Date(selectedDate);
+        }
+
+        if (isNaN(date.getTime())) {
+            throw new Error("Invalid date format");
+        }
+
+        const isoDate = date.toISOString();
+
+        try {
+            await fetch(`${BACK_URL}/calendar/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    scheduleName: newScheduleName,
+                    scheduleDate: isoDate,
+                    scheduleDetail: "",
+                    scheduleIsChecked: false,
+                    scheduleIsAlarm: false,
+                    roomId: selectedRoomId
+                })
+            });
+            fetchRoomData();
+            closeAddModal();
+        } catch (error) {
+            console.error('Error adding new schedule:', error);
+        }
     };
 
-    const openAddModal = (roomId) => {
-        setNewScheduleName('');
-        setSelectedRoomId(roomId); // 추가된 부분
-        setAddModalIsOpen(true);
-        console.log(roomId);
+    const dayCellClassNames = (info) => {
+        return moment(info.date).format('YYYY-MM-DD') === selectedDate ? [styles.selectedDate] : [];
+    };
+
+    const getBackgroundColor = (index) => {
+        // 방 순서에 따라 색상을 동적으로 결정합니다.
+        const colors = ['#ffebc5', '#ffc5f2', '#c5f1ff']; // 색상 배열: 노랑, 핑크, 파랑
+        return colors[index % colors.length] || '#ffffff'; // 기본 색상
     };
 
     return (
         <div className={styles.container}>
-            <div className={styles.calendarHeader}>
-                <img src="/lib/back.svg" alt="back"/>
-                <h2>2024년 7월</h2>
-                <img src="/lib/front.svg" alt="forward"/>
-            </div>
-            <div className={styles.calendar}>
+            <div className={styles.fullCalendarContainer}>
                 <FullCalendar
+                    aspectRatio={0.8}
                     plugins={[dayGridPlugin, interactionPlugin]}
                     initialView="dayGridMonth"
                     dateClick={handleDateClick}
-                    aspectRatio={1.1}
+                    eventClick={(info) => {
+                        const schedule = info.event.extendedProps;
+                        openEditModal({
+                            scheduleId: schedule.scheduleId,
+                            scheduleName: info.event.title,
+                            scheduleDetail: schedule.details,
+                            scheduleIsChecked: schedule.checked,
+                            scheduleIsAlarm: schedule.alarm
+                        });
+                    }}
+                    dayCellClassNames={dayCellClassNames}
                 />
             </div>
-            <div className="list-modal">
-                <div className="modal-header">
-                    <h2>{selectedDate}</h2>
-                </div>
-                <div className="modal-content">
-                    {Object.keys(schedules).length > 0 ? (
-                        Object.keys(schedules).map((roomId, idx) => (
-                            <div key={roomId} className={`room-section room-${idx}`}>
-                                <h3>{schedules[roomId].roomName}</h3>
-                                <ul className="routine-list">
-                                    {schedules[roomId].schedules.map(schedule => (
-                                        <li key={schedule.scheduleId} className="schedule-item">
-                                            <FontAwesomeIcon
-                                                icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}
-                                                onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
-                                                className="checkbox-icon"
-                                            />
-                                            <label
-                                                className="schedule-label"
-                                                onClick={(e) => openEditModal(schedule, e)}
-                                            >
-                                                {schedule.scheduleName}
-                                            </label>
-                                            <FontAwesomeIcon
-                                                icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}
-                                                onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
-                                                className="alarm-icon"
-                                            />
-                                        </li>
-                                    ))}
-                                    <button className="add-schedule-button" onClick={() => openAddModal(roomId)}>
-                                        <FontAwesomeIcon icon={faPlus}/> 일정 추가
-                                    </button>
-                                </ul>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No schedules available.</p>
-                    )}
-                </div>
+            <div className={styles.scheduleList}>
+                {Object.keys(schedules).map((roomId, index) => (
+                    <div
+                        key={roomId}
+                        className={styles.roomSection}
+                    >
+                        <div
+                            className={styles.roomHeader}
+                            style={{
+                                backgroundColor: getBackgroundColor(index),
+                                padding: '10px 20px',
+                                borderRadius: '20px',
+                                marginBottom: '10px',
+                                color: '#000'
+                            }}
+                        >
+                            {schedules[roomId].roomName}
+                        </div>
+                        <ul>
+                            {schedules[roomId].schedules.map(schedule => (
+                                <li key={schedule.scheduleId} className={styles.scheduleItem}>
+                                    <span
+                                        className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
+                                        onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
+                                    >
+                                        <FontAwesomeIcon icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}/>
+                                    </span>
+                                    <span
+                                        className={styles.scheduleName}
+                                        onClick={() => openEditModal(schedule)}
+                                    >
+                                        {schedule.scheduleName}
+                                    </span>
+                                    <span
+                                        className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
+                                        onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
+                                    >
+                                        <FontAwesomeIcon icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}/>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                        <button onClick={() => openAddModal(parseInt(roomId, 10))} className={styles.addButton}>
+                            <FontAwesomeIcon icon={faPlus}/> 일정 추가
+                        </button>
+                    </div>
+                ))}
             </div>
-
+            {/* Edit and Add Modals */}
             {editModalIsOpen && (
-                <>
-                    <div className="modal-overlay" onClick={closeEditModal}></div>
-                    <div className="edit-modal">
-                        <div className="edit-modal-header">
-                            <h2>일정 수정</h2>
-                            <button onClick={closeEditModal} className="close-button">닫기</button>
-                        </div>
-                        <div className="edit-modal-content">
-                            <label htmlFor="scheduleName">일정 이름 </label>
-                            <input
-                                id="scheduleName"
-                                value={updatedScheduleName}
-                                onChange={(e) => setUpdatedScheduleName(e.target.value)}
-                            />
-                            <button onClick={handleScheduleUpdate} className="save-button">Save</button>
-                            <button onClick={() => handleDelete(selectedSchedule.scheduleId)}
-                                    className="delete-button">Delete
-                            </button>
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <h2>일정 수정</h2>
+                        <input
+                            type="text"
+                            value={updatedScheduleName}
+                            onChange={(e) => setUpdatedScheduleName(e.target.value)}
+                        />
+                        <div className={styles.buttonGroup}>
+                            <button onClick={handleScheduleUpdate}>저장</button>
+                            <button onClick={() => handleDelete(selectedSchedule.scheduleId)} className={styles.deleteButton}>삭제</button>
                         </div>
                     </div>
-                </>
+                </div>
             )}
+
             {addModalIsOpen && (
-                <>
-                    <div className="modal-overlay" onClick={closeAddModal}></div>
-                    <div className="edit-modal">
-                        <div className="edit-modal-header">
-                            <h2>일정 추가</h2>
-                            <button onClick={closeAddModal} className="close-button">닫기</button>
-                        </div>
-                        <div className="edit-modal-content">
-                            <label htmlFor="newScheduleName"></label>
-                            <input
-                                id="newScheduleName"
-                                value={newScheduleName}
-                                onChange={(e) => setNewScheduleName(e.target.value)}
-                            />
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <h2>일정 추가</h2>
+                        <input
+                            type="text"
+                            value={newScheduleName}
+                            onChange={(e) => setNewScheduleName(e.target.value)}
+                        />
+                        <div className={styles.buttonGroup}>
                             <button onClick={handleAddSchedule}>추가</button>
+                            <button onClick={closeAddModal}>취소</button>
                         </div>
                     </div>
-                </>
+                </div>
             )}
-            <Footer/>
+            <Footer />
         </div>
     );
 };
