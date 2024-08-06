@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../css/clothes/topList.module.css';
+import styles from '../../css/clothes/accessoryList.module.css'; // 액세서리 전용 스타일 시트
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../api/axiosConfig';
 
-const TopList = () => {
+const AccessoryList = () => {
     const navigate = useNavigate();
     const [clothes, setClothes] = useState([]);
     const [modalData, setModalData] = useState(null);
@@ -15,13 +15,12 @@ const TopList = () => {
         const fetchClothes = async () => {
             try {
                 const response = await apiClient.get('/ware/items');
-                const topClothes = response.data.filter(item =>
-                    item.clothType === '반팔' || item.clothType === '긴팔' || item.clothType === '셔츠' ||
-                    item.clothType === '니트' || item.clothType === '민소매' || item.clothType === '카라티'
+                const accessoryClothes = response.data.filter(item =>
+                    item.clothType === '모자' || item.clothType === '양말' || item.clothType === '선글라스'
                 );
-                setClothes(topClothes);
+                setClothes(accessoryClothes);
             } catch (error) {
-                console.error('옷 데이터를 불러오는 중 오류 발생:', error);
+                console.error('액세서리 데이터를 불러오는 중 오류 발생:', error);
             }
         };
 
@@ -40,7 +39,7 @@ const TopList = () => {
     const openModal = (cloth) => {
         setModalData(cloth);
         setEditMode(false);
-        setCurrentEdit({ ...cloth }); // 편집 중인 옷 데이터 복사
+        setCurrentEdit({ ...cloth });
     };
 
     const closeModal = () => {
@@ -61,8 +60,8 @@ const TopList = () => {
 
     const handleSave = async () => {
         try {
-            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit); // 수정된 부분: currentEdit.clothId 사용
-            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth)); // 수정된 부분: clothId 사용
+            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit);
+            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth));
             closeModal();
         } catch (error) {
             console.error('수정 중 오류 발생:', error);
@@ -87,7 +86,7 @@ const TopList = () => {
     };
 
     const getOptions = () => {
-        return ['반팔', '긴팔', '셔츠', '민소매', '카라티', '니트'];
+        return ['모자', '양말', '선글라스'];
     };
 
     const getColorOptions = () => {
@@ -102,14 +101,14 @@ const TopList = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
-                <h2>Top</h2>
+                <h2>Accessory</h2>
             </div>
             <div className={styles.itemList}>
                 {clothes.map((cloth, index) => (
                     <img
                         key={index}
-                        src={cloth.imageUrl || '/lib/상의1.svg'}
-                        alt={cloth.clothName || `상의 ${index + 1}`}
+                        src={cloth.imageUrl || '/lib/악세사리1.svg'}
+                        alt={cloth.clothName || `악세사리 ${index + 1}`}
                         onClick={() => openModal(cloth)}
                     />
                 ))}
@@ -130,7 +129,6 @@ const TopList = () => {
                                 <p>커스텀 태그: {modalData.clothCustomTag}</p>
                                 <button onClick={handleEdit}>수정</button>
                                 <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
-
                             </>
                         ) : (
                             <>
@@ -184,7 +182,6 @@ const TopList = () => {
                                         ))}
                                     </select>
                                 </div>
-
                                 <div className={styles.tag}>
                                     <label htmlFor="clothSeason">계절</label>
                                     <select
@@ -197,16 +194,16 @@ const TopList = () => {
                                         <option value="SPRING_FALL">봄/가을</option>
                                         <option value="WINTER">겨울</option>
                                     </select>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothCustomTag">커스텀 태그</label>
-                                        <input
-                                            type="text"
-                                            id="clothCustomTag"
-                                            name="clothCustomTag"
-                                            value={currentEdit.clothCustomTag}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothCustomTag">커스텀 태그</label>
+                                    <input
+                                        type="text"
+                                        id="clothCustomTag"
+                                        name="clothCustomTag"
+                                        value={currentEdit.clothCustomTag}
+                                        onChange={handleChange}
+                                    />
                                 </div>
                                 <button onClick={handleSave}>저장</button>
                                 <button onClick={closeModal}>취소</button>
@@ -215,9 +212,9 @@ const TopList = () => {
                     </div>
                 </div>
             )}
-            <Footer/>
+            <Footer />
         </div>
     );
 };
 
-export default TopList;
+export default AccessoryList;
