@@ -297,8 +297,8 @@ const MainPage = () => {
             </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (
-                    // 두 번째 방(PRIVATE)만 렌더링
-                    idx === 1 && (
+                    // 첫 번째 방(PRIVATE)만 렌더링
+                    idx === 0 && (
                         <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
                             <h3>{schedules[roomId].roomName}</h3>
                             <ul>
