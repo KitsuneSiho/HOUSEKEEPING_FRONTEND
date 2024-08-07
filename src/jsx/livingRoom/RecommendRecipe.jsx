@@ -1,10 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../../css/livingRoom/recommendRecipe.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 
 const RecommendRecipe = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const recipe = location.state?.recipe;
+
+    if (!recipe) {
+        return <div>레시피를 찾을 수 없습니다.</div>;
+    }
+
 
     return (
         <div className={styles.container}>

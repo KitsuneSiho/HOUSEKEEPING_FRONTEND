@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from '../../css/livingRoom/searchRecipe.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
+import {searchRecipe} from "./recipeService.js";
 
 const SearchRecipe = () => {
     const navigate = useNavigate();
@@ -12,6 +13,10 @@ const SearchRecipe = () => {
     const [mainIngredientCounter, setMainIngredientCounter] = useState(1);
     const [subIngredientCounter, setSubIngredientCounter] = useState(1);
     const [ingredientsList, setIngredientsList] = useState([]);
+    const [amount, setAmount] = useState('');
+    const [dishType, setDishType] = useState('');
+    const [cuisine, setCuisine] = useState('');
+    const [cookingTime, setCookingTime] = useState('');
 
     useEffect(() => {
         // 컴포넌트가 마운트될 때 식재료 리스트를 가져옵니다
@@ -35,6 +40,27 @@ const SearchRecipe = () => {
     const addSubIngredient = () => {
         setSubIngredients([...subIngredients, { key: subIngredientCounter, value: '' }]);
         setSubIngredientCounter(subIngredientCounter + 1);
+    };
+
+    //두번째 드롭다운부턴 삭제가 가능하도록
+    const removeMainIngredient = (keyToRemove) => {
+        setMainIngredients(mainIngredients.filter(ingredient => ingredient.key !== keyToRemove));
+    };
+    const removeSubIngredient = (keyToRemove) => {
+        setSubIngredients(subIngredients.filter(ingredient => ingredient.key !== keyToRemove));
+    };
+
+    const handleSearch = async () => {
+        const ingredients = [...mainIngredients, ...subIngredients].map(ing => ing.value).filter(Boolean);
+        const query = `${ingredients.join(', ')}를 이용한 ${amount} ${dishType} ${cuisine} 레시피 (조리 시간: ${cookingTime})`;
+
+        try {
+            const recipe = await searchRecipe(query);
+            navigate('/refrigerator/recommend', { state: { recipe } });
+        } catch (error) {
+            console.error('레시피 검색 중 오류 발생:', error);
+            alert('레시피 검색에 실패했습니다. 다시 시도해 주세요.');
+        }
     };
 
     return (
@@ -75,6 +101,15 @@ const SearchRecipe = () => {
                                         <option key={i} value={item}>{item}</option>
                                     ))}
                                 </select>
+                                {index !== 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => removeMainIngredient(ingredient.key)}
+                                        className={styles.removeBtn}
+                                    >
+                                        X
+                                    </button>
+                                )}
                             </div>
                         ))}
                         <button type="button" onClick={addMainIngredient}>추가</button>
@@ -100,6 +135,15 @@ const SearchRecipe = () => {
                                         <option key={i} value={item}>{item}</option>
                                     ))}
                                 </select>
+                                {index !== 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => removeSubIngredient(ingredient.key)}
+                                        className={styles.removeBtn}
+                                    >
+                                        X
+                                    </button>
+                                )}
                             </div>
                         ))}
                         <button type="button" onClick={addSubIngredient}>추가</button>
@@ -158,7 +202,7 @@ const SearchRecipe = () => {
 
                 <div className={styles.formButtons}>
                     <button type="button" onClick={() => navigate('/refrigerator/')}>취소</button>
-                    <button type="button" onClick={() => navigate('/refrigerator/recommend')}>레시피 검색</button>
+                    <button type="button" onClick={handleSearch}>레시피 검색</button>
                 </div>
             </form>
             <Footer/>
