@@ -12,7 +12,7 @@ const UploadFood = () => {
                 <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/refrigerator/')}
+                    onClick={() => navigate('/refrigerator')}
                 />
                 <h2>재료 등록</h2>
             </div>
@@ -22,7 +22,7 @@ const UploadFood = () => {
             <div className={styles.cameraButton}>
                 <button
                     type="button"
-                    onClick={() => navigate('/refrigerator/uploadFoodListCheck')}
+                    onClick={() => navigate('/refrigerator/register/check')}
                 >
                     촬영
                 </button>

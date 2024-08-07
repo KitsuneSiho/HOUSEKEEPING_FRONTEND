@@ -73,38 +73,24 @@
 }
 
 .tag select {
+    font-family: Fre, sans-serif;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
     width: 100%;
+    outline: none;
+    max-width: 500px !important;
 }
 
-/* 반응형 디자인 추가 */
-@media (max-width: 600px) {
-    .closetCheckImg {
-        height: 300px;
-    }
-
-    .tags {
-        width: 100%;
-    }
-
-    .tag {
-        width: 100%; /* Full width on small screens */
-    }
+.tag input{
+    font-family: Fre, sans-serif;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 92%;
+    outline: none;
+    max-width: 500px !important;
 }
 
-@media (min-width: 1200px) {
-    .closetCheckImg {
-        height: 500px;
-    }
-
-    .tags {
-        width: 80%;
-    }
-
-    .tag {
-        width: 30%; /* Approximate width for three columns on large screens */
-    }
-}
