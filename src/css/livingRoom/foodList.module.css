@@ -178,11 +178,12 @@
 .modalField select{
     font-family: 'Fre', sans-serif;
     height: 30px;
-    border-radius: 20px;
     padding: 5px;
     background: none;
-    border: 2px solid black;
     cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
 }
 
 .modalField label {
@@ -193,7 +194,7 @@
 
 .modalField input {
     font-family: 'Fre', sans-serif;
-    width: 100%;
+    width: 100% !important;
     padding: 8px;
     outline: none;
     border: none;
@@ -208,7 +209,7 @@
     font-family: 'Fre', sans-serif;
     resize: none;
     border: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #535353;
     outline: none;
 }
 
