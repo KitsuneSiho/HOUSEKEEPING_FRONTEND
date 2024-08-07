@@ -61,6 +61,7 @@
     border: none !important;
     outline: none;
     font-size: 16px;
+    font-family: 'Fre', sans-serif;
 }
 
 .searchIcon {
@@ -95,6 +96,7 @@
 
 .editAddButton .editBtn,
 .editAddButton .addBtn {
+    font-family: 'Fre', sans-serif;
     width: 30%;
     height: 30px;
     border-radius: 5px;
@@ -103,7 +105,7 @@
     background: none;
 }
 
-input[type="text"], input[type="number"], input[type="date"] {
+.modalField input[type="text"], .modalField input[type="number"], .modalField input[type="date"] {
     width: 90%;
     border: none;
     outline: none;
@@ -170,6 +172,17 @@ input[type="text"], input[type="number"], input[type="date"] {
 
 .modalField {
     margin-bottom: 15px;
+
+}
+
+.modalField select{
+    font-family: 'Fre', sans-serif;
+    height: 30px;
+    border-radius: 20px;
+    padding: 5px;
+    background: none;
+    border: 2px solid black;
+    cursor: pointer;
 }
 
 .modalField label {
@@ -179,13 +192,24 @@ input[type="text"], input[type="number"], input[type="date"] {
 }
 
 .modalField input {
+    font-family: 'Fre', sans-serif;
     width: 100%;
     padding: 8px;
     outline: none;
     border: none;
     border-bottom: 1px solid #ddd;
-    border-radius: 4px;
     box-sizing: border-box;
+}
+
+.modalField textarea{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    font-family: 'Fre', sans-serif;
+    resize: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
 }
 
 .modalButtons {
@@ -194,6 +218,7 @@ input[type="text"], input[type="number"], input[type="date"] {
 }
 
 .modalButtons button {
+    font-family: 'Fre', sans-serif;
     width: 45%;
     height: 40px;
     border-radius: 5px;

@@ -27,7 +27,7 @@ const UploadFoodListCheck = () => {
                 <img className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
-                    onClick={() => navigate('/refrigerator/uploadFood')}
+                    onClick={() => navigate('/refrigerator/register')}
                 />
                 <h2>재료 등록</h2>
                 <h3 onClick={() => navigate('/refrigerator')}>등록</h3>

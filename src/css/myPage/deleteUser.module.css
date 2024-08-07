@@ -50,6 +50,7 @@
 }
 
 .deleteButton {
+    font-family: Fre, sans-serif;
     background-color: #d9534f; /* 경고를 나타내는 색상 */
     color: white;
     border: none;
@@ -66,6 +67,7 @@
 }
 
 .cancelButton {
+    font-family: Fre, sans-serif;
     background-color: transparent;
     color: #333;
     border: none;
