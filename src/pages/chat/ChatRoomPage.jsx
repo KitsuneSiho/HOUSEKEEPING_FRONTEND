@@ -7,7 +7,7 @@ import Message from "../../components/chat/Message.jsx";
 import {useSocket} from "../../components/context/SocketContext.jsx";
 import ChatRoomHeader from "../../components/chat/ChatRoomHeader.jsx";
 
-const ChatRooms = () => {
+const ChatRoomPage = () => {
     const {
         sendMessageUsingSocket,
         receivedMessage,
@@ -28,13 +28,14 @@ const ChatRooms = () => {
     const [isReady, setIsReady] = useState(false);
     const [input, setInput] = useState("");
     const [messageDates, setMessageDates] = useState({});
+    const [chatRoomMembers, setChatRoomMembers] = useState([]);
     const messageContainerRef = useRef(null); // 메시지 컨테이너 참조
     const scrollTimeoutRef = useRef(null); // 스크롤 타임아웃 참조
 
     // 마운트 시 세션에서 유저 아이디를 받아옴
     useEffect(() => {
         setUserId(sessionStorage.getItem("userId"));
-        getChatRoomInfo();
+        getChatRoomInfo().then(getChatRoomMembers);
     }, []);
 
     useEffect(() => {
@@ -46,6 +47,7 @@ const ChatRooms = () => {
     // 채팅 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
         if (userId !== null) {
+
             getMessages().then(readAll).then(() => setIsReady(true));
         }
     }, [userId]);
@@ -61,6 +63,19 @@ const ChatRooms = () => {
             setChatRoomType(response.data.chatRoomType);
         } catch (error) {
             console.error("failed to get chatRoom Info:", error);
+        }
+    }
+
+    // 채팅 방 멤버를 받아옴
+    const getChatRoomMembers = async () => {
+
+        try {
+
+            const result = await axios.get(BACK_URL + `/chat/room/member/list?chatRoomId=${chatRoomId}&userId=${sessionStorage.getItem("userId")}`);
+
+            setChatRoomMembers(result.data);
+        } catch (error) {
+            console.error("error getting room members:", error);
         }
     }
 
@@ -184,7 +199,7 @@ const ChatRooms = () => {
 
     const readAll = async () => {
         try {
-            await axios.put(`${BACK_URL}/chat/message/read/all?roomId=${chatRoomId}&userId=${userId}`, {});
+            await axios.put(`${BACK_URL}/chat/message/read/all?roomId=${chatRoomId}&userId=${sessionStorage.getItem("userId")}`, {});
         } catch (error) {
             console.error('Error reading messages: ', error);
         }
@@ -195,10 +210,17 @@ const ChatRooms = () => {
         return `${dateTime.getFullYear()}.${dateTime.getMonth() + 1}.${dateTime.getDate()}`;
     };
 
+    // 엔터 입력 이벤트 핸들러
+    const enterPressHandler = (event) => {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
     return (
         <div className={styles.container}>
             { chatRoomType !== "" && chatRoomName !== "" && <>
-                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomName} userId={userId}/>
+                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={userId}/>
                 <div className={styles.chatRoom}>
                     <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
                         {isReady && messages.map((message, index) => {
@@ -215,8 +237,8 @@ const ChatRooms = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <input type="text" onChange={(e) => setInput(e.target.value)} value={input}
-                           placeholder="메시지를 입력하세요..."/>
-                    <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send"/></button>
+                           placeholder="메시지를 입력하세요..." onKeyPress={(e) => enterPressHandler(e)} />
+                    <button><img src="/lib/채팅보내기.svg" onClick={sendMessage} alt="send" /></button>
                 </div>
             </>
             }
@@ -224,4 +246,4 @@ const ChatRooms = () => {
     );
 };
 
-export default ChatRooms;
+export default ChatRoomPage;
