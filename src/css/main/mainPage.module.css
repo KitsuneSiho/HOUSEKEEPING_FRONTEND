@@ -130,10 +130,6 @@
     cursor: pointer;
 }
 
-.scheduleItem:hover {
-    background-color: #f0f0f0;
-}
-
 .checkbox, .alarm {
     margin-right: 10px;
     cursor: pointer;
