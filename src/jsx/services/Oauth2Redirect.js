@@ -16,7 +16,9 @@ const OAuth2Redirect = () => {
 
             if (response.ok) {
                 const accessToken = response.headers.get("access");
+                const refreshToken = response.headers.get("refresh");
                 window.localStorage.setItem("access", accessToken);
+                window.localStorage.setItem("refresh", refreshToken);
                 const name = queryParams.get('name');
                 window.localStorage.setItem("name", name);
 
@@ -32,14 +34,14 @@ const OAuth2Redirect = () => {
                 if (userInfo.registrationComplete) {
                     navigate('/main', { replace: true });
                 } else {
-                    navigate('/firstLogin', {
-                        replace: true,
-                        state: {
-                            email: userInfo.email,
-                            name: userInfo.name,
-                            provider: userInfo.provider
-                        }
+                    const params = new URLSearchParams({
+                        token: accessToken,
+                        name: userInfo.name,
+                        email: userInfo.email,
+                        provider: userInfo.userPlatform,
+                        phoneNumber: userInfo.phoneNumber || ''
                     });
+                    navigate(`/firstLogin?${params.toString()}`, { replace: true });
                 }
             } else {
                 alert('접근할 수 없는 페이지입니다.');

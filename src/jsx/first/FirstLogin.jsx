@@ -11,19 +11,25 @@ const FirstLogin = () => {
         nickname: '',
         email: '',
         phoneNumber: '',
-        provider: ''
+        userPlatform: '',
+        role: 'ROLE_USER',
+        username: ''  // username 필드 추가
     });
+    const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
+    const [authError, setAuthError] = useState('');
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        setUserInfo({
+        setToken(params.get('token') || '');
+        setUserInfo(prevState => ({
+            ...prevState,
             name: decodeURIComponent(params.get('name') || ''),
             email: decodeURIComponent(params.get('email') || ''),
             phoneNumber: decodeURIComponent(params.get('phoneNumber') || ''),
-            provider: params.get('provider') || '',
-            nickname: ''
-        });
+            userPlatform: params.get('provider') || '',
+            username: decodeURIComponent(params.get('email') || '')  // email을 username으로 사용
+        }));
     }, [location]);
 
     const handleInputChange = (e) => {
@@ -38,17 +44,25 @@ const FirstLogin = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/auth/complete-registration', userInfo, {
                 headers: {
-                    'Authorization': `Bearer ${new URLSearchParams(location.search).get('token')}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             });
-            if (response.status === 200) {
+            if (response.status === 200) {  // 성공 상태 코드를 200으로 변경
                 navigate('/design/myroom');
             }
         } catch (error) {
-            if (error.response && error.response.data === "Nickname already exists") {
-                setNicknameError('이미 사용 중인 닉네임입니다.');
+            console.error('Error completing registration', error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setAuthError('Unauthorized access. Please check your token.');
+                } else if (error.response.data === "Nickname already exists") {
+                    setNicknameError('이미 사용 중인 닉네임입니다.');
+                } else {
+                    setAuthError(error.response.data || 'An unexpected error occurred. Please try again later.');
+                }
             } else {
-                console.error('Error completing registration', error);
+                setAuthError('An unexpected error occurred. Please try again later.');
             }
         }
     };
@@ -86,6 +100,7 @@ const FirstLogin = () => {
                         readOnly={userInfo.provider !== 'GOOGLE'}
                     />
                 </div>
+                {authError && <p className={styles.error}>{authError}</p>}
             </div>
             <div className={styles.submit}>
                 <button
