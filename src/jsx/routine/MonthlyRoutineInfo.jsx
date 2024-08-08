@@ -238,6 +238,16 @@ const MonthlyRoutineInfo = () => {
 
     const daysOfMonth = Array.from({ length: 31 }, (_, i) => i + 1); // 1부터 31까지의 날짜 배열
 
+    const getWeeks = (days) => {
+        const weeks = [];
+        for (let i = 0; i < days.length; i += 7) {
+            weeks.push(days.slice(i, i + 7));
+        }
+        return weeks;
+    };
+
+    const weeks = getWeeks(daysOfMonth);
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -269,13 +279,17 @@ const MonthlyRoutineInfo = () => {
                 {rooms.map(room => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={styles.roomRoutineTitle}>
+                            <div className={`${styles.roomRoutineTitle} 
+                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
+                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
+                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
                                 <p>{room.roomName}</p>
-                                <img src="/lib/연필.svg" alt="edit" />
+                                <img src="/lib/연필.svg" alt="edit"/>
                             </div>
                             <div className={styles.alramOnOff}>
                                 <p>모든 알림 켜기</p>
-                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openAddModal(room.roomId)} />
+                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
+                                     onClick={() => openAddModal(room.roomId)}/>
                             </div>
                         </div>
                         <div className={styles.roomRoutineInfo}>
@@ -303,14 +317,18 @@ const MonthlyRoutineInfo = () => {
                             onChange={(e) => setNewRoutineText(e.target.value)}
                         />
                         <div className={styles.daysOfMonth}>
-                            {daysOfMonth.map((day) => (
-                                <button
-                                    key={day}
-                                    className={`${styles.dateButton} ${selectedDates.includes(day) ? styles.selected : ''}`}
-                                    onClick={() => toggleDateSelection(day)}
-                                >
-                                    {day}
-                                </button>
+                            {weeks.map((week, index) => (
+                                <div key={index} className={styles.week}>
+                                    {week.map(date => (
+                                        <button
+                                            key={date}
+                                            className={`${styles.dateButton} ${selectedDates.includes(date.toString()) ? styles.selected : ''}`}
+                                            onClick={() => toggleDateSelection(date.toString())}
+                                        >
+                                            {date}
+                                        </button>
+                                    ))}
+                                </div>
                             ))}
                         </div>
                         <div className={styles.buttonGroup}>
@@ -330,14 +348,18 @@ const MonthlyRoutineInfo = () => {
                             onChange={(e) => setEditRoutineText(e.target.value)}
                         />
                         <div className={styles.daysOfMonth}>
-                            {daysOfMonth.map((day) => (
-                                <button
-                                    key={day}
-                                    className={`${styles.dateButton} ${selectedDates.includes(day.toString()) ? styles.selected : ''}`}
-                                    onClick={() => toggleDateSelection(day.toString())}
-                                >
-                                    {day}
-                                </button>
+                            {weeks.map((week, index) => (
+                                <div key={index} className={styles.week}>
+                                    {week.map(day => (
+                                        <button
+                                            key={day}
+                                            className={`${styles.dateButton} ${selectedDates.includes(day.toString()) ? styles.selected : ''}`}
+                                            onClick={() => toggleDateSelection(day.toString())}
+                                        >
+                                            {day}
+                                        </button>
+                                    ))}
+                                </div>
                             ))}
                         </div>
                         <div className={styles.buttonGroup}>
@@ -348,7 +370,7 @@ const MonthlyRoutineInfo = () => {
                     </div>
                 </div>
             )}
-            <Footer />
+            <Footer/>
         </div>
     );
 };

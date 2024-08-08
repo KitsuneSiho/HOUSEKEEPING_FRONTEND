@@ -80,9 +80,7 @@
     margin-bottom: 10px;
 }
 
-.roomRoutineTitle,
-.livingRoomRoutineTitle,
-.toiletRoutineTitle {
+.roomRoutineTitle{
     display: flex;
     align-items: center;
     background-color: #ffc5f2;
@@ -92,11 +90,21 @@
 }
 
 .livingRoomRoutineTitle {
+    display: flex;
+    align-items: center;
     background-color: #ffebc5;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
 }
 
 .toiletRoutineTitle {
+    display: flex;
+    align-items: center;
     background-color: #c5f1ff;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
 }
 
 .roomRoutineTitle img,
@@ -155,6 +163,7 @@
     align-items: center;
     margin-bottom: 10px;
     position: relative;
+    padding: 5px;
 }
 
 .roomRoutineInfo input[type="checkbox"],
