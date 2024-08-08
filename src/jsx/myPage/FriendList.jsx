@@ -36,6 +36,9 @@ const FriendList = () => {
 
     // 팔로우 취소
     const cancelFriendRequest = async (receiverId) => {
+        console.log(loginUserId);
+        console.log(receiverId);
+
         try {
             const response = await axios.post(`${BACK_URL}/friendRequest/cancel`, null, {
                 params: {
