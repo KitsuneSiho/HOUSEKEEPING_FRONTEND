@@ -6,8 +6,7 @@ import RoomView from '../../jsx/room/RoomView.jsx';
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
 import moment from "moment-timezone";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faBellSlash, faCheckSquare, faPlus, faSquare} from "@fortawesome/free-solid-svg-icons";
+import PullutionBar from "../../components/test/PollutionBar.jsx";
 
 const MainToiletRoom = () => {
 
@@ -324,7 +323,7 @@ const MainToiletRoom = () => {
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="/lib/오염도바.svg" alt="오염도 바"/>
+                <PullutionBar pollution={50}/>
             </div>
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
@@ -342,7 +341,6 @@ const MainToiletRoom = () => {
                     idx === 2 && (
                         <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
                             <div className={styles.roomSectionTitle}>
-                                <img src="/lib/빗자루.svg" alt="빗자루"/>
                                 <h3>{schedules[roomId].roomName}</h3>
                                 <img src="/lib/연필.svg" alt="연필"
                                      onClick={() => openEditRoomNameModal(roomId, roomNames[roomId])}/>
@@ -354,7 +352,7 @@ const MainToiletRoom = () => {
                                 className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
                                 onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
                             >
-                                <FontAwesomeIcon icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}/>
+                                <img src={schedule.scheduleIsChecked ? "/lib/화장실체크on.svg" : "/lib/화장실체크off.svg"} alt="check"/>
                             </span>
                                         <span
                                             className={styles.scheduleName}
@@ -366,13 +364,13 @@ const MainToiletRoom = () => {
                                             className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                             onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                         >
-                                <FontAwesomeIcon icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}/>
+                                <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"} alt="alarm"/>
                             </span>
                                     </li>
                                 ))}
                             </ul>
                             <button onClick={() => openAddModal(parseInt(roomId, 10))} className={styles.addButton}>
-                                <FontAwesomeIcon icon={faPlus}/> 일정 추가
+                                <img src="/lib/plus.svg" alt="add"/> 일정 추가
                             </button>
                         </div>
                     )
