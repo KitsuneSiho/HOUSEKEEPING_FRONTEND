@@ -66,8 +66,23 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    gap: 10px;
+    gap: 20px;
     flex-wrap: wrap;
+}
+
+.furnitureAddButton button{
+    width: 50px;
+    height: 50px;
+    background: none;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+    font-family: Fre, sans-serif;
+}
+
+.furnitureAddButton img{
+    width: 100%;
+    transform: scale(4);
 }
 
 .modal {
@@ -124,6 +139,7 @@
     border-radius: 10px;
     padding: 5px;
     margin-right: 3%;
+    font-family: Fre, sans-serif;
 }
 
 .xControls, .yControls, .zControls, .rotation, .scale {
@@ -195,6 +211,7 @@
     background: none;
     font-size: 16px;
     cursor: pointer;
+    font-family: Fre, sans-serif;
 }
 
 /* 반응형 디자인 */
