@@ -7,55 +7,30 @@ const OAuth2Redirect = () => {
     const { setIsLoggedIn, setLoginUser } = useLogin();
     const [queryParams] = useSearchParams();
 
-    const OAuth2JwtHeaderFetch = async () => {
-        try {
-            const response = await fetch("http://localhost:8080/oauth2-jwt-header", {
-                method: "POST",
-                credentials: "include",
-            });
+    useEffect(() => {
+        const token = queryParams.get('token');
+        const redirectPath = queryParams.get('redirectPath');
 
-            if (response.ok) {
-                const accessToken = response.headers.get("access");
-                const refreshToken = response.headers.get("refresh");
-                window.localStorage.setItem("access", accessToken);
-                window.localStorage.setItem("refresh", refreshToken);
-                const name = queryParams.get('name');
-                window.localStorage.setItem("name", name);
+        if (token) {
+            localStorage.setItem("access", token);
+            setIsLoggedIn(true);
 
-                setIsLoggedIn(true);
-                setLoginUser(name);
-
-                // 사용자 정보 확인
-                const userInfoResponse = await fetch('http://localhost:8080/api/user/info', {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                const userInfo = await userInfoResponse.json();
-
-                if (userInfo.registrationComplete) {
-                    navigate('/main', { replace: true });
-                } else {
-                    const params = new URLSearchParams({
-                        token: accessToken,
-                        name: userInfo.name,
-                        email: userInfo.email,
-                        provider: userInfo.userPlatform,
-                        phoneNumber: userInfo.phoneNumber || ''
-                    });
-                    navigate(`/firstLogin?${params.toString()}`, { replace: true });
-                }
+            if (redirectPath === '/main') {
+                // 이미 등록된 사용자인 경우
+                navigate('/main', { replace: true });
+            } else if (redirectPath === '/firstLogin') {
+                // 새 사용자인 경우
+                const params = new URLSearchParams(queryParams);
+                navigate(`/firstLogin?${params.toString()}`, { replace: true });
             } else {
-                alert('접근할 수 없는 페이지입니다.');
+                // 예상치 못한 경로인 경우
                 navigate('/login', { replace: true });
             }
-        } catch (error) {
-            console.log("error: ", error);
+        } else {
+            // 토큰이 없는 경우
             navigate('/login', { replace: true });
         }
-    }
-
-    useEffect(() => {
-        OAuth2JwtHeaderFetch();
-    }, []);
+    }, [queryParams, navigate, setIsLoggedIn]);
 
     return null;
 };
