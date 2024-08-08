@@ -13,7 +13,7 @@ const FirstLogin = () => {
         phoneNumber: '',
         userPlatform: '',
         role: 'ROLE_USER',
-        username: ''  // username 필드 추가
+        username: ''
     });
     const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
@@ -21,14 +21,21 @@ const FirstLogin = () => {
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        setToken(params.get('token') || '');
+        const accessToken = params.get('token');
+        setToken(accessToken);
+
+        // 토큰을 로컬 스토리지에 저장
+        if (accessToken) {
+            localStorage.setItem('access', accessToken);
+        }
+
         setUserInfo(prevState => ({
             ...prevState,
             name: decodeURIComponent(params.get('name') || ''),
             email: decodeURIComponent(params.get('email') || ''),
             phoneNumber: decodeURIComponent(params.get('phoneNumber') || ''),
             userPlatform: params.get('provider') || '',
-            username: decodeURIComponent(params.get('email') || '')  // email을 username으로 사용
+            username: decodeURIComponent(params.get('email') || '')
         }));
     }, [location]);
 
@@ -48,7 +55,7 @@ const FirstLogin = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            if (response.status === 200) {  // 성공 상태 코드를 200으로 변경
+            if (response.status === 200) {
                 navigate('/design/myroom');
             }
         } catch (error) {
@@ -97,7 +104,7 @@ const FirstLogin = () => {
                         id="phoneNumber"
                         value={userInfo.phoneNumber}
                         onChange={handleInputChange}
-                        readOnly={userInfo.provider !== 'GOOGLE'}
+                        readOnly={userInfo.userPlatform !== 'GOOGLE'}
                     />
                 </div>
                 {authError && <p className={styles.error}>{authError}</p>}
