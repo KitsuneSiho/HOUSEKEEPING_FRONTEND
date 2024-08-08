@@ -54,12 +54,14 @@ const FriendList = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
+                    className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/myPage')}
                 />
                 <h2>친구 관리</h2>
                 <img
+                    className={styles.searchIcon}
                     src="/lib/검색.svg"
                     alt="search"
                     id="search-icon"
@@ -89,13 +91,14 @@ const FriendList = () => {
                 {filteredFriends.map(friend => (
                     <div key={friend.userId} className={styles.searchResultItem}>
                         {/* 이미지 필드가 없으므로 제거 */}
+                        <img src={friend.img || '/lib/마이페이지아이콘.svg'} alt={friend.nickname}/>
                         <span>{friend.nickname}</span>
                         <button onClick={() => cancelFriendRequest(friend.userId)}>팔로우 취소</button>
                     </div>
                 ))}
             </div>
 
-            <Footer />
+            <Footer/>
         </div>
     );
 };

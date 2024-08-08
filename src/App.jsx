@@ -16,6 +16,7 @@ import RoomDisplayTest from "./pages/room/RoomDisplayTest.jsx";
 import RoomEditTest from "./pages/room/RoomEditTest.jsx";
 import MyRoom from "./pages/room/MyRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
+import Test from "./pages/Test.jsx";
 
 function App() {
 
@@ -59,6 +60,7 @@ function App() {
                         <Route path="/test/room/edit" element={<RoomEditTest/>}/>
                         <Route path="/test/myroom" element={<MyRoom/>}/>
                         <Route path="/test/myroom/edit" element={<EditRoom/>}/>
+                        <Route path="/test" element={<Test/>}/>
                     </Routes>
                 </Router>
             </ModalProvider>

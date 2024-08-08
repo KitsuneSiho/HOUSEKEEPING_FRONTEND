@@ -38,21 +38,51 @@
     margin: 20px 0;
 }
 
-.selection {
+.selection{
     width: 80%;
+}
+
+.selectionArea {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
-    margin: 20px 0;
     flex-wrap: wrap; /* Add this line */
 }
 
-.selection label,
+.selectionArea select{
+    font-family: Fre, sans-serif;
+    width: 100%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.selectionDate{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Add this line */
+    margin: 10px 0;
+}
+
+.selectionDate input{
+    font-family: Fre, sans-serif;
+    width: 50%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
 .selection select,
 .selection input {
     font-size: 16px;
     margin: 5px 0; /* Add this line */
-    width: 100%; /* Add this line */
 }
 
 .recommendations {
@@ -68,20 +98,4 @@
     width: 100%;
     max-width: 300px;
     border-radius: 10px;
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 600px) {
-    .closetRoomHeader, .weather, .selection, .recommendations {
-        width: 90%;
-    }
-
-    .selection {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .selection label, .selection select, .selection input {
-        width: 100%;
-    }
 }
