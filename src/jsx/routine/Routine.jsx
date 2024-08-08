@@ -9,6 +9,7 @@ const Routine = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [routineGroups, setRoutineGroups] = useState([]);
+    const [newRoutineName, setNewRoutineName] = useState('');
 
     const loginUserId = 1;
 
@@ -35,8 +36,19 @@ const Routine = () => {
     };
 
     const handleRoutineClick = (groupName) => {
-        navigate(`/routine/${groupName}`);
+        navigate(`/routine/daily/${groupName}`);
     };
+
+    const handleAddRoutine = () => {
+        if (newRoutineName.trim() === '') {
+            alert('루틴 이름을 입력하세요.');
+            return;
+        }
+
+        // 새 루틴 이름을 URL에 포함시켜 이동
+        navigate(`/routine/create/daily/${newRoutineName}`);
+    };
+
 
     return (
         <div className={styles.container}>
@@ -56,21 +68,17 @@ const Routine = () => {
                 </button>
             </div>
 
-            {routineGroups.length > 0 ? (
-                routineGroups.map((groupName, index) => (
-                    <div className={styles.routine} key={`routine-group-${index}`}>
-                        <button
-                            type="button"
-                            className={styles.roomRoutine}
-                            onClick={() => handleRoutineClick(groupName)}
-                        >
-                            <p>{groupName}</p>
-                        </button>
-                    </div>
-                ))
-            ) : (
-                <p>추천할 루틴이 없습니다.</p>
-            )}
+            {routineGroups.map((groupName, index) => (
+            <div className={styles.routine} key={`routine-group-${index}`}>
+                <button
+                    type="button"
+                    className={styles.roomRoutine}
+                    onClick={() => handleRoutineClick(groupName)}
+                >
+                    <p>{groupName}</p>
+                </button>
+            </div>
+            ))}
 
 
             {isModalOpen && (
@@ -80,7 +88,12 @@ const Routine = () => {
                         <h2>루틴 추가</h2>
                         <div className={styles.routineName}>
                             <label htmlFor="routineName">루틴 명</label>
-                            <input type="text" id="routineName"/>
+                            <input
+                                type="text"
+                                id="routineName"
+                                value={newRoutineName}
+                                onChange={(e) => setNewRoutineName(e.target.value)} // 입력값 상태 업데이트
+                            />
                         </div>
                         <div className={styles.routineColor}>
                             <label>색상</label>
@@ -104,7 +117,7 @@ const Routine = () => {
                                 ))}
                             </ul>
                         </div>
-                        <button type="button" className={styles.modalAddBtn}>루틴 추가</button>
+                        <button type="button" className={styles.modalAddBtn} onClick={handleAddRoutine}>루틴 추가</button>
                         <button type="button" className={styles.modalCancelBtn} onClick={closeModal}>취소</button>
                     </div>
                 </div>
