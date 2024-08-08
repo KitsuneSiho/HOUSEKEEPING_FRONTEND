@@ -71,18 +71,18 @@
     position: relative;
 }
 
-.roomRoutine .roomRoutineHeader,
-.livingRoomRoutine .livingRoomRoutineHeader,
-.toiletRoutine .toiletRoutineHeader {
+.roomRoutineHeader,
+.livingRoomRoutineHeader,
+.toiletRoutineHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
 
-.roomRoutine .roomRoutineTitle,
-.livingRoomRoutine .livingRoomRoutineTitle,
-.toiletRoutine .toiletRoutineTitle {
+.roomRoutineTitle,
+.livingRoomRoutineTitle,
+.toiletRoutineTitle {
     display: flex;
     align-items: center;
     background-color: #ffc5f2;
@@ -91,68 +91,56 @@
     gap: 10px;
 }
 
-.livingRoomRoutine .livingRoomRoutineTitle {
+.livingRoomRoutineTitle {
     background-color: #ffebc5;
 }
 
-.toiletRoutine .toiletRoutineTitle {
+.toiletRoutineTitle {
     background-color: #c5f1ff;
 }
 
-.roomRoutine .roomRoutineTitle img,
-.livingRoomRoutine .livingRoomRoutineTitle img,
-.toiletRoutine .toiletRoutineTitle img {
+.roomRoutineTitle img,
+.livingRoomRoutineTitle img,
+.toiletRoutineTitle img {
     width: 20px;
     height: 20px;
 }
 
-.roomRoutine .roomRoutineTitle p,
-.livingRoomRoutine .livingRoomRoutineTitle p,
-.toiletRoutine .toiletRoutineTitle p {
+.roomRoutineTitle p,
+.livingRoomRoutineTitle p,
+.toiletRoutineTitle p {
     font-size: 16px;
     margin: 0;
 }
 
-.roomRoutine .alramOnOff,
-.livingRoomRoutine .alramOnOff,
-.toiletRoutine .alramOnOff {
+.alramOnOff {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.roomRoutine .alramOnOff p,
-.livingRoomRoutine .alramOnOff p,
-.toiletRoutine .alramOnOff p {
+.alramOnOff p {
     margin: 0;
     font-size: 14px;
 }
 
-.roomRoutine .alramOnOff img,
-.livingRoomRoutine .alramOnOff img,
-.toiletRoutine .alramOnOff img {
+.alramOnOff img {
     width: 15px;
     height: 15px;
     bottom: 5px;
     position: absolute;
 }
 
-.roomRoutine .roomRoutineInfo,
-.livingRoomRoutine .livingRoomRoutineInfo,
-.toiletRoutine .toiletRoutineInfo {
+.roomRoutineInfo,
+.livingRoomRoutineInfo,
+.toiletRoutineInfo {
     max-height: 200px;
     overflow-y: auto;
 }
 
-.roomRoutine .roomRoutineInfo ul::-webkit-scrollbar,
-.livingRoomRoutine .livingRoomRoutineInfo ul::-webkit-scrollbar,
-.toiletRoutine .toiletRoutineInfo ul::-webkit-scrollbar {
-    display: none;
-}
-
-.roomRoutine .roomRoutineInfo ul,
-.livingRoomRoutine .livingRoomRoutineInfo ul,
-.toiletRoutine .toiletRoutineInfo ul {
+.roomRoutineInfo ul,
+.livingRoomRoutineInfo ul,
+.toiletRoutineInfo ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -160,39 +148,37 @@
     overflow-y: auto;
 }
 
-.roomRoutine .roomRoutineInfo li,
-.livingRoomRoutine .livingRoomRoutineInfo li,
-.toiletRoutine .toiletRoutineInfo li {
+.roomRoutineInfo li,
+.livingRoomRoutineInfo li,
+.toiletRoutineInfo li {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
     position: relative;
 }
 
-.roomRoutine .roomRoutineInfo input[type="checkbox"],
-.livingRoomRoutine .livingRoomRoutineInfo input[type="checkbox"],
-.toiletRoutine .toiletRoutineInfo input[type="checkbox"] {
+.roomRoutineInfo input[type="checkbox"],
+.livingRoomRoutineInfo input[type="checkbox"],
+.toiletRoutineInfo input[type="checkbox"] {
     margin-right: 10px;
 }
 
-.roomRoutine .roomRoutineInfo label,
-.livingRoomRoutine .livingRoomRoutineInfo label,
-.toiletRoutine .toiletRoutineInfo label {
+.roomRoutineInfo label,
+.livingRoomRoutineInfo label,
+.toiletRoutineInfo label {
     flex-grow: 1;
 }
 
-.roomRoutine .roomRoutineInfo img,
-.livingRoomRoutine .livingRoomRoutineInfo img,
-.toiletRoutine .toiletRoutineInfo img {
+.roomRoutineInfo img,
+.livingRoomRoutineInfo img,
+.toiletRoutineInfo img {
     width: 20px;
     height: 20px;
     margin-left: 10px;
     position: relative;
 }
 
-.roomRoutine .plusIcon,
-.livingRoomRoutine .plusIcon,
-.toiletRoutine .plusIcon {
+.plusIcon {
     position: absolute;
     bottom: 10px;
     left: 50%;
@@ -200,28 +186,62 @@
     cursor: pointer;
 }
 
-/* Modal styles */
+/* 모달 스타일 */
 .modal {
-    display: none;
     position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 560px; /* 최대 너비 설정 */
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000; /* 다른 요소들 위에 표시 */
 }
 
+/* 모달의 컨텐츠 */
 .modalContent {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수평 가운데 정렬 */
+    gap: 10px; /* 버튼과 입력 필드 사이의 간격 */
+    background-color: white;
+    border: 1px solid #ddd; /* 연한 회색 테두리 */
+    border-radius: 10px; /* 둥글게 처리된 테두리 */
+    padding: 20px; /* 내부 여백 */
+}
+
+/* 버튼들을 포함할 컨테이너 */
+.buttonGroup {
+    display: flex;
+    gap: 20px; /* 버튼 사이의 간격 */
+}
+
+/* 버튼 스타일 */
+.modalContent button {
+    font-family: Fre, sans-serif;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.modalContent h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.modalContent input {
+    font-family: Fre, sans-serif;
+    font-size: 18px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ddd;
 }
 
 .close {
@@ -257,6 +277,12 @@
     color: black;
 }
 
+.routineColor{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .routineName{
     display: flex;
     align-items: center;
@@ -265,111 +291,78 @@
 }
 
 #routineName{
-    width: 80%;
+    width: 70%;
     border: none;
     border-bottom: 1px solid #535353;
 }
 
-.routineDate {
+.weekdays {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10% 0;
+    justify-content: space-around;
+    margin: 5% 0;
+    width: 85%;
 }
 
-.routineDate label {
-    margin-bottom: 10px;
+.weekdays input[type="checkbox"] {
+    display: none;
 }
 
-.calendar {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.weekdays label {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.calendar th,
-.calendar td {
-    width: 14.28%; /* Equal width for all columns */
-    border: 1px solid #ddd;
-    text-align: center;
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-.calendar th {
-    background-color: #f2f2f2;
-}
-
-.calendar td.sat {
-    color: blue;
-}
-
-.calendar td.sun {
-    color: red;
-}
-
-.calendar td.selected {
+.weekdays input[type="checkbox"]:checked + label {
     background-color: #000;
     color: #fff;
 }
 
-/* 반응형 디자인 */
-@media (min-width: 768px) {
-    .header {
-        width: 80%;
-    }
 
-    .tabs {
-        width: 80%;
-    }
-
-    .routineContainer {
-        width: 80%;
-    }
-
-    .roomRoutine,
-    .livingRoomRoutine,
-    .toiletRoutine {
-        padding: 15px;
-    }
-
-    .roomRoutine .roomRoutineInfo ul,
-    .livingRoomRoutine .livingRoomRoutineInfo ul,
-    .toiletRoutine .toiletRoutineInfo ul {
-        max-height: calc(30px * 5);
-    }
-
-    .modalContent {
-        width: 60%;
-    }
+/* 월화수목금토일 관련 */
+.daysOfMonth {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5% 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-@media (min-width: 1024px) {
-    .header {
-        width: 70%;
+.dateButton {
+    flex: 1 0 calc(100% / 7 - 10px); /* 7개 버튼씩 정렬되도록 너비 설정 */
+    padding: 10px;
+    margin: 5px; /* 버튼 사이의 여백 */
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.dateButton.selected {
+    background-color: mediumslateblue;
+    color: white;
+}
+
+
+
+/* 반응형 디자인 */
+@media (min-width: 768px) {
+    .container {
+        width: 80%;
+        margin: auto;
     }
 
-    .tabs {
-        width: 70%;
+    .header, .tabs {
+        width: 100%;
     }
 
-    .routineContainer {
-        width: 70%;
-    }
-
-    .roomRoutine,
-    .livingRoomRoutine,
-    .toiletRoutine {
-        padding: 20px;
-    }
-
-    .roomRoutine .roomRoutineInfo ul,
-    .livingRoomRoutine .livingRoomRoutineInfo ul,
-    .toiletRoutine .toiletRoutineInfo ul {
-        max-height: calc(30px * 6);
-    }
-
-    .modalContent {
-        width: 50%;
+    .routineContainer, .roomRoutine, .livingRoomRoutine, .toiletRoutine {
+        width: 80%;
+        margin: 20px auto;
     }
 }
