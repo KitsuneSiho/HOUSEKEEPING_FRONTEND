@@ -15,6 +15,12 @@ const OAuth2Redirect = () => {
             localStorage.setItem("access", token);
             setIsLoggedIn(true);
 
+            // 토큰에서 사용자 정보 추출
+            const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+            setLoginUser(tokenPayload.nickname);
+            localStorage.setItem("userId", tokenPayload.userId);
+            localStorage.setItem("nickname", tokenPayload.nickname);
+
             if (redirectPath === '/main') {
                 // 이미 등록된 사용자인 경우
                 navigate('/main', { replace: true });
@@ -30,7 +36,7 @@ const OAuth2Redirect = () => {
             // 토큰이 없는 경우
             navigate('/login', { replace: true });
         }
-    }, [queryParams, navigate, setIsLoggedIn]);
+    }, [queryParams, navigate, setIsLoggedIn, setLoginUser]);
 
     return null;
 };
