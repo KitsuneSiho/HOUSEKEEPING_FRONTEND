@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../jsx/services/axiosInstance';// axiosInstance 가져오기
+import axiosInstance from '../config/axiosInstance.js';// axiosInstance 가져오기
 
 const Home = () => {
     const [greeting, setGreeting] = useState('');

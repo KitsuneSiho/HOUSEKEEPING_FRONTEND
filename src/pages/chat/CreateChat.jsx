@@ -5,7 +5,7 @@ import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axios from "axios";
 import ChatFriend from "../../components/chat/ChatFriend.jsx";
-import {useModal} from "../../components/context/ModalContext.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
 
 // 채팅 방 생성
 const CreateChat = () => {

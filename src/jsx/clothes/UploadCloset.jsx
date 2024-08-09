@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/uploadCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from '../../api/axiosConfig';
+import apiClient from '../../config/axiosConfig';
 
 
 const UploadCloset = () => {

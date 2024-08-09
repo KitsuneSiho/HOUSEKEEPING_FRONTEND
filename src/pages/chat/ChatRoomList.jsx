@@ -2,12 +2,11 @@ import {useNavigate} from 'react-router-dom';
 import styles from '../../css/chat/chatList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js"
 import ChatRoom from "../../components/chat/ChatRoom.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
 import FriendTop from "../../components/friend/FriendTop.jsx";
-import {useSocket} from "../../components/context/SocketContext.jsx";
+import {useSocket} from "../../contexts/SocketContext.jsx";
+import apiClient from "../../config/axiosConfig.js";
 
 // 채팅 방 리스르 출력
 const ChatRoomList = () => {
@@ -46,7 +45,7 @@ const ChatRoomList = () => {
     const getRoomList = async () => {
 
         try {
-            const response = await axios.get(`${BACK_URL}/chat/room/list?userId=${userId}`)
+            const response = await apiClient.get(`/chat/room/list?userId=${userId}`)
             setChatRooms(response.data);
         } catch (error) {
             console.error('Error getting RoomList: ', error);
