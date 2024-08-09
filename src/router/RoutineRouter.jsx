@@ -8,6 +8,9 @@ import MonthlyRoutineInfo from "../jsx/routine/MonthlyRoutineInfo.jsx";
 import RecommendDailyRoutine from "../jsx/routine/RecommendDailyRoutine.jsx";
 import RecommendWeeklyRoutine from "../jsx/routine/RecommendWeeklyRoutine.jsx";
 
+
+import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
+
 function RecommendMonthlyRoutine() {
     return null;
 }
@@ -18,6 +21,7 @@ const RoutineRouter = () => {
         <>
             {/* 루틴 관련 */}
             {/* /routine */}
+            <RouteAuthProvider>
             <Routes>
                 <Route path="/" element={<Routine/>}/> {/* 루틴 메인 화면 */}
                 <Route path="/calendar" element={<Calendar/>}/> {/* 달력 */}
@@ -28,11 +32,12 @@ const RoutineRouter = () => {
                 <Route path="/recommend/weekly" element={<RecommendWeeklyRoutine/>}/> {/* 주간 루틴 */}
                 <Route path="/recommend/monthly" element={<RecommendMonthlyRoutine/>}/> {/* 월간 루틴 */}
 
-                {/* 기존 루틴 정보 보기 */}
-                <Route path="/daily/:groupName" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
-                <Route path="/weekly/:groupName" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
-                <Route path="/monthly/:groupName" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
-            </Routes>
+                    {/* 기존 루틴 정보 보기 */}
+                    <Route path="/daily/:groupName" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
+                    <Route path="/weekly/:groupName" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
+                    <Route path="/monthly/:groupName" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
+                </Routes>
+            </RouteAuthProvider>
         </>
     )
 }

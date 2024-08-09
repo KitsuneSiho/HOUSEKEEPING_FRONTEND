@@ -1,4 +1,4 @@
-import {useModal} from "../context/ModalContext.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
 
 const ModalExample = () => {
 

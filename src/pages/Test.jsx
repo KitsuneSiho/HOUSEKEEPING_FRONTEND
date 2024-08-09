@@ -1,11 +1,11 @@
-import PollutionBar from "../components/test/PollutionBar.jsx";
+import LoadingBar from "../components/test/LoadingBar.jsx";
 
 const Test = () => {
 
     return (
         <>
             <div>
-                <PollutionBar pollution={20}/>
+                <LoadingBar />
             </div>
         </>
     )
