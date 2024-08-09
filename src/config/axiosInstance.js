@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { BACK_URL } from '../Constraints.js';
 
 const axiosInstance = axios.create({
-    baseURL: BACK_URL,
+    baseURL: 'http://localhost:8080',
     withCredentials: true, // CORS 요청 시 쿠키를 함께 보내기 위함
 });
 
