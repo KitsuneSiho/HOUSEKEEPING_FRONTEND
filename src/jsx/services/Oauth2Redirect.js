@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLogin } from "../contexts/AuthContext";
+import { useLogin } from "../../contexts/AuthContext";
 
 const OAuth2Redirect = () => {
     const navigate = useNavigate();

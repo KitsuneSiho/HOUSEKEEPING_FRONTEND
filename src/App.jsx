@@ -1,6 +1,7 @@
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import './font/font.css';
 import AuthProvider from './contexts/AuthContext.jsx';
+import OAuth2Redirect from "./jsx/services/Oauth2Redirect.js";
 import ModalExample from "./components/test/ModalExample.jsx";
 import {ModalProvider} from "./components/context/ModalContext.jsx";
 import ChatRouter from "./router/ChatRouter.jsx";
@@ -52,6 +53,9 @@ function App() {
 
                             {/* 채팅 라우터 */}
                             <Route path="/chat/*" element={<ChatRouter/>}/>
+
+                            {/*{OAuth2 redirect}*/}
+                            <Route path="/oauth2/redirect" element={<OAuth2Redirect />} />
 
                             {/* 테스트 컴포넌트를 라우팅하는 부분입니다 */}
                             <Route path="/test/modal" element={<ModalExample/>}/>
