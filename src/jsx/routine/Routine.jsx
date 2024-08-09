@@ -49,6 +49,12 @@ const Routine = () => {
         navigate(`/routine/create/daily/${newRoutineName}`);
     };
 
+    const handleRecommendRoutineClick = () => {
+        // 새 루틴 이름을 URL에 포함시켜 이동
+        navigate(`/routine/recommend/daily`);
+    };
+
+
 
     return (
         <div className={styles.container}>
@@ -63,15 +69,17 @@ const Routine = () => {
             <div className={styles.routine}>
                 <button
                     type="button"
-                    className={styles.roomRoutine}>
-                    <p>추천 루틴</p>
+                    className={styles.roomRoutine}
+                    onClick={() => handleRecommendRoutineClick()}
+                >
+                    <p>루미의 추천 루틴</p>
                 </button>
             </div>
 
             {routineGroups.map((groupName, index) => (
-            <div className={styles.routine} key={`routine-group-${index}`}>
-                <button
-                    type="button"
+                <div className={styles.routine} key={`routine-group-${index}`}>
+                    <button
+                        type="button"
                     className={styles.roomRoutine}
                     onClick={() => handleRoutineClick(groupName)}
                 >
