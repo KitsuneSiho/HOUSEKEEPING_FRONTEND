@@ -4,7 +4,7 @@ import styles from '../../css/chat/chatRoom.module.css';
 import {useEffect, useState, useRef} from "react";
 import axios from "axios";
 import Message from "../../components/chat/Message.jsx";
-import {useSocket} from "../../components/context/SocketContext.jsx";
+import {useSocket} from "../../contexts/SocketContext.jsx";
 import ChatRoomHeader from "../../components/chat/ChatRoomHeader.jsx";
 
 const ChatRoomPage = () => {

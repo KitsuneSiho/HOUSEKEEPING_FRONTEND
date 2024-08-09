@@ -1,0 +1,107 @@
+/*!* loadingBar.css *!*/
+
+/*.loader-container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    height: 300px;*/
+/*}*/
+
+/*.roomie-forward,*/
+/*.roomie-flip {*/
+/*    display: flex;*/
+/*    position: absolute;*/
+/*    translate: -3.5em 0;*/
+/*    width: 70px;*/
+/*}*/
+
+/*.roomie-forward {*/
+/*    animation: roomie-moving 2s linear infinite, roomie-visibility 2s linear infinite;*/
+/*}*/
+
+/*.roomie-flip {*/
+/*    animation: roomie-flip-moving 2s linear infinite, roomie-flip-visibility 2s linear infinite;*/
+/*}*/
+
+/*.scanner span {*/
+/*    color: transparent;*/
+/*    font-size: 2.5rem;*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.scanner span::before {*/
+/*    content: "Loading...";*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 0;*/
+/*    height: 100%;*/
+/*    !*border-right: 4px solid #BC9F8B;*!*/
+/*    overflow: hidden;*/
+/*    color: #BC9F8B;*/
+/*    animation: load91371 2s linear infinite;*/
+/*}*/
+
+/*@keyframes load91371 {*/
+/*    0%, 10%, 100% {*/
+/*        width: 0;*/
+/*    }*/
+
+/*    !*10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% {*!*/
+/*    !*    border-right-color: transparent;*!*/
+/*    !*}*!*/
+
+/*    !*11%, 21%, 31%, 41%, 51%, 61%, 71%, 81%, 91% {*!*/
+/*    !*    border-right-color: #BC9F8B;*!*/
+/*    !*}*!*/
+
+/*    60%, 80% {*/
+/*        width: 100%;*/
+/*    }*/
+/*}*/
+
+/*@keyframes roomie-moving {*/
+/*    0%, 10%, 100% {*/
+/*        translate: -3.5em 0;*/
+/*    }*/
+
+/*    60%, 80% {*/
+/*        translate: 7.3em 0;*/
+/*    }*/
+/*}*/
+
+/*@keyframes roomie-flip-moving {*/
+/*    0%, 10%, 100% {*/
+/*        translate: -3.5em 0;*/
+/*    }*/
+
+/*    60%, 80% {*/
+/*        translate: 7.3em 0;*/
+/*    }*/
+/*}*/
+
+/*@keyframes roomie-visibility {*/
+/*    1%, 80% {*/
+/*        visibility: hidden;*/
+/*        opacity: 0;*/
+/*    }*/
+
+/*    81%, 100%, 0% {*/
+/*        visibility: visible;*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/
+
+/*@keyframes roomie-flip-visibility {*/
+/*    1%, 80% {*/
+/*        visibility: visible;*/
+/*        opacity: 1;*/
+/*    }*/
+
+/*    81%, 100%, 0% {*/
+/*        visibility: hidden;*/
+/*        opacity: 0;*/
+/*    }*/
+/*}*/

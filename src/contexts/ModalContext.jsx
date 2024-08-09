@@ -1,10 +1,10 @@
 import {createContext, useState, useContext} from 'react';
-import InformModal from "../modal/InformModal.jsx";
+import InformModal from "../components/modal/InformModal.jsx";
 import PropTypes from "prop-types";
-import NamingChatRoomModal from "../modal/NamingChatRoomModal.jsx";
-import InputModal from "../modal/InputModal.jsx";
-import ConfirmModal from "../modal/ConfirmModal.jsx";
-import InviteFriendModal from "../modal/InviteFriendModal.jsx";
+import NamingChatRoomModal from "../components/modal/NamingChatRoomModal.jsx";
+import InputModal from "../components/modal/InputModal.jsx";
+import ConfirmModal from "../components/modal/ConfirmModal.jsx";
+import InviteFriendModal from "../components/modal/InviteFriendModal.jsx";
 
 // Context 생성
 const ModalContext = createContext();

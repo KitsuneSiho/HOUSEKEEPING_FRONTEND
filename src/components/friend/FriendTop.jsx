@@ -1,4 +1,4 @@
-import { useSocket } from "../context/SocketContext.jsx";
+import { useSocket } from "../../contexts/SocketContext.jsx";
 import { useEffect, useState } from "react";
 import styles from "../../css/friend/friendTop.module.css";
 import { useNavigate } from "react-router-dom";

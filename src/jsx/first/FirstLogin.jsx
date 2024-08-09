@@ -10,24 +10,32 @@ const FirstLogin = () => {
         name: '',
         nickname: '',
         email: '',
-        phone: '',
-        provider: ''
+        phoneNumber: '',
+        userPlatform: '',
+        role: 'ROLE_USER',
+        username: ''
     });
+    const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
+    const [authError, setAuthError] = useState('');
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const email = searchParams.get('email');
-        const name = searchParams.get('name');
-        const provider = searchParams.get('provider');
-        const phoneNumber = searchParams.get('phoneNumber');
+        const params = new URLSearchParams(location.search);
+        const accessToken = params.get('token');
+        setToken(accessToken);
+
+        // 토큰을 로컬 스토리지에 저장
+        if (accessToken) {
+            localStorage.setItem('access', accessToken);
+        }
 
         setUserInfo(prevState => ({
             ...prevState,
-            email,
-            name,
-            provider,
-            phone: phoneNumber || ''
+            name: decodeURIComponent(params.get('name') || ''),
+            email: decodeURIComponent(params.get('email') || ''),
+            phoneNumber: decodeURIComponent(params.get('phoneNumber') || ''),
+            userPlatform: params.get('provider') || '',
+            username: decodeURIComponent(params.get('email') || '')
         }));
     }, [location]);
 
@@ -41,20 +49,27 @@ const FirstLogin = () => {
 
     const handleSubmit = async () => {
         try {
-
-            console.log("Submitting user info:", userInfo);
-
-            const response = await axios.post('http://localhost:8080/api/user/complete-registration', userInfo, {
-                withCredentials: true
+            const response = await axios.post('http://localhost:8080/api/auth/complete-registration', userInfo, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
             });
             if (response.status === 200) {
                 navigate('/design/myroom');
             }
         } catch (error) {
-            if (error.response && error.response.data === "Nickname already exists") {
-                setNicknameError('이미 사용 중인 닉네임입니다.');
+            console.error('Error completing registration', error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setAuthError('Unauthorized access. Please check your token.');
+                } else if (error.response.data === "Nickname already exists") {
+                    setNicknameError('이미 사용 중인 닉네임입니다.');
+                } else {
+                    setAuthError(error.response.data || 'An unexpected error occurred. Please try again later.');
+                }
             } else {
-                console.error('Error completing registration', error);
+                setAuthError('An unexpected error occurred. Please try again later.');
             }
         }
     };
@@ -71,7 +86,7 @@ const FirstLogin = () => {
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" value={userInfo.name} onChange={handleInputChange} readOnly />
+                    <input type="text" id="name" value={userInfo.name} readOnly />
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
@@ -80,12 +95,19 @@ const FirstLogin = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="text" id="email" value={userInfo.email} onChange={handleInputChange} readOnly />
+                    <input type="text" id="email" value={userInfo.email} readOnly />
                 </div>
                 <div className={styles.inputContainer}>
-                    <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" value={userInfo.phone} onChange={handleInputChange} />
+                    <label htmlFor="phoneNumber">전화번호</label>
+                    <input
+                        type="text"
+                        id="phoneNumber"
+                        value={userInfo.phoneNumber}
+                        onChange={handleInputChange}
+                        readOnly={userInfo.userPlatform !== 'GOOGLE'}
+                    />
                 </div>
+                {authError && <p className={styles.error}>{authError}</p>}
             </div>
             <div className={styles.submit}>
                 <button
