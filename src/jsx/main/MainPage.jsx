@@ -5,8 +5,8 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
-import axios from "axios";
 import PullutionBar from '../../components/test/PollutionBar.jsx';
+import axiosInstance from "../../api/axiosInstance.js";
 
 const MainPage = () => {
 
@@ -29,7 +29,7 @@ const MainPage = () => {
     const loginUserId = 1; // 로그인한 유저의 ID
 
     useEffect(() => {
-        axios.get(`${BACK_URL}/friend/list`, {
+        axiosInstance.get(`/friend/list`, {
             params: {
                 userId: loginUserId
             }

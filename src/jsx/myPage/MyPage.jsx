@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/myPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import axiosInstance from '../services/axiosInstance';
+import axiosInstance from '../../api/axiosInstance.js';
 import { useLogin } from '../../contexts/AuthContext';
 import { Cookies } from "react-cookie";
 

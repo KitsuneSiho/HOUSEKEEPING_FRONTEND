@@ -2,10 +2,10 @@ import styles from "../../css/chat/chatRoom.module.css";
 import PropTypes from "prop-types";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useSocket} from "../context/SocketContext.jsx";
+import {useSocket} from "../../contexts/SocketContext.jsx";
 import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
-import {useModal} from "../context/ModalContext.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
 
 const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 

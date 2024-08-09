@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { io } from "socket.io-client";
 import axios from "axios";
-import { BACK_URL } from "../../Constraints.js";
+import { BACK_URL } from "../Constraints.js";
 
 // Context 생성
 const SocketContext = createContext();

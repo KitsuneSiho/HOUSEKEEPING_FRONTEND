@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useLogin } from "../../contexts/AuthContext";
+import { useLogin } from "../contexts/AuthContext.jsx";
+import {jwtDecode} from "jwt-decode";
 
 const OAuth2Redirect = () => {
     const navigate = useNavigate();
@@ -16,10 +17,10 @@ const OAuth2Redirect = () => {
             setIsLoggedIn(true);
 
             // 토큰에서 사용자 정보 추출
-            const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-            setLoginUser(tokenPayload.nickname);
-            localStorage.setItem("userId", tokenPayload.userId);
-            localStorage.setItem("nickname", tokenPayload.nickname);
+            const decode = jwtDecode(token);
+
+            localStorage.setItem("userId", decode.userId);
+            localStorage.setItem("nickname", decode.nickname);
 
             if (redirectPath === '/main') {
                 // 이미 등록된 사용자인 경우

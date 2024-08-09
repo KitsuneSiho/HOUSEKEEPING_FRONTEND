@@ -1,4 +1,4 @@
-import fetchReissue from "../services/fetchReissue";
+import fetchReissue from "./fetchReissue.js";
 
 // 권한이 있는 페이지 접근 시 access 토큰을 검증
 const fetchAuthorizedPage = async (url, navigate, location) => {

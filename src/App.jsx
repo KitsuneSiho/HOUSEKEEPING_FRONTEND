@@ -1,9 +1,9 @@
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import './font/font.css';
 import AuthProvider from './contexts/AuthContext.jsx';
-import OAuth2Redirect from "./jsx/services/Oauth2Redirect.js";
+import OAuth2Redirect from "./api/Oauth2Redirect.js";
 import ModalExample from "./components/test/ModalExample.jsx";
-import {ModalProvider} from "./components/context/ModalContext.jsx";
+import {ModalProvider} from "./contexts/ModalContext.jsx";
 import ChatRouter from "./router/ChatRouter.jsx";
 import DefaultRouter from "./router/DefaultRouter.jsx";
 import MainRouter from "./router/MainRouter.jsx";
@@ -18,7 +18,7 @@ import RoomEditTest from "./pages/room/RoomEditTest.jsx";
 import MyRoom from "./pages/room/MyRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import Test from "./pages/Test.jsx";
-import {RoutineProvider} from "./components/context/RoutineContext.jsx";
+import {RoutineProvider} from "./contexts/RoutineContext.jsx";
 
 function App() {
     return (

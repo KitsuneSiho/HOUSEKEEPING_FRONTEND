@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../services/axiosInstance';
+import axiosInstance from '../../api/axiosInstance.js';
 import styles from '../../css/myPage/myInfo.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 
