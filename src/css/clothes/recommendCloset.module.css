@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 .header {
@@ -51,7 +51,7 @@
 }
 
 .selectionArea select{
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
     width: 100%;
     height: 30px;
     background: none;
@@ -70,7 +70,7 @@
 }
 
 .selectionDate input{
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
     width: 50%;
     height: 30px;
     background: none;

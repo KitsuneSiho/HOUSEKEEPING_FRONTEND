@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 .firstLoginTitle {
@@ -41,7 +41,7 @@
     border: none;
     border-bottom: 1px solid #535353;
     outline: none;
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 .submit {
@@ -58,7 +58,7 @@
     background: none;
     font-size: 16px;
     cursor: pointer;
-    font-family: BAZ, sans-serif;
+    font-family: Fre, sans-serif;
 }
 
 /* 반응형 디자인 */
