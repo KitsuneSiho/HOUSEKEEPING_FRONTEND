@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
 }
 
 .header {
@@ -52,7 +52,7 @@
 }
 
 .addBtn {
-    font-family: 'Fre', sans-serif;
+    font-family: 'BAZ', sans-serif;
     width: 30%;
     height: 30px;
     border-radius: 5px;

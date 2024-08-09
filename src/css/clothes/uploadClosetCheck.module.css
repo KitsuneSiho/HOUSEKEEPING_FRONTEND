@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     overflow: auto; /* Allow the body to scroll */
 }
 
@@ -73,7 +73,7 @@
 }
 
 .tag select {
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -84,7 +84,7 @@
 }
 
 .tag input{
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;

@@ -5,6 +5,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'BAZ';
+    src: url('./BAZ.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body,html {
-    font-family: 'Fre', sans-serif !important;
+    font-family: 'BAZ', sans-serif !important;
 }

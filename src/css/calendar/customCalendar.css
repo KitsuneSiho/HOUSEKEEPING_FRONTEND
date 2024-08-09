@@ -12,7 +12,7 @@
     flex: 1;
     display: flex;
     justify-content: center; /* 캘린더를 중앙 정렬 */
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
 }
 
 .fc .fc-header-toolbar {

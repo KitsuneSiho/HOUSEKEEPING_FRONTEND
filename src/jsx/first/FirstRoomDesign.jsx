@@ -57,12 +57,12 @@ const FirstRoomDesign = () => {
         scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(10, 10, 10);
+        directionalLight.position.set(10, 10, 5);
         scene.add(directionalLight);
 
         // 바닥 설정
         const floorGeometry = new THREE.BoxGeometry(20, 1, 20);
-        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xf2e0c8 });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.name = 'floor'; // 바닥 이름 지정
         floor.position.set(0, 0, 0);
@@ -70,7 +70,7 @@ const FirstRoomDesign = () => {
 
         // 왼쪽 벽 설정
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
-        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
+        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
         wallLeft.name = 'leftWall'; // 벽 이름 지정
         wallLeft.position.set(-9.5, 7.5, 0);
@@ -78,11 +78,14 @@ const FirstRoomDesign = () => {
 
         // 뒤쪽 벽 설정
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
-        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
         wallBack.name = 'backWall'; // 벽 이름 지정
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
+
+        // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
+        loadFurniture('/public/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, Math.PI / 9999, 1.3);
 
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
@@ -113,9 +116,9 @@ const FirstRoomDesign = () => {
             const size = new THREE.Vector3();
             box.getSize(size);
 
-            // 모델 크기를 기반으로 초기 스케일 설정, 필요에 따라 조정
+            // 모델 크기를 기반으로 초기 스케일 설정
             const initialScale = Math.min(4 / size.x, 4 / size.y, 4 / size.z);
-            model.scale.set(initialScale * scale, initialScale * scale, initialScale * scale);
+            model.scale.set(initialScale, initialScale, initialScale);
 
             // 모델 중앙 설정
             const center = box.getCenter(new THREE.Vector3());
@@ -124,21 +127,26 @@ const FirstRoomDesign = () => {
 
             const group = new THREE.Group();
             group.add(model);
+
+            // 주어진 위치, 회전 및 크기 적용
             group.position.set(position.x, position.y, position.z);
             group.rotation.y = rotation;
-            group.scale.set(scale, scale, scale);
+            group.scale.set(scale * initialScale, scale * initialScale, scale * initialScale);
+
             sceneRef.current.add(group);
 
+            // 가구 선택 상태 업데이트
             setSelectedFurniture(group);
             setPosition({ x: group.position.x, y: group.position.y, z: group.position.z });
-            setRotation(rotation); // Y축 회전 초기화
-            setScale(scale); // 크기 초기화
+            setRotation(group.rotation.y);
+            setScale(scale);
             setModalType('furniture');
             setShowModal(true);
         }, undefined, (error) => {
             console.error('모델 로드 중 오류 발생:', error);
         });
     };
+
 
     const updatePosition = (axis, value) => {
         // 위치가 경계를 넘지 않도록 보장

@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     overflow: auto; /* Allow the body to scroll */
 }
 
@@ -220,7 +220,7 @@
 
 /* 버튼 스타일 */
 .modalContent button {
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     background-color: white;
     color: black;
     border: none;
@@ -237,7 +237,7 @@
 }
 
 .modalContent input {
-    font-family: Fre, sans-serif;
+    font-family: BAZ, sans-serif;
     font-size: 18px;
     width: 100%;
     padding: 10px;
