@@ -6,7 +6,7 @@ import ChatRoom from "../../components/chat/ChatRoom.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
 import FriendTop from "../../components/friend/FriendTop.jsx";
 import {useSocket} from "../../contexts/SocketContext.jsx";
-import apiClient from "../../api/axiosConfig.js";
+import apiClient from "../../config/axiosConfig.js";
 
 // 채팅 방 리스르 출력
 const ChatRoomList = () => {

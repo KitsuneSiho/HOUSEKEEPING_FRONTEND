@@ -1,7 +1,7 @@
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import './font/font.css';
 import AuthProvider from './contexts/AuthContext.jsx';
-import OAuth2Redirect from "./api/Oauth2Redirect.js";
+import OAuth2Redirect from "./config/Oauth2Redirect.js";
 import ModalExample from "./components/test/ModalExample.jsx";
 import {ModalProvider} from "./contexts/ModalContext.jsx";
 import ChatRouter from "./router/ChatRouter.jsx";

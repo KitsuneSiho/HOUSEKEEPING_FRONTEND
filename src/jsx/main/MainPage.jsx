@@ -6,7 +6,7 @@ import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
 import PullutionBar from '../../components/test/PollutionBar.jsx';
-import axiosInstance from "../../api/axiosInstance.js";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const MainPage = () => {
 
