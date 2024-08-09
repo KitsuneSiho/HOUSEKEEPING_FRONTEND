@@ -28,31 +28,52 @@
     text-align: center;
 }
 
-.weather {
+
+.selection{
     width: 80%;
-    height: 100px;
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 20px 0;
 }
 
-.selection {
-    width: 80%;
+.selectionArea {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
-    margin: 20px 0;
     flex-wrap: wrap; /* Add this line */
 }
 
-.selection label,
+.selectionArea select{
+    font-family: Fre, sans-serif;
+    width: 100%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.selectionDate{
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Add this line */
+    margin: 10px 0;
+}
+
+.selectionDate input{
+    font-family: Fre, sans-serif;
+    width: 50%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
 .selection select,
 .selection input {
     font-size: 16px;
     margin: 5px 0; /* Add this line */
-    width: 100%; /* Add this line */
 }
 
 .recommendations {
@@ -84,4 +105,59 @@
     .selection label, .selection select, .selection input {
         width: 100%;
     }
+
+    /* recommendCloset.module.css */
+    .weather {
+        width: 80%;
+        height: 85px;
+        border: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+        background-color: dodgerblue; /* 박스 내부 색을 네이비로 설정 */
+        color: white; /* 텍스트 색상을 흰색으로 변경 (네이비 배경에 잘 보이도록) */
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .weatherInfo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* 요소 간의 균등한 간격 유지 */
+        margin: 10px 0;
+        width: 100%; /* 부모 컨테이너의 너비를 채우도록 설정 */
+
+    }
+
+    .weatherIcon {
+        width: 100px; /* 고정된 너비 설정 */
+        height: 100px; /* 고정된 높이 설정 */
+        margin-top: -20px; /* 위쪽 마진을 추가하여 이미지 아래로 이동 */
+        margin-right: 20px;
+
+    }
+
+    .weatherDescription {
+        margin-top: 100px; /* 위쪽 마진을 추가하여 이미지 아래로 이동 */
+        margin-left: -140px; /* 왼쪽 마진을 추가하여 이미지 옆으로 이동 */
+        text-align: left; /* 왼쪽 정렬 */
+    }
+
+    .weatherDetails {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* 중앙 정렬 */
+        align-items: flex-end; /* 오른쪽 정렬 */
+        margin-left: 50px; /* 오른쪽으로 이동 */
+        width: 120px; /* 고정된 너비 설정 */
+
+    }
+
+    .weatherDetails p {
+        margin: 4px 0; /* 위아래 간격을 줄이기 위해 마진 조정 */
+        white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+
+    }
+
 }

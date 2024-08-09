@@ -80,9 +80,7 @@
     margin-bottom: 10px;
 }
 
-.roomRoutineTitle,
-.livingRoomRoutineTitle,
-.toiletRoutineTitle {
+.roomRoutineTitle{
     display: flex;
     align-items: center;
     background-color: #ffc5f2;
@@ -92,11 +90,21 @@
 }
 
 .livingRoomRoutineTitle {
+    display: flex;
+    align-items: center;
     background-color: #ffebc5;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
 }
 
 .toiletRoutineTitle {
+    display: flex;
+    align-items: center;
     background-color: #c5f1ff;
+    border-radius: 30px;
+    padding: 5px 15px;
+    gap: 10px;
 }
 
 .roomRoutineTitle img,
@@ -155,6 +163,7 @@
     align-items: center;
     margin-bottom: 10px;
     position: relative;
+    padding: 5px;
 }
 
 .roomRoutineInfo input[type="checkbox"],
@@ -184,6 +193,64 @@
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
+}
+
+/* 모달 스타일 */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 560px; /* 최대 너비 설정 */
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000; /* 다른 요소들 위에 표시 */
+}
+
+/* 모달의 컨텐츠 */
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 수평 가운데 정렬 */
+    gap: 10px; /* 버튼과 입력 필드 사이의 간격 */
+    background-color: white;
+    border: 1px solid #ddd; /* 연한 회색 테두리 */
+    border-radius: 10px; /* 둥글게 처리된 테두리 */
+    padding: 20px; /* 내부 여백 */
+}
+
+/* 버튼들을 포함할 컨테이너 */
+.buttonGroup {
+    display: flex;
+    gap: 20px; /* 버튼 사이의 간격 */
+}
+
+/* 버튼 스타일 */
+.modalContent button {
+    font-family: Fre, sans-serif;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.modalContent h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.modalContent input {
+    font-family: Fre, sans-serif;
+    font-size: 18px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ddd;
 }
 
 /* 반응형 디자인 */
