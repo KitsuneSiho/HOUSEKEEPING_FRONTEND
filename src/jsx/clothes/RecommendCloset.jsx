@@ -38,6 +38,7 @@ const RecommendCloset = () => {
         }
     }, [weather, date, selectedTime]);
 
+
     const fetchWeatherForecast = async (lat, lon) => {
         try {
             const response = await apiClient.get(`/api/weather/forecast?lat=${lat}&lon=${lon}`);
