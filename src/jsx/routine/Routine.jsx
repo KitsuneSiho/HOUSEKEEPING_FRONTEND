@@ -46,7 +46,7 @@ const Routine = () => {
         }
 
         // 새 루틴 이름을 URL에 포함시켜 이동
-        navigate(`/routine/create/daily/${newRoutineName}`);
+        navigate(`/routine/daily/${newRoutineName}`);
     };
 
     const handleRecommendRoutineClick = () => {
