@@ -1,6 +1,6 @@
-import {ModalProvider} from "../components/context/ModalContext.jsx";
+import {ModalProvider} from "../contexts/ModalContext.jsx";
 import {Route, Routes} from "react-router-dom";
-import {SocketProvider} from "../components/context/SocketContext.jsx";
+import {SocketProvider} from "../contexts/SocketContext.jsx";
 import ChatLogin from "../pages/chat/ChatLogin.jsx";
 import ChatRoomList from "../pages/chat/ChatRoomList.jsx";
 import ChatRoomPage from "../pages/chat/ChatRoomPage.jsx";
