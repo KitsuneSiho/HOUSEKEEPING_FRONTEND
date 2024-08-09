@@ -68,6 +68,43 @@
     border-radius: 10px;
 }
 
+.modalContent .clothInfo{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.modalContent .clothInfo p{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 65%;
+    outline: none;
+}
+
+.modalContent .buttons{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modalContent .buttons button{
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-family: BAZ, sans-serif;
+    border-radius: 10px;
+    width: 80px;
+    background: none;
+    border: 2px solid black;
+}
+
 .close {
     color: #aaa;
     float: right;
@@ -82,27 +119,44 @@
     text-decoration: none;
 }
 
-/* 반응형 디자인 */
-@media (min-width: 768px) {
-    .itemList {
-        grid-template-columns: repeat(3, 1fr); /* 더 큰 화면에서는 3열로 */
-    }
-
-    .itemList img {
-        max-width: 180px; /* 이미지 크기를 조금 더 키움 */
-    }
+.tags {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Flex wrap to allow responsive adjustment */
 }
 
-@media (min-width: 1024px) {
-    .itemList {
-        grid-template-columns: repeat(4, 1fr); /* 더 큰 화면에서는 4열로 */
-    }
+.tag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px; /* Space between rows */
+    width: 45%; /* Approximate width for two columns on small screens */
+}
 
-    .itemList img {
-        max-width: 200px; /* 이미지 크기를 더욱 키움 */
-    }
+.tag label {
+    margin-bottom: 5px;
+}
 
-    .modalContent {
-        width: 60%; /* 모달의 최대 너비 조정 */
-    }
+.tag select {
+    font-family: Fre, sans-serif;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    max-width: 500px !important;
+}
+
+.tag input{
+    font-family: Fre, sans-serif;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 92%;
+    outline: none;
+    max-width: 500px !important;
 }
