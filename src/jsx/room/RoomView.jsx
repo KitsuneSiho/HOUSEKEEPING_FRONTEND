@@ -10,6 +10,8 @@ const RoomView = () => {
     const rendererRef = useRef(null);
     const cameraRef = useRef(null);
     const controlsRef = useRef(null);
+    const raycasterRef = useRef(new THREE.Raycaster());
+    const mouseRef = useRef(new THREE.Vector2());
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -77,7 +79,6 @@ const RoomView = () => {
         // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
         loadFurniture('/public/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, Math.PI / 9999, 1.3);
 
-
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
         savedFurniture.forEach(item => {
@@ -92,8 +93,28 @@ const RoomView = () => {
 
         animate();
 
+        // 마우스 클릭 이벤트 리스너 추가
+        const handleClick = (event) => {
+            event.preventDefault();
+            const bounds = mount.getBoundingClientRect();
+            mouseRef.current.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+            mouseRef.current.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
+
+            raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+            const intersects = raycasterRef.current.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                console.log(`Clicked on: ${object.name}`);
+                onclick(window.location.href='/main/guestbook')
+            }
+        };
+
+        mount.addEventListener('click', handleClick);
+
         return () => {
             rendererRef.current.dispose();
+            mount.removeEventListener('click', handleClick);
         };
     }, []);
 
