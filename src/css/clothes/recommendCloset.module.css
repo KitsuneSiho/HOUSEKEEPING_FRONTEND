@@ -85,7 +85,7 @@
         align-items: center;
         justify-content: center;
         margin: 20px 0;
-        background-color: royalblue; /* 박스 내부 색을 네이비로 설정 */
+        background-color: dodgerblue; /* 박스 내부 색을 네이비로 설정 */
         color: white; /* 텍스트 색상을 흰색으로 변경 (네이비 배경에 잘 보이도록) */
         padding: 20px;
         border-radius: 10px;
