@@ -25,4 +25,6 @@ export const uploadCloth = async (cloth, file) => {
     } catch (error) {
         throw error.response.data || 'Failed to upload cloth';
     }
+
 };
+

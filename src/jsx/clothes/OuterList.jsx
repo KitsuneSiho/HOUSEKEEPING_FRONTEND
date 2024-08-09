@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/outerList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
+import { DetermineHowWash } from "./DetermineHowWash.jsx";
+
 
 const OuterList = () => {
     const navigate = useNavigate();
@@ -38,9 +40,10 @@ const OuterList = () => {
     }, [modalData]);
 
     const openModal = (cloth) => {
-        setModalData(cloth);
+        const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
+        setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth });
+        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
@@ -95,7 +98,7 @@ const OuterList = () => {
     };
 
     const getMaterialOptions = () => {
-        return ['면', '폴리에스터', '나일론'];
+        return ['면', '폴리에스터', '나일론','울','실크','가죽'];
     };
 
     return (
@@ -140,7 +143,7 @@ const OuterList = () => {
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>세탁 방법</h4>
-                                    <p>{modalData.howWash}</p>
+                                    <p>{modalData.clothHowWash}</p>
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>커스텀 태그</h4>
@@ -216,6 +219,16 @@ const OuterList = () => {
                                         <option value="SPRING_FALL">봄/가을</option>
                                         <option value="WINTER">겨울</option>
                                     </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothHowWash">세탁방법</label>
+                                    <input
+                                        type="text"
+                                        id="clothHowWash"
+                                        name="clothHowWash"
+                                        value={currentEdit.clothHowWash}
+                                        readOnly
+                                    />
                                 </div>
                                 <div className={styles.tag}>
                                     <label htmlFor="clothCustomTag">커스텀 태그</label>

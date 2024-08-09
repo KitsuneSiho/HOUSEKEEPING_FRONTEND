@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/topList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
+import { DetermineHowWash } from "./DetermineHowWash.jsx";
 
 const TopList = () => {
     const navigate = useNavigate();
@@ -38,10 +39,12 @@ const TopList = () => {
         }
     }, [modalData]);
 
+
     const openModal = (cloth) => {
-        setModalData(cloth);
+        const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
+        setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth }); // 편집 중인 옷 데이터 복사
+        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
@@ -62,8 +65,8 @@ const TopList = () => {
 
     const handleSave = async () => {
         try {
-            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit); // 수정된 부분: currentEdit.clothId 사용
-            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth)); // 수정된 부분: clothId 사용
+            await apiClient.put(`/ware/items/${currentEdit.clothId}`, currentEdit);
+            setClothes(clothes.map(cloth => cloth.clothId === currentEdit.clothId ? currentEdit : cloth));
             closeModal();
         } catch (error) {
             console.error('수정 중 오류 발생:', error);
@@ -96,7 +99,7 @@ const TopList = () => {
     };
 
     const getMaterialOptions = () => {
-        return ['면', '폴리에스터', '나일론'];
+        return ['면', '폴리에스터', '나일론','울','실크','가죽'];
     };
 
     return (
@@ -141,7 +144,7 @@ const TopList = () => {
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>세탁 방법</h4>
-                                    <p>{modalData.howWash}</p>
+                                    <p>{modalData.clothHowWash}</p>
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>커스텀 태그</h4>
@@ -156,68 +159,78 @@ const TopList = () => {
                             <>
                                 <h2>수정 모드</h2>
                                 <div className={styles.tags}>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothName">옷 이름</label>
-                                        <input
-                                            type="text"
-                                            id="clothName"
-                                            name="clothName"
-                                            value={currentEdit.clothName}
-                                            onChange={handleChange}
-                                        />
-                                    </div>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothType">종류</label>
-                                        <select
-                                            id="clothType"
-                                            name="clothType"
-                                            value={currentEdit.clothType}
-                                            onChange={handleChange}
-                                        >
-                                            {getOptions().map(option => (
-                                                <option key={option} value={option}>{option}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothColor">색상</label>
-                                        <select
-                                            id="clothColor"
-                                            name="clothColor"
-                                            value={currentEdit.clothColor}
-                                            onChange={handleChange}
-                                        >
-                                            {getColorOptions().map(color => (
-                                                <option key={color} value={color}>{color}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothMaterial">소재</label>
-                                        <select
-                                            id="clothMaterial"
-                                            name="clothMaterial"
-                                            value={currentEdit.clothMaterial}
-                                            onChange={handleChange}
-                                        >
-                                            {getMaterialOptions().map(material => (
-                                                <option key={material} value={material}>{material}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <div className={styles.tag}>
-                                        <label htmlFor="clothSeason">계절</label>
-                                        <select
-                                            id="clothSeason"
-                                            name="clothSeason"
-                                            value={currentEdit.clothSeason}
-                                            onChange={handleChange}
-                                        >
-                                            <option value="SUMMER">여름</option>
-                                            <option value="SPRING_FALL">봄/가을</option>
-                                            <option value="WINTER">겨울</option>
-                                        </select>
-                                    </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothName">옷 이름</label>
+                                    <input
+                                        type="text"
+                                        id="clothName"
+                                        name="clothName"
+                                        value={currentEdit.clothName}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothType">종류</label>
+                                    <select
+                                        id="clothType"
+                                        name="clothType"
+                                        value={currentEdit.clothType}
+                                        onChange={handleChange}
+                                    >
+                                        {getOptions().map(option => (
+                                            <option key={option} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothColor">색상</label>
+                                    <select
+                                        id="clothColor"
+                                        name="clothColor"
+                                        value={currentEdit.clothColor}
+                                        onChange={handleChange}
+                                    >
+                                        {getColorOptions().map(color => (
+                                            <option key={color} value={color}>{color}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothMaterial">소재</label>
+                                    <select
+                                        id="clothMaterial"
+                                        name="clothMaterial"
+                                        value={currentEdit.clothMaterial}
+                                        onChange={handleChange}
+                                    >
+                                        {getMaterialOptions().map(material => (
+                                            <option key={material} value={material}>{material}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothSeason">계절</label>
+                                    <select
+                                        id="clothSeason"
+                                        name="clothSeason"
+                                        value={currentEdit.clothSeason}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="SUMMER">여름</option>
+                                        <option value="SPRING_FALL">봄/가을</option>
+                                        <option value="WINTER">겨울</option>
+                                    </select>
+                                </div>
+                                <div className={styles.tag}>
+                                    <label htmlFor="clothHowWash">세탁방법</label>
+                                    <input
+                                        type="text"
+                                        id="clothHowWash"
+                                        name="clothHowWash"
+                                        value={currentEdit.clothHowWash}
+                                        readOnly
+                                    />
+                                </div>
                                     <div className={styles.tag}>
                                         <label htmlFor="clothCustomTag">커스텀 태그</label>
                                         <input
