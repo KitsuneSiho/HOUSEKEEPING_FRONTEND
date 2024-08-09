@@ -144,7 +144,7 @@ const TopList = () => {
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>세탁 방법</h4>
-                                    <p>{modalData.howWash}</p>
+                                    <p>{modalData.clothHowWash}</p>
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>커스텀 태그</h4>

@@ -139,7 +139,7 @@ const AccessoryList = () => {
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>세탁 방법</h4>
-                                    <p>{modalData.howWash}</p>
+                                    <p>{modalData.clothHowWash}</p>
                                 </div>
                                 <div className={styles.clothInfo}>
                                     <h4>커스텀 태그</h4>
@@ -153,6 +153,7 @@ const AccessoryList = () => {
                         ) : (
                             <>
                                 <h2>수정 모드</h2>
+                                <div className={styles.tags}>
                                 <div className={styles.tag}>
                                     <label htmlFor="clothName">옷 이름</label>
                                     <input
@@ -234,6 +235,7 @@ const AccessoryList = () => {
                                         value={currentEdit.clothCustomTag}
                                         onChange={handleChange}
                                     />
+                                </div>
                                 </div>
                                 <div className={styles.buttons}>
                                     <button onClick={handleSave}>저장</button>
