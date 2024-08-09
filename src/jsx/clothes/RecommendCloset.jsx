@@ -16,15 +16,19 @@ const RecommendCloset = () => {
                 <p>날씨</p>
             </div>
             <div className={styles.selection}>
-                <label htmlFor="region">지역 선택:</label>
-                <select id="region">
-                    <option value="seoul">서울</option>
-                    <option value="busan">부산</option>
-                    <option value="incheon">인천</option>
-                    <option value="gwangju">광주</option>
-                </select>
-                <label htmlFor="date">날짜 선택:</label>
-                <input type="date" id="date" name="date" />
+                <div className={styles.selectionArea}>
+                    <label htmlFor="region">지역 선택:</label>
+                    <select id="region">
+                        <option value="seoul">서울</option>
+                        <option value="busan">부산</option>
+                        <option value="incheon">인천</option>
+                        <option value="gwangju">광주</option>
+                    </select>
+                </div>
+                <div className={styles.selectionDate}>
+                    <label htmlFor="date">날짜 선택:</label>
+                    <input type="date" id="date" name="date"/>
+                </div>
             </div>
             <div className={styles.recommendations}>
                 <img src="/lib/추천옷.svg" alt="추천 옷 1" />

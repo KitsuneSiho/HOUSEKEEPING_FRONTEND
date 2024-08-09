@@ -54,6 +54,7 @@
 
 .dirtyBar {
     margin-top: 5%;
+    width: 95%;
     display: flex;
     justify-content: center;
 }
@@ -103,7 +104,7 @@
 .roomSectionTitle{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     border-radius: 20px;
     gap: 10px;
     color: black;
@@ -112,7 +113,7 @@
     padding: 10px;
     text-align: center;
     background-color: #ffebc5;
-    width: 35%;
+    width: 25%;
 }
 
 .roomSectionTitle h3{
@@ -128,10 +129,6 @@
     cursor: pointer;
 }
 
-.scheduleItem:hover {
-    background-color: #f0f0f0;
-}
-
 .checkbox, .alarm {
     margin-right: 10px;
     cursor: pointer;
@@ -145,7 +142,8 @@
 
 /* 추가 버튼 */
 .addButton {
-    background-color: lavender;
+    font-family: Fre, sans-serif;
+    background-color: #ffebc5;
     color: black;
     border: none;
     padding: 7px 15px;
@@ -153,8 +151,15 @@
     cursor: pointer;
     font-size: 14px;
     margin: 0 auto; /* 수평 가운데 정렬 */
-    display: block; /* 블록 요소로 변경 */
+    display: flex;
+    align-items: center;
     max-width: 200px;
+    gap: 10px;
+}
+
+.addButton img{
+    width: 20px;
+    height: 20px;
 }
 
 /* 모달 스타일 */
@@ -190,13 +195,14 @@
 
 /* 버튼 스타일 */
 .modalContent button {
-    background-color: lavender;
+    font-family: Fre, sans-serif;
+    background-color: white;
     color: black;
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 18px;
     transition: background-color 0.3s ease;
 }
 
@@ -206,11 +212,12 @@
 }
 
 .modalContent input {
+    font-family: Fre, sans-serif;
+    font-size: 18px;
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
+    margin: 0;
     border: 1px solid #ddd;
-    border-radius: 4px;
 }
 
 /* 각 방의 제목 스타일 */

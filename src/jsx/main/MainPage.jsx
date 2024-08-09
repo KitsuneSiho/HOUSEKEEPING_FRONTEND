@@ -5,9 +5,9 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell, faBellSlash, faCheckSquare, faPlus, faSquare} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import PullutionBar from '../../components/test/PollutionBar.jsx';
+
 const MainPage = () => {
 
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD')); // 기본 날짜를 오늘로 설정
@@ -15,6 +15,7 @@ const MainPage = () => {
     const [schedules, setSchedules] = useState([]);
     const [editModalIsOpen, setEditModalIsOpen] = useState(false);
     const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+    const [editRoomNameModalIsOpen, setEditRoomNameModalIsOpen] = useState(false);
     const [selectedSchedule, setSelectedSchedule] = useState(null);
     const [updatedScheduleName, setUpdatedScheduleName] = useState('');
     const [newScheduleName, setNewScheduleName] = useState('');
@@ -22,7 +23,8 @@ const MainPage = () => {
     const [friends, setFriends] = useState([]);
     const [roomIds, setRoomIds] = useState([]);
     const [roomNames, setRoomNames] = useState({});
-
+    const [selectedRoom, setSelectedRoom] = useState({ roomId: null, roomName: '' });
+    const [updatedRoomName, setUpdatedRoomName] = useState('');
 
     const loginUserId = 1; // 로그인한 유저의 ID
 
@@ -239,6 +241,30 @@ const MainPage = () => {
         }
     };
 
+    // 방 이름 변경
+    const handleRoomNameUpdate = async () => {
+        try {
+            const response = await fetch(`${BACK_URL}/room/rename`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    roomId: selectedRoom.roomId,
+                    newName: updatedRoomName
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            fetchRoomData(); // 업데이트된 데이터를 다시 가져옵니다.
+            closeEditRoomNameModal();
+        } catch (error) {
+            console.error('Error updating room name:', error);
+        }
+    };
 
     const openEditModal = (schedule) => {
         setSelectedSchedule(schedule);
@@ -261,6 +287,17 @@ const MainPage = () => {
         setAddModalIsOpen(false);
     };
 
+    const openEditRoomNameModal = (roomId, roomName) => {
+        setSelectedRoom({ roomId, roomName });
+        setUpdatedRoomName(roomName);
+        setEditRoomNameModalIsOpen(true);
+    };
+
+    const closeEditRoomNameModal = () => {
+        setEditRoomNameModalIsOpen(false);
+        setSelectedRoom({ roomId: null, roomName: '' });
+        setUpdatedRoomName('');
+    };
 
     const navigate = useNavigate();
 
@@ -283,7 +320,7 @@ const MainPage = () => {
             </div>
 
             <div className={styles.dirtyBar}>
-                <img src="/lib/오염도바.svg" alt="오염도 바"/>
+                <PullutionBar pollution={100}/>
             </div>
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
@@ -301,36 +338,36 @@ const MainPage = () => {
                     idx === 0 && (
                         <div key={roomId} className={`${styles.roomSection} ${styles[`room-${idx}`]}`}>
                             <div className={styles.roomSectionTitle}>
-                                <img src="/lib/빗자루.svg" alt="빗자루"/>
                                 <h3>{schedules[roomId].roomName}</h3>
-                                <img src="/lib/연필.svg" alt="연필"/>
+                                <img src="/lib/연필.svg" alt="연필"
+                                     onClick={() => openEditRoomNameModal(roomId, roomNames[roomId])}/>
                             </div>
                             <ul>
                                 {schedules[roomId].schedules.map(schedule => (
                                     <li key={schedule.scheduleId} className={styles.scheduleItem}>
-                            <span
-                                className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
-                                onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
-                            >
-                                <FontAwesomeIcon icon={schedule.scheduleIsChecked ? faCheckSquare : faSquare}/>
-                            </span>
+                                        <span
+                                            className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
+                                            onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
+                                        >
+                                            <img src={schedule.scheduleIsChecked ? "/lib/내방체크on.svg" : "/lib/내방체크off.svg"} alt="check"/>
+                                        </span>
                                         <span
                                             className={styles.scheduleName}
                                             onClick={() => openEditModal(schedule)}
                                         >
-                                {schedule.scheduleName}
-                            </span>
+                                            {schedule.scheduleName}
+                                        </span>
                                         <span
                                             className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                             onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                         >
-                                <FontAwesomeIcon icon={schedule.scheduleIsAlarm ? faBell : faBellSlash}/>
-                            </span>
+                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"} alt="alarm"/>
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
                             <button onClick={() => openAddModal(parseInt(roomId, 10))} className={styles.addButton}>
-                                <FontAwesomeIcon icon={faPlus}/> 일정 추가
+                                <img src="/lib/plus.svg" alt="add"/> 일정 추가
                             </button>
                         </div>
                     )
@@ -368,6 +405,22 @@ const MainPage = () => {
                         <div className={styles.buttonGroup}>
                             <button onClick={handleAddSchedule}>추가</button>
                             <button onClick={closeAddModal}>취소</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {editRoomNameModalIsOpen && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <h2>방 이름 수정</h2>
+                        <input
+                            type="text"
+                            value={updatedRoomName}
+                            onChange={(e) => setUpdatedRoomName(e.target.value)}
+                        />
+                        <div className={styles.buttonGroup}>
+                            <button onClick={handleRoomNameUpdate}>저장</button>
+                            <button onClick={closeEditRoomNameModal}>취소</button>
                         </div>
                     </div>
                 </div>

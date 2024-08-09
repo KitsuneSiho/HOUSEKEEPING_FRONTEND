@@ -284,7 +284,7 @@ const FoodList = () => {
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/refrigerator/')}/>
                 <h2>{category}</h2>
-                <img src="/lib/검색.svg" alt="search" id={styles.searchIcon}
+                <img src="/lib/검색.svg" alt="search" className={styles.searchIcon}
                      onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)}/>
             </div>
 
@@ -406,7 +406,7 @@ const FoodList = () => {
                         </div>
                         <div className={styles.modalField}>
                             <label htmlFor="modal-memo">메모</label>
-                            <input type="text" id="modal-memo" name="modal-memo" value={modalData.memo}
+                            <textarea rows={3} cols={30} id="modal-memo" name="modal-memo" value={modalData.memo}
                                    onChange={(e) => setModalData({...modalData, memo: e.target.value})}/>
                         </div>
                         <div className={styles.modalButtons}>
