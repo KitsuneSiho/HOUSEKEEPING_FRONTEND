@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/accessoryList.module.css'; // 액세서리 전용 스타일 시트
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from '../../config/axiosConfig';
+import apiClient from "../../config/axiosConfig.js";
 
 const AccessoryList = () => {
     const navigate = useNavigate();
