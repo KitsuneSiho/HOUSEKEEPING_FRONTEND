@@ -85,7 +85,7 @@ const ChatRoomList = () => {
 
     return (
         <div className={styles.container}>
-            {/*<FriendTop />*/}
+            <FriendTop />
             <div className={styles.header}>
                 <img
                     className={styles.back}

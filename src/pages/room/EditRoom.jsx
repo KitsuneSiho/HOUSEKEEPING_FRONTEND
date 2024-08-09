@@ -126,13 +126,6 @@ const EditRoom = () => {
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => changeCurrentRoom(-1)}/>
                 <div className={styles.roomView}>
-                    {/*{isReady && rooms.map((room, index) => (*/}
-                    {/*    <div key={index}>*/}
-                    {/*        {currentRoom === index && <EditRoomModel room={rooms[index]} placementList={placementLists[index]} furniture={furniture} userLevel={userLevel}*/}
-                    {/*           savePlacement={savePlacement} deletePlacement={deletePlacement} changeCurrentRoom={changeCurrentRoom}/>}*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-
                     {isReady && <>
                         {currentRoom === 0 && <EditRoomModel room={rooms[0]} placementList={myRoomList} setPlacementList={setMyRoomList} furniture={furniture} userLevel={userLevel}
                                savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={myRoomDeleteList} setDeletedPlacementList={setMyRoomDeleteList}/>}
