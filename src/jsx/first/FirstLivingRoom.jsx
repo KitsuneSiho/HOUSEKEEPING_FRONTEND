@@ -57,33 +57,35 @@ const FirstLivingRoom = () => {
         scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(10, 10, 10);
+        directionalLight.position.set(10, 10, 5);
         scene.add(directionalLight);
 
-        // Floor setup
+        // 바닥 설정
         const floorGeometry = new THREE.BoxGeometry(20, 1, 20);
-        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xf2e0c8 });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.name = 'floor'; // Naming the floor
+        floor.name = 'floor'; // 바닥 이름 지정
         floor.position.set(0, 0, 0);
         scene.add(floor);
 
-        // Left wall setup
+        // 왼쪽 벽 설정
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
-        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
+        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
-        wallLeft.name = 'leftWall'; // Naming the wall
+        wallLeft.name = 'leftWall'; // 벽 이름 지정
         wallLeft.position.set(-9.5, 7.5, 0);
         scene.add(wallLeft);
 
-
-        // Back wall setup
+        // 뒤쪽 벽 설정
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
-        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
-        wallBack.name = 'backWall'; // Naming the wall
+        wallBack.name = 'backWall'; // 벽 이름 지정
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
+
+        // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
+        loadFurniture('/public/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, Math.PI / 9999, 1.3);
 
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
@@ -104,37 +106,44 @@ const FirstLivingRoom = () => {
         };
     }, []);
 
-    const loadFurniture = (path) => {
+    const loadFurniture = (path, position = { x: 0, y: 0, z: 0 }, rotation = 0, scale = 1) => {
         const loader = new GLTFLoader();
         loader.load(path, (gltf) => {
             const model = gltf.scene;
 
-            // Compute bounding box to determine size
+            // 크기를 결정하기 위한 경계 상자 계산
             const box = new THREE.Box3().setFromObject(model);
             const size = new THREE.Vector3();
             box.getSize(size);
 
-            // Set initial scale based on model size, adjust as needed
+            // 모델 크기를 기반으로 초기 스케일 설정
             const initialScale = Math.min(4 / size.x, 4 / size.y, 4 / size.z);
             model.scale.set(initialScale, initialScale, initialScale);
 
-            // Center the model
+            // 모델 중앙 설정
             const center = box.getCenter(new THREE.Vector3());
             model.position.sub(center);
             model.position.y = -(box.min.y * model.scale.y);
 
             const group = new THREE.Group();
             group.add(model);
+
+            // 주어진 위치, 회전 및 크기 적용
+            group.position.set(position.x, position.y, position.z);
+            group.rotation.y = rotation;
+            group.scale.set(scale * initialScale, scale * initialScale, scale * initialScale);
+
             sceneRef.current.add(group);
 
+            // 가구 선택 상태 업데이트
             setSelectedFurniture(group);
             setPosition({ x: group.position.x, y: group.position.y, z: group.position.z });
-            setRotation(0); // Reset rotation on Y-axis
-            setScale(1); // Reset scale
+            setRotation(group.rotation.y);
+            setScale(scale);
             setModalType('furniture');
             setShowModal(true);
         }, undefined, (error) => {
-            console.error('Error loading model:', error);
+            console.error('모델 로드 중 오류 발생:', error);
         });
     };
 
