@@ -48,7 +48,7 @@ const FirstLogin = () => {
                 withCredentials: true
             });
             if (response.status === 200) {
-                navigate('/firstRoomDesign');
+                navigate('/design/myroom');
             }
         } catch (error) {
             if (error.response && error.response.data === "Nickname already exists") {

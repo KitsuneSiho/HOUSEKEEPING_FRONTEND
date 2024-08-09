@@ -267,13 +267,17 @@ const WeeklyRoutineInfo = () => {
                 {rooms.map(room => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={styles.roomRoutineTitle}>
+                            <div className={`${styles.roomRoutineTitle} 
+                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
+                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
+                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
                                 <p>{room.roomName}</p>
-                                <img src="/lib/연필.svg" alt="edit" />
+                                <img src="/lib/연필.svg" alt="edit"/>
                             </div>
                             <div className={styles.alramOnOff}>
                                 <p>모든 알림 켜기</p>
-                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openAddModal(room.roomId)} />
+                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
+                                     onClick={() => openAddModal(room.roomId)}/>
                             </div>
                         </div>
                         <div className={styles.roomRoutineInfo}>
@@ -304,7 +308,8 @@ const WeeklyRoutineInfo = () => {
                             {daysOfWeek.map((day) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
+                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''} 
+                                    ${day === '토' ? styles.saturday : ''} ${day === '일' ? styles.sunday : ''}`}
                                     onClick={() => toggleDaySelection(day)}
                                 >
                                     {day}

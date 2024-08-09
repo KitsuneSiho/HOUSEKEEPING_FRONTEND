@@ -18,7 +18,7 @@ const Setting = () => {
             </div>
             <div className={styles.settingsList}>
                 <div className={styles.settingsItem}>
-                    <span>활동중 표시</span>
+                    <span>활동 중 표시</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -44,7 +44,7 @@ const Setting = () => {
                     청소를 안할 시 일정 오염도가 되면 전송되는 알림입니다.
                 </p>
                 <div className={styles.settingsItem}>
-                    <span>유동기간 알림 설정</span>
+                    <span>유통기한 알림 설정</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"
@@ -55,7 +55,7 @@ const Setting = () => {
                     </label>
                 </div>
                 <div className={styles.settingsItem}>
-                    <span>계정검색허용</span>
+                    <span>계정 검색 허용</span>
                     <label className={styles.switch}>
                         <input
                             type="checkbox"

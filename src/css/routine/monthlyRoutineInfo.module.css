@@ -155,6 +155,7 @@
     align-items: center;
     margin-bottom: 10px;
     position: relative;
+    padding: 5px;
 }
 
 .roomRoutineInfo input[type="checkbox"],
@@ -326,26 +327,38 @@
 .daysOfMonth {
     display: flex;
     flex-wrap: wrap;
-    margin: 5% 0;
     width: 100%;
+    margin: 5% 0;
     box-sizing: border-box;
 }
 
+.week {
+    display: flex;
+    width: 100%;
+    justify-content: left;
+    gap: 10px;
+}
+
 .dateButton {
-    flex: 1 0 calc(100% / 7 - 10px); /* 7개 버튼씩 정렬되도록 너비 설정 */
+    width: calc(100% / 7 - 10px);
     padding: 10px;
-    margin: 5px; /* 버튼 사이의 여백 */
+    margin: 5px 0;
     border-radius: 5px;
     background-color: white;
     cursor: pointer;
     text-align: center;
     box-sizing: border-box;
-    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dateButton.selected {
-    background-color: mediumslateblue;
-    color: white;
+    background-color: #c5f1ff;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 

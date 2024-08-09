@@ -57,33 +57,35 @@ const FirstLivingRoom = () => {
         scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(10, 10, 10);
+        directionalLight.position.set(10, 10, 5);
         scene.add(directionalLight);
 
-        // Floor setup
+        // 바닥 설정
         const floorGeometry = new THREE.BoxGeometry(20, 1, 20);
-        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xf2e0c8 });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.name = 'floor'; // Naming the floor
+        floor.name = 'floor'; // 바닥 이름 지정
         floor.position.set(0, 0, 0);
         scene.add(floor);
 
-        // Left wall setup
+        // 왼쪽 벽 설정
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
-        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
+        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
-        wallLeft.name = 'leftWall'; // Naming the wall
+        wallLeft.name = 'leftWall'; // 벽 이름 지정
         wallLeft.position.set(-9.5, 7.5, 0);
         scene.add(wallLeft);
 
-
-        // Back wall setup
+        // 뒤쪽 벽 설정
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
-        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
-        wallBack.name = 'backWall'; // Naming the wall
+        wallBack.name = 'backWall'; // 벽 이름 지정
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
+
+        // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
+        loadFurniture('/public/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, Math.PI / 9999, 1.3);
 
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
@@ -104,37 +106,44 @@ const FirstLivingRoom = () => {
         };
     }, []);
 
-    const loadFurniture = (path) => {
+    const loadFurniture = (path, position = { x: 0, y: 0, z: 0 }, rotation = 0, scale = 1) => {
         const loader = new GLTFLoader();
         loader.load(path, (gltf) => {
             const model = gltf.scene;
 
-            // Compute bounding box to determine size
+            // 크기를 결정하기 위한 경계 상자 계산
             const box = new THREE.Box3().setFromObject(model);
             const size = new THREE.Vector3();
             box.getSize(size);
 
-            // Set initial scale based on model size, adjust as needed
+            // 모델 크기를 기반으로 초기 스케일 설정
             const initialScale = Math.min(4 / size.x, 4 / size.y, 4 / size.z);
             model.scale.set(initialScale, initialScale, initialScale);
 
-            // Center the model
+            // 모델 중앙 설정
             const center = box.getCenter(new THREE.Vector3());
             model.position.sub(center);
             model.position.y = -(box.min.y * model.scale.y);
 
             const group = new THREE.Group();
             group.add(model);
+
+            // 주어진 위치, 회전 및 크기 적용
+            group.position.set(position.x, position.y, position.z);
+            group.rotation.y = rotation;
+            group.scale.set(scale * initialScale, scale * initialScale, scale * initialScale);
+
             sceneRef.current.add(group);
 
+            // 가구 선택 상태 업데이트
             setSelectedFurniture(group);
             setPosition({ x: group.position.x, y: group.position.y, z: group.position.z });
-            setRotation(0); // Reset rotation on Y-axis
-            setScale(1); // Reset scale
+            setRotation(group.rotation.y);
+            setScale(scale);
             setModalType('furniture');
             setShowModal(true);
         }, undefined, (error) => {
-            console.error('Error loading model:', error);
+            console.error('모델 로드 중 오류 발생:', error);
         });
     };
 
@@ -251,9 +260,8 @@ const FirstLivingRoom = () => {
                 <div className={styles.furnitureCategories}>
                     <p onClick={() => handleCategoryClick('wallFloor')}>벽</p>
                     <p onClick={() => handleCategoryClick('desk')}>책상</p>
-                    <p onClick={() => handleCategoryClick('bed')}>침대</p>
-                    <p onClick={() => handleCategoryClick('sofa')}>소파</p>
-                    <p onClick={() => handleCategoryClick('closet')}>옷장</p>
+                    <p onClick={() => handleCategoryClick('refrigerator')}>냉장고</p>
+                    <p onClick={() => handleCategoryClick('kitchen')}>주방</p>
                     <p onClick={() => handleCategoryClick('chair')}>의자</p>
                     <p onClick={() => handleCategoryClick('pocketmon')}>포켓몬</p>
                     <p onClick={() => handleCategoryClick('etc')}>기타</p>
@@ -265,72 +273,180 @@ const FirstLivingRoom = () => {
                                 <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
                                 <button onClick={() => openColorModal('backWall')}>오른쪽 벽</button>
                                 <button onClick={() => openColorModal('floor')}>바닥</button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/문1.glb')}>
+                                    <img src="/furniture/ETC/문1.png" alt="문1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/문2.glb')}>
+                                    <img src="/furniture/ETC/문2.png" alt="문2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/문3.glb')}>
+                                    <img src="/furniture/ETC/문3.png" alt="문3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/문4.glb')}>
+                                    <img src="/furniture/ETC/문4.png" alt="문4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/문5.glb')}>
+                                    <img src="/furniture/ETC/문5.png" alt="문5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/창문1.glb')}>
+                                    <img src="/furniture/ETC/창문1.png" alt="창문1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/창문2.glb')}>
+                                    <img src="/furniture/ETC/창문2.png" alt="창문2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/창문3.glb')}>
+                                    <img src="/furniture/ETC/창문3.png" alt="창문3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/커튼1.glb')}>
+                                    <img src="/furniture/ETC/커튼1.png" alt="커튼1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/게시판.glb')}>
+                                    <img src="/furniture/ETC/게시판.png" alt="게시판"/>
+                                </button>
                             </>
                         )}
                         {activeCategory === 'desk' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/책상1.glb')}>책상1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/책상2.glb')}>책상2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/책상3.glb')}>책상3</button>
-                                <button onClick={() => loadFurniture('/public/furniture/책상4.glb')}>책상4</button>
-                                <button onClick={() => loadFurniture('/public/furniture/책상5.glb')}>책상5</button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상1.glb')}>
+                                    <img src="/furniture/DESK/책상1.png" alt="책상1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상2.glb')}>
+                                    <img src="/furniture/DESK/책상2.png" alt="책상2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상3.glb')}>
+                                    <img src="/furniture/DESK/책상3.png" alt="책상3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상4.glb')}>
+                                    <img src="/furniture/DESK/책상4.png" alt="책상4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상5.glb')}>
+                                    <img src="/furniture/DESK/책상5.png" alt="책상5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상6.glb')}>
+                                    <img src="/furniture/DESK/책상6.png" alt="책상6"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상7.glb')}>
+                                    <img src="/furniture/DESK/책상7.png" alt="책상7"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상8.glb')}>
+                                    <img src="/furniture/DESK/책상8.png" alt="책상8"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상9.glb')}>
+                                    <img src="/furniture/DESK/책상9.png" alt="책상9"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/DESK/책상10.glb')}>
+                                    <img src="/furniture/DESK/책상10.png" alt="책상10"/>
+                                </button>
                             </>
                         )}
-                        {activeCategory === 'bed' && (
+                        {activeCategory === 'refrigerator' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/침대1.glb')}>침대1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/침대2.glb')}>침대2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/침대3.glb')}>침대3</button>
-                                <button onClick={() => loadFurniture('/public/furniture/침대4.glb')}>침대4</button>
-                                <button onClick={() => loadFurniture('/public/furniture/침대5.glb')}>침대5</button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/냉장고1.glb')}>
+                                    <img src="/furniture/ETC/냉장고1.png" alt="냉장고1"/>
+                                </button>
                             </>
                         )}
-                        {activeCategory === 'sofa' && (
+                        {activeCategory === 'kitchen' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/소파1.glb')}>소파1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/소파2.glb')}>소파2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/소파3.glb')}>소파3</button>
-                                <button onClick={() => loadFurniture('/public/furniture/소파4.glb')}>소파4</button>
-                                <button onClick={() => loadFurniture('/public/furniture/소파5.glb')}>소파5</button>
-                                <button onClick={() => loadFurniture('/public/furniture/소파6.glb')}>소파6</button>
-                            </>
-                        )}
-                        {activeCategory === 'closet' && (
-                            <>
-                                <button onClick={() => loadFurniture('/public/furniture/옷장1.glb')}>옷장1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/옷장2.glb')}>옷장2</button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/세탁기1.glb')}>
+                                    <img src="/furniture/ETC/세탁기1.png" alt="세탁기1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/씽크대1.glb')}>
+                                    <img src="/furniture/ETC/씽크대1.png" alt="씽크대1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/오븐1.glb')}>
+                                    <img src="/furniture/ETC/오븐1.png" alt="오븐1"/>
+                                </button>
                             </>
                         )}
                         {activeCategory === 'chair' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/의자1.glb')}>의자1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/의자2.glb')}>의자2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/의자3.glb')}>의자3</button>
-                                <button onClick={() => loadFurniture('/public/furniture/의자4.glb')}>의자4</button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자1.glb')}>
+                                    <img src="/furniture/CHAIR/의자1.png" alt="의자1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자2.glb')}>
+                                    <img src="/furniture/CHAIR/의자2.png" alt="의자2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자3.glb')}>
+                                    <img src="/furniture/CHAIR/의자3.png" alt="의자3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자4.glb')}>
+                                    <img src="/furniture/CHAIR/의자4.png" alt="의자4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자5.glb')}>
+                                    <img src="/furniture/CHAIR/의자5.png" alt="의자5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자6.glb')}>
+                                    <img src="/furniture/CHAIR/의자6.png" alt="의자6"/>
+                                </button>
                             </>
                         )}
                         {activeCategory === 'etc' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/게시판.glb')}>게시판</button>
-                                <button onClick={() => loadFurniture('/public/furniture/서랍장1.glb')}>서랍장1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문1.glb')}>문1</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문2.glb')}>문2</button>
-                                <button onClick={() => loadFurniture('/public/furniture/문4.glb')}>문3</button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통1.glb')}>
+                                    <img src="/furniture/ETC/쓰레기통1.png" alt="쓰레기통1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통2.glb')}>
+                                    <img src="/furniture/ETC/쓰레기통2.png" alt="쓰레기통2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통3.glb')}>
+                                    <img src="/furniture/ETC/쓰레기통3.png" alt="쓰레기통3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통4.glb')}>
+                                    <img src="/furniture/ETC/쓰레기통4.png" alt="쓰레기통4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통5.glb')}>
+                                    <img src="/furniture/ETC/쓰레기통5.png" alt="쓰레기통5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그1.glb')}>
+                                    <img src="/furniture/ETC/러그1.png" alt="러그1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그2.glb')}>
+                                    <img src="/furniture/ETC/러그2.png" alt="러그2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/주방1.glb')}>
+                                    <img src="/furniture/ETC/주방1.png" alt="주방1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/접시1.glb')}>
+                                    <img src="/furniture/ETC/접시1.png" alt="접시1"/>
+                                </button>
                             </>
                         )}
                         {activeCategory === 'pocketmon' && (
                             <>
-                                <button onClick={() => loadFurniture('/public/furniture/피카츄.glb')}>피카츄</button>
-                                <button onClick={() => loadFurniture('/public/furniture/폴리곤.glb')}>폴리곤</button>
-                                <button onClick={() => loadFurniture('/public/furniture/파이리.glb')}>파이리</button>
-                                <button onClick={() => loadFurniture('/public/furniture/탕구리.glb')}>탕구리</button>
-                                <button onClick={() => loadFurniture('/public/furniture/코일.glb')}>코일</button>
-                                <button onClick={() => loadFurniture('/public/furniture/잠만보.glb')}>잠만보</button>
-                                <button onClick={() => loadFurniture('/public/furniture/이브이.glb')}>이브이</button>
-                                <button onClick={() => loadFurniture('/public/furniture/잉어킹.glb')}>잉어킹</button>
-                                <button onClick={() => loadFurniture('/public/furniture/꼬지모.glb')}>꼬지모</button>
-                                <button onClick={() => loadFurniture('/public/furniture/뮤.glb')}>뮤</button>
-                                <button onClick={() => loadFurniture('/public/furniture/몬스터볼.glb')}>몬스터볼</button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/피카츄.glb')}>
+                                    <img src="/furniture/POCKETMON/피카츄.png" alt="피카츄"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/폴리곤.glb')}>
+                                    <img src="/furniture/POCKETMON/폴리곤.png" alt="폴리곤"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/파이리.glb')}>
+                                    <img src="/furniture/POCKETMON/파이리.png" alt="파이리"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/탕구리.glb')}>
+                                    <img src="/furniture/POCKETMON/탕구리.png" alt="탕구리"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/코일.glb')}>
+                                    <img src="/furniture/POCKETMON/코일.png" alt="코일"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/잠만보.glb')}>
+                                    <img src="/furniture/POCKETMON/잠만보.png" alt="잠만보"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/이브이.glb')}>
+                                    <img src="/furniture/POCKETMON/이브이.png" alt="이브이"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/잉어킹.glb')}>
+                                    <img src="/furniture/POCKETMON/잉어킹.png" alt="잉어킹"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/꼬지모.glb')}>
+                                    <img src="/furniture/POCKETMON/꼬지모.png" alt="꼬지모"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/뮤.glb')}>
+                                    <img src="/furniture/POCKETMON/뮤.png" alt="뮤"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/POCKETMON/몬스터볼.glb')}>
+                                    <img src="/furniture/POCKETMON/몬스터볼.png" alt="몬스터볼"/>
+                                </button>
                             </>
                         )}
                     </div>

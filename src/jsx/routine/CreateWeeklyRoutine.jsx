@@ -241,7 +241,10 @@ const CreateWeeklyRoutine = () => {
                 {filteredRoutines.map(room => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={styles.roomRoutineTitle}>
+                            <div className={`${styles.roomRoutineTitle} 
+                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
+                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
+                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
                             </div>
@@ -282,10 +285,10 @@ const CreateWeeklyRoutine = () => {
                             onChange={(e) => setNewRoutineText(e.target.value)}
                         />
                         <div className={styles.daysOfWeek}>
-                            {daysOfWeek.map((day) => (
+                            {daysOfWeek.map((day, index) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
+                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''} ${day === '토' ? styles.saturday : ''} ${day === '일' ? styles.sunday : ''}`}
                                     onClick={() => toggleDaySelection(day)}
                                 >
                                     {day}
@@ -313,7 +316,8 @@ const CreateWeeklyRoutine = () => {
                             {daysOfWeek.map((day) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
+                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''} 
+                                    ${day === '토' ? styles.saturday : ''} ${day === '일' ? styles.sunday : ''}`}
                                     onClick={() => toggleDaySelection(day)}
                                 >
                                     {day}

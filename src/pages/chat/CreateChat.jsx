@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BACK_URL } from "../../Constraints.js";
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {BACK_URL} from "../../Constraints.js";
 import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axios from "axios";
 import ChatFriend from "../../components/chat/ChatFriend.jsx";
-import { useModal } from "../../components/context/ModalContext.jsx";
+import {useModal} from "../../components/context/ModalContext.jsx";
 
 // 채팅 방 생성
 const CreateChat = () => {
@@ -13,7 +13,7 @@ const CreateChat = () => {
     const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
     const [userId, setUserId] = useState(null);
     const [selectedFriends, setSelectedFriends] = useState([]);
-    const [selectedNickname, setSelectedNickname] = useState("");
+    const [selectedNicknames, setSelectedNicknames] = useState("");
     const [friends, setFriends] = useState([]);
     const [isReady, setIsReady] = useState(false);
     const [chatRoomTitle, setChatRoomTitle] = useState("");
@@ -47,6 +47,24 @@ const CreateChat = () => {
         }
     }
 
+    // 선택한 친구와의 1대1 채팅이 이미 만들어져 있는지 확인
+    const checkChatRoom = async () => {
+
+        try {
+
+            const response = await axios.get(BACK_URL + `/chat/room/exist?myUserId=${userId}&friendUserId=${selectedFriends[0]}`);
+            const chatRoomId = response.data;
+
+            if (chatRoomId === "") {
+                createRoom(selectedNicknames[0], "SINGLE");
+            } else if (typeof chatRoomId === "number") {
+                navigate(`/chat/${chatRoomId}`);
+            }
+        } catch (error) {
+            console.error("error checking chat room:", error);
+        }
+    }
+
     // 방 정보를 DB에 저장
     const createRoom = async (name, type) => {
         try {
@@ -64,9 +82,13 @@ const CreateChat = () => {
     }
 
     // 체크박스 체크 시
-    const handleCheckboxChange = (name) => {
+    const handleCheckboxChange = (id, nickanme) => {
         setSelectedFriends(prev =>
-            prev.includes(name) ? prev.filter(friend => friend !== name) : [...prev, name]
+            prev.includes(id) ? prev.filter(friend => friend !== id) : [...prev, id]
+        );
+
+        setSelectedNicknames(prev =>
+            prev.includes(nickanme) ? prev.filter(friend => friend !== nickanme) : [...prev, nickanme]
         );
     };
 
@@ -78,7 +100,8 @@ const CreateChat = () => {
             setModalBody("한 명 이상의 친구를 선택해주세요!");
             showModal();
         } else if (selectedFriends.length === 1) {
-            createRoom(selectedNickname, "SINGLE");
+
+            checkChatRoom();
         } else if (selectedFriends.length >= 2) {
             setModalType("namingChatRoom");
             setModalCallback(() => setChatRoomTitle);
@@ -102,7 +125,7 @@ const CreateChat = () => {
                 {/* 준비 완료되기 전에는 친구 목록을 출력 안함 */}
                 {isReady && friends.map((friend, index) => (
                     <ChatFriend key={index} friend={friend} selectedFriends={selectedFriends}
-                                handleCheckboxChange={handleCheckboxChange} setSelectedNickname={setSelectedNickname} />
+                                handleCheckboxChange={handleCheckboxChange}/>
                 ))}
             </div>
             <Footer />
