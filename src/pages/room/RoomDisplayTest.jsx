@@ -1,26 +1,22 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
 import RoomModel from "../../components/room/RoomModel.jsx";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const RoomDisplayTest = () => {
 
-    const [userId, setUserId] = useState("");
+    const {loginUserId} = useLogin();
     const [rooms, setRooms] = useState([]);
     const [placementLists, setPlacementLists] = useState([]);
     const [isReady, setReady] = useState(false);
 
     useEffect(() => {
-        setUserId(sessionStorage.getItem("userId"));
-    }, []);
 
-    useEffect(() => {
-
-        if (userId !== "") {
+        if (loginUserId !== null) {
 
             getRoomIds();
         }
-    }, [userId])
+    }, [loginUserId])
 
     useEffect(() => {
 
@@ -33,7 +29,7 @@ const RoomDisplayTest = () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/room/list?userId=${userId}`);
+            const response = await axiosInstance.get(`/room/list?userId=${loginUserId}`);
 
             setRooms(response.data);
             console.log(response.data);
@@ -46,7 +42,7 @@ const RoomDisplayTest = () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
+            const response = await axiosInstance.get(`/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
 
             setPlacementLists(response.data);
             console.log(response.data);

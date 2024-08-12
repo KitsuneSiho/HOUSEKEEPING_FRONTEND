@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+const BACK_URL = 'http://localhost:8080';
+
+const apiClient = axios.create({
+    baseURL: BACK_URL,
     withCredentials: true, // CORS 요청 시 쿠키를 함께 보내기 위함
 });
 
 // 요청 인터셉터: 요청을 보내기 전에 토큰을 헤더에 추가
-axiosInstance.interceptors.request.use(
+apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('access');
         if (token) {
@@ -20,7 +22,7 @@ axiosInstance.interceptors.request.use(
 );
 
 // 응답 인터셉터: 응답에서 401 에러(토큰 만료 등) 발생 시 처리
-axiosInstance.interceptors.response.use(
+apiClient.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -38,11 +40,11 @@ axiosInstance.interceptors.response.use(
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
 
                 // 원래의 요청을 재시도
-                return axiosInstance(originalRequest);
+                return apiClient(originalRequest);
             } catch (refreshError) {
                 // 재발급 실패 시 토큰 삭제 및 로그인 페이지로 리다이렉트
-                localStorage.removeItem('access');
-                window.location.href = '/login';
+                // localStorage.removeItem('access');
+                // window.location.href = '/login';
                 return Promise.reject(refreshError);
             }
         }
@@ -50,4 +52,4 @@ axiosInstance.interceptors.response.use(
     }
 );
 
-export default axiosInstance;
+export default apiClient;

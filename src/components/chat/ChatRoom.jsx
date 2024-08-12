@@ -3,12 +3,13 @@ import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
 import * as propTypes from "prop-types";
 import {useEffect, useState} from "react";
-import {BACK_URL} from "../../Constraints.js";
-import axios from "axios";
+import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 // 1대1 채팅 element
 const ChatRoom = ({chatRoom, timeFormatter}) => {
 
+    const {loginUserId} = useLogin();
     const [userImage, setUserImage] = useState(null);
     const [chatRoomMembers, setChatRoomMembers] = useState([]);
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const ChatRoom = ({chatRoom, timeFormatter}) => {
 
         try {
 
-            const result = await axios.get(BACK_URL + `/chat/room/member/list?chatRoomId=${chatRoom.chatRoomId}&userId=${sessionStorage.getItem("userId")}`);
+            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoom.chatRoomId}&userId=${loginUserId}`);
 
             setChatRoomMembers(result.data);
         } catch (error) {
