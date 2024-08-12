@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../config/axiosInstance.js';
 import styles from '../../css/myPage/myInfo.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import { useAuth } from '../../contexts/AuthContext';
 
 const MyInfo = () => {
     const navigate = useNavigate();
+    const { user, fetchUserInfo } = useAuth();
     const [userInfo, setUserInfo] = useState({
-        userId: '', // userId 추가
         name: '',
         nickname: '',
         email: '',
@@ -15,18 +16,15 @@ const MyInfo = () => {
     });
 
     useEffect(() => {
-        const loadUserInfo = async () => {
-            try {
-                const response = await axiosInstance.get('/api/user/info', {
-                    params: { userId: 1 } // 사용자의 ID를 여기에 설정해야 합니다.
-                });
-                setUserInfo(response.data);
-            } catch (error) {
-                console.error('Error loading user info', error);
-            }
-        };
-        loadUserInfo();
-    }, []);
+        if (user) {
+            setUserInfo({
+                name: user.name,
+                nickname: user.nickname,
+                email: user.email,
+                phone: user.phone,
+            });
+        }
+    }, [user]);
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -39,6 +37,7 @@ const MyInfo = () => {
     const handleUpdate = async () => {
         try {
             await axiosInstance.put('/api/user/update', userInfo);
+            fetchUserInfo();
             navigate('/myPage');
         } catch (error) {
             console.error('Error updating user info', error);
