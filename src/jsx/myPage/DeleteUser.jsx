@@ -12,7 +12,7 @@ const DeleteUser = () => {
     const handleDeleteUser = async () => {
         try {
             await axiosInstance.delete('/api/user/delete');
-            logout();
+            logout(); // 로그아웃 처리
             navigate('/login');
         } catch (error) {
             console.error('Error deleting user', error);
