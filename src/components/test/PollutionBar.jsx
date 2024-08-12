@@ -12,8 +12,7 @@ const PollutionBar = ({pollution}) => {
         <>
             <div className="loader-container">
                 <div className="loader" style={loaderStyle}>
-                    <p>깨끗해요!</p>
-                    <p>더러워요!</p>
+
                 </div>
                 <div className="chat-icon-container">
                     {pollution < 34 ?

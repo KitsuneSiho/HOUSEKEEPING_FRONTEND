@@ -330,9 +330,6 @@ const MainPage = () => {
                 </div>
                 <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
             </div>
-            <div className={styles.guestBook}>
-                <p onClick={() => navigate('/main/guestbook')}>방명록</p>
-            </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (
                     // 첫 번째 방(PRIVATE)만 렌더링

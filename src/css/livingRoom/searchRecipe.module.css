@@ -73,10 +73,25 @@
     outline: none;
 }
 
+.ingredientsContainer .removeBtn {
+    width: 22%;
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredientsContainer .removeBtn p{
+    margin: 0;
+    padding: 0;
+}
+
 .ingredients {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 2px;
     margin-bottom: 10px;
 }
 

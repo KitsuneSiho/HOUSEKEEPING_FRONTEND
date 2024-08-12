@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../../css/main/visitorBoard.module.css';
+import styles from '../../css/main/myGuestBook.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
 

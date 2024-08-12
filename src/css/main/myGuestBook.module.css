@@ -145,7 +145,12 @@
     gap: 20px;
 }
 
+.modalTextarea label{
+    width: 8%;
+}
+
 .modalTextarea textarea {
+    font-family: Fre, sans-serif;
     width: 80%;
     outline: none;
     border: 1px solid #ccc;
