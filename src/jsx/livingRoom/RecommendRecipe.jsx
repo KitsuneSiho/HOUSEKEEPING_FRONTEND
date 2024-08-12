@@ -40,8 +40,8 @@ const RecommendRecipe = () => {
             </div>
             <div className={styles.recipeInfo}>
                 <p><strong>재료:</strong> {recipe.ingredients || '재료 정보 없음'}</p>
-                <p><strong>소요 시간:</strong> {recipe.time || '시간 정보 없음'}</p>
-                <h4 style={{ marginLeft: '2em' }}>레시피 단계:</h4>
+                <p><strong>소요시간:</strong> {recipe.time || '시간 정보 없음'}</p>
+                <h4 style={{ marginLeft: '2em' }}>조리법</h4>
                 <div>{recipe.steps ? formatSteps(recipe.steps) : '레시피 단계 정보 없음'}</div>
             </div>
             <Footer/>
