@@ -77,7 +77,7 @@ const RoomView = () => {
         scene.add(wallBack);
 
         // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
-        loadFurniture('/public/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, Math.PI / 9999, 1.3);
+        loadFurniture('/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, 0, 1.3);
 
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
@@ -106,7 +106,7 @@ const RoomView = () => {
             if (intersects.length > 0) {
                 const object = intersects[0].object;
                 console.log(`Clicked on: ${object.name}`);
-                onclick(window.location.href='/main/guestbook')
+                onclick(window.location.href='/main/guestbook');
             }
         };
 

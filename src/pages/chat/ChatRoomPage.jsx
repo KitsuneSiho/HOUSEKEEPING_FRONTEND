@@ -1,11 +1,11 @@
 import {useParams} from 'react-router-dom';
-import {BACK_URL} from "../../Constraints.js";
 import styles from '../../css/chat/chatRoom.module.css';
 import {useEffect, useState, useRef} from "react";
-import axios from "axios";
 import Message from "../../components/chat/Message.jsx";
 import {useSocket} from "../../contexts/SocketContext.jsx";
 import ChatRoomHeader from "../../components/chat/ChatRoomHeader.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const ChatRoomPage = () => {
     const {
@@ -21,9 +21,9 @@ const ChatRoomPage = () => {
         isConnected
     } = useSocket();
     const {chatRoomId} = useParams();
+    const {loginUserId} = useLogin();
     const [chatRoomType, setChatRoomType] = useState("");
     const [chatRoomName, setChatRoomName] = useState("");
-    const [userId, setUserId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [isReady, setIsReady] = useState(false);
     const [input, setInput] = useState("");
@@ -34,7 +34,6 @@ const ChatRoomPage = () => {
 
     // 마운트 시 세션에서 유저 아이디를 받아옴
     useEffect(() => {
-        setUserId(sessionStorage.getItem("userId"));
         getChatRoomInfo().then(getChatRoomMembers);
     }, []);
 
@@ -46,18 +45,18 @@ const ChatRoomPage = () => {
 
     // 채팅 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
-        if (userId !== null) {
+        if (loginUserId !== null) {
 
             getMessages().then(readAll).then(() => setIsReady(true));
         }
-    }, [userId]);
+    }, [loginUserId]);
 
     //채팅 방 정보를 받아옴
     const getChatRoomInfo = async () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/chat/room/${chatRoomId}`);
+            const response = await axiosInstance.get(`/chat/room/${chatRoomId}`);
 
             setChatRoomName(response.data.chatRoomName);
             setChatRoomType(response.data.chatRoomType);
@@ -71,7 +70,7 @@ const ChatRoomPage = () => {
 
         try {
 
-            const result = await axios.get(BACK_URL + `/chat/room/member/list?chatRoomId=${chatRoomId}&userId=${sessionStorage.getItem("userId")}`);
+            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoomId}&userId=${loginUserId}`);
 
             setChatRoomMembers(result.data);
         } catch (error) {
@@ -142,7 +141,7 @@ const ChatRoomPage = () => {
     // 채팅 리스트를 받아오는 함수
     const getMessages = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/chat/message/list?chatRoomId=${chatRoomId}`);
+            const response = await axiosInstance.get(`/chat/message/list?chatRoomId=${chatRoomId}`);
             setMessages(response.data);
 
             const dates = {};
@@ -169,9 +168,9 @@ const ChatRoomPage = () => {
         const timestamp = new Date().toISOString();
 
         try {
-            await axios.post(`${BACK_URL}/chat/message/send`, {
+            await axiosInstance.post(`/chat/message/send`, {
                 "chatRoomId": chatRoomId,
-                "messageSenderId": userId,
+                "messageSenderId": loginUserId,
                 "messageContent": input,
             });
             setInput("");
@@ -179,7 +178,7 @@ const ChatRoomPage = () => {
             sendMessageUsingSocket(input);
 
             const newMessage = {
-                messageSenderId: userId,
+                messageSenderId: loginUserId,
                 messageSenderNickname: nickname,
                 messageContent: input,
                 messageTimestamp: timestamp,
@@ -199,7 +198,7 @@ const ChatRoomPage = () => {
 
     const readAll = async () => {
         try {
-            await axios.put(`${BACK_URL}/chat/message/read/all?roomId=${chatRoomId}&userId=${sessionStorage.getItem("userId")}`, {});
+            await axiosInstance.put(`/chat/message/read/all?roomId=${chatRoomId}&userId=${loginUserId}`, {});
         } catch (error) {
             console.error('Error reading messages: ', error);
         }
@@ -220,7 +219,7 @@ const ChatRoomPage = () => {
     return (
         <div className={styles.container}>
             { chatRoomType !== "" && chatRoomName !== "" && <>
-                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={userId}/>
+                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={loginUserId}/>
                 <div className={styles.chatRoom}>
                     <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
                         {isReady && messages.map((message, index) => {
@@ -229,7 +228,7 @@ const ChatRoomPage = () => {
                             return (
                                 <div key={index}>
                                     {showDate && <div className={styles.chatDate}>{formattedDate}</div>}
-                                    <Message message={message} userId={userId} scrollToBottom={scrollToBottom}/>
+                                    <Message message={message} userId={loginUserId} scrollToBottom={scrollToBottom}/>
                                 </div>
                             );
                         })}

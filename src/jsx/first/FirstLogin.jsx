@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import styles from '../../css/first/firstLogin.module.css';
+import axiosInstance from "../../config/axiosInstance.js";
 
 const FirstLogin = () => {
     const navigate = useNavigate();
@@ -49,14 +49,15 @@ const FirstLogin = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/complete-registration', userInfo, {
+            const response = await axiosInstance.post('/api/auth/complete-registration', userInfo, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
             if (response.status === 200) {
-                navigate('/design/myroom');
+                const loginUserId = localStorage.getItem('userId');
+                createNewRooms(loginUserId).then(() => navigate('/design/myroom'));
             }
         } catch (error) {
             console.error('Error completing registration', error);
@@ -73,6 +74,61 @@ const FirstLogin = () => {
             }
         }
     };
+
+    const createNewRooms = async (userId) => {
+
+            try {
+
+                const privateRoom = await axiosInstance.post(`/room/register`, {
+                    userId: userId,
+                    roomName: "내 방",
+                    roomType: "PRIVATE",
+                    roomPollution: 0,
+                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+                })
+
+                placeFurniture(privateRoom.data.roomId);
+
+                const kitchen = await axiosInstance.post(`/room/register`, {
+                    userId: userId,
+                    roomName: "부엌",
+                    roomType: "KITCHEN",
+                    roomPollution: 0,
+                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+                })
+
+                placeFurniture(kitchen.data.roomId);
+
+                const toilet = await axiosInstance.post(`/room/register`, {
+                    userId: userId,
+                    roomName: "화장실",
+                    roomType: "TOILET",
+                    roomPollution: 0,
+                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+                })
+
+                placeFurniture(toilet.data.roomId);
+
+            } catch (error) {
+                console.error("error saving room:", error);
+            }
+        }
+
+        const placeFurniture = async (roomId) => {
+
+            try {
+
+                await axiosInstance.post(`/placement/register`, {
+                    roomId: roomId,
+                    furnitureId: 34,
+                    placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
+                    placementAngle: 0,
+                    placementSize: 1.3,
+                })
+            } catch (error) {
+                console.error("error placing furniture:", error);
+            }
+        }
 
     return (
         <div className={styles.container}>

@@ -19,6 +19,7 @@ import MyRoom from "./pages/room/MyRoom.jsx";
 import EditRoom from "./pages/room/EditRoom.jsx";
 import Test from "./pages/Test.jsx";
 import {RoutineProvider} from "./contexts/RoutineContext.jsx";
+import {SocketProvider} from "./contexts/SocketContext.jsx";
 
 function App() {
     return (
@@ -55,7 +56,10 @@ function App() {
                             <Route path="/chat/*" element={<ChatRouter/>}/>
 
                             {/*{OAuth2 redirect}*/}
-                            <Route path="/oauth2/redirect" element={<OAuth2Redirect />} />
+                            <Route path="/oauth2/redirect" element={
+                                <SocketProvider>
+                                    <OAuth2Redirect />
+                                </SocketProvider>} />
 
                             {/* 테스트 컴포넌트를 라우팅하는 부분입니다 */}
                             <Route path="/test/modal" element={<ModalExample/>}/>
