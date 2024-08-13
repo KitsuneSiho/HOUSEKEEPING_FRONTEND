@@ -6,30 +6,26 @@ import ChatRoom from "../../components/chat/ChatRoom.jsx";
 import ChatAlarm from "./ChatAlarm.jsx";
 import FriendTop from "../../components/friend/FriendTop.jsx";
 import {useSocket} from "../../contexts/SocketContext.jsx";
-import apiClient from "../../config/axiosConfig.js";
+import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 // 채팅 방 리스르 출력
 const ChatRoomList = () => {
 
     const {friendMessage, setFriendMessage} = useSocket();
-    const [userId, setUserId] = useState(null);
+    const {user} = useLogin();
     const [chatRooms, setChatRooms] = useState(null);
     const [isReady, setIsReady] = useState(false);
     const navigate = useNavigate();
 
-    // 마운트 시 세션에서 유저 아이디를 받아옴
-    useEffect(() => {
-        setUserId(sessionStorage.getItem("userId"));
-    }, []);
-
     // 방 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
-        if (userId !== null) {
+        if (user.userId !== null) {
             getRoomList().then(() => {
                 setIsReady(true);
             });
         }
-    }, [userId]);
+    }, [user]);
 
     // 채팅 수신 시 실행
     useEffect(() => {
@@ -45,7 +41,7 @@ const ChatRoomList = () => {
     const getRoomList = async () => {
 
         try {
-            const response = await apiClient.get(`/chat/room/list?userId=${userId}`)
+            const response = await axiosInstance.get(`/chat/room/list?userId=${user.userId}`)
             setChatRooms(response.data);
         } catch (error) {
             console.error('Error getting RoomList: ', error);
