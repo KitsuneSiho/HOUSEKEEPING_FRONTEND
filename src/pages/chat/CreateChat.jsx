@@ -11,7 +11,7 @@ import axiosInstance from "../../config/axiosInstance.js";
 const CreateChat = () => {
     const navigate = useNavigate();
     const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [selectedNicknames, setSelectedNicknames] = useState("");
     const [friends, setFriends] = useState([]);
@@ -20,10 +20,10 @@ const CreateChat = () => {
 
     // 유저 아이디를 받아오는 데 성공하면 준비 완료 신호를 보냄
     useEffect(() => {
-        if (loginUserId !== null) {
+        if (user.userId !== null) {
             getFriends().then(() => setIsReady(true));
         }
-    }, [loginUserId]);
+    }, [user]);
 
     // 1대1 채팅인지 그룹 채팅인지 판별
     useEffect(() => {
@@ -35,7 +35,7 @@ const CreateChat = () => {
     // 친구 목록을 DB에서 받아옴
     const getFriends = async () => {
         try {
-            const response = await axiosInstance.get(`/friend/list?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/friend/list?userId=${user.userId}`);
             setFriends(response.data);
         } catch (error) {
             console.log("Error fetching friends: ", error);
@@ -47,7 +47,7 @@ const CreateChat = () => {
 
         try {
 
-            const response = await axiosInstance.get(`/chat/room/exist?myUserId=${loginUserId}&friendUserId=${selectedFriends[0]}`);
+            const response = await axiosInstance.get(`/chat/room/exist?myUserId=${user.userId}&friendUserId=${selectedFriends[0]}`);
             const chatRoomId = response.data;
 
             if (chatRoomId === "") {
@@ -66,7 +66,7 @@ const CreateChat = () => {
             const response = await axiosInstance.post(`/chat/room/create`, {
                 chatRoomName: name,
                 chatRoomType: type,
-                userIdList: [loginUserId, ...selectedFriends],
+                userIdList: [user.userId, ...selectedFriends],
             });
 
             navigate(`/chat/${response.data.chatRoomId}`);

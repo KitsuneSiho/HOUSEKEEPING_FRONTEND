@@ -9,17 +9,17 @@ import axiosInstance from "../../config/axiosInstance.js";
 const FriendTop = () => {
 
     const { onlineFriends } = useSocket();
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [isReady, setIsReady] = useState(false);
     const [friends, setFriends] = useState([]);
     const navigate = useNavigate();
 
     // 유저 번호를 세션에서 받아온 뒤 친구 목록을 DB에서 받아옴. 그 후 컴포넌트를 준비 상태로 변환
     useEffect(() => {
-        if (loginUserId !== null) {
-            getFriends(loginUserId).then(() => setIsReady(true));
+        if (user.userId !== null) {
+            getFriends(user.userId).then(() => setIsReady(true));
         }
-    }, [loginUserId]);
+    }, [user]);
 
     // 매개변수로 받은 닉네임을 가진 유저가 온라인 상태인지 확인
     const isOnline = (data) => {
@@ -29,7 +29,7 @@ const FriendTop = () => {
     // 친구 목록을 DB에서 받아옴
     const getFriends = async () => {
         try {
-            const response = await axiosInstance.get(`/friend/list?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/friend/list?userId=${user.userId}`);
             setFriends(response.data);
         } catch (error) {
             console.log("Error fetching friends: ", error);

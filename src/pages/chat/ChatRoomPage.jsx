@@ -21,7 +21,7 @@ const ChatRoomPage = () => {
         isConnected
     } = useSocket();
     const {chatRoomId} = useParams();
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [chatRoomType, setChatRoomType] = useState("");
     const [chatRoomName, setChatRoomName] = useState("");
     const [messages, setMessages] = useState([]);
@@ -45,11 +45,11 @@ const ChatRoomPage = () => {
 
     // 채팅 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
-        if (loginUserId !== null) {
+        if (user.userId !== null) {
 
             getMessages().then(readAll).then(() => setIsReady(true));
         }
-    }, [loginUserId]);
+    }, [user]);
 
     //채팅 방 정보를 받아옴
     const getChatRoomInfo = async () => {
@@ -70,7 +70,7 @@ const ChatRoomPage = () => {
 
         try {
 
-            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoomId}&userId=${loginUserId}`);
+            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoomId}&userId=${user.userId}`);
 
             setChatRoomMembers(result.data);
         } catch (error) {
@@ -170,7 +170,7 @@ const ChatRoomPage = () => {
         try {
             await axiosInstance.post(`/chat/message/send`, {
                 "chatRoomId": chatRoomId,
-                "messageSenderId": loginUserId,
+                "messageSenderId": user.userId,
                 "messageContent": input,
             });
             setInput("");
@@ -178,7 +178,7 @@ const ChatRoomPage = () => {
             sendMessageUsingSocket(input);
 
             const newMessage = {
-                messageSenderId: loginUserId,
+                messageSenderId: user.userId,
                 messageSenderNickname: nickname,
                 messageContent: input,
                 messageTimestamp: timestamp,
@@ -198,7 +198,7 @@ const ChatRoomPage = () => {
 
     const readAll = async () => {
         try {
-            await axiosInstance.put(`/chat/message/read/all?roomId=${chatRoomId}&userId=${loginUserId}`, {});
+            await axiosInstance.put(`/chat/message/read/all?roomId=${chatRoomId}&userId=${user.userId}`, {});
         } catch (error) {
             console.error('Error reading messages: ', error);
         }
@@ -219,7 +219,7 @@ const ChatRoomPage = () => {
     return (
         <div className={styles.container}>
             { chatRoomType !== "" && chatRoomName !== "" && <>
-                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={loginUserId}/>
+                <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={user.userId}/>
                 <div className={styles.chatRoom}>
                     <div className={styles.messageContainer} ref={messageContainerRef} onScroll={handleScroll}>
                         {isReady && messages.map((message, index) => {
@@ -228,7 +228,7 @@ const ChatRoomPage = () => {
                             return (
                                 <div key={index}>
                                     {showDate && <div className={styles.chatDate}>{formattedDate}</div>}
-                                    <Message message={message} userId={loginUserId} scrollToBottom={scrollToBottom}/>
+                                    <Message message={message} userId={user.userId} scrollToBottom={scrollToBottom}/>
                                 </div>
                             );
                         })}

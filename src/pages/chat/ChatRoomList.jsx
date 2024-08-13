@@ -13,19 +13,19 @@ import {useLogin} from "../../contexts/AuthContext.jsx";
 const ChatRoomList = () => {
 
     const {friendMessage, setFriendMessage} = useSocket();
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [chatRooms, setChatRooms] = useState(null);
     const [isReady, setIsReady] = useState(false);
     const navigate = useNavigate();
 
     // 방 리스트를 받고 페이지를 준비 상태로 업데이트
     useEffect(() => {
-        if (loginUserId !== null) {
+        if (user.userId !== null) {
             getRoomList().then(() => {
                 setIsReady(true);
             });
         }
-    }, [loginUserId]);
+    }, [user]);
 
     // 채팅 수신 시 실행
     useEffect(() => {
@@ -41,7 +41,7 @@ const ChatRoomList = () => {
     const getRoomList = async () => {
 
         try {
-            const response = await axiosInstance.get(`/chat/room/list?userId=${loginUserId}`)
+            const response = await axiosInstance.get(`/chat/room/list?userId=${user.userId}`)
             setChatRooms(response.data);
         } catch (error) {
             console.error('Error getting RoomList: ', error);
