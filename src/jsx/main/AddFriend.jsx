@@ -25,9 +25,8 @@ const AddFriend = () => {
                         params: { nickname: searchQuery }
                     });
 
-
                     // 검색 결과에서 자기 자신을 제외
-                    const filteredResults = response.data.filter(user => user.userId !== loginUserId);
+                    const filteredResults = response.data.filter(user => user.userId != loginUserId);
 
                     // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                     const userIds = filteredResults.map(user => user.userId).join(',');

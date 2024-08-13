@@ -22,15 +22,15 @@ const RoutineRouter = () => {
             {/* 루틴 관련 */}
             {/* /routine */}
             <RouteAuthProvider>
-            <Routes>
-                <Route path="/" element={<Routine/>}/> {/* 루틴 메인 화면 */}
-                <Route path="/calendar" element={<Calendar/>}/> {/* 달력 */}
-                <Route path="/edit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
+                <Routes>
+                    <Route path="/" element={<Routine/>}/> {/* 루틴 메인 화면 */}
+                    <Route path="/calendar" element={<Calendar/>}/> {/* 달력 */}
+                    <Route path="/edit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
 
-                {/* 추천 루틴 */}
-                <Route path="/recommend/daily" element={<RecommendDailyRoutine/>}/> {/* 일간 루틴 */}
-                <Route path="/recommend/weekly" element={<RecommendWeeklyRoutine/>}/> {/* 주간 루틴 */}
-                <Route path="/recommend/monthly" element={<RecommendMonthlyRoutine/>}/> {/* 월간 루틴 */}
+                    {/* 추천 루틴 */}
+                    <Route path="/recommend/daily" element={<RecommendDailyRoutine/>}/> {/* 일간 루틴 */}
+                    <Route path="/recommend/weekly" element={<RecommendWeeklyRoutine/>}/> {/* 주간 루틴 */}
+                    <Route path="/recommend/monthly" element={<RecommendMonthlyRoutine/>}/> {/* 월간 루틴 */}
 
                     {/* 기존 루틴 정보 보기 */}
                     <Route path="/daily/:groupName" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}
