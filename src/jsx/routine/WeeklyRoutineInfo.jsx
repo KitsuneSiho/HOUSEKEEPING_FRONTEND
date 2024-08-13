@@ -238,10 +238,15 @@ const WeeklyRoutineInfo = () => {
 
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
 
+    const getAddButtonBackgroundColor = (index) => {
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')}/>
                 <h2>{groupName}</h2>
                 <h3 onClick={deleteRoutineGroup}>루틴 삭제</h3>
             </div>
@@ -266,13 +271,14 @@ const WeeklyRoutineInfo = () => {
                 </div>
             </div>
             <div className={styles.routineContainer}>
-                {rooms.map(room => (
+                {rooms.map((room, index) => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '부엌' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}
+                                 style={{
+                                     backgroundColor: getAddButtonBackgroundColor(index),
+                                     color: '#000'
+                                 }}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
                             </div>
@@ -289,7 +295,8 @@ const WeeklyRoutineInfo = () => {
                                         <label htmlFor={`routine-${item.id}`} onClick={() => openEditModal(item)}>
                                             {item.text}
                                         </label>
-                                        <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                        <img src={`/lib/알림${item.notification}.svg`}
+                                             alt={`notification ${item.notification}`}/>
                                     </li>
                                 ))}
                             </ul>
@@ -353,7 +360,7 @@ const WeeklyRoutineInfo = () => {
                     </div>
                 </div>
             )}
-            <Footer />
+            <Footer/>
         </div>
     );
 };
