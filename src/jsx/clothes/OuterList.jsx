@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/outerList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import apiClient from '../../config/axiosConfig';
 import { DetermineHowWash } from "./DetermineHowWash.jsx";
-import apiClient from "../../config/axiosConfig.js";
 
 
 const OuterList = () => {

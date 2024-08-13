@@ -3,40 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/myPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosInstance from '../../config/axiosInstance.js';
-import { useLogin } from '../../contexts/AuthContext';
-import { Cookies } from "react-cookie";
+import { useAuth } from '../../contexts/AuthContext';
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const { setIsLoggedIn } = useLogin();
+    const { user, logout } = useAuth();
 
     const handleLogout = async () => {
         try {
-            // 백엔드의 로그아웃 엔드포인트로 POST 요청을 보냅니다.
             await axiosInstance.post('/logout');
-
-            // 로그아웃 처리 함수 호출
-            performLogout();
+            logout();
+            navigate('/login');
         } catch (error) {
             console.error('Logout failed', error);
-            // 에러 발생 시에도 로컬의 로그인 상태를 초기화합니다.
-            performLogout();
+            logout();
         }
-    };
-
-    const performLogout = () => {
-        // 로컬 스토리지에서 토큰을 제거합니다.
-        localStorage.removeItem('access');
-
-        // 쿠키에서 refresh 토큰을 제거합니다.
-        const cookies = new Cookies();
-        cookies.remove("refresh");
-
-        // 로그인 상태를 false로 설정합니다.
-        setIsLoggedIn(false);
-
-        // 로그인 페이지로 이동합니다.
-        navigate('/login');
     };
 
     return (
@@ -49,15 +30,15 @@ const MyPage = () => {
                 <div className={styles.profileInfo}>
                     <p className={styles.profileNickname}>
                         <img src="/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
-                        ddak님, 청소하세요.
+                        {user?.nickname}님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
                         <img src="/lib/루미.png" alt="아바타" />
-                        Lv.01 자린이
+                        Lv.{user?.level} {user?.levelName}
                     </p>
                     <div className={styles.xpContainer}>
-                        <progress className={styles.xpBar} value="20" max="100"></progress>
-                        <span className={styles.xpText}>20/100</span>
+                        <progress className={styles.xpBar} value={user?.exp} max={user?.nextLevelExp}></progress>
+                        <span className={styles.xpText}>{user?.exp}/{user?.nextLevelExp}</span>
                     </div>
                 </div>
             </div>
