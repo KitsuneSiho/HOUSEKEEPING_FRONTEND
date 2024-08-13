@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/recommendCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from '../../api/axiosConfig';
+import apiClient from '../../config/axiosConfig';
+import { recommendClothes } from "./recommendClothes.jsx";
 
 const RecommendCloset = () => {
     const navigate = useNavigate();
@@ -12,6 +13,17 @@ const RecommendCloset = () => {
     const [weather, setWeather] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
     const [bgColor, setBgColor] = useState('royalblue'); // 기본 배경색
+    const [recommendations, setRecommendations] = useState({
+        top: [],
+        bottom: [],
+        outer: [],
+        shoes: [],
+        bag: [],
+        accessory: []
+    });
+
+    // userId 변수 정의
+    const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
 
     useEffect(() => {
         const today = new Date();
@@ -25,6 +37,7 @@ const RecommendCloset = () => {
     }, []);
 
     useEffect(() => {
+        // 날씨 정보가 갱신될 때마다 배경색 업데이트 및 추천 불러오기
         if (weather && date && selectedTime) {
             const selectedDate = new Date(date);
             const forecast = weather.list.find((item) => {
@@ -34,10 +47,10 @@ const RecommendCloset = () => {
             });
             if (forecast) {
                 updateBgColor(forecast.weather[0].description); // 배경색 업데이트
+                fetchRecommendations(Math.round(forecast.main.temp));
             }
         }
     }, [weather, date, selectedTime]);
-
 
     const fetchWeatherForecast = async (lat, lon) => {
         try {
@@ -49,6 +62,43 @@ const RecommendCloset = () => {
         }
     };
 
+    //--------------------------------------------------------------------
+
+    const fetchRecommendations = async (temperature) => {
+        const token = localStorage.getItem('token');
+        localStorage.setItem('token', token); // 토큰을 localStorage에 저장
+
+
+        if (!token) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const serverRecommendations = response.data;
+            if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
+                setRecommendations(serverRecommendations);
+            } else {
+                const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+                setRecommendations(localRecommendations);
+            }
+        } catch (error) {
+            console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
+            const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+            setRecommendations(localRecommendations);
+        }
+    };
+
+
+
+
+
     const setDefaultTime = (forecastList) => {
         const now = new Date();
         const closestTime = forecastList.find(item => new Date(item.dt_txt) > now);
@@ -57,6 +107,7 @@ const RecommendCloset = () => {
             setSelectedTime(timeString);
         }
     };
+
 
     const getCityName = async (lat, lon) => {
         try {
@@ -310,10 +361,27 @@ const RecommendCloset = () => {
                 </select>
             </div>
             <div className={styles.recommendations}>
-                <img src="/lib/추천옷.svg" alt="추천 옷 1" />
-                <img src="/lib/추천옷.svg" alt="추천 옷 2" />
+                {recommendations.top.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.bottom.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.outer.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.shoes.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.bag.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.accessory.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
             </div>
-            <Footer />
+
+            <Footer/>
         </div>
     );
 };

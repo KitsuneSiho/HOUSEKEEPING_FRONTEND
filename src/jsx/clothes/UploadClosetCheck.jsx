@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/uploadClosetCheck.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from '../../api/axiosConfig';
+import apiClient from '../../config/axiosConfig';
 import { DetermineHowWash } from "./DetermineHowWash.jsx";
 
 const UploadClosetCheck = () => {
