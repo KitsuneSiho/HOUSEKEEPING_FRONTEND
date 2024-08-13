@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/recommendCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from "../../config/axiosConfig.js";
+import apiClient from '../../config/axiosConfig';
+import { recommendClothes } from "./recommendClothes.jsx";
 
 const RecommendCloset = () => {
     const navigate = useNavigate();
@@ -12,6 +13,20 @@ const RecommendCloset = () => {
     const [weather, setWeather] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
     const [bgColor, setBgColor] = useState('royalblue'); // 기본 배경색
+    const [recommendations, setRecommendations] = useState({
+        top: [],
+        bottom: [],
+        outer: [],
+        shoes: [],
+        bag: [],
+        accessory: []
+    });
+
+
+    // userId 변수 정의
+    //const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
+    const userId = localStorage.getItem('userId') || 1;
+
 
     useEffect(() => {
         const today = new Date();
@@ -25,6 +40,7 @@ const RecommendCloset = () => {
     }, []);
 
     useEffect(() => {
+        // 날씨 정보가 갱신될 때마다 배경색 업데이트 및 추천 불러오기
         if (weather && date && selectedTime) {
             const selectedDate = new Date(date);
             const forecast = weather.list.find((item) => {
@@ -34,10 +50,10 @@ const RecommendCloset = () => {
             });
             if (forecast) {
                 updateBgColor(forecast.weather[0].description); // 배경색 업데이트
+                fetchRecommendations(Math.round(forecast.main.temp));
             }
         }
     }, [weather, date, selectedTime]);
-
 
     const fetchWeatherForecast = async (lat, lon) => {
         try {
@@ -49,6 +65,53 @@ const RecommendCloset = () => {
         }
     };
 
+    //--------------------------------------------------------------------
+
+    // const fetchRecommendations = async (temperature) => {
+    //     const access = localStorage.getItem('access');
+    //     localStorage.setItem('access', access); // 토큰을 localStorage에 저장
+    //
+    //
+    //     if (!access) {
+    //         console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+    //         navigate('/login');
+    //         return;
+    //     }
+    //
+    //     try {
+    //         const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${access}`
+    //             }
+    //         });
+    //         const serverRecommendations = response.data;
+    //         if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
+    //             setRecommendations(serverRecommendations);
+    //         } else {
+    //             const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+    //             setRecommendations(localRecommendations);
+    //         }
+    //     } catch (error) {
+    //         console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
+    //         const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+    //         setRecommendations(localRecommendations);
+    //     }
+    // };
+
+
+
+    const fetchRecommendations = async (temperature) => {
+        try {
+            const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`);
+            setRecommendations(response.data);
+        } catch (error) {
+            console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
+            // 오류가 발생하면 기본 추천 목록을 설정
+            setRecommendations(recommendClothes('WINTER', temperature, 'gray'));
+        }
+    };
+
+
     const setDefaultTime = (forecastList) => {
         const now = new Date();
         const closestTime = forecastList.find(item => new Date(item.dt_txt) > now);
@@ -57,6 +120,7 @@ const RecommendCloset = () => {
             setSelectedTime(timeString);
         }
     };
+
 
     const getCityName = async (lat, lon) => {
         try {
@@ -263,7 +327,7 @@ const RecommendCloset = () => {
 
 
 // 시간 옵션을 원래 값으로 정의합니다.
-    const timeOptions = ['21:00', '00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
+    const timeOptions = ['21:00','00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
 
 // 시간을 6시간 더한 값으로 표시하는 함수
     const getDisplayTime = (time) => {
@@ -273,51 +337,63 @@ const RecommendCloset = () => {
     };
 
 
+
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')}/>
-                <h2>옷 추천</h2>
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
+                <h2>Dress Room</h2>
             </div>
             <div className={styles.weather} style={{backgroundColor: bgColor}}>
                 {weather ? getWeatherForDateAndTime() : <p>날씨 정보를 불러오는 중...</p>}
             </div>
             <div className={styles.selection}>
-                <div className={styles.weatherArea}>
-                    <label htmlFor="region">지역 선택</label>
-                    <select id="region" value={city} onChange={handleCityChange}>
-                        <option value="">현재 위치</option>
-                        <option value="서울">서울</option>
-                        <option value="인천">인천</option>
-                        <option value="경기도">경기도</option>
-                        <option value="강원도">강원도</option>
-                        <option value="충청북도">충청북도</option>
-                        <option value="충청남도">충청남도</option>
-                        <option value="경상북도">경상북도</option>
-                        <option value="경상남도">경상남도</option>
-                        <option value="전라북도">전라북도</option>
-                        <option value="전라남도">전라남도</option>
-                        <option value="제주도">제주도</option>
-                    </select>
-                </div>
-                <div className={styles.weatherDate}>
-                    <label htmlFor="date">날짜 선택</label>
-                    <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()}
-                           max={getMaxDate()}/>
-                </div>
-                <div className={styles.weatherTime}>
-                    <label htmlFor="time">시간 선택</label>
-                    <select id="time" value={selectedTime} onChange={handleTimeChange}>
-                        {timeOptions.map(time => (
-                            <option key={time} value={time}>{getDisplayTime(time)}</option>
-                        ))}
-                    </select>
-                </div>
+                <label htmlFor="region">지역 선택:</label>
+                <select id="region" value={city} onChange={handleCityChange}>
+                    <option value="">현재 위치</option>
+                    <option value="서울">서울</option>
+                    <option value="인천">인천</option>
+                    <option value="경기도">경기도</option>
+                    <option value="강원도">강원도</option>
+                    <option value="충청북도">충청북도</option>
+                    <option value="충청남도">충청남도</option>
+                    <option value="경상북도">경상북도</option>
+                    <option value="경상남도">경상남도</option>
+                    <option value="전라북도">전라북도</option>
+                    <option value="전라남도">전라남도</option>
+                    <option value="제주도">제주도</option>
+                </select>
+                <label htmlFor="date">날짜 선택:</label>
+                <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()} max={getMaxDate()} />
+                <label htmlFor="time">시간 선택:</label>
+                <select id="time" value={selectedTime} onChange={handleTimeChange}>
+                    {timeOptions.map(time => (
+                        <option key={time} value={time}>{getDisplayTime(time)}</option>
+                    ))}
+                </select>
             </div>
             <div className={styles.recommendations}>
-                <img src="/lib/추천옷.svg" alt="추천 옷 1"/>
-                <img src="/lib/추천옷.svg" alt="추천 옷 2"/>
+                {recommendations.top.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.bottom.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.outer.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.shoes.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.bag.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
+                {recommendations.accessory.map((recommendation, index) => (
+                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
+                ))}
             </div>
+
             <Footer/>
         </div>
     );
