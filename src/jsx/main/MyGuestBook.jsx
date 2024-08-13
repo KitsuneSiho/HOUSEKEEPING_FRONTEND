@@ -17,7 +17,6 @@ const MyGuestBook = () => {
 
     const {user} = useLogin();
     const navigate = useNavigate();
-    const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [content, setContent] = useState('');
@@ -29,6 +28,7 @@ const MyGuestBook = () => {
     useEffect(() => {
         const fetchGuestbook = async () => {
             try {
+                console.log(user.userId);
                 const response = await axiosInstance.get(`/guestbook/list/${user.userId}`);
                 if (Array.isArray(response.data)) {
                     setGuestbook(response.data);
@@ -55,7 +55,7 @@ const MyGuestBook = () => {
             guestbookIsSecret: isPrivate,
             guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
-            guestbookOwnerId: userId,
+            guestbookOwnerId: user.userId,
             guestbookWriterId: user.userId,
             guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
             guestbookIsArchived: isArchived
