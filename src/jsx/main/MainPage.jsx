@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 import { BACK_URL } from "../../Constraints.js";
 import PullutionBar from '../../components/test/PollutionBar.jsx';
 import axiosInstance from "../../config/axiosInstance.js";
+import { useAuth as useLogin } from '../../contexts/AuthContext';
 
 const MainPage = () => {
 
