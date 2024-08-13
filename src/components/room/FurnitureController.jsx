@@ -1,4 +1,4 @@
-import styles from "../../css/first/firstRoomDesign.module.css";
+import styles from "../../css/myPage/editRoomModel.module.css";
 import * as propTypes from "prop-types";
 
 const FurnitureController = ({

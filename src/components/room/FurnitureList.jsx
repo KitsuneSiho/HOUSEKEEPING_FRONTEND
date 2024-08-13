@@ -1,4 +1,4 @@
-import styles from "../../css/first/firstRoomDesign.module.css";
+import styles from "../../css/myPage/editRoomModel.module.css";
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../../config/axiosInstance.js";

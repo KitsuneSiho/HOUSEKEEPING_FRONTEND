@@ -1,0 +1,260 @@
+.container {
+    padding: 0;
+    margin: 10% 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Fre, sans-serif;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header img {
+    position: absolute;
+    left: 10px;
+    cursor: pointer;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+.roomDesign {
+    width: 100%;
+    height: 400px;
+    margin-top: 3%;
+    display: flex;
+    align-items: center;
+}
+
+.furniture {
+    width: 95%;
+    height: 280px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.furnitureCategories {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.furnitureCategories p {
+    padding: 0;
+    margin: 0;
+}
+
+.furnitureCategories img {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+
+.furnitureAddButton {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 20px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    max-height: 230px;
+}
+
+.furnitureAddButton button{
+    width: 50px;
+    height: 50px;
+    background: none;
+    padding: 0;
+    overflow: hidden;
+    border: none;
+    font-family: Fre, sans-serif;
+}
+
+.furnitureAddButton img{
+    width: 100%;
+    transform: scale(4);
+}
+
+.modal {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    bottom: 15%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.modal .sliderControls {
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.colorControls p {
+    font-size: 16px;
+}
+
+.colorControls input[type="color"] {
+    width: 100%;
+    height: 50px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+.furnitureSubmit {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.furnitureSubmit button {
+    margin-left: 10px;
+}
+
+.controls {
+    width: 100%;
+    line-height: 1.5;
+}
+
+.furnitureSubmit {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+}
+
+.furnitureSubmit button {
+    width: 50px;
+    background-color: #c5f1ff;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    margin-right: 3%;
+    font-family: Fre, sans-serif;
+}
+
+.xControls, .yControls, .zControls, .rotation, .scale {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.xControls p,
+.yControls p,
+.zControls p,
+.rotation p,
+.scale p {
+    width: 30%;
+    margin: 0;
+    padding: 0;
+}
+
+.sliderControls input[type="range"] {
+    -webkit-appearance: none;
+    width: 50%;
+    height: 10px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    touch-action: none;
+}
+
+.sliderControls input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #c5f1ff;
+    cursor: pointer;
+}
+
+.sliderControls input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.sliderControls input[type="number"] {
+    width: 10%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.submit {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-top: 5%;
+}
+
+.submit button {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    background: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Fre, sans-serif;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 394px) {
+    .container {
+        padding: 20px;
+    }
+
+    .header {
+        width: 90%;
+    }
+
+    .roomDesign {
+        height: 500px; /* 높이 증가 */
+    }
+
+    .furniture {
+        width: 85%;
+        height: 300px;
+    }
+
+    .furnitureAddButton {
+        gap: 20px; /* 더 넓은 화면에서 여유 공간 활용 */
+    }
+
+    .modal {
+        left: 20%;
+        right: 20%;
+        bottom: 10%;
+    }
+
+    .sliderControls input[type="range"] {
+        width: 70%; /* 슬라이더 너비 증가 */
+    }
+
+    .submit {
+        width: 70%;
+        margin-top: 3%;
+    }
+
+    .submit button {
+        font-size: 18px; /* 큰 화면에서 버튼 텍스트 크기 증가 */
+    }
+}

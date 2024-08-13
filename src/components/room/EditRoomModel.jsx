@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-import styles from '../../css/first/firstRoomDesign.module.css';
+import styles from '../../css/myPage/editRoomModel.module.css';
 import PropTypes from "prop-types";
 import FurnitureList from "./FurnitureList.jsx";
 import FurnitureController from "./FurnitureController.jsx";
