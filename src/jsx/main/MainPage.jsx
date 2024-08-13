@@ -6,7 +6,7 @@ import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import PullutionBar from '../../components/test/PollutionBar.jsx';
 import axiosInstance from "../../config/axiosInstance.js";
-import {useLogin} from "../../contexts/AuthContext.jsx";
+import { useAuth as useLogin } from '../../contexts/AuthContext';
 
 const MainPage = () => {
 
