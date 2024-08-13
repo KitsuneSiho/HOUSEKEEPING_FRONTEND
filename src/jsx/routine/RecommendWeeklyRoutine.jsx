@@ -4,10 +4,8 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from '../../Constraints.js';
 import axios from 'axios';
-import {useLogin} from "../../contexts/AuthContext.jsx";
-import axiosInstance from "../../config/axiosInstance.js";
 
-const WeeklyRoutineInfo = () => {
+const RecommendWeeklyRoutine = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { groupName } = useParams();
@@ -21,7 +19,7 @@ const WeeklyRoutineInfo = () => {
     const [selectedDays, setSelectedDays] = useState([]); // 선택된 요일
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const { user } = useLogin();
+    const loginUserId = 1;
 
     const toggleDaySelection = (day) => {
         setSelectedDays((prev) =>
@@ -32,7 +30,7 @@ const WeeklyRoutineInfo = () => {
     // 그룹 이름으로 루틴 정보 가져오기
     const fetchWeeklyRoutines = async () => {
         try {
-            const response = await axiosInstance.get(`/routine/group/${groupName}`);
+            const response = await axios.get(`${BACK_URL}/routine/group/${groupName}`);
             const weeklyRoutines = response.data.filter(routine => routine.routineFrequency === 'WEEKLY')
                 .reduce((acc, routine) => {
                     if (!acc[routine.roomId]) {
@@ -56,8 +54,8 @@ const WeeklyRoutineInfo = () => {
         // 모든 방 정보 가져오기
         const fetchRooms = async () => {
             try {
-                const response = await axiosInstance.get(`/room/list`, {
-                    params: { userId: user.userId }
+                const response = await axios.get(`${BACK_URL}/room/list`, {
+                    params: { userId: loginUserId }
                 });
                 setRooms(response.data);
             } catch (error) {
@@ -86,7 +84,7 @@ const WeeklyRoutineInfo = () => {
         };
 
         try {
-            const response = await axiosInstance.post(`/routine/add`, newRoutine);
+            const response = await axios.post(`${BACK_URL}/routine/add`, newRoutine);
 
             if (response.status === 200) {
                 const addedRoutine = response.data;
@@ -131,7 +129,7 @@ const WeeklyRoutineInfo = () => {
         };
 
         try {
-            const response = await axiosInstance.put(`/routine/update`, updatedRoutine);
+            const response = await axios.put(`${BACK_URL}/routine/update`, updatedRoutine);
 
             if (response.status === 200) {
                 const updatedRoutineData = response.data;
@@ -164,7 +162,7 @@ const WeeklyRoutineInfo = () => {
         }
 
         try {
-            const response = await axiosInstance.delete(`/routine/delete/${routineToEdit.id}`);
+            const response = await axios.delete(`${BACK_URL}/routine/delete/${routineToEdit.id}`);
 
             if (response.status === 200) {
                 setRoutineItems(prevItems => ({
@@ -188,7 +186,7 @@ const WeeklyRoutineInfo = () => {
         }
 
         try {
-            const response = await axiosInstance.delete(`/routine/deleteGroup/${groupName}`);
+            const response = await axios.delete(`${BACK_URL}/routine/deleteGroup/${groupName}`);
             if (response.status === 200) {
                 alert('루틴 그룹이 성공적으로 삭제되었습니다.');
                 navigate('/routine'); // 루틴 페이지로 이동하거나 다른 적절한 페이지로 이동
@@ -269,17 +267,13 @@ const WeeklyRoutineInfo = () => {
                 {rooms.map(room => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}>
                                 <p>{room.roomName}</p>
-                                <img src="/lib/연필.svg" alt="edit"/>
+                                <img src="/lib/연필.svg" alt="edit" />
                             </div>
                             <div className={styles.alramOnOff}>
                                 <p>모든 알림 켜기</p>
-                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
-                                     onClick={() => openAddModal(room.roomId)}/>
+                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openAddModal(room.roomId)} />
                             </div>
                         </div>
                         <div className={styles.roomRoutineInfo}>
@@ -310,8 +304,7 @@ const WeeklyRoutineInfo = () => {
                             {daysOfWeek.map((day) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''} 
-                                    ${day === '토' ? styles.saturday : ''} ${day === '일' ? styles.sunday : ''}`}
+                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
                                     onClick={() => toggleDaySelection(day)}
                                 >
                                     {day}
@@ -358,4 +351,4 @@ const WeeklyRoutineInfo = () => {
     );
 };
 
-export default WeeklyRoutineInfo;
+export default RecommendWeeklyRoutine;

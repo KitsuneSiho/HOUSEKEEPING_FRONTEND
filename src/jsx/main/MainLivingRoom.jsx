@@ -7,9 +7,12 @@ import axios from "axios";
 import {BACK_URL} from "../../Constraints.js";
 import moment from "moment-timezone";
 import PullutionBar from "../../components/test/PollutionBar.jsx";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const MainToiletRoom = () => {
 
+    const {user} = useLogin();
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD')); // 기본 날짜를 오늘로 설정
     const [events, setEvents] = useState([]);
     const [schedules, setSchedules] = useState([]);
@@ -28,12 +31,13 @@ const MainToiletRoom = () => {
 
     const navigate = useNavigate();
 
-    const loginUserId = 1; // 로그인한 유저의 ID
-
     useEffect(() => {
-        axios.get(`${BACK_URL}/friend/list`, {
+
+        console.log(user.userId);
+
+        axiosInstance.get(`/friend/list`, {
             params: {
-                userId: loginUserId
+                userId: user.userId
             }
         })
             .then(response => {
@@ -46,19 +50,15 @@ const MainToiletRoom = () => {
     }, []);
 
 
+
     const fetchRoomData = async () => {
         try {
-            const response = await fetch(`${BACK_URL}/room/details`, {
-                method: 'POST',
+            const response = await axiosInstance.post(`/room/details`, user.userId, {
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginUserId)
+                }
             });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const roomData = await response.json();
+            const roomData = response.data;
             setRoomIds(roomData.map(room => room.roomId));
             setRoomNames(roomData.reduce((acc, room) => {
                 acc[room.roomId] = room.roomName;
@@ -83,6 +83,7 @@ const MainToiletRoom = () => {
             console.error('Error fetching room data:', error);
         }
     };
+
 
     useEffect(() => {
         fetchRoomData();
@@ -112,16 +113,9 @@ const MainToiletRoom = () => {
 
     const handleCheckboxChange = async (scheduleId, isChecked) => {
         try {
-            const response = await fetch(`${BACK_URL}/calendar/updateChecked/${scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ checked: isChecked })
+            await axiosInstance.patch(`/calendar/updateChecked/${scheduleId}`, {
+                checked: isChecked
             });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
             await fetchRoomData(); // 전체 데이터를 다시 가져옵니다.
         } catch (error) {
             console.error('Error updating schedule checked status:', error);
@@ -138,16 +132,9 @@ const MainToiletRoom = () => {
 
     const handleAlarmChange = async (scheduleId, isAlarmed) => {
         try {
-            const response = await fetch(`${BACK_URL}/calendar/alarm/${scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ alarm: isAlarmed })
+            await axiosInstance.patch(`/calendar/alarm/${scheduleId}`, {
+                alarm: isAlarmed
             });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
             await fetchRoomData(); // 전체 데이터를 다시 가져옵니다.
         } catch (error) {
             console.error('Error updating schedule alarm status:', error);
@@ -164,12 +151,8 @@ const MainToiletRoom = () => {
 
     const handleScheduleUpdate = async () => {
         try {
-            await fetch(`${BACK_URL}/calendar/updateName/${selectedSchedule.scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ scheduleName: updatedScheduleName })
+            await axiosInstance.patch(`/calendar/updateName/${selectedSchedule.scheduleId}`, {
+                scheduleName: updatedScheduleName
             });
             fetchRoomData(); // 데이터 새로 고침
             closeEditModal();
@@ -179,23 +162,14 @@ const MainToiletRoom = () => {
     };
 
     // 일정 삭제 기능
-    const handleDelete = (scheduleId) => {
-        fetch(`${BACK_URL}/calendar/delete/${scheduleId}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(() => {
-                fetchRoomData();
-                closeEditModal();
-            })
-            .catch(error => {
-                console.error('스케줄 삭제 도중 오류 발생', error);
-            });
+    const handleDelete = async (scheduleId) => {
+        try {
+            await axiosInstance.delete(`/calendar/delete/${scheduleId}`);
+            fetchRoomData();
+            closeEditModal();
+        } catch (error) {
+            console.error('스케줄 삭제 도중 오류 발생', error);
+        }
     };
 
     const handleAddSchedule = async () => {
@@ -222,19 +196,13 @@ const MainToiletRoom = () => {
 
 
         try {
-            await fetch(`${BACK_URL}/calendar/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    scheduleName: newScheduleName,
-                    scheduleDate: isoDate,
-                    scheduleDetail: "",
-                    scheduleIsChecked: false,
-                    scheduleIsAlarm: false,
-                    roomId: selectedRoomId
-                })
+            await axiosInstance.post(`/calendar/add`, {
+                scheduleName: newScheduleName,
+                scheduleDate: isoDate,
+                scheduleDetail: "",
+                scheduleIsChecked: false,
+                scheduleIsAlarm: false,
+                roomId: selectedRoomId
             });
             fetchRoomData(); // 데이터 새로 고침
             closeAddModal();
@@ -243,23 +211,18 @@ const MainToiletRoom = () => {
         }
     };
 
+
     // 방 이름 변경
     const handleRoomNameUpdate = async () => {
         try {
-            const response = await fetch(`${BACK_URL}/room/rename`, {
-                method: 'POST',
+            await axiosInstance.post(`/room/rename`, new URLSearchParams({
+                roomId: selectedRoom.roomId,
+                newName: updatedRoomName
+            }), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    roomId: selectedRoom.roomId,
-                    newName: updatedRoomName
-                })
+                }
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
 
             fetchRoomData(); // 업데이트된 데이터를 다시 가져옵니다.
             closeEditRoomNameModal();

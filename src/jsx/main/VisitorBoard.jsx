@@ -4,6 +4,8 @@ import axios from 'axios';
 import styles from '../../css/main/visitorBoard.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const colorMapping = {
     BLUE: '#c5f1ff',
@@ -12,6 +14,8 @@ const colorMapping = {
 };
 
 const VisitorBoard = () => {
+
+    const {user} = useLogin();
     const navigate = useNavigate();
     const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
@@ -21,13 +25,11 @@ const VisitorBoard = () => {
     const [isPrivate, setIsPrivate] = useState(false);
     const [isArchived, setIsArchived] = useState(false);
 
-    // 현재 로그인 중인 사용자
-    const loginUserId = 1;
 
     useEffect(() => {
         const fetchGuestbook = async () => {
             try {
-                const response = await axios.get(`${BACK_URL}/guestbook/list/${userId}`);
+                const response = await axiosInstance.get(`/guestbook/list/${userId}`);
                 if (Array.isArray(response.data)) {
                     setGuestbook(response.data);
                 } else {
@@ -54,13 +56,13 @@ const VisitorBoard = () => {
             guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
             guestbookOwnerId: userId,
-            guestbookWriterId: loginUserId,
+            guestbookWriterId: user.userId,
             guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
             guestbookIsArchived: isArchived
         };
 
         try {
-            const response = await axios.post(`${BACK_URL}/guestbook/write`, newEntry);
+            const response = await axiosInstance.post(`/guestbook/write`, newEntry);
             setGuestbook([...guestbook, response.data]);
             setIsModalOpen(false);
             setContent('');
