@@ -66,8 +66,6 @@ function App() {
                             <Route path="/test/modal" element={<ModalExample/>}/>
                             <Route path="/test/room" element={<RoomDisplayTest/>}/>
                             <Route path="/test/room/edit" element={<RoomEditTest/>}/>
-                            <Route path="/test/myroom" element={<MyRoom/>}/>
-                            <Route path="/test/myroom/edit" element={<EditRoom/>}/>
                             <Route path="/test" element={<Test/>}/>
 
                             <Route path="/manager" element={<Manager/>}/>

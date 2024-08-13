@@ -32,13 +32,9 @@ apiClient.interceptors.response.use(
                 // 액세스 토큰 재발급 요청
                 const response = await axios.post(`${BACK_URL}/reissue`, {}, {withCredentials: true});
 
-                console.log("All Headers:", response.headers);
                 const Authorization = response.headers['authorization'];
-                console.log("Authorization Header:", Authorization);
 
                 const newAccessToken = Authorization.split(' ')[1];
-
-                console.log("newAccessToken", newAccessToken);
 
                 localStorage.setItem('access', newAccessToken);
 
