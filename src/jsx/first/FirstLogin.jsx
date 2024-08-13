@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../../css/first/firstLogin.module.css';
 import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const FirstLogin = () => {
+
+    const {user} = useLogin();
     const navigate = useNavigate();
     const location = useLocation();
     const [userInfo, setUserInfo] = useState({
@@ -56,8 +59,8 @@ const FirstLogin = () => {
                 }
             });
             if (response.status === 200) {
-                const loginUserId = localStorage.getItem('userId');
-                createNewRooms(loginUserId).then(() => navigate('/design/myroom'));
+                console.log("userId:", user.userId);
+                createNewRooms(user.userId).then(() => navigate('/design/myroom'));
             }
         } catch (error) {
             console.error('Error completing registration', error);
