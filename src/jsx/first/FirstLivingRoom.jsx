@@ -259,10 +259,18 @@ const FirstLivingRoom = () => {
             <div className={styles.furniture}>
                 <div className={styles.furnitureCategories}>
                     <p onClick={() => handleCategoryClick('wallFloor')}>벽</p>
+                    <p onClick={() => handleCategoryClick('floor')}>바닥</p>
                     <p onClick={() => handleCategoryClick('desk')}>책상</p>
-                    <p onClick={() => handleCategoryClick('refrigerator')}>냉장고</p>
-                    <p onClick={() => handleCategoryClick('kitchen')}>주방</p>
                     <p onClick={() => handleCategoryClick('chair')}>의자</p>
+                    <p onClick={() => handleCategoryClick('refrigerator')}>냉장고</p>
+                    <p onClick={() => handleCategoryClick('washingMachine')}>세탁기</p>
+                    <p onClick={() => handleCategoryClick('sink')}>싱크대</p>
+                </div>
+                <div className={styles.furnitureCategories}>
+                    <p onClick={() => handleCategoryClick('oven')}>오븐</p>
+                    <p onClick={() => handleCategoryClick('wastebasket')}>쓰레기통</p>
+                    <p onClick={() => handleCategoryClick('decoration')}>장식품</p>
+                    <p onClick={() => handleCategoryClick('light')}>조명</p>
                     <p onClick={() => handleCategoryClick('pocketmon')}>포켓몬</p>
                     <p onClick={() => handleCategoryClick('etc')}>기타</p>
                 </div>
@@ -270,9 +278,8 @@ const FirstLivingRoom = () => {
                     <div className={styles.furnitureAddButton}>
                         {activeCategory === 'wallFloor' && (
                             <>
-                                <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
+                            <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
                                 <button onClick={() => openColorModal('backWall')}>오른쪽 벽</button>
-                                <button onClick={() => openColorModal('floor')}>바닥</button>
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/문1.glb')}>
                                     <img src="/furniture/ETC/문1.png" alt="문1"/>
                                 </button>
@@ -300,9 +307,18 @@ const FirstLivingRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/커튼1.glb')}>
                                     <img src="/furniture/ETC/커튼1.png" alt="커튼1"/>
                                 </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/게시판.glb')}>
-                                    <img src="/furniture/ETC/게시판.png" alt="게시판"/>
+                            </>
+                        )}
+                        {activeCategory === 'floor' && (
+                            <>
+                                <button onClick={() => openColorModal('floor')}>바닥</button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그1.glb')}>
+                                    <img src="/furniture/ETC/러그1.png" alt="러그1"/>
                                 </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그2.glb')}>
+                                    <img src="/furniture/ETC/러그2.png" alt="러그2"/>
+                                </button>
+
                             </>
                         )}
                         {activeCategory === 'desk' && (
@@ -339,33 +355,10 @@ const FirstLivingRoom = () => {
                                 </button>
                             </>
                         )}
-                        {activeCategory === 'refrigerator' && (
-                            <>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/냉장고1.glb')}>
-                                    <img src="/furniture/ETC/냉장고1.png" alt="냉장고1"/>
-                                </button>
-                            </>
-                        )}
-                        {activeCategory === 'kitchen' && (
-                            <>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/세탁기1.glb')}>
-                                    <img src="/furniture/ETC/세탁기1.png" alt="세탁기1"/>
-                                </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/씽크대1.glb')}>
-                                    <img src="/furniture/ETC/씽크대1.png" alt="씽크대1"/>
-                                </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/오븐1.glb')}>
-                                    <img src="/furniture/ETC/오븐1.png" alt="오븐1"/>
-                                </button>
-                            </>
-                        )}
                         {activeCategory === 'chair' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자1.glb')}>
                                     <img src="/furniture/CHAIR/의자1.png" alt="의자1"/>
-                                </button>
-                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자2.glb')}>
-                                    <img src="/furniture/CHAIR/의자2.png" alt="의자2"/>
                                 </button>
                                 <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자3.glb')}>
                                     <img src="/furniture/CHAIR/의자3.png" alt="의자3"/>
@@ -381,7 +374,35 @@ const FirstLivingRoom = () => {
                                 </button>
                             </>
                         )}
-                        {activeCategory === 'etc' && (
+                        {activeCategory === 'refrigerator' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/냉장고1.glb')}>
+                                    <img src="/furniture/ETC/냉장고1.png" alt="냉장고1"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'washingMachine' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/세탁기1.glb')}>
+                                    <img src="/furniture/ETC/세탁기1.png" alt="세탁기1"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'sink' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/씽크대1.glb')}>
+                                    <img src="/furniture/ETC/씽크대1.png" alt="씽크대1"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'oven' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/오븐1.glb')}>
+                                    <img src="/furniture/ETC/오븐1.png" alt="오븐1"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'wastebasket' && (
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통1.glb')}>
                                     <img src="/furniture/ETC/쓰레기통1.png" alt="쓰레기통1"/>
@@ -398,12 +419,93 @@ const FirstLivingRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/쓰레기통5.glb')}>
                                     <img src="/furniture/ETC/쓰레기통5.png" alt="쓰레기통5"/>
                                 </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그1.glb')}>
-                                    <img src="/furniture/ETC/러그1.png" alt="러그1"/>
+                            </>
+                        )}
+                        {activeCategory === 'decoration' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물1.glb')}>
+                                    <img src="/furniture/ETC/식물1.png" alt="식물1"/>
                                 </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/러그2.glb')}>
-                                    <img src="/furniture/ETC/러그2.png" alt="러그2"/>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물2.glb')}>
+                                    <img src="/furniture/ETC/식물2.png" alt="식물2"/>
                                 </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물3.glb')}>
+                                    <img src="/furniture/ETC/식물3.png" alt="식물3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물4.glb')}>
+                                    <img src="/furniture/ETC/식물4.png" alt="식물4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물5.glb')}>
+                                    <img src="/furniture/ETC/식물5.png" alt="식물5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물6.glb')}>
+                                    <img src="/furniture/ETC/식물6.png" alt="식물6"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물7.glb')}>
+                                    <img src="/furniture/ETC/식물7.png" alt="식물7"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/식물8.glb')}>
+                                    <img src="/furniture/ETC/식물8.png" alt="식물8"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/장식품1.glb')}>
+                                    <img src="/furniture/ETC/장식품1.png" alt="장식품1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/장식품2.glb')}>
+                                    <img src="/furniture/ETC/장식품2.png" alt="장식품2"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'light' && (
+                            <>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명1.glb')}>
+                                    <img src="/furniture/ETC/조명1.png" alt="조명1"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명2.glb')}>
+                                    <img src="/furniture/ETC/조명2.png" alt="조명2"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명3.glb')}>
+                                    <img src="/furniture/ETC/조명3.png" alt="조명3"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명4.glb')}>
+                                    <img src="/furniture/ETC/조명4.png" alt="조명4"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명5.glb')}>
+                                    <img src="/furniture/ETC/조명5.png" alt="조명5"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명6.glb')}>
+                                    <img src="/furniture/ETC/조명6.png" alt="조명6"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명7.glb')}>
+                                    <img src="/furniture/ETC/조명7.png" alt="조명7"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명8.glb')}>
+                                    <img src="/furniture/ETC/조명8.png" alt="조명8"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명9.glb')}>
+                                    <img src="/furniture/ETC/조명9.png" alt="조명9"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명10.glb')}>
+                                    <img src="/furniture/ETC/조명10.png" alt="조명10"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명11.glb')}>
+                                    <img src="/furniture/ETC/조명11.png" alt="조명11"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명12.glb')}>
+                                    <img src="/furniture/ETC/조명12.png" alt="조명12"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명13.glb')}>
+                                    <img src="/furniture/ETC/조명13.png" alt="조명13"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명14.glb')}>
+                                    <img src="/furniture/ETC/조명14.png" alt="조명14"/>
+                                </button>
+                                <button onClick={() => loadFurniture('/public/furniture/ETC/조명15.glb')}>
+                                    <img src="/furniture/ETC/조명15.png" alt="조명15"/>
+                                </button>
+                            </>
+                        )}
+                        {activeCategory === 'etc' && (
+                            <>
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/주방1.glb')}>
                                     <img src="/furniture/ETC/주방1.png" alt="주방1"/>
                                 </button>

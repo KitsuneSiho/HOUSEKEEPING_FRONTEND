@@ -7,7 +7,7 @@ import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 
 const MyRoom = () => {
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [rooms, setRooms] = useState([]);
     const [placementLists, setPlacementLists] = useState([]);
     const [currentRoom, setCurrentRoom] = useState(0);
@@ -23,11 +23,11 @@ const MyRoom = () => {
 
     useEffect(() => {
 
-        if (loginUserId !== null) {
+        if (user !== null) {
 
             getRoomIds();
         }
-    }, [loginUserId])
+    }, [user])
 
     useEffect(() => {
 
@@ -40,7 +40,7 @@ const MyRoom = () => {
 
         try {
 
-            const response = await axiosInstance.get(`/room/list?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
 
             setRooms(response.data);
         } catch (error) {

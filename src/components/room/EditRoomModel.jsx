@@ -453,7 +453,7 @@ const EditRoomModel = ({
                 <button
                     type="button"
                     className={styles.cancel}
-                    onClick={() => navigate('/login')}
+                    onClick={() => navigate('/myPage')}
                 >
                     취소
                 </button>
@@ -474,7 +474,7 @@ EditRoomModel.propTypes = {
     placementList: PropTypes.array,
     deletedPlacementList: PropTypes.array,
     furniture: PropTypes.array,
-    userLevel: PropTypes.string,
+    userLevel: PropTypes.number,
     savePlacement: PropTypes.func,
     deletePlacement: PropTypes.func,
     changeCurrentRoom: PropTypes.func,

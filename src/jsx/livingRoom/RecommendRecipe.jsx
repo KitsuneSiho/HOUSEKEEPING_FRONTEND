@@ -18,15 +18,16 @@ const RecommendRecipe = () => {
 
     console.log('Full recipe object:', recipe);
 
-    // 레시피 단계를 줄바꿈하여 표시하는 함수
+    // 레시피 단계를 리스트 형식으로 표시하는 함수
     const formatSteps = (steps) => {
         if (!steps) return null;
-        return steps.split('\n').map((step, index) => (
-            <React.Fragment key={index}>
-                {step}
-                <br />
-            </React.Fragment>
-        ));
+        return (
+            <ul>
+                {steps.split('\n').map((step, index) => (
+                    <li key={index}>{step}</li>
+                ))}
+            </ul>
+        );
     };
 
     return (
@@ -36,13 +37,22 @@ const RecommendRecipe = () => {
                 <h2>추천 레시피</h2>
             </div>
             <div className={styles.recipeTitle}>
-                <h3>{recipe.name || '이름 없음'}</h3>
+                <h2>{recipe.name || '이름 없음'}</h2>
             </div>
             <div className={styles.recipeInfo}>
-                <p><strong>재료:</strong> {recipe.ingredients || '재료 정보 없음'}</p>
-                <p><strong>소요시간:</strong> {recipe.time || '시간 정보 없음'}</p>
-                <h4 style={{ marginLeft: '2em' }}>조리법</h4>
-                <div>{recipe.steps ? formatSteps(recipe.steps) : '레시피 단계 정보 없음'}</div>
+                <div className={styles.recipeTime}>
+                    <h3>소요시간</h3>
+                    <p>{recipe.time || '시간 정보 없음'}</p>
+                </div>
+                <div className={styles.recipeMaterial}>
+                    <h3>재료</h3>
+                    <p>{recipe.ingredients || '재료 정보 없음'}</p>
+                </div>
+
+                <div className={styles.recipe}>
+                    <h3>조리법</h3>
+                    <div>{recipe.steps ? formatSteps(recipe.steps) : '레시피 단계 정보 없음'}</div>
+                </div>
             </div>
             <Footer/>
         </div>

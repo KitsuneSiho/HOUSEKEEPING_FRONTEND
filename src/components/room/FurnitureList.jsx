@@ -1,11 +1,20 @@
 import styles from "../../css/first/firstRoomDesign.module.css";
 import PropTypes from "prop-types";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axiosInstance from "../../config/axiosInstance.js";
 
 const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
 
     const [furnitureTypes, setFurnitureTypes] = useState([]);
+    const furnitureTypeNames = {
+        DESK: "책상",
+        BED: "침대",
+        SOFA: "소파",
+        CLOSET: "옷장",
+        CHAIR: "의자",
+        POCKETMON: "포켓몬",
+        ETC: "기타",
+    }
 
     useEffect(() => {
         getFurnitureTypes();
@@ -26,10 +35,10 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
     return (
         <>
             <div className={styles.furnitureCategories}>
-                <p onClick={() => handleCategoryClick('WALLFLOOR')}>벽&바닥</p>
+                <p onClick={() => handleCategoryClick('WALLFLOOR')}>벽</p>
                 {furnitureTypes.map((furnitureType, index) => (
                     <p key={index}
-                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.furnitureType}</p>
+                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureTypeNames[furnitureType.furnitureType]}</p>
                 ))}
             </div>
             {activeCategory && (
@@ -54,7 +63,10 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                                         placementLocation: JSON.stringify({x: 0, y: 0, z: 0}),
                                         placementAngle: 0,
                                         placementSize: 1
-                                    }, true)}>{furniture.furnitureName}</button>
+                                    }, true)}>
+                                        <img src={`/furniture/${furniture.furnitureType}/${furniture.furnitureName}.png`} alt={furniture.furnitureName}/>
+
+                                    </button>
                                 ))}
                         </div>
                     ))}

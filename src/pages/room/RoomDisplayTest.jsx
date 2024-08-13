@@ -5,18 +5,18 @@ import axiosInstance from "../../config/axiosInstance.js";
 
 const RoomDisplayTest = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [rooms, setRooms] = useState([]);
     const [placementLists, setPlacementLists] = useState([]);
     const [isReady, setReady] = useState(false);
 
     useEffect(() => {
 
-        if (loginUserId !== null) {
+        if (user !== null) {
 
             getRoomIds();
         }
-    }, [loginUserId])
+    }, [user])
 
     useEffect(() => {
 
@@ -29,7 +29,7 @@ const RoomDisplayTest = () => {
 
         try {
 
-            const response = await axiosInstance.get(`/room/list?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
 
             setRooms(response.data);
             console.log(response.data);

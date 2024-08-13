@@ -160,3 +160,7 @@
     outline: none;
     max-width: 500px !important;
 }
+
+.tag .clothHowWash{
+    width: 100%;
+}

@@ -294,9 +294,6 @@ const MainToiletRoom = () => {
                 </div>
                 <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/toilet')}/>
             </div>
-            <div className={styles.guestBook}>
-                <p onClick={() => navigate('/main/guestbook')}>방명록</p>
-            </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (
                     // 두 번째 방(KITCHEN)만 렌더링

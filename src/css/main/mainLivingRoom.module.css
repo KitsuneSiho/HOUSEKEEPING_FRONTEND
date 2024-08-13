@@ -63,11 +63,10 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 5%;
 }
 
 .roomDesign .roomView {
-    width: 85%;
+    width: 100%;
     margin: 0;
     padding: 0;
     height: 350px;
