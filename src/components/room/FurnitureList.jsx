@@ -1,8 +1,7 @@
 import styles from "../../css/first/firstRoomDesign.module.css";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
 
@@ -16,7 +15,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
 
         try {
 
-            const response = await axios.get(BACK_URL + `/furniture/type/list/${userLevel}`)
+            const response = await axiosInstance.get(`/furniture/type/list/${userLevel}`)
             setFurnitureTypes(response.data);
 
         } catch (error) {

@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { io } from "socket.io-client";
-import axios from "axios";
-import { BACK_URL } from "../Constraints.js";
+import axiosInstance from "../config/axiosInstance.js";
 
 // Context 생성
 const SocketContext = createContext();
@@ -22,18 +21,19 @@ export const SocketProvider = ({ children }) => {
 
     // 소켓 연결 및 이벤트 핸들러 설정
     useEffect(() => {
-        const socket = io('http://localhost:3000', {
+        const socket = io('http://bit-two.com:3000', {
             reconnection: true,
             reconnectionAttempts: 10,
             reconnectionDelay: 1000,
             reconnectionDelayMax: 5000,
-            randomizationFactor: 0.5
+            randomizationFactor: 0.5,
+            withCredentials: true, // 쿠키를 자동으로 전송
         });
 
         socketRef.current = socket;
 
         socket.on('connect', () => {
-            const sessionNickname = sessionStorage.getItem("nickname");
+            const sessionNickname = localStorage.getItem("nickname");
             setIsConnected(true);
             console.log(`Socket connected: ${socket.id}, ${nickname}`);
 
@@ -96,7 +96,16 @@ export const SocketProvider = ({ children }) => {
 
     const socketLogin = (nickname) => {
         setNickname(nickname);
-        socketRef.current.emit('login', nickname);
+
+        const accessToken = localStorage.getItem('access');
+        console.log(accessToken);
+
+        // 로그인 이벤트를 서버로 전송
+        socketRef.current.emit('login', {
+                nickname: nickname,
+                accessToken: accessToken,
+            });
+
         getOnlineFriends(nickname);
         console.log("login: ", nickname);
     }
@@ -132,7 +141,7 @@ export const SocketProvider = ({ children }) => {
 
     const getOnlineFriends = async (nickname) => {
         try {
-            const response = await axios.get(BACK_URL + `/friend/list/online2?nickname=${nickname}`);
+            const response = await axiosInstance.get(`/friend/list/online2?nickname=${nickname}`);
             const nicknames = response.data.map(friend => friend.nickname);
             setOnlineFriends(nicknames);
         } catch (error) {
