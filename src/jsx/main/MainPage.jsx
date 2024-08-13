@@ -10,7 +10,7 @@ import { useAuth as useLogin } from '../../contexts/AuthContext';
 
 const MainPage = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD')); // 기본 날짜를 오늘로 설정
     const [events, setEvents] = useState([]);
     const [schedules, setSchedules] = useState([]);
@@ -29,12 +29,10 @@ const MainPage = () => {
 
     useEffect(() => {
 
-        console.log(loginUserId);
-
 
         axiosInstance.get(`/friend/list`, {
             params: {
-                userId: loginUserId
+                userId: user.userId
             }
         })
             .then(response => {
@@ -46,10 +44,9 @@ const MainPage = () => {
             });
     }, []);
 
-
     const fetchRoomData = async () => {
         try {
-            const response = await axiosInstance.post(`/room/details`, loginUserId, {
+            const response = await axiosInstance.post(`/room/details`, user.userId, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

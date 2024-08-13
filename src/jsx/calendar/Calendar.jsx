@@ -12,7 +12,7 @@ import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const Calendar = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
     const [events, setEvents] = useState([]);
     const [schedules, setSchedules] = useState({});
@@ -31,7 +31,11 @@ const Calendar = () => {
 
     const fetchRoomData = async () => {
         try {
-            const response = await axiosInstance.post(`/room/details`, loginUserId);
+            const response = await axiosInstance.post(`/room/details`, user.userId, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             const roomData = response.data;
             setRoomIds(roomData.map(room => room.roomId));
             setRoomNames(roomData.reduce((acc, room) => {

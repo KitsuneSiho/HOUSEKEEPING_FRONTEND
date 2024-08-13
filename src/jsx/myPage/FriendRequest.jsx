@@ -9,7 +9,7 @@ import axiosInstance from "../../config/axiosInstance.js";
 
 const FriendRequest = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const FriendRequest = () => {
         const fetchRequests = async () => {
             try {
                 const response = await axiosInstance.get('/friendRequest/received', {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
                 setRequests(response.data);
             } catch (error) {
@@ -27,7 +27,7 @@ const FriendRequest = () => {
         };
 
         fetchRequests();
-    }, [loginUserId]);
+    }, [user.userId]);
 
     const handleAcceptRequest = async (requestId) => {
         try {
@@ -45,7 +45,7 @@ const FriendRequest = () => {
             await axiosInstance.post('/friendRequest/reject', null, {
                 params: {
                     senderId: requestSenderId,
-                    receiverId: loginUserId
+                    receiverId: user.userId
                 }
             });
             setRequests(requests.filter(req => req.requestSenderId !== requestSenderId));

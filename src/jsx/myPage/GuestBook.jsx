@@ -10,12 +10,12 @@ import axiosInstance from "../../config/axiosInstance.js";
 const GuestBook = () => {
     const navigate = useNavigate();
     const [guestBooks, setGuestBooks] = useState([]);
-    const { loginUserId } = useLogin(); // 로그인한 사용자 ID 가져오기
+    const { user } = useLogin(); // 로그인한 사용자 ID 가져오기
 
     // API 호출하여 보관된 방명록을 가져오는 함수
     const fetchArchivedGuestBooks = async () => {
         try {
-            const response = await axiosInstance.get(`/guestbook/archived/${loginUserId}`);
+            const response = await axiosInstance.get(`/guestbook/archived/${user.userId}`);
             setGuestBooks(response.data);
         } catch (error) {
             console.error('Error fetching archived guestbooks:', error);
@@ -25,7 +25,7 @@ const GuestBook = () => {
     // 컴포넌트가 마운트될 때 데이터 가져오기
     useEffect(() => {
         fetchArchivedGuestBooks();
-    }, [loginUserId]);
+    }, [user.userId]);
 
     // 방명록 삭제 핸들러
     const handleDelete = async (id) => {

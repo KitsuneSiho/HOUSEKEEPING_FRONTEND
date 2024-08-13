@@ -21,7 +21,7 @@ const WeeklyRoutineInfo = () => {
     const [selectedDays, setSelectedDays] = useState([]); // 선택된 요일
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const { loginUserId } = useLogin();
+    const { user } = useLogin();
 
     const toggleDaySelection = (day) => {
         setSelectedDays((prev) =>
@@ -57,7 +57,7 @@ const WeeklyRoutineInfo = () => {
         const fetchRooms = async () => {
             try {
                 const response = await axiosInstance.get(`/room/list`, {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
                 setRooms(response.data);
             } catch (error) {

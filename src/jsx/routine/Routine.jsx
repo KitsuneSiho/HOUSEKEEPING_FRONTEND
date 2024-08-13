@@ -11,13 +11,13 @@ const Routine = () => {
     const [routineGroups, setRoutineGroups] = useState([]);
     const [newRoutineName, setNewRoutineName] = useState('');
 
-    const { loginUserId } = useLogin();
+    const { user } = useLogin();
 
     useEffect(() => {
         const fetchRoutineGroups = async () => {
             try {
                 const response = await axiosInstance.get(`/routine/groups`, {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
                 setRoutineGroups(response.data);
             } catch (error) {
@@ -26,7 +26,7 @@ const Routine = () => {
         };
 
         fetchRoutineGroups();
-    }, [loginUserId]);
+    }, [user.userId]);
 
     const openModal = () => {
         setIsModalOpen(true);

@@ -15,7 +15,7 @@ const colorMapping = {
 
 const MyGuestBook = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const navigate = useNavigate();
     const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
@@ -29,7 +29,7 @@ const MyGuestBook = () => {
     useEffect(() => {
         const fetchGuestbook = async () => {
             try {
-                const response = await axiosInstance.get(`/guestbook/list/${loginUserId}`);
+                const response = await axiosInstance.get(`/guestbook/list/${user.userId}`);
                 if (Array.isArray(response.data)) {
                     setGuestbook(response.data);
                 } else {
@@ -42,7 +42,7 @@ const MyGuestBook = () => {
             }
         };
         fetchGuestbook();
-    }, [loginUserId]);
+    }, [user.userId]);
 
     const addEntry = async () => {
         if (content.trim() === '') {
@@ -56,7 +56,7 @@ const MyGuestBook = () => {
             guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
             guestbookOwnerId: userId,
-            guestbookWriterId: loginUserId,
+            guestbookWriterId: user.userId,
             guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
             guestbookIsArchived: isArchived
         };

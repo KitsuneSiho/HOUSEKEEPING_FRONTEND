@@ -15,7 +15,7 @@ const colorMapping = {
 
 const VisitorBoard = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const navigate = useNavigate();
     const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
@@ -56,7 +56,7 @@ const VisitorBoard = () => {
             guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
             guestbookOwnerId: userId,
-            guestbookWriterId: loginUserId,
+            guestbookWriterId: user.userId,
             guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
             guestbookIsArchived: isArchived
         };

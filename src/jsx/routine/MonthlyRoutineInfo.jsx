@@ -21,7 +21,7 @@ const MonthlyRoutineInfo = () => {
     const [selectedDates, setSelectedDates] = useState([]);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const { loginUserId } = useLogin();
+    const { user } = useLogin();
 
     const toggleDateSelection = (date) => {
         setSelectedDates(prev =>
@@ -57,7 +57,7 @@ const MonthlyRoutineInfo = () => {
         const fetchRooms = async () => {
             try {
                 const response = await axiosInstance.get(`/room/list`, {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
                 setRooms(response.data);
             } catch (error) {

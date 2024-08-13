@@ -5,10 +5,8 @@ import RoutineEdit from "../jsx/routine/RoutineEdit.jsx";
 import DailyRoutineInfo from "../jsx/routine/DailyRoutineInfo.jsx";
 import WeeklyRoutineInfo from "../jsx/routine/WeeklyRoutineInfo.jsx";
 import MonthlyRoutineInfo from "../jsx/routine/MonthlyRoutineInfo.jsx";
-import CreateDailyRoutine from "../jsx/routine/CreateDailyRoutine.jsx";
-import CreateWeeklyRoutine from "../jsx/routine/CreateWeeklyRoutine.jsx";
-import CreateMonthlyRoutine from "../jsx/routine/CreateMonthlyRoutine.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
+import {SocketProvider} from "../contexts/SocketContext.jsx";
 
 function RecommendMonthlyRoutine() {
     return null;
@@ -27,10 +25,10 @@ const RoutineRouter = () => {
                         <Route path="/calendar" element={<Calendar/>}/> {/* 달력 */}
                         <Route path="/edit" element={<RoutineEdit/>}/> {/* 적용 루틴 수정 화면 */}
 
-                    {/* 추천 루틴 */}
-                    <Route path="/recommend/daily" element={<RecommendDailyRoutine/>}/> {/* 일간 루틴 */}
-                    <Route path="/recommend/weekly" element={<RecommendWeeklyRoutine/>}/> {/* 주간 루틴 */}
-                    <Route path="/recommend/monthly" element={<RecommendMonthlyRoutine/>}/> {/* 월간 루틴 */}
+                        {/* 추천 루틴 */}
+                        {/* <Route path="/recommend/daily" element={<RecommendDailyRoutine/>}/> {/* 일간 루틴 */}
+                        {/*<Route path="/recommend/weekly" element={<RecommendWeeklyRoutine/>}/> {/* 주간 루틴 */}
+                        <Route path="/recommend/monthly" element={<RecommendMonthlyRoutine/>}/> {/* 월간 루틴 */}
 
                         {/* 기존 루틴 정보 보기 */}
                         <Route path="/daily/:groupName" element={<DailyRoutineInfo/>}/> {/* 일간 루틴 */}

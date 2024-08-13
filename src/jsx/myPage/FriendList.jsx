@@ -9,7 +9,7 @@ import axiosInstance from "../../config/axiosInstance.js";
 
 const FriendList = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState([]);
@@ -18,7 +18,7 @@ const FriendList = () => {
     const fetchFriends = async () => {
         try {
             const response = await axiosInstance.get(`/friend/list`, {
-                params: { userId: loginUserId }
+                params: { userId: user.userId }
             });
             setFriends(response.data);
             console.log(response.data);
@@ -38,13 +38,13 @@ const FriendList = () => {
 
     // 팔로우 취소
     const cancelFriendRequest = async (receiverId) => {
-        console.log(loginUserId);
+        console.log(user.userId);
         console.log(receiverId);
 
         try {
             const response = await axiosInstance.post(`/friendRequest/cancel`, null, {
                 params: {
-                    senderId: loginUserId,
+                    senderId: user.userId,
                     receiverId: receiverId
                 }
             });

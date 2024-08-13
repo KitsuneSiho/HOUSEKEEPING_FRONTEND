@@ -21,7 +21,7 @@ const DailyRoutineInfo = () => {
     const [selectedRoomId, setSelectedRoomId] = useState(null);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const { loginUserId } = useLogin();
+    const { user } = useLogin();
 
     // 그룹 이름으로 루틴 정보 가져오기
     const fetchDailyRoutines = async () => {
@@ -50,7 +50,7 @@ const DailyRoutineInfo = () => {
         const fetchRooms = async () => {
             try {
                 const response = await axiosInstance.get(`/room/list`, {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
                 setRooms(response.data);
             } catch (error) {
