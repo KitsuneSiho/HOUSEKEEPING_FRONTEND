@@ -29,9 +29,9 @@ const TipRouter = () => {
                         <Route path="/waste/detail/:id" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
                         <Route path="/waste/post" element={<WasteTipWrite/>}/> {/* 폐기물 팁 게시글 작성 내용 */}
 
-                        <Route path="/listfacks" element={<LifeTip/>}/> {/* 일상 팁 */}
-                        <Route path="/listfacks/detail" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
-                        <Route path="/listfacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/lifehacks" element={<LifeTip/>}/> {/* 일상 팁 */}
+                        <Route path="/lifehacks/detail/:id" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
+                        <Route path="/lifehacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
                     </Routes>
                 </RouteAuthProvider>
             </SocketProvider>

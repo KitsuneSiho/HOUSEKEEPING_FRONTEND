@@ -17,13 +17,7 @@ const LifeTip = () => {
     const fetchTips = async () => {
         try {
             const response = await axiosConfig.get('/api/tips');
-
-            let lifeTips = [];
-            if (Array.isArray(response.data)) {
-                lifeTips = response.data.filter(tip => tip.tipCategory === 'LIFEHACKS');
-            } else if (typeof response.data === 'object' && response.data !== null) {
-                lifeTips = (response.data.content || []).filter(tip => tip.tipCategory === 'LIFEHACKS');
-            }
+            const lifeTips = response.data.filter(tip => tip.tipCategory === 'LIFEHACKS');
 
             // 정렬 옵션에 따라 게시글 정렬
             if (sortOption === 'latest') {
@@ -56,7 +50,12 @@ const LifeTip = () => {
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip')} />
                 <h2>생활 Tip</h2>
-                <img className={styles.searchIcon} src="/lib/검색.svg" alt="search" id="search-icon" onClick={toggleSearchBar} />
+                <img className={styles.searchIcon}
+                     src="/lib/검색.svg"
+                     alt="search"
+                     id="search-icon"
+                     onClick={toggleSearchBar}
+                />
             </div>
             <div className={`${styles.searchBar} ${searchVisible ? styles.visible : ''}`} id="search-bar">
                 <input type="text" placeholder="검색어를 입력하세요" id="search-input" />
@@ -70,7 +69,6 @@ const LifeTip = () => {
                         <option value="popular">인기순</option>
                     </select>
                 </div>
-
                 <div className={styles.postList}>
                     {tips.map((tip) => (
                         <div key={tip.tipId} className={styles.postItem} onClick={() => navigate(`/tip/lifehacks/detail/${tip.tipId}`)}>

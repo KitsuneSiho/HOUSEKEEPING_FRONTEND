@@ -1,22 +1,100 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/lifeTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import axiosConfig from "../../config/axiosConfig.js";
 
 const LifeTipDetail = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [tip, setTip] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (id) {
+            fetchTip();
+            fetchComments();
+        }
+    }, [id]);
+
+    const fetchTip = async () => {
+        try {
+            const response = await axiosConfig.get(`/api/tips/${id}`);
+            setTip(response.data);
+        } catch (error) {
+            console.error('Error fetching tip:', error);
+            setError('팁을 불러오는 데 실패했습니다.');
+        }
+    };
+
+    const fetchComments = async () => {
+        try {
+            const response = await axiosConfig.get(`/api/comments/tip/${id}`);
+            setComments(response.data);
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            setError('댓글을 불러오는 데 실패했습니다.');
+        }
+    };
 
     const goToList = () => {
-        navigate('/tip/listfacks');
+        navigate('/tip/lifehacks');
     };
 
     const editPost = () => {
-        // 게시글 수정 로직
+        navigate(`/tip/life/edit/${id}`);
     };
 
-    const deletePost = () => {
-        // 게시글 삭제 로직
+    const deletePost = async () => {
+        if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+            try {
+                await axiosConfig.delete(`/api/tips/${id}`);
+                navigate('/tip/lifehacks');
+            } catch (error) {
+                console.error('Error deleting tip:', error);
+            }
+        }
     };
+
+    const handleCommentSubmit = async () => {
+        try {
+            await axiosConfig.post(`/api/comments`, {
+                tipId: id,
+                commentContent: newComment
+            });
+            setNewComment('');
+            fetchComments();
+        } catch (error) {
+            console.error('Error submitting comment:', error);
+        }
+    };
+
+    const handleCommentEdit = async (commentId, newContent) => {
+        try {
+            await axiosConfig.put(`/api/comments/${commentId}`, {
+                commentContent: newContent
+            });
+            fetchComments();
+        } catch (error) {
+            console.error('Error editing comment:', error);
+        }
+    };
+
+    const handleCommentDelete = async (commentId) => {
+        if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+            try {
+                await axiosConfig.delete(`/api/comments/${commentId}`);
+                fetchComments();
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
+        }
+    };
+
+    if (error) return <div>Error: {error}</div>;
+    if (!tip) return <div>Loading...</div>;
 
     return (
         <div className={styles.container}>
@@ -28,14 +106,14 @@ const LifeTipDetail = () => {
             <div className={styles.postContainer}>
                 <div className={styles.postInfoTitle}>
                     <p>제목</p>
-                    <p>바나나껍질은 어디 버리게요~ ~??</p>
+                    <p>{tip.tipTitle}</p>
                 </div>
                 <div className={styles.postInfoDate}>
-                    <p>24.07.18</p>
-                    <p>루미</p>
+                    <p>{new Date(tip.tipCreatedDate).toLocaleDateString()}</p>
+                    <p>{tip.author}</p>
                 </div>
                 <div className={styles.postContent}>
-                    <p>응 음식물이야</p>
+                    <p>{tip.tipContent}</p>
                 </div>
                 <div className={styles.buttonContainer}>
                     <button onClick={editPost}>수정</button>
@@ -46,23 +124,31 @@ const LifeTipDetail = () => {
 
             <div className={styles.commentsSection}>
                 <div className={styles.commentInput}>
-                    <input type="text" placeholder="댓글을 입력하세요" />
-                    <button>
+                    <input
+                        type="text"
+                        placeholder="댓글을 입력하세요"
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button onClick={handleCommentSubmit}>
                         <img src="/lib/채팅보내기.svg" alt="send" />
                     </button>
                 </div>
-                {[...Array(5)].map((_, index) => (
+                {comments.map((comment, index) => (
                     <div className={styles.comment} key={index}>
                         <div className={styles.commentUser}>
                             <img src="/lib/마이페이지아이콘.svg" alt="user" />
-                            <p>Lv.3 ddak</p>
+                            <p>Lv.3 {comment.userName}</p>
                             <div className={styles.commentActions}>
-                                <span>수정</span>
-                                <span>삭제</span>
+                                <span onClick={() => handleCommentEdit(comment.commentId, prompt('댓글을 수정하세요:', comment.commentContent))}>수정</span>
+                                <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                             </div>
                         </div>
                         <div className={styles.commentText}>
-                            <p>네 맞습니다.</p>
+                            <p>{comment.commentContent}</p>
+                        </div>
+                        <div className={styles.commentDate}>
+                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
                         </div>
                     </div>
                 ))}
