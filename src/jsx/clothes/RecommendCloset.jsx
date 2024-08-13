@@ -25,7 +25,7 @@ const RecommendCloset = () => {
 
     // userId 변수 정의
     //const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
-    const userId = localStorage.getItem('userId') || 1;
+    const userId = localStorage.getItem('userId');
     console.log("유저 id:", userId);
 
 
@@ -68,10 +68,24 @@ const RecommendCloset = () => {
 
     //--------------------------------------------------------------------
 
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
     const fetchRecommendations = async (temperature) => {
         const access = localStorage.getItem('access');
-        localStorage.setItem('access', access); // 토큰을 localStorage에 저장
-
 
         if (!access) {
             console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
@@ -79,39 +93,89 @@ const RecommendCloset = () => {
             return;
         }
 
+        // 토큰에서 user_id 추출
+        const decodedToken = parseJwt(access);
+        let userId; // 기본 userId
+        if (decodedToken && decodedToken.userId) {
+            userId = decodedToken.userId;
+        }
+
+        console.log("유저 id:", userId);
+
         try {
             const response = await apiClient.get(`/ware/recommend?temperature=${temperature}&user_id=${userId}`, {
                 headers: {
                     Authorization: `Bearer ${access}`
                 }
             });
+            console.log("응답 데이터:", response.data); // 백엔드에서 받은 데이터를 콘솔에 출력
+
+
             const serverRecommendations = response.data;
-            if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
-                setRecommendations(serverRecommendations);
+            if (serverRecommendations && serverRecommendations.length > 0) {
+                const newRecommendations = {
+                    top: [],
+                    bottom: [],
+                    outer: [],
+                    shoes: [],
+                    bag: [],
+                    accessory: []
+                };
+
+                serverRecommendations.forEach(item => {
+                    switch(item.clothType) {
+                        case '반팔':
+                        case '셔츠':
+                        case '니트':
+                        case '민소매':
+                        case '긴팔':
+                            newRecommendations.top.push(item);
+                            break;
+                        case '반바지':
+                        case '긴바지':
+                        case '스커트':
+                        case '원피스':
+                            newRecommendations.bottom.push(item);
+                            break;
+                        case '코트':
+                        case '패딩':
+                        case '가디건':
+                        case '후드 집업':
+                            newRecommendations.outer.push(item);
+                            break;
+                        case '운동화':
+                        case '구두':
+                        case '샌들/슬리퍼':
+                            newRecommendations.shoes.push(item);
+                            break;
+                        case '백팩':
+                        case '크로스백':
+                            newRecommendations.bag.push(item);
+                            break;
+                        case '모자':
+                        case '양말':
+                        case '선글라스':
+                            newRecommendations.accessory.push(item);
+                            break;
+                        default:
+                            console.warn(`Unknown clothType: ${item.clothType}`);
+                    }
+                });
+
+                setRecommendations(newRecommendations);
+                console.log("추천 설정:", newRecommendations);
             } else {
-                const localRecommendations = recommendClothes('temperature');
+                const localRecommendations = recommendClothes(temperature);
                 setRecommendations(localRecommendations);
             }
         } catch (error) {
             console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
-            const localRecommendations = recommendClothes('temperature');
+            const localRecommendations = recommendClothes(temperature);
             setRecommendations(localRecommendations);
         }
     };
 
-
-
-    // const fetchRecommendations = async (temperature) => {
-    //     try {
-    //         const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`);
-    //         setRecommendations(response.data);
-    //     } catch (error) {
-    //         console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
-    //         // 오류가 발생하면 기본 추천 목록을 설정
-    //         setRecommendations(recommendClothes('WINTER', temperature, 'gray'));
-    //     }
-    // };
-
+// -----------------------------------------옷추천----------------------------------------------
 
     const setDefaultTime = (forecastList) => {
         const now = new Date();
@@ -376,29 +440,29 @@ const RecommendCloset = () => {
                 </select>
             </div>
             <div className={styles.recommendations}>
-                {recommendations.top?.length > 0 ? recommendations.top.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No top recommendations available</p>}
+                {recommendations.top?.length > 0 && recommendations.top.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
 
-                {recommendations.bottom?.length > 0 ? recommendations.bottom.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No bottom recommendations available</p>}
+                {recommendations.bottom?.length > 0 && recommendations.bottom.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
 
-                {recommendations.outer?.length > 0 ? recommendations.outer.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No outer recommendations available</p>}
+                {recommendations.outer?.length > 0 && recommendations.outer.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
 
-                {recommendations.shoes?.length > 0 ? recommendations.shoes.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No shoes recommendations available</p>}
+                {recommendations.shoes?.length > 0 && recommendations.shoes.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
 
-                {recommendations.bag?.length > 0 ? recommendations.bag.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No bag recommendations available</p>}
+                {recommendations.bag?.length > 0 && recommendations.bag.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
 
-                {recommendations.accessory?.length > 0 ? recommendations.accessory.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                )) : <p>No accessory recommendations available</p>}
+                {recommendations.accessory?.length > 0 && recommendations.accessory.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                ))}
             </div>
 
             <Footer/>
