@@ -22,8 +22,11 @@ const RecommendCloset = () => {
         accessory: []
     });
 
+
     // userId 변수 정의
-    const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
+    //const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
+    const userId = localStorage.getItem('userId') || 1;
+
 
     useEffect(() => {
         const today = new Date();
@@ -64,39 +67,49 @@ const RecommendCloset = () => {
 
     //--------------------------------------------------------------------
 
+    // const fetchRecommendations = async (temperature) => {
+    //     const access = localStorage.getItem('access');
+    //     localStorage.setItem('access', access); // 토큰을 localStorage에 저장
+    //
+    //
+    //     if (!access) {
+    //         console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+    //         navigate('/login');
+    //         return;
+    //     }
+    //
+    //     try {
+    //         const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${access}`
+    //             }
+    //         });
+    //         const serverRecommendations = response.data;
+    //         if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
+    //             setRecommendations(serverRecommendations);
+    //         } else {
+    //             const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+    //             setRecommendations(localRecommendations);
+    //         }
+    //     } catch (error) {
+    //         console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
+    //         const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
+    //         setRecommendations(localRecommendations);
+    //     }
+    // };
+
+
+
     const fetchRecommendations = async (temperature) => {
-        const token = localStorage.getItem('token');
-        localStorage.setItem('token', token); // 토큰을 localStorage에 저장
-
-
-        if (!token) {
-            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
-            navigate('/login');
-            return;
-        }
-
         try {
-            const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const serverRecommendations = response.data;
-            if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
-                setRecommendations(serverRecommendations);
-            } else {
-                const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
-                setRecommendations(localRecommendations);
-            }
+            const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`);
+            setRecommendations(response.data);
         } catch (error) {
             console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
-            const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
-            setRecommendations(localRecommendations);
+            // 오류가 발생하면 기본 추천 목록을 설정
+            setRecommendations(recommendClothes('WINTER', temperature, 'gray'));
         }
     };
-
-
-
 
 
     const setDefaultTime = (forecastList) => {
