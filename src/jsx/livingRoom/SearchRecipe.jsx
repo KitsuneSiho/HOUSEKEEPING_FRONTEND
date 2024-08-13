@@ -18,7 +18,7 @@ const SearchRecipe = () => {
     const [cuisine, setCuisine] = useState('');
     const [cookingTime, setCookingTime] = useState('');
     const [recipes, setRecipes] = useState([]);
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
 
     useEffect(() => {
         fetchIngredients();

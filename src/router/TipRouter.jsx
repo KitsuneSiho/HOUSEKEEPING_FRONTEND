@@ -26,7 +26,7 @@ const TipRouter = () => {
                         <Route path="/roome/detail" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
 
                         <Route path="/waste" element={<WasteTip/>}/> {/* 폐기물 팁 */}
-                        <Route path="/waste/detail" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
+                        <Route path="/waste/detail/:id" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
                         <Route path="/waste/post" element={<WasteTipWrite/>}/> {/* 폐기물 팁 게시글 작성 내용 */}
 
                         <Route path="/listfacks" element={<LifeTip/>}/> {/* 일상 팁 */}

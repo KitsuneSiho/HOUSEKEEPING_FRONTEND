@@ -20,6 +20,7 @@ const LifeTipWrite = () => {
                 <h2>생활 Tip</h2>
             </div>
 
+
             <div className={styles.formContainer}>
                 <div className={styles.formGroup}>
                     <label htmlFor="title">제목</label>

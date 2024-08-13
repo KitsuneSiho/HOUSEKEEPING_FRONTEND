@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { io } from "socket.io-client";
 import axiosInstance from "../config/axiosInstance.js";
+import {useLogin} from "./AuthContext.jsx";
 
 // Context 생성
 const SocketContext = createContext();
@@ -9,6 +10,7 @@ const SocketContext = createContext();
 // Context Provider
 export const SocketProvider = ({ children }) => {
     const socketRef = useRef(null);
+    const {user} = useLogin();
     const [receivedMessage, setReceivedMessage] = useState("");
     const [messageSender, setMessageSender] = useState("");
     const [friendMessage, setFriendMessage] = useState("");
@@ -33,7 +35,7 @@ export const SocketProvider = ({ children }) => {
         socketRef.current = socket;
 
         socket.on('connect', () => {
-            const sessionNickname = localStorage.getItem("nickname");
+            const sessionNickname = user.nickname;
             setIsConnected(true);
             console.log(`Socket connected: ${socket.id}, ${nickname}`);
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import styles from '../../css/tip/wasteTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
@@ -25,7 +24,7 @@ const WasteTipDetail = () => {
         try {
             console.log('Fetching tip with id:', id);
             const response = await axiosConfig.get(`/api/tips/${id}`);
-            console.log('Tip data:', response.data);  // 데이터 로깅
+            console.log('Tip data:', response.data);
             setTip(response.data);
         } catch (error) {
             console.error('Error fetching tip:', error);
@@ -35,8 +34,8 @@ const WasteTipDetail = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axiosConfig.get(`/api/tips/${id}/comments`);
-            console.log('Comments data:', response.data);  // 데이터 로깅
+            const response = await axiosConfig.get(`/api/comments/tip/${id}`);
+            console.log('Comments data:', response.data);
             setComments(response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -51,7 +50,7 @@ const WasteTipDetail = () => {
     const deletePost = async () => {
         if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
             try {
-                await axios.delete(`/api/tips/${id}`);
+                await axiosConfig.delete(`/api/tips/${id}`);
                 navigate('/tip/waste');
             } catch (error) {
                 console.error('Error deleting tip:', error);
@@ -65,11 +64,36 @@ const WasteTipDetail = () => {
 
     const handleCommentSubmit = async () => {
         try {
-            await axiosConfig.post(`/api/tips/${id}/comments`, { content: newComment });
+            await axiosConfig.post(`/api/comments`, {
+                tipId: id,
+                commentContent: newComment
+            });
             setNewComment('');
             fetchComments();
         } catch (error) {
             console.error('Error submitting comment:', error);
+        }
+    };
+
+    const handleCommentEdit = async (commentId, newContent) => {
+        try {
+            await axiosConfig.put(`/api/comments/${commentId}`, {
+                commentContent: newContent
+            });
+            fetchComments();
+        } catch (error) {
+            console.error('Error editing comment:', error);
+        }
+    };
+
+    const handleCommentDelete = async (commentId) => {
+        if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
+            try {
+                await axiosConfig.delete(`/api/comments/${commentId}`);
+                fetchComments();
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
         }
     };
 
@@ -120,12 +144,15 @@ const WasteTipDetail = () => {
                             <img src="/lib/마이페이지아이콘.svg" alt="user" />
                             <p>Lv.3 {comment.userName}</p>
                             <div className={styles.commentActions}>
-                                <span>수정</span>
-                                <span>삭제</span>
+                                <span onClick={() => handleCommentEdit(comment.commentId, prompt('댓글을 수정하세요:', comment.commentContent))}>수정</span>
+                                <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                             </div>
                         </div>
                         <div className={styles.commentText}>
                             <p>{comment.commentContent}</p>
+                        </div>
+                        <div className={styles.commentDate}>
+                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
                         </div>
                     </div>
                 ))}
