@@ -360,9 +360,6 @@ const FirstLivingRoom = () => {
                                 <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자1.glb')}>
                                     <img src="/furniture/CHAIR/의자1.png" alt="의자1"/>
                                 </button>
-                                <button onClick={() => loadFurniture('/public/furniture/CHAIR/소파11.glb')}>
-                                    <img src="/furniture/SOFA/소파11.png" alt="의자2"/>
-                                </button>
                                 <button onClick={() => loadFurniture('/public/furniture/CHAIR/의자3.glb')}>
                                     <img src="/furniture/CHAIR/의자3.png" alt="의자3"/>
                                 </button>
@@ -395,9 +392,6 @@ const FirstLivingRoom = () => {
                             <>
                                 <button onClick={() => loadFurniture('/public/furniture/ETC/씽크대1.glb')}>
                                     <img src="/furniture/ETC/씽크대1.png" alt="씽크대1"/>
-                                </button>
-                                <button onClick={() => loadFurniture('/public/furniture/ETC/오븐1.glb')}>
-                                    <img src="/furniture/ETC/오븐1.png" alt="오븐1"/>
                                 </button>
                             </>
                         )}

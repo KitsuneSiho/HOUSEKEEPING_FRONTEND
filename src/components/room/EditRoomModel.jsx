@@ -453,7 +453,7 @@ const EditRoomModel = ({
                 <button
                     type="button"
                     className={styles.cancel}
-                    onClick={() => navigate('/login')}
+                    onClick={() => navigate('/myPage')}
                 >
                     취소
                 </button>
