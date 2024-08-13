@@ -254,7 +254,7 @@ const DailyRoutineInfo = () => {
                         <div className={styles.roomRoutineHeader}>
                             <div className={`${styles.roomRoutineTitle} 
                                             ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
+                                            ${room.roomName === '부엌' ? styles.livingRoomRoutineTitle : ''} 
                                             ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
