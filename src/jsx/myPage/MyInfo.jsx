@@ -16,12 +16,16 @@ const MyInfo = () => {
     });
 
     useEffect(() => {
+        fetchUserInfo(user.userId);
+    }, []);
+
+    useEffect(() => {
         if (user) {
             setUserInfo({
                 name: user.name || '',
                 nickname: user.nickname || '',
                 email: user.email || '',
-                phone: user.phone || '',
+                phone: user.phoneNumber || '',
             });
         }
     }, [user]);
@@ -37,7 +41,7 @@ const MyInfo = () => {
     const handleUpdate = async () => {
         try {
             await axiosInstance.put('/api/user/update', userInfo);
-            await fetchUserInfo(); // 사용자 정보를 새로 가져옵니다.
+            await fetchUserInfo(user.userId);
             navigate('/myPage');
         } catch (error) {
             console.error('Error updating user info', error);
