@@ -30,14 +30,20 @@ apiClient.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 // 액세스 토큰 재발급 요청
-                const response = await axios.post(`${BACK_URL}/reissue`, {}, { withCredentials: true });
+                const response = await axios.post(`${BACK_URL}/reissue`, {}, {withCredentials: true});
 
-                // 재발급된 토큰 저장 (response.data.access로도 확인 필요)
-                const newAccessToken = response.headers['access'];
+                console.log("All Headers:", response.headers);
+                const Authorization = response.headers['authorization'];
+                console.log("Authorization Header:", Authorization);
+
+                const newAccessToken = Authorization.split(' ')[1];
+
+                console.log("newAccessToken", newAccessToken);
+
                 localStorage.setItem('access', newAccessToken);
 
                 // 재시도할 요청에 새로운 토큰 적용
-                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                originalRequest.headers['Authorization'] = Authorization;
 
                 // 원래의 요청을 재시도
                 return apiClient(originalRequest);
@@ -47,6 +53,7 @@ apiClient.interceptors.response.use(
                 // window.location.href = '/login';
 
                 console.log("refreshError", refreshError);
+
                 return Promise.reject(refreshError);
             }
         }
