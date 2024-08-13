@@ -43,8 +43,10 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest);
             } catch (refreshError) {
                 // 재발급 실패 시 토큰 삭제 및 로그인 페이지로 리다이렉트
-                localStorage.removeItem('access');
-                window.location.href = '/login';
+                // localStorage.removeItem('access');
+                // window.location.href = '/login';
+
+                console.log("refreshError", refreshError);
                 return Promise.reject(refreshError);
             }
         }
