@@ -4,6 +4,8 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from '../../Constraints.js';
 import axios from 'axios';
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const MonthlyRoutineInfo = () => {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ const MonthlyRoutineInfo = () => {
     const [selectedDates, setSelectedDates] = useState([]);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const loginUserId = 1;
+    const { loginUserId } = useLogin();
 
     const toggleDateSelection = (date) => {
         setSelectedDates(prev =>
@@ -30,7 +32,7 @@ const MonthlyRoutineInfo = () => {
     // 그룹 이름으로 루틴 정보 가져오기
     const fetchMonthlyRoutines = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/routine/group/${groupName}`);
+            const response = await axiosInstance.get(`/routine/group/${groupName}`);
             const monthlyRoutines = response.data.filter(routine => routine.routineFrequency === 'MONTHLY')
                 .reduce((acc, routine) => {
                     if (!acc[routine.roomId]) {
@@ -54,7 +56,7 @@ const MonthlyRoutineInfo = () => {
         // 모든 방 정보 가져오기
         const fetchRooms = async () => {
             try {
-                const response = await axios.get(`${BACK_URL}/room/list`, {
+                const response = await axiosInstance.get(`/room/list`, {
                     params: { userId: loginUserId }
                 });
                 setRooms(response.data);
@@ -84,7 +86,7 @@ const MonthlyRoutineInfo = () => {
         };
 
         try {
-            const response = await axios.post(`${BACK_URL}/routine/add`, newRoutine);
+            const response = await axiosInstance.post(`/routine/add`, newRoutine);
 
             if (response.status === 200) {
                 const addedRoutine = response.data;
@@ -129,7 +131,7 @@ const MonthlyRoutineInfo = () => {
         };
 
         try {
-            const response = await axios.put(`${BACK_URL}/routine/update`, updatedRoutine);
+            const response = await axiosInstance.put(`/routine/update`, updatedRoutine);
 
             if (response.status === 200) {
                 const updatedRoutineData = response.data;
@@ -162,7 +164,7 @@ const MonthlyRoutineInfo = () => {
         }
 
         try {
-            const response = await axios.delete(`${BACK_URL}/routine/delete/${routineToEdit.id}`);
+            const response = await axiosInstance.delete(`/routine/delete/${routineToEdit.id}`);
 
             if (response.status === 200) {
                 setRoutineItems(prevItems => ({
@@ -186,7 +188,7 @@ const MonthlyRoutineInfo = () => {
         }
 
         try {
-            const response = await axios.delete(`${BACK_URL}/routine/deleteGroup/${groupName}`);
+            const response = await axiosInstance.delete(`/routine/deleteGroup/${groupName}`);
             if (response.status === 200) {
                 alert('루틴 그룹이 성공적으로 삭제되었습니다.');
                 navigate('/routine'); // 루틴 페이지로 이동하거나 다른 적절한 페이지로 이동

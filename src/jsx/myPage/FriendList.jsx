@@ -4,19 +4,21 @@ import styles from '../../css/myPage/friendList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axios from "axios";
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const FriendList = () => {
+
+    const {loginUserId} = useLogin();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState([]);
 
-    const loginUserId = 1; // 실제 userId를 적절히 변경해야 합니다.
-
     // 친구 목록 가져오기
     const fetchFriends = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/friend/list`, {
-                params: { userId : loginUserId }
+            const response = await axiosInstance.get(`/friend/list`, {
+                params: { userId: loginUserId }
             });
             setFriends(response.data);
             console.log(response.data);
@@ -40,7 +42,7 @@ const FriendList = () => {
         console.log(receiverId);
 
         try {
-            const response = await axios.post(`${BACK_URL}/friendRequest/cancel`, null, {
+            const response = await axiosInstance.post(`/friendRequest/cancel`, null, {
                 params: {
                     senderId: loginUserId,
                     receiverId: receiverId

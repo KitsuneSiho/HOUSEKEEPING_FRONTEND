@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/routine/routine.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import {BACK_URL} from "../../Constraints.js";
-import axios from 'axios';
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const Routine = () => {
     const navigate = useNavigate();
@@ -11,21 +11,22 @@ const Routine = () => {
     const [routineGroups, setRoutineGroups] = useState([]);
     const [newRoutineName, setNewRoutineName] = useState('');
 
-    const loginUserId = 1;
+    const { loginUserId } = useLogin();
 
     useEffect(() => {
         const fetchRoutineGroups = async () => {
             try {
-                const response = await fetch(`${BACK_URL}/routine/groups?userId=${loginUserId}`);
-                const data = await response.json();
-                setRoutineGroups(data);
+                const response = await axiosInstance.get(`/routine/groups`, {
+                    params: { userId: loginUserId }
+                });
+                setRoutineGroups(response.data);
             } catch (error) {
                 console.error('Error fetching routine groups:', error);
             }
         };
 
         fetchRoutineGroups();
-    }, []);
+    }, [loginUserId]);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -53,7 +54,6 @@ const Routine = () => {
         // 새 루틴 이름을 URL에 포함시켜 이동
         navigate(`/routine/recommend/daily`);
     };
-
 
 
     return (

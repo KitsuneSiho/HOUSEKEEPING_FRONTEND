@@ -4,6 +4,8 @@ import axios from 'axios';
 import styles from '../../css/main/visitorBoard.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const colorMapping = {
     BLUE: '#c5f1ff',
@@ -12,6 +14,8 @@ const colorMapping = {
 };
 
 const MyGuestBook = () => {
+
+    const {loginUserId} = useLogin();
     const navigate = useNavigate();
     const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
@@ -21,13 +25,11 @@ const MyGuestBook = () => {
     const [isPrivate, setIsPrivate] = useState(false);
     const [isArchived, setIsArchived] = useState(false);
 
-    // 현재 로그인 중인 사용자
-    const ownerId = 1;
 
     useEffect(() => {
         const fetchGuestbook = async () => {
             try {
-                const response = await axios.get(`${BACK_URL}/guestbook/list/${ownerId}`);
+                const response = await axiosInstance.get(`/guestbook/list/${loginUserId}`);
                 if (Array.isArray(response.data)) {
                     setGuestbook(response.data);
                 } else {
@@ -40,7 +42,7 @@ const MyGuestBook = () => {
             }
         };
         fetchGuestbook();
-    }, [ownerId]);
+    }, [loginUserId]);
 
     const addEntry = async () => {
         if (content.trim() === '') {
@@ -74,7 +76,7 @@ const MyGuestBook = () => {
 
     const handleDelete = async (guestbookId) => {
         try {
-            await axios.delete(`${BACK_URL}/guestbook/delete/${guestbookId}`);
+            await axiosInstance.delete(`/guestbook/delete/${guestbookId}`);
             setGuestbook(prevEntries => prevEntries.filter(entry => entry.guestbookId !== guestbookId));
         } catch (error) {
             console.error('Error deleting guestbook entry:', error);
@@ -83,7 +85,7 @@ const MyGuestBook = () => {
 
     const handleArchive = async (guestbookId) => {
         try {
-            await axios.patch(`${BACK_URL}/guestbook/archive/${guestbookId}`);
+            await axiosInstance.patch(`/guestbook/archive/${guestbookId}`);
             // Remove the archived entry from the list
             setGuestbook(prevEntries =>
                 prevEntries.filter(entry => entry.guestbookId !== guestbookId)
@@ -92,7 +94,6 @@ const MyGuestBook = () => {
             console.error('Error updating guestbook entry:', error);
         }
     };
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>

@@ -7,9 +7,12 @@ import styles from '../../css/calendar/calendar.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import moment from 'moment-timezone';
 import '../../css/calendar/customCalendar.css'; // 커스텀 CSS 파일을 import
-
+import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const Calendar = () => {
+
+    const {loginUserId} = useLogin();
     const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
     const [events, setEvents] = useState([]);
     const [schedules, setSchedules] = useState({});
@@ -24,21 +27,12 @@ const Calendar = () => {
     const [roomNames, setRoomNames] = useState({});
     const [selectedRoom, setSelectedRoom] = useState({ roomId: null, roomName: '' });
     const [updatedRoomName, setUpdatedRoomName] = useState('');
-    const loginUserId = 1;
+
 
     const fetchRoomData = async () => {
         try {
-            const response = await fetch(`${BACK_URL}/room/details`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginUserId)
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const roomData = await response.json();
+            const response = await axiosInstance.post(`/room/details`, loginUserId);
+            const roomData = response.data;
             setRoomIds(roomData.map(room => room.roomId));
             setRoomNames(roomData.reduce((acc, room) => {
                 acc[room.roomId] = room.roomName;
@@ -96,16 +90,7 @@ const Calendar = () => {
 
     const handleCheckboxChange = async (scheduleId, isChecked) => {
         try {
-            const response = await fetch(`${BACK_URL}/calendar/updateChecked/${scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ checked: isChecked })
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await axiosInstance.patch(`/calendar/updateChecked/${scheduleId}`, { checked: isChecked });
             await fetchRoomData();
         } catch (error) {
             console.error('Error updating schedule checked status:', error);
@@ -122,16 +107,7 @@ const Calendar = () => {
 
     const handleAlarmChange = async (scheduleId, isAlarmed) => {
         try {
-            const response = await fetch(`${BACK_URL}/calendar/alarm/${scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ alarm: isAlarmed })
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await axiosInstance.patch(`/calendar/alarm/${scheduleId}`, { alarm: isAlarmed });
             await fetchRoomData();
         } catch (error) {
             console.error('Error updating schedule alarm status:', error);
@@ -148,13 +124,7 @@ const Calendar = () => {
 
     const handleScheduleUpdate = async () => {
         try {
-            await fetch(`${BACK_URL}/calendar/updateName/${selectedSchedule.scheduleId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ scheduleName: updatedScheduleName })
-            });
+            await axiosInstance.patch(`/calendar/updateName/${selectedSchedule.scheduleId}`, { scheduleName: updatedScheduleName });
             fetchRoomData();
             closeEditModal();
         } catch (error) {
@@ -162,42 +132,24 @@ const Calendar = () => {
         }
     };
 
-    const handleDelete = (scheduleId) => {
-        fetch(`${BACK_URL}/calendar/delete/${scheduleId}`, {
-            method: 'DELETE',
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(() => {
-                fetchRoomData();
-                closeEditModal();
-            })
-            .catch(error => {
-                console.error('스케줄 삭제 도중 오류 발생', error);
-            });
+
+    const handleDelete = async (scheduleId) => {
+        try {
+            await axiosInstance.delete(`/calendar/delete/${scheduleId}`);
+            fetchRoomData();
+            closeEditModal();
+        } catch (error) {
+            console.error('Error deleting schedule:', error);
+        }
     };
 
     // 방 이름 변경
     const handleRoomNameUpdate = async () => {
         try {
-            const response = await fetch(`${BACK_URL}/room/rename`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    roomId: selectedRoom.roomId,
-                    newName: updatedRoomName
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            await axiosInstance.post(`/room/rename`, new URLSearchParams({
+                roomId: selectedRoom.roomId,
+                newName: updatedRoomName
+            }));
 
             fetchRoomData(); // 업데이트된 데이터를 다시 가져옵니다.
             closeEditRoomNameModal();
@@ -261,19 +213,13 @@ const Calendar = () => {
         const isoDate = date.toISOString();
 
         try {
-            await fetch(`${BACK_URL}/calendar/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    scheduleName: newScheduleName,
-                    scheduleDate: isoDate,
-                    scheduleDetail: "",
-                    scheduleIsChecked: false,
-                    scheduleIsAlarm: false,
-                    roomId: selectedRoomId
-                })
+            await axiosInstance.post(`/calendar/add`, {
+                scheduleName: newScheduleName,
+                scheduleDate: isoDate,
+                scheduleDetail: "",
+                scheduleIsChecked: false,
+                scheduleIsAlarm: false,
+                roomId: selectedRoomId
             });
             fetchRoomData();
             closeAddModal();
