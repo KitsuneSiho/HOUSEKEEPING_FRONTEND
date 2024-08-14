@@ -64,6 +64,20 @@ const Manager = () => {
         ],
     };
 
+    // 레벨별 사용자 수 데이터
+    const levelData = {
+        labels: ['레벨 1', '레벨 2', '레벨 3', '레벨 4', '레벨 5'],
+        datasets: [
+            {
+                label: '사용자 수',
+                data: [5, 8, 12, 7, 10],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
     // 사용자 및 게시물 데이터 (샘플)
     const users = [
         { id: 1, name: '홍길동', email: 'hong@example.com', nickname: '길동이', phone: '010-1234-5678', platform: '카카오', level: '5' },
@@ -137,6 +151,10 @@ const Manager = () => {
                         <div className={styles.chartBox}>
                             <h2>방명록 많이 받은 사용자</h2>
                             <Bar data={guestbookData} options={{ responsive: true }} />
+                        </div>
+                        <div className={styles.chartBox}>
+                            <h2>레벨별 사용자 수</h2>
+                            <Bar data={levelData} options={{ responsive: true }} />
                         </div>
                     </div>
                 );
