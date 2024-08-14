@@ -1,0 +1,544 @@
+[33mcommit 32e1f245d75a2cb6009605e355d0154ce232d749[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhojune[m[33m, [m[1;31morigin/hojune[m[33m)[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 13 12:35:03 2024 +0900
+
+    옷 추천 기능 구현 중(아직 미구현)
+
+[33mcommit c8f155eeccff260398dd88579d5c4dab1960ff08[m
+Merge: 3c0f921 4d38a53
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 13 09:48:27 2024 +0900
+
+    Merge branch 'harry' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+
+[33mcommit 3c0f921e781dec4fb00fbc2086a5300d86ee2f51[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 13 09:46:54 2024 +0900
+
+    import aplicient 주소 수정,
+    옷 추천 기능 구현 중
+
+[33mcommit 4d38a539421f25c5e18468147172607667c3326d[m[33m ([m[1;31morigin/harry[m[33m)[m
+Author: harry <hw0187@naver.com>
+Date:   Mon Aug 12 18:21:10 2024 +0900
+
+    토큰 완료
+
+[33mcommit e77b312c6f3d1d91a3a50b08c2abba569f6cb43d[m
+Author: harry <hw0187@naver.com>
+Date:   Mon Aug 12 17:56:51 2024 +0900
+
+    내정보까지 문제없이 들어가짐
+
+[33mcommit 161e637b3c547eea73f984368047874f1551d2bc[m
+Merge: f8b08c7 81d58ea
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 18:03:05 2024 +0900
+
+    Merge branch 'jihun_merge' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+    
+    # Conflicts:
+    #       src/config/weatherApi.js
+    #       src/jsx/clothes/BagList.jsx
+    #       src/jsx/clothes/BottomList.jsx
+    #       src/jsx/clothes/OuterList.jsx
+    #       src/jsx/clothes/ShoesList.jsx
+    #       src/jsx/clothes/TopList.jsx
+    #       src/jsx/clothes/UploadClosetCheck.jsx
+
+[33mcommit 81d58ea9cee5f5324a47ebea6b5231dca8247cc3[m
+Author: djawlgns7 <djawlgns7@gmail.com>
+Date:   Fri Aug 9 17:37:48 2024 +0900
+
+    라우터 변경
+
+[33mcommit f8b08c7448b969eb42d7e846f08a300bec1f82ba[m
+Merge: 257e6b9 ef14992
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 17:22:51 2024 +0900
+
+    Merge branch 'sangwoo' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+
+[33mcommit 257e6b97a94fbdf71039ad6ffdd17ea7530cc8ab[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 17:20:19 2024 +0900
+
+    보현이랑 합친 후
+    자잘한 수정
+
+[33mcommit 0e706d81220a79683db1c60c05a81fb153dfb1cc[m
+Author: djawlgns7 <djawlgns7@gmail.com>
+Date:   Fri Aug 9 17:06:13 2024 +0900
+
+    라우터 변경
+
+[33mcommit 7974126f73ae946422d113cc5016a846d8680e83[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Fri Aug 9 16:36:10 2024 +0900
+
+    로그인 관련
+
+[33mcommit ef14992f919eab7eafe781791969fd2b8313b1e2[m
+Author: sangwoo <whiz10@naver.com>
+Date:   Fri Aug 9 16:27:04 2024 +0900
+
+    feat: 레시피 추천 구현
+
+[33mcommit 0574927e8bec1a41b52fc9a918cbbce4a7ac6cae[m
+Merge: 34b8b4b 9815687
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 15:43:02 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+    
+    # Conflicts:
+    #       src/css/clothes/recommendCloset.module.css
+    #       src/jsx/clothes/AccessoryList.jsx
+    #       src/jsx/clothes/BagList.jsx
+    #       src/jsx/clothes/BottomList.jsx
+    #       src/jsx/clothes/OuterList.jsx
+    #       src/jsx/clothes/RecommendCloset.jsx
+    #       src/jsx/clothes/ShoesList.jsx
+    #       src/jsx/clothes/TopList.jsx
+
+[33mcommit 34b8b4b67752bfed04a8d06261ad8e0819b4c1fc[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 15:29:52 2024 +0900
+
+    수정
+
+[33mcommit 98156877935ec1422af9a29b59a8e6fc7fb3b216[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 15:10:19 2024 +0900
+
+    폰트변경
+
+[33mcommit 5356f1506cdc1ba01924f834712b6fe608898baf[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 15:05:58 2024 +0900
+
+    날씨 - 낮, 밤에 따른 아이콘 변동(런던 기준이라 시차 적용) / 기후에 따른 배경색 변동 가능
+
+[33mcommit cbbfa36e1c8198afb81ac6b8e81bba2e951068a6[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 14:59:00 2024 +0900
+
+    ...
+
+[33mcommit e428956309a245606e6892d38be60239f34967a9[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 14:57:52 2024 +0900
+
+    옷장 디자인 수정
+
+[33mcommit 1cf80b3e4a0804b73812a66086a9f1702ab46858[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 14:47:29 2024 +0900
+
+    폰트변경, 최초 방 제공 디자인 변경
+
+[33mcommit 88ea7d22a455c4f471cd90d7f347d516b66c59d7[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 14:35:32 2024 +0900
+
+    폰트변경, 최초 방 제공 디자인 변경
+
+[33mcommit 61e73af038fe9c6d0684378fc5df01cddb7529e3[m
+Merge: 85b3d6d aaec821
+Author: jihun <djawlgns7@gmail.com>
+Date:   Fri Aug 9 14:17:42 2024 +0900
+
+    Merge branch 'harry' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into jihun_merge
+
+[33mcommit aaec8210bd92674b53545913d1e4df0c6a8c953e[m
+Author: harry <hw0187@naver.com>
+Date:   Fri Aug 9 14:15:29 2024 +0900
+
+    토큰값 수정
+
+[33mcommit 47e4edac050f3994e6142f7a6128c95912b5ddf6[m
+Author: boddak <kbh000111@naver.com>
+Date:   Fri Aug 9 13:11:40 2024 +0900
+
+    폰트변경, 최초 방 제공 디자인 변경
+
+[33mcommit 35d2051064c139f213cace0a5aad8e7f74d596f2[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Fri Aug 9 11:48:43 2024 +0900
+
+    추천받기에서 날씨 추가,
+    지역,날짜,시간대별 날씨 표시,
+    날씨 css 수정
+
+[33mcommit 85b3d6d852e49082f925c6fe12be772adff17f6c[m
+Merge: a9a9191 4e8e94e
+Author: jihun <djawlgns7@gmail.com>
+Date:   Fri Aug 9 10:53:35 2024 +0900
+
+    Merge branch 'harry' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into jihun_merge
+
+[33mcommit 4e8e94e249db3faef0a4fb6db9941510e135b5dd[m
+Author: harry <hw0187@naver.com>
+Date:   Fri Aug 9 10:45:19 2024 +0900
+
+    로그인ㅇ시 토큰 에러 해결
+
+[33mcommit 78c365ad571eeb73bcb6f378460913a203095f03[m
+Merge: 37eae97 b1baead
+Author: harry <hw0187@naver.com>
+Date:   Thu Aug 8 19:53:28 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into harry
+    
+    # Conflicts:
+    #       src/App.jsx
+
+[33mcommit b1baeadde220feeb7ec660ea9b8c53b858c166c4[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 19:48:38 2024 +0900
+
+    루틴 디자인 수정
+
+[33mcommit 37eae97f58c6384e03841ccfe00eba86423bf01a[m
+Merge: 40f9160 58628b1
+Author: harry <hw0187@naver.com>
+Date:   Thu Aug 8 19:47:42 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into harry
+
+[33mcommit 40f91603d69064ca649bbbdca8c5fb5eddf29390[m
+Author: harry <hw0187@naver.com>
+Date:   Thu Aug 8 19:44:19 2024 +0900
+
+    회원가입 중복불가 기능 완료
+
+[33mcommit 323b506c58ebf0b3ef8188cf327c5c4065d5d985[m
+Merge: 58628b1 3c8bbdd
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 18:36:57 2024 +0900
+
+    Merge branch 'jaeyoung' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into boddak
+
+[33mcommit 3c8bbdd08614891f781f4e3fa3230c8007e1cb65[m
+Author: answodud <answodud0112@gmail.com>
+Date:   Thu Aug 8 18:25:29 2024 +0900
+
+    루틴 기능 추가
+
+[33mcommit 58628b116395996256cd8f979c1990387c15401b[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 18:20:38 2024 +0900
+
+    ...
+
+[33mcommit a7f38f2ac73e48806c7f4f386de3b02652af677c[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 18:05:16 2024 +0900
+
+    오염도 바 살짝수정
+
+[33mcommit 0046282f0514c95f5e48b598faa5d881a210368b[m
+Author: harry <hw0187@naver.com>
+Date:   Thu Aug 8 16:18:47 2024 +0900
+
+    access 토큰 로컬스토리지에 발급
+
+[33mcommit 14656860d2458d6b8a0c96ccf582beec37194ced[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 15:46:19 2024 +0900
+
+    방꾸미기 가구버튼 이미지추가
+
+[33mcommit 22ecdf07bd07f121e8385545cfe1a6fae534023f[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 12:43:55 2024 +0900
+
+    버튼 폰트 변경
+
+[33mcommit ad59326bbf34fcbe276f7a22d76202e003876e95[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 12:38:08 2024 +0900
+
+    가구 버튼 이미지 추가
+
+[33mcommit 4e4fe286419ad58316f683e258dc2189cb2a3154[m
+Author: boddak <kbh000111@naver.com>
+Date:   Thu Aug 8 12:37:40 2024 +0900
+
+    가구 버튼 이미지 추가
+
+[33mcommit 2bc854ed27b5de3055ae64c2a1239e4e620f6906[m
+Merge: b8a5b2c 2544961
+Author: answodud <answodud0112@gmail.com>
+Date:   Thu Aug 8 09:44:33 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into jaeyoung
+    
+    # Conflicts:
+    #       src/jsx/calendar/Calendar.jsx
+
+[33mcommit b8a5b2c38f1243aa1c48c131d25ad2bf75c3100d[m
+Author: answodud <answodud0112@gmail.com>
+Date:   Thu Aug 8 09:42:48 2024 +0900
+
+    루틴 기능 추가
+
+[33mcommit 93d7ffaec47168b20b9dd50ef5da045cd1f62366[m
+Author: harry <hw0187@naver.com>
+Date:   Thu Aug 8 07:20:48 2024 +0900
+
+    회원가입 성공
+
+[33mcommit a9a919105f5a53072b228bc933a1aae4587daaaf[m[33m ([m[1;31morigin/jihun[m[33m)[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Wed Aug 7 17:25:32 2024 +0900
+
+    루미 로딩 애니메이션
+
+[33mcommit 7aaf53a85588688b2a9d195bce2760301a35c7b1[m
+Merge: 2544961 3f952bc
+Author: boddak <kbh000111@naver.com>
+Date:   Wed Aug 7 15:03:53 2024 +0900
+
+    Merge branch 'jihun_merge' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into boddak
+
+[33mcommit 28ec3f0fb3a78e0b82602f872e0a88fb2113f0b2[m
+Merge: 350f653 2544961
+Author: sangwoo <whiz10@naver.com>
+Date:   Wed Aug 7 14:47:42 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into sangwoo
+
+[33mcommit 350f653fd543eaad818bae860236f5a18399b20e[m
+Author: sangwoo <whiz10@naver.com>
+Date:   Wed Aug 7 14:47:16 2024 +0900
+
+     임시()
+
+[33mcommit 3f952bcacdde23491c5193d16ab0a7103a89b03f[m[33m ([m[1;31morigin/project[m[33m)[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Wed Aug 7 14:04:57 2024 +0900
+
+    1대1 채팅 중복 방 생성 막음
+    친구와 채팅 방 이미지 제대로 나옴
+    1대1 채팅 방 이름 제대로 나옴
+
+[33mcommit 2544961cd3122ce624a98034889bc48b03e2e2ed[m
+Author: boddak <kbh000111@naver.com>
+Date:   Wed Aug 7 11:55:34 2024 +0900
+
+    약간의 디자인 수정
+
+[33mcommit a2ecaef93600cebf858f8a000e4ebb03194cee94[m
+Author: boddak <kbh000111@naver.com>
+Date:   Wed Aug 7 11:48:59 2024 +0900
+
+    약간의 디자인 수정
+
+[33mcommit 643cfb0318efbfd2afb41d8c92fbee739567eb3e[m
+Author: boddak <kbh000111@naver.com>
+Date:   Wed Aug 7 11:18:28 2024 +0900
+
+    약간의 디자인 수정
+
+[33mcommit 7d349270354cc48070ca19818689862ca70bc2d7[m
+Author: boddak <kbh000111@naver.com>
+Date:   Wed Aug 7 11:13:07 2024 +0900
+
+    약간의 디자인 수정
+
+[33mcommit dccaa6d3cbe67b5e8a737cce4429e7425ab2fd4e[m
+Author: harry <hw0187@naver.com>
+Date:   Wed Aug 7 01:35:13 2024 +0900
+
+    firstlogin에서 정보출력까진 성공
+
+[33mcommit 777a3718ccf0cec6195eecd538f3d22ae3e51d97[m
+Author: harry <hw0187@naver.com>
+Date:   Wed Aug 7 00:01:33 2024 +0900
+
+    백엔드랑 연결 시도
+
+[33mcommit 609d549ade3d5e3174adec5ebe16cc39b232d49c[m
+Author: sangwoo <whiz10@naver.com>
+Date:   Tue Aug 6 23:51:23 2024 +0900
+
+    fix: 레시피추천 드롭다운 DB연동
+
+[33mcommit 94a2ac5d758f0357ad4b10ff698100554515e42e[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 20:43:18 2024 +0900
+
+    옷 종류별 세탁방법 추천가능 -
+    옷 관련 jsx 수정 및
+    DetermineHowWash.jsx 추가
+
+[33mcommit 53be54b21601509facc306f03c673562b191a80d[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 20:15:33 2024 +0900
+
+    캘린더 디자인 수정
+
+[33mcommit fdd5c5d6a8350c6cfa955cb4f691bd2a3c672142[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 20:03:03 2024 +0900
+
+    오염도바 추가
+
+[33mcommit 2c1a9243780f9a8d170eeba1be556cb109d77462[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 20:02:17 2024 +0900
+
+    오염도바 추가
+
+[33mcommit 391f316ac9ac51f256c24cb5b9f097d217c23efe[m
+Merge: 67db2c4 becf668
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 18:58:24 2024 +0900
+
+    Merge branch 'jihun_merge' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into boddak
+
+[33mcommit becf66807715d4e59a6607128552a2293242bbd2[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Tue Aug 6 18:57:27 2024 +0900
+
+    오염도 바
+
+[33mcommit 67db2c4cc121d5457849a0d741db9b912771a910[m
+Merge: e4c69f5 1b72b8d
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 18:55:18 2024 +0900
+
+    Merge branch 'jihun_merge' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into boddak
+
+[33mcommit 1b72b8d66148c5f198728d69e06a63bca4d46218[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Tue Aug 6 18:54:37 2024 +0900
+
+    방 출력 및 변경 기능은 대충 완성
+
+[33mcommit e00b89d6cabe9e559f9ef9d12b9f3b4d7b7e31e0[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Tue Aug 6 18:50:17 2024 +0900
+
+    방 출력 및 변경 기능은 대충 완성
+
+[33mcommit e4c69f5028e0e133e32ccdf62256c2bc4e1f3657[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 18:48:27 2024 +0900
+
+    일간체크리스트 디자인 수정(메인,캘린더)
+
+[33mcommit d0127425ba5a83b19b05b16c9bcca48b05b01afb[m
+Author: jihun <djawlgns7@gmail.com>
+Date:   Tue Aug 6 17:51:22 2024 +0900
+
+    방 출력 및 변경 기능은 대충 완성
+
+[33mcommit 3f8533e09fac52d0ca0f294b1ffe847484bbeafa[m
+Merge: 54e519b 8d420e6
+Author: sangwoo <whiz10@naver.com>
+Date:   Tue Aug 6 17:28:55 2024 +0900
+
+    Merge branch 'hojune' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into sangwoo
+    
+    # Conflicts:
+    #       src/jsx/first/FirstLogin.jsx
+    #       src/jsx/fix/Footer.jsx
+    #       src/jsx/myPage/FriendRequest.jsx
+
+[33mcommit 54e519b3b268724f3ee478cbc091d8304f248efb[m
+Author: sangwoo <whiz10@naver.com>
+Date:   Tue Aug 6 17:26:59 2024 +0900
+
+    임시
+
+[33mcommit 6875331f71962c46862ea27a96de6c882b2d351a[m
+Author: answodud <answodud0112@gmail.com>
+Date:   Tue Aug 6 17:09:59 2024 +0900
+
+    방 이름 수정
+
+[33mcommit 53e204bc639cfd29ebb0c343426f8e03741bd36d[m
+Merge: f0a3d74 8d420e6
+Author: answodud <answodud0112@gmail.com>
+Date:   Tue Aug 6 16:05:19 2024 +0900
+
+    Merge branch 'hojune' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into jaeyoung
+
+[33mcommit 8d420e66705061ad559d864571dfd9686e4ea02d[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 16:03:02 2024 +0900
+
+    boddak과 합침
+
+[33mcommit f464f78672ab70ccbf6051d50d6d9592b8d6726d[m
+Merge: 237fd16 b25a937
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 15:59:03 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+
+[33mcommit 237fd16e72be425d9c1dcd04a4db4b042b5381be[m
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 15:58:16 2024 +0900
+
+    footer 수정
+
+[33mcommit b25a937464837fe4018c4ff400baea9b417b5a9b[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 15:52:26 2024 +0900
+
+    ...
+
+[33mcommit 9d6acbea21b90dd088f4b3739b97c4a801f1543e[m
+Merge: ad39b46 bf0c0b9
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 15:27:35 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune
+    
+    # Conflicts:
+    #       src/App.jsx
+
+[33mcommit f0a3d745d1398443b22a6ca1a0fe5cdd2d2d9ce6[m
+Author: answodud <answodud0112@gmail.com>
+Date:   Tue Aug 6 15:08:44 2024 +0900
+
+    수정
+
+[33mcommit 185e7975a23cc7692f23ade1d421ca165dc1a60d[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 15:08:36 2024 +0900
+
+    ...
+
+[33mcommit 7c04f4bbe7a4bef0e71d214b8820766c15247784[m
+Merge: f05dce6 bf0c0b9
+Author: answodud <answodud0112@gmail.com>
+Date:   Tue Aug 6 13:00:24 2024 +0900
+
+    Merge branch 'boddak' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into jaeyoung
+    
+    # Conflicts:
+    #       src/jsx/main/MyGuestBook.jsx
+    #       src/jsx/myPage/GuestBook.jsx
+
+[33mcommit f05dce6abf7a4d656b33a882a19caad26e5dc3eb[m
+Author: answodud <answodud0112@gmail.com>
+Date:   Tue Aug 6 12:59:40 2024 +0900
+
+    dd
+
+[33mcommit bf0c0b96cfa8a318f60dcf713ac58a46ff8c14c8[m
+Author: boddak <kbh000111@naver.com>
+Date:   Tue Aug 6 12:55:59 2024 +0900
+
+    엄형!
+
+[33mcommit ad39b46bebaa1afcb9b74b68a511e5c3ec4976fd[m
+Merge: 23f8485 52f2ff6
+Author: Hojune Lee <hojune0124@gmail.com>
+Date:   Tue Aug 6 12:07:05 2024 +0900
+
+    Merge branch 'jaeyoung' of https://github.com/KitsuneSiho/HOUSEKEEPING_FRONTEND into hojune

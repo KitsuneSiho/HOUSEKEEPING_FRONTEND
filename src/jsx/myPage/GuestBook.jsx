@@ -4,18 +4,18 @@ import axios from 'axios';
 import styles from '../../css/myPage/guestBook.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const GuestBook = () => {
     const navigate = useNavigate();
     const [guestBooks, setGuestBooks] = useState([]);
-
-    // 현재 로그인 한 사용자
-    const ownerId = 2;
+    const { user } = useLogin(); // 로그인한 사용자 ID 가져오기
 
     // API 호출하여 보관된 방명록을 가져오는 함수
     const fetchArchivedGuestBooks = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/guestbook/archived/${ownerId}`);
+            const response = await axiosInstance.get(`/guestbook/archived/${user.userId}`);
             setGuestBooks(response.data);
         } catch (error) {
             console.error('Error fetching archived guestbooks:', error);
@@ -25,12 +25,12 @@ const GuestBook = () => {
     // 컴포넌트가 마운트될 때 데이터 가져오기
     useEffect(() => {
         fetchArchivedGuestBooks();
-    }, [ownerId]);
+    }, [user.userId]);
 
     // 방명록 삭제 핸들러
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${BACK_URL}/guestbook/delete/${id}`);
+            await axiosInstance.delete(`/guestbook/delete/${id}`);
             setGuestBooks(prevBooks => prevBooks.filter(book => book.guestbookId !== id));
         } catch (error) {
             console.error('Error deleting guestbook entry:', error);

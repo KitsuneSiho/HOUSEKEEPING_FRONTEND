@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../css/routine/weeklyRoutineInfo.module.css';
+import styles from '../../css/routine/monthlyRoutineInfo.module.css';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from '../../Constraints.js';
 import axios from 'axios';
-import {useLogin} from "../../contexts/AuthContext.jsx";
-import axiosInstance from "../../config/axiosInstance.js";
 
-const WeeklyRoutineInfo = () => {
+const RecommendMonthlyRoutine = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { groupName } = useParams();
@@ -18,22 +16,22 @@ const WeeklyRoutineInfo = () => {
     const [newRoutineText, setNewRoutineText] = useState('');
     const [editRoutineText, setEditRoutineText] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState(null);
-    const [selectedDays, setSelectedDays] = useState([]); // 선택된 요일
+    const [selectedDates, setSelectedDates] = useState([]);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const { user } = useLogin();
+    const loginUserId = 1;
 
-    const toggleDaySelection = (day) => {
-        setSelectedDays((prev) =>
-            prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+    const toggleDateSelection = (date) => {
+        setSelectedDates(prev =>
+            prev.includes(date) ? prev.filter(d => d !== date) : [...prev, date]
         );
     };
 
     // 그룹 이름으로 루틴 정보 가져오기
-    const fetchWeeklyRoutines = async () => {
+    const fetchMonthlyRoutines = async () => {
         try {
-            const response = await axiosInstance.get(`/routine/group/${groupName}`);
-            const weeklyRoutines = response.data.filter(routine => routine.routineFrequency === 'WEEKLY')
+            const response = await axios.get(`${BACK_URL}/routine/group/${groupName}`);
+            const monthlyRoutines = response.data.filter(routine => routine.routineFrequency === 'MONTHLY')
                 .reduce((acc, routine) => {
                     if (!acc[routine.roomId]) {
                         acc[routine.roomId] = [];
@@ -46,7 +44,7 @@ const WeeklyRoutineInfo = () => {
                     });
                     return acc;
                 }, {});
-            setRoutineItems(weeklyRoutines);
+            setRoutineItems(monthlyRoutines);
         } catch (error) {
             console.error('Error fetching weekly routines:', error);
         }
@@ -56,8 +54,8 @@ const WeeklyRoutineInfo = () => {
         // 모든 방 정보 가져오기
         const fetchRooms = async () => {
             try {
-                const response = await axiosInstance.get(`/room/list`, {
-                    params: { userId: user.userId }
+                const response = await axios.get(`${BACK_URL}/room/list`, {
+                    params: { userId: loginUserId }
                 });
                 setRooms(response.data);
             } catch (error) {
@@ -66,7 +64,7 @@ const WeeklyRoutineInfo = () => {
         };
 
         fetchRooms();
-        fetchWeeklyRoutines();
+        fetchMonthlyRoutines();
     }, [groupName]);
 
     const addRoutineItem = async () => {
@@ -79,14 +77,14 @@ const WeeklyRoutineInfo = () => {
             routineName: newRoutineText,
             routineGroupName: groupName,
             roomId: selectedRoomId,
-            routineInterval: selectedDays.join(','),
-            routineFrequency: 'WEEKLY',
+            routineInterval: selectedDates.join(','),
+            routineFrequency: 'MONTHLY',
             routineIsAlarm: false,
             routineIsChecked: false
         };
 
         try {
-            const response = await axiosInstance.post(`/routine/add`, newRoutine);
+            const response = await axios.post(`${BACK_URL}/routine/add`, newRoutine);
 
             if (response.status === 200) {
                 const addedRoutine = response.data;
@@ -103,7 +101,7 @@ const WeeklyRoutineInfo = () => {
                     ]
                 }));
                 closeAddModal();
-                fetchWeeklyRoutines();
+                fetchMonthlyRoutines();
             } else {
                 throw new Error('Failed to add routine item');
             }
@@ -124,14 +122,14 @@ const WeeklyRoutineInfo = () => {
             routineName: editRoutineText,
             routineGroupName: groupName,
             roomId: routineToEdit.roomId,
-            routineInterval: selectedDays.join(','), // 수정된 요일 정보
-            routineFrequency: 'WEEKLY',
+            routineInterval: selectedDates.join(','), // 수정된 요일 정보
+            routineFrequency: 'MONTHLY',
             routineIsAlarm: routineToEdit.notification === 'on',
             routineIsChecked: routineToEdit.routineIsChecked
         };
 
         try {
-            const response = await axiosInstance.put(`/routine/update`, updatedRoutine);
+            const response = await axios.put(`${BACK_URL}/routine/update`, updatedRoutine);
 
             if (response.status === 200) {
                 const updatedRoutineData = response.data;
@@ -147,7 +145,7 @@ const WeeklyRoutineInfo = () => {
                     )
                 }));
                 closeEditModal();
-                fetchWeeklyRoutines();
+                fetchMonthlyRoutines();
             } else {
                 throw new Error('Failed to update routine item');
             }
@@ -164,7 +162,7 @@ const WeeklyRoutineInfo = () => {
         }
 
         try {
-            const response = await axiosInstance.delete(`/routine/delete/${routineToEdit.id}`);
+            const response = await axios.delete(`${BACK_URL}/routine/delete/${routineToEdit.id}`);
 
             if (response.status === 200) {
                 setRoutineItems(prevItems => ({
@@ -172,7 +170,7 @@ const WeeklyRoutineInfo = () => {
                     [routineToEdit.roomId]: (prevItems[routineToEdit.roomId] || []).filter(item => item.id !== routineToEdit.id)
                 }));
                 closeEditModal();
-                fetchWeeklyRoutines();
+                fetchMonthlyRoutines();
             } else {
                 throw new Error('Failed to delete routine item');
             }
@@ -188,7 +186,7 @@ const WeeklyRoutineInfo = () => {
         }
 
         try {
-            const response = await axiosInstance.delete(`/routine/deleteGroup/${groupName}`);
+            const response = await axios.delete(`${BACK_URL}/routine/deleteGroup/${groupName}`);
             if (response.status === 200) {
                 alert('루틴 그룹이 성공적으로 삭제되었습니다.');
                 navigate('/routine'); // 루틴 페이지로 이동하거나 다른 적절한 페이지로 이동
@@ -214,7 +212,7 @@ const WeeklyRoutineInfo = () => {
         setAddModalOpen(false);
         setNewRoutineText('');
         setSelectedRoomId(null);
-        setSelectedDays([]); // 요일 선택 초기화
+        setSelectedDates([]); // 요일 선택 초기화
     };
 
     const openEditModal = (routine) => {
@@ -225,7 +223,9 @@ const WeeklyRoutineInfo = () => {
             ? routine.routineInterval.split(',')
             : routine.routineInterval || [];
 
-        setSelectedDays(intervals); // 기존 요일 정보 설정
+        console.log(intervals);
+
+        setSelectedDates(intervals); // 기존 요일 정보 설정
         setEditModalOpen(true);
     };
 
@@ -233,10 +233,10 @@ const WeeklyRoutineInfo = () => {
         setEditModalOpen(false);
         setEditRoutineText('');
         setRoutineToEdit(null);
-        setSelectedDays([]); // 요일 선택 초기화
+        setSelectedDates([]); // 요일 선택 초기화
     };
 
-    const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+    const daysOfMonth = Array.from({ length: 31 }, (_, i) => i + 1); // 1부터 31까지의 날짜 배열
 
     return (
         <div className={styles.container}>
@@ -269,17 +269,13 @@ const WeeklyRoutineInfo = () => {
                 {rooms.map(room => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}>
                                 <p>{room.roomName}</p>
-                                <img src="/lib/연필.svg" alt="edit"/>
+                                <img src="/lib/연필.svg" alt="edit" />
                             </div>
                             <div className={styles.alramOnOff}>
                                 <p>모든 알림 켜기</p>
-                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
-                                     onClick={() => openAddModal(room.roomId)}/>
+                                <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon} onClick={() => openAddModal(room.roomId)} />
                             </div>
                         </div>
                         <div className={styles.roomRoutineInfo}>
@@ -306,13 +302,12 @@ const WeeklyRoutineInfo = () => {
                             value={newRoutineText}
                             onChange={(e) => setNewRoutineText(e.target.value)}
                         />
-                        <div className={styles.daysOfWeek}>
-                            {daysOfWeek.map((day) => (
+                        <div className={styles.daysOfMonth}>
+                            {daysOfMonth.map((day) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''} 
-                                    ${day === '토' ? styles.saturday : ''} ${day === '일' ? styles.sunday : ''}`}
-                                    onClick={() => toggleDaySelection(day)}
+                                    className={`${styles.dateButton} ${selectedDates.includes(day) ? styles.selected : ''}`}
+                                    onClick={() => toggleDateSelection(day)}
                                 >
                                     {day}
                                 </button>
@@ -334,12 +329,12 @@ const WeeklyRoutineInfo = () => {
                             value={editRoutineText}
                             onChange={(e) => setEditRoutineText(e.target.value)}
                         />
-                        <div className={styles.daysOfWeek}>
-                            {daysOfWeek.map((day) => (
+                        <div className={styles.daysOfMonth}>
+                            {daysOfMonth.map((day) => (
                                 <button
                                     key={day}
-                                    className={`${styles.dayButton} ${selectedDays.includes(day) ? styles.selected : ''}`}
-                                    onClick={() => toggleDaySelection(day)}
+                                    className={`${styles.dateButton} ${selectedDates.includes(day.toString()) ? styles.selected : ''}`}
+                                    onClick={() => toggleDateSelection(day.toString())}
                                 >
                                     {day}
                                 </button>
@@ -358,4 +353,4 @@ const WeeklyRoutineInfo = () => {
     );
 };
 
-export default WeeklyRoutineInfo;
+export default RecommendMonthlyRoutine;
