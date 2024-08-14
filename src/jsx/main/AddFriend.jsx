@@ -102,6 +102,7 @@ const AddFriend = () => {
 
                 // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                 const userIds = filteredResults.map(user => user.userId).join(',');
+
                 const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                     params: {
                         senderId: user.userId,
@@ -114,7 +115,6 @@ const AddFriend = () => {
                     ...friend,
                     requestStatus: requestStatusMap[friend.userId] || null
                 }));
-
                 setSearchResults(updatedResults);
             } catch (error) {
                 console.error("친구 검색 중 오류가 발생했습니다:", error);

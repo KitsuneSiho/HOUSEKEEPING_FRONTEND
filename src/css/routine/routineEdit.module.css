@@ -37,7 +37,7 @@
     padding: 0;
 }
 
-.roomeRoutine, .myRoutine {
+.roomRoutine, .myRoutine {
     background-color: #c5f1ff;
     border: none;
     border-radius: 10px;
@@ -55,6 +55,7 @@
 .myRoutine {
     background-color: #ffebc5;
 }
+
 
 .roomeRoutine:hover, .myRoutine:hover {
     border: 3px solid #ff2c2c;
