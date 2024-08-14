@@ -439,29 +439,30 @@ const RecommendCloset = () => {
                     ))}
                 </select>
             </div>
-            <div className={styles.recommendations}>
-                {recommendations.top?.length > 0 && recommendations.top.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+            <div className="image-container">
+                {recommendations.top?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1}`}/>
                 ))}
-
-                {recommendations.bottom?.length > 0 && recommendations.bottom.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                {recommendations.bottom?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1 + recommendations.top.length}`}/>
                 ))}
-
-                {recommendations.outer?.length > 0 && recommendations.outer.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                {recommendations.outer?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1 + recommendations.top.length + recommendations.bottom.length}`}/>
                 ))}
-
-                {recommendations.shoes?.length > 0 && recommendations.shoes.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                {recommendations.shoes?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1 + recommendations.top.length + recommendations.bottom.length + recommendations.outer.length}`}/>
                 ))}
-
-                {recommendations.bag?.length > 0 && recommendations.bag.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                {recommendations.bag?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1 + recommendations.top.length + recommendations.bottom.length + recommendations.outer.length + recommendations.shoes.length}`}/>
                 ))}
-
-                {recommendations.accessory?.length > 0 && recommendations.accessory.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
+                {recommendations.accessory?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={`item item${index + 1 + recommendations.top.length + recommendations.bottom.length + recommendations.outer.length + recommendations.shoes.length + recommendations.bag.length}`}/>
                 ))}
             </div>
 

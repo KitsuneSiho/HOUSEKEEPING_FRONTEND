@@ -69,20 +69,41 @@
     font-size: 16px;
 }
 
-.recommendations {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 80px;
+.image-container {
+    position: relative;
+    width: 300px; /* 너비를 조정하세요 */
+    height: 300px; /* 높이를 조정하세요 */
 }
 
-.recommendations img {
-    width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
+.item {
+    position: absolute;
+    width: 100px; /* 원하는 크기로 조정 */
+    height: auto;
+    top: 0;
+    left: 0;
 }
+
+.item1 {
+    z-index: 3;
+    top: 0px;
+    left: 0px;
+}
+
+.item2 {
+    z-index: 2;
+    top: 10px;
+    left: 10px;
+}
+
+.item3 {
+    z-index: 1;
+    top: 20px;
+    left: 20px;
+}
+
+/* 더 많은 이미지가 있을 경우, item4, item5 등의 스타일을 추가하세요 */
+
+
 
 /* recommendCloset.module.css */
 .weather {
