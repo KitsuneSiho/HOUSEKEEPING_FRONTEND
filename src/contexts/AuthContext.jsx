@@ -17,18 +17,21 @@ export const AuthProvider = ({ children }) => {
                 setUser({
                     userId: decodedToken.userId,
                     nickname: decodedToken.nickname,
-                    // 기타 토큰에 포함된 사용자 정보
                 });
+                fetchUserInfo(decodedToken.userId);
             } else {
                 localStorage.removeItem('access');
             }
         }
     }, []);
 
-    const fetchUserInfo = async () => {
+    const fetchUserInfo = async (userId) => {
         try {
-            const response = await axiosInstance.get('/api/user/info');
-            setUser(response.data);
+            const response = await axiosInstance.get(`/api/user/info?userId=${userId}`);
+            setUser(prevUser => ({
+                ...prevUser,
+                ...response.data
+            }));
         } catch (error) {
             console.error('Error fetching user info', error);
         }
@@ -41,10 +44,8 @@ export const AuthProvider = ({ children }) => {
         setUser({
             userId: decodedToken.userId,
             nickname: decodedToken.nickname,
-            // 기타 토큰에 포함된 사용자 정보
         });
-        // 추가 정보가 필요한 경우에만 fetchUserInfo 호출
-        // fetchUserInfo();
+        fetchUserInfo(decodedToken.userId);
     };
 
     const logout = () => {
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, login, logout, fetchUserInfo }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, setUser, login, logout, fetchUserInfo }}>
             {children}
         </AuthContext.Provider>
     );

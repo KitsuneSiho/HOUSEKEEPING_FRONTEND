@@ -12,8 +12,12 @@ const MyInfo = () => {
         name: '',
         nickname: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
     });
+
+    useEffect(() => {
+        fetchUserInfo(user.userId);
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -21,7 +25,7 @@ const MyInfo = () => {
                 name: user.name || '',
                 nickname: user.nickname || '',
                 email: user.email || '',
-                phone: user.phone || '',
+                phoneNumber: user.phoneNumber || '',
             });
         }
     }, [user]);
@@ -36,8 +40,12 @@ const MyInfo = () => {
 
     const handleUpdate = async () => {
         try {
-            await axiosInstance.put('/api/user/update', userInfo);
-            await fetchUserInfo(); // 사용자 정보를 새로 가져옵니다.
+            const updatedUserInfo = {
+                ...userInfo,
+                userId: user.userId  // 사용자 ID 추가
+            };
+            await axiosInstance.put('/api/user/update', updatedUserInfo);
+            await fetchUserInfo(user.userId);
             navigate('/myPage');
         } catch (error) {
             console.error('Error updating user info', error);
@@ -57,7 +65,7 @@ const MyInfo = () => {
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" value={userInfo.name} onChange={handleInputChange} />
+                    <input type="text" id="name" value={userInfo.name} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
@@ -65,11 +73,11 @@ const MyInfo = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="email" id="email" value={userInfo.email} onChange={handleInputChange} />
+                    <input type="email" id="email" value={userInfo.email} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
-                    <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" value={userInfo.phone} onChange={handleInputChange} />
+                    <label htmlFor="phoneNumber">전화번호</label>
+                    <input type="text" id="phoneNumber" value={userInfo.phoneNumber} readOnly/>
                 </div>
             </div>
             <div className={styles.submit}>
