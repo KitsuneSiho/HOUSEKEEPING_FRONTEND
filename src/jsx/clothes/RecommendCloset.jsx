@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/recommendCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from "../../config/axiosConfig.js";
+import apiClient from '../../config/axiosConfig';
 import { recommendClothes } from "./recommendClothes.jsx";
 
 const RecommendCloset = () => {
