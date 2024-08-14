@@ -11,12 +11,12 @@ const MyPage = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post('/logout');
-            logout();
-            navigate('/login');
+            await axiosInstance.post('/api/auth/logout');
+            logout();  // AuthContext의 logout 함수 호출
+            navigate('/login');  // 로그인 페이지로 리다이렉트
         } catch (error) {
             console.error('Logout failed', error);
-            logout();
+            logout();  // 에러 발생 시에도 로컬 상태는 로그아웃 처리
         }
     };
 

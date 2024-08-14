@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('access');
+        document.cookie = "refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         setIsLoggedIn(false);
         setUser(null);
     };
