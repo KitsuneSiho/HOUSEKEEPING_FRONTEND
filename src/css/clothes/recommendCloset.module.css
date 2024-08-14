@@ -70,40 +70,19 @@
 }
 
 .image-container {
-    position: relative;
-    width: 300px; /* 너비를 조정하세요 */
-    height: 300px; /* 높이를 조정하세요 */
+    position: relative; /* 부모 컨테이너에 상대적 위치 지정 */
+    width: 3000px; /* 적절한 너비로 조정 */
+    height: 100px; /* 적절한 높이로 조정 */
+    display: flex; /* 플렉스 박스를 사용하여 이미지가 가로로 나란히 배치되도록 설정 */
+    align-items: center; /* 이미지를 세로로 중앙 정렬 */
 }
 
 .item {
-    position: absolute;
+    flex-shrink: 0; /* 이미지가 축소되지 않도록 설정 */
     width: 100px; /* 원하는 크기로 조정 */
     height: auto;
-    top: 0;
-    left: 0;
+    margin-right: 10px; /* 각 이미지 간의 간격을 설정 */
 }
-
-.item1 {
-    z-index: 3;
-    top: 0px;
-    left: 0px;
-}
-
-.item2 {
-    z-index: 2;
-    top: 10px;
-    left: 10px;
-}
-
-.item3 {
-    z-index: 1;
-    top: 20px;
-    left: 20px;
-}
-
-/* 더 많은 이미지가 있을 경우, item4, item5 등의 스타일을 추가하세요 */
-
-
 
 /* recommendCloset.module.css */
 .weather {

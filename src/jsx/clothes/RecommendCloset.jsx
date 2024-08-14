@@ -466,6 +466,7 @@ const RecommendCloset = () => {
                 ))}
             </div>
 
+
             <Footer/>
         </div>
     );
