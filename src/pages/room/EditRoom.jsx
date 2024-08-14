@@ -18,12 +18,14 @@ const EditRoom = () => {
     const [myRoomDeleteList, setMyRoomDeleteList] = useState([]);
     const [kitchenDeleteList, setKitchenDeleteList] = useState([]);
     const [toiletDeleteList, setToiletDeleteList] = useState([]);
+    const [furnitureTypesByRoomType, setFurnitureTypesByRoomType] = useState(null);
 
     useEffect(() => {
 
         if (user !== null) {
             getUserLevel();
             getRoomIds();
+            getFurnitureTypesByRoomType();
         }
     }, [user]);
 
@@ -75,6 +77,18 @@ const EditRoom = () => {
             setToiletList(response.data[2]);
         } catch (error) {
             console.error("Error fetching placementLists", error);
+        }
+    }
+
+    const getFurnitureTypesByRoomType = async () => {
+
+        try {
+
+            const response = await axiosInstance.get(`/room-furniture/all`);
+            setFurnitureTypesByRoomType(response.data);
+
+        } catch (error) {
+            console.error("Error getting furniture types:", error);
         }
     }
 
@@ -132,11 +146,14 @@ const EditRoom = () => {
                 <div className={styles.roomView}>
                     {isReady && <>
                         {currentRoom === 0 && <EditRoomModel room={rooms[0]} placementList={myRoomList} setPlacementList={setMyRoomList} furniture={furniture} userLevel={userLevel}
-                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={myRoomDeleteList} setDeletedPlacementList={setMyRoomDeleteList}/>}
+                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={myRoomDeleteList} setDeletedPlacementList={setMyRoomDeleteList}
+                        availableFurnitureTypes={furnitureTypesByRoomType[0]}/>}
                         {currentRoom === 1 && <EditRoomModel room={rooms[1]} placementList={kitchenList} setPlacementList={setKitchenList} furniture={furniture} userLevel={userLevel}
-                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={kitchenDeleteList} setDeletedPlacementList={setKitchenDeleteList}/>}
+                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={kitchenDeleteList} setDeletedPlacementList={setKitchenDeleteList}
+                        availableFurnitureTypes={furnitureTypesByRoomType[1]}/>}
                         {currentRoom === 2 && <EditRoomModel room={rooms[2]} placementList={toiletList} setPlacementList={setToiletList} furniture={furniture} userLevel={userLevel}
-                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={toiletDeleteList} setDeletedPlacementList={setToiletDeleteList}/>}
+                               savePlacement={savePlacement} deletePlacement={deletePlacement} deletedPlacementList={toiletDeleteList} setDeletedPlacementList={setToiletDeleteList}
+                        availableFurnitureTypes={furnitureTypesByRoomType[2]}/>}
                     </>
                     }
                 </div>

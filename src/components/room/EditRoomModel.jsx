@@ -17,7 +17,8 @@ const EditRoomModel = ({
                            deletePlacement,
                            setPlacementList,
                            deletedPlacementList,
-                           setDeletedPlacementList
+                           setDeletedPlacementList,
+                           availableFurnitureTypes,
                        }) => {
     const navigate = useNavigate();
     const mountRef = useRef(null);
@@ -42,6 +43,7 @@ const EditRoomModel = ({
     useEffect(() => {
 
         setFloorAndWallsColor(JSON.parse(room.roomWallsColor));
+        console.log("asdf", availableFurnitureTypes);
     }, [])
 
     useEffect(() => {
@@ -442,7 +444,7 @@ const EditRoomModel = ({
             <div className={styles.furniture}>
                 <FurnitureList furniture={furniture} userLevel={userLevel} activeCategory={activeCategory}
                                handleCategoryClick={handleCategoryClick} openColorModal={openColorModal}
-                               loadFurniture={loadFurniture}/>
+                               loadFurniture={loadFurniture} availableFurnitureTypes={availableFurnitureTypes}/>
                 <FurnitureController showModal={showModal} modalType={modalType} position={position} rotation={rotation}
                                      scale={scale} updatePosition={updatePosition} updateRotation={updateRotation}
                                      updateScale={updateScale} handleColorChange={handleColorChange}
@@ -480,6 +482,7 @@ EditRoomModel.propTypes = {
     changeCurrentRoom: PropTypes.func,
     setPlacementList: PropTypes.func,
     setDeletedPlacementList: PropTypes.func,
+    availableFurnitureTypes: PropTypes.array,
 }
 
 export default EditRoomModel;
