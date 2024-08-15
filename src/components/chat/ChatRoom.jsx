@@ -9,7 +9,7 @@ import {useLogin} from "../../contexts/AuthContext.jsx";
 // 1대1 채팅 element
 const ChatRoom = ({chatRoom, timeFormatter}) => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [userImage, setUserImage] = useState(null);
     const [chatRoomMembers, setChatRoomMembers] = useState([]);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ const ChatRoom = ({chatRoom, timeFormatter}) => {
 
         try {
 
-            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoom.chatRoomId}&userId=${loginUserId}`);
+            const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoom.chatRoomId}&userId=${user.userId}`);
 
             setChatRoomMembers(result.data);
         } catch (error) {

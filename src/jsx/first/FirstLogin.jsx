@@ -128,7 +128,7 @@ const FirstLogin = () => {
 
             await axiosInstance.post(`/placement/register`, {
                 roomId: roomId,
-                furnitureId: 34,
+                furnitureId: 1,
                 placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
                 placementAngle: 0,
                 placementSize: 1.3,
