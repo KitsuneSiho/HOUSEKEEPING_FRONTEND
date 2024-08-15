@@ -12,11 +12,11 @@ const MyPage = () => {
     const handleLogout = async () => {
         try {
             await axiosInstance.post('/api/auth/logout');
-            logout();  // AuthContext의 logout 함수 호출
-            navigate('/login');  // 로그인 페이지로 리다이렉트
+            logout();
+            navigate('/login');
         } catch (error) {
             console.error('Logout failed', error);
-            logout();  // 에러 발생 시에도 로컬 상태는 로그아웃 처리
+            logout();
         }
     };
 
@@ -29,7 +29,19 @@ const MyPage = () => {
             <div className={styles.profile}>
                 <div className={styles.profileInfo}>
                     <p className={styles.profileNickname}>
-                        <img src="/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
+                        {user?.profileImageUrl ? (
+                            <img
+                                src={user.profileImageUrl}
+                                alt="프로필 이미지"
+                                className={styles.profileImage}
+                            />
+                        ) : (
+                            <img
+                                src="/lib/마이페이지아이콘.svg"
+                                alt="프로필 아이콘"
+                                className={styles.defaultProfileIcon}
+                            />
+                        )}
                         {user?.nickname}님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
