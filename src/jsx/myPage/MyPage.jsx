@@ -45,7 +45,7 @@ const MyPage = () => {
                         {user?.nickname}님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
-                        <img src="/lib/루미.png" alt="아바타" />
+                        <img src="/lib/루미.png" alt="아바타"/>
                         Lv.{user?.level} {user?.levelName}
                     </p>
                     <div className={styles.xpContainer}>
