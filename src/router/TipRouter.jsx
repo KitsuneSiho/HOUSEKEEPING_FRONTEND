@@ -10,6 +10,7 @@ import LifeTipDetail from "../jsx/tip/LifeTipDetail.jsx";
 import LifeTipWrite from "../jsx/tip/LifeTipWrite.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import CreatePost from "../jsx/tip/CreatePost.jsx";
 
 const TipRouter = () => {
 
@@ -23,7 +24,8 @@ const TipRouter = () => {
                         <Route path="/" element={<Tip/>}/> {/* 팁 메인 화면 */}
 
                         <Route path="/roome" element={<RoomeTip/>}/> {/* 루미`s 팁 */}
-                        <Route path="/roome/detail" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
+                        <Route path="/roome/detail/:id" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
+                        <Route path="/roome/create" element={<CreatePost/>}/> {/* 루미`s 팁 게시글 작성 */}
 
                         <Route path="/waste" element={<WasteTip/>}/> {/* 폐기물 팁 */}
                         <Route path="/waste/detail" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
