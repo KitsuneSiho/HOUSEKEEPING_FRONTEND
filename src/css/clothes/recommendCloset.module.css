@@ -69,40 +69,31 @@
     font-size: 16px;
 }
 
-.image-container {
-    position: relative;
-    width: 300px; /* 너비를 조정하세요 */
-    height: 300px; /* 높이를 조정하세요 */
+.recommendations-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
+    gap: 10px; /* 이미지 간의 간격 */
+    padding: 20px; /* 컨테이너 패딩 */
+}
+
+.image-category {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* 이미지 중앙 정렬 */
 }
 
 .item {
-    position: absolute;
-    width: 100px; /* 원하는 크기로 조정 */
+    width: 100px; /* 이미지를 4분의 1 크기로 줄이기 */
     height: auto;
-    top: 0;
-    left: 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease; /* 호버 시 확대 효과 */
+    cursor: pointer;
 }
 
-.item1 {
-    z-index: 3;
-    top: 0px;
-    left: 0px;
+.item:hover {
+    transform: scale(1.1); /* 호버 시 이미지 확대 */
 }
-
-.item2 {
-    z-index: 2;
-    top: 10px;
-    left: 10px;
-}
-
-.item3 {
-    z-index: 1;
-    top: 20px;
-    left: 20px;
-}
-
-/* 더 많은 이미지가 있을 경우, item4, item5 등의 스타일을 추가하세요 */
-
 
 
 /* recommendCloset.module.css */
