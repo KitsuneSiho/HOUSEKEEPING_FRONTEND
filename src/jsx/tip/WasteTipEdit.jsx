@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/wasteTipWrite.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
 
-const WasteTipWrite = () => {
+const WasteTipEdit = () => {
     const navigate = useNavigate();
-
-    // 팁 정보를 저장하는 상태
+    // URL 파라미터에서 팁 id를 추출
+    const { id } = useParams();
     const [tip, setTip] = useState({
         tipCategory: 'WASTE',
         tipTitle: '',
@@ -16,6 +16,21 @@ const WasteTipWrite = () => {
         tipCreatedDate: new Date().toISOString(),
         comments: []
     });
+
+    useEffect(() => {
+        fetchTip();
+    }, []);
+
+    // 서버에서 팁 정보를 가져옴
+    const fetchTip = async () => {
+        try {
+            const response = await axiosConfig.get(`/api/tips/${id}`);
+            setTip(response.data);
+        } catch (error) {
+            console.error('Error fetching tip:', error);
+            handleAxiosError(error);
+        }
+    };
 
     // 입력 필드 변경 시 상태를 업데이트하는 함수
     const handleChange = (e) => {
@@ -34,9 +49,9 @@ const WasteTipWrite = () => {
         }
 
         try {
-            const response = await axiosConfig.post('/api/tips/save', tip);
+            const response = await axiosConfig.put(`/api/tips/update`, tip);
             console.log('Server response:', response.data);
-            alert("성공적으로 등록되었습니다!");
+            alert("성공적으로 수정되었습니다!");
             navigate('/tip/waste');
         } catch (error) {
             console.error('Error:', error);
@@ -58,7 +73,7 @@ const WasteTipWrite = () => {
                 navigate('/login');
             } else {
                 // 기타 에러
-                alert(`팁 등록에 실패했습니다: ${error.response.data.message || '알 수 없는 오류'}`);
+                alert(`팁 수정에 실패했습니다: ${error.response.data.message || '알 수 없는 오류'}`);
             }
         } else if (error.request) {
             // 요청은 보냈지만 응답을 받지 못한 경우
@@ -75,7 +90,7 @@ const WasteTipWrite = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/waste')} />
-                <h2>폐기물 Tip 작성</h2>
+                <h2>폐기물 Tip 수정</h2>
             </div>
 
             <div className={styles.formContainer}>
@@ -101,7 +116,7 @@ const WasteTipWrite = () => {
                     />
                 </div>
                 <div className={styles.submitButton}>
-                    <button onClick={submitForm}>등록</button>
+                    <button onClick={submitForm}>수정</button>
                 </div>
             </div>
             <Footer />
@@ -109,4 +124,4 @@ const WasteTipWrite = () => {
     );
 };
 
-export default WasteTipWrite;
+export default WasteTipEdit;

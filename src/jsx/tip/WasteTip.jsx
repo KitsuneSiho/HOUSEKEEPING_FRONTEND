@@ -8,19 +8,23 @@ const WasteTip = () => {
     const navigate = useNavigate();
     const [searchVisible, setSearchVisible] = useState(false);
     const [tips, setTips] = useState([]);
+    const [filteredTips, setFilteredTips] = useState([]);
     const [sortOption, setSortOption] = useState('latest');
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     useEffect(() => {
         fetchTips();
     }, [sortOption]);
+
+    useEffect(() => {
+        filterTips();
+    }, [tips, searchKeyword]);
 
     const fetchTips = async () => {
         try {
             const response = await axiosConfig.get('/api/tips');
             const wasteTips = response.data.filter(tip => tip.tipCategory === 'WASTE');
 
-
-            // 정렬 옵션에 따라 게시글 정렬
             if (sortOption === 'latest') {
                 wasteTips.sort((a, b) => new Date(b.tipCreatedDate) - new Date(a.tipCreatedDate));
             } else if (sortOption === 'popular') {
@@ -33,6 +37,18 @@ const WasteTip = () => {
         }
     };
 
+    const filterTips = () => {
+        if (searchKeyword.trim() === '') {
+            setFilteredTips(tips);
+        } else {
+            const filtered = tips.filter(tip =>
+                tip.tipTitle.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+                tip.tipContent.toLowerCase().includes(searchKeyword.toLowerCase())
+            );
+            setFilteredTips(filtered);
+        }
+    };
+
     const toggleSearchBar = () => {
         setSearchVisible(!searchVisible);
     };
@@ -41,9 +57,23 @@ const WasteTip = () => {
         setSortOption(e.target.value);
     };
 
+    const handleSearchChange = (e) => {
+        setSearchKeyword(e.target.value);
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return `${date.getFullYear().toString().substr(-2)}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+    };
+
+    const incrementViewAndNavigate = async (tipId) => {
+        try {
+            await axiosConfig.get(`/api/tips/${tipId}/view`);
+            navigate(`/tip/waste/detail/${tipId}`);
+        } catch (error) {
+            console.error('조회수 증가 중 오류 발생:', error);
+            navigate(`/tip/waste/detail/${tipId}`);
+        }
     };
 
     return (
@@ -59,7 +89,13 @@ const WasteTip = () => {
                 />
             </div>
             <div className={`${styles.searchBar} ${searchVisible ? styles.visible : ''}`} id="search-bar">
-                <input type="text" placeholder="검색어를 입력하세요" id="search-input" />
+                <input
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    id="search-input"
+                    value={searchKeyword}
+                    onChange={handleSearchChange}
+                />
                 <img src="/lib/검색.svg" alt="search" />
             </div>
 
@@ -71,8 +107,8 @@ const WasteTip = () => {
                     </select>
                 </div>
                 <div className={styles.postList}>
-                    {tips.map((tip) => (
-                        <div key={tip.tipId} className={styles.postItem} onClick={() => navigate(`/tip/waste/detail/${tip.tipId}`)}>
+                    {filteredTips.map((tip) => (
+                        <div key={tip.tipId} className={styles.postItem} onClick={() => incrementViewAndNavigate(tip.tipId)}>
                             <div className={styles.postContent}>{tip.tipTitle}</div>
                             <div className={styles.postInfo}>
                                 <span>{formatDate(tip.tipCreatedDate)}</span>

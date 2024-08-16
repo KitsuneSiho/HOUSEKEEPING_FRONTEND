@@ -13,18 +13,16 @@ const WasteTipDetail = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log('useEffect triggered, id:', id);
         if (id) {
             fetchTip();
             fetchComments();
         }
     }, [id]);
 
+    //서버에서 게시글 불러옴
     const fetchTip = async () => {
         try {
-            console.log('Fetching tip with id:', id);
             const response = await axiosConfig.get(`/api/tips/${id}`);
-            console.log('Tip data:', response.data);
             setTip(response.data);
         } catch (error) {
             console.error('Error fetching tip:', error);
@@ -32,10 +30,10 @@ const WasteTipDetail = () => {
         }
     };
 
+    //서버에서 댓글 목록 불러옴
     const fetchComments = async () => {
         try {
             const response = await axiosConfig.get(`/api/comments/tip/${id}`);
-            console.log('Comments data:', response.data);
             setComments(response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -43,10 +41,12 @@ const WasteTipDetail = () => {
         }
     };
 
+    //게시글 수정페이지로 이동
     const editPost = () => {
         navigate(`/tip/waste/edit/${id}`);
     };
 
+    //게시글 삭제
     const deletePost = async () => {
         if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
             try {
@@ -58,10 +58,12 @@ const WasteTipDetail = () => {
         }
     };
 
+    //게시글 목록으로 이동
     const goToList = () => {
         navigate('/tip/waste');
     };
 
+    //새 댓글 작성
     const handleCommentSubmit = async () => {
         try {
             await axiosConfig.post(`/api/comments`, {
@@ -75,6 +77,7 @@ const WasteTipDetail = () => {
         }
     };
 
+    //댓글 수정
     const handleCommentEdit = async (commentId, newContent) => {
         try {
             await axiosConfig.put(`/api/comments/${commentId}`, {
@@ -86,6 +89,7 @@ const WasteTipDetail = () => {
         }
     };
 
+    //댓글 삭제
     const handleCommentDelete = async (commentId) => {
         if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
             try {
@@ -97,7 +101,9 @@ const WasteTipDetail = () => {
         }
     };
 
+    //에러 발생 시 에러 메시지 표시
     if (error) return <div>Error: {error}</div>;
+    //게시글 정보 로딩 중 로딩 메시지 표시
     if (!tip) return <div>Loading...</div>;
 
     return (
