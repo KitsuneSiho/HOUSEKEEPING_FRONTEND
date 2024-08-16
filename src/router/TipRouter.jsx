@@ -12,6 +12,7 @@ import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import CreatePost from "../jsx/tip/CreatePost.jsx";
 import WasteTipEdit from "../jsx/tip/WasteTipEdit.jsx";
+import LifeTipEdit from "../jsx/tip/LifeTipEdit.jsx";
 
 const TipRouter = () => {
 
@@ -35,7 +36,8 @@ const TipRouter = () => {
 
                         <Route path="/lifehacks" element={<LifeTip/>}/> {/* 일상 팁 */}
                         <Route path="/lifehacks/detail/:id" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
-                        <Route path="/lifehacks/post/:id" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/lifehacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/lifehacks/edit/:id" element={<LifeTipEdit/>}/> {/* 일상 팁 게시글 작성 */}
                     </Routes>
                 </RouteAuthProvider>
             </SocketProvider>

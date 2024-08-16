@@ -11,6 +11,8 @@ const LifeTipDetail = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(null);
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedCommentContent, setEditedCommentContent] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -39,12 +41,8 @@ const LifeTipDetail = () => {
         }
     };
 
-    const goToList = () => {
-        navigate('/tip/lifehacks');
-    };
-
     const editPost = () => {
-        navigate(`/tip/life/edit/${id}`);
+        navigate(`/tip/lifehacks/edit/${id}`);
     };
 
     const deletePost = async () => {
@@ -58,10 +56,14 @@ const LifeTipDetail = () => {
         }
     };
 
+    const goToList = () => {
+        navigate('/tip/lifehacks');
+    };
+
     const handleCommentSubmit = async () => {
         try {
-            await axiosConfig.post(`/api/comments`, {
-                tipId: id,
+            await axiosConfig.post(`/api/comments/tip/${id}`, {
+                userId: 1, // 실제 사용자 ID로 대체해야 합니다
                 commentContent: newComment
             });
             setNewComment('');
@@ -71,11 +73,23 @@ const LifeTipDetail = () => {
         }
     };
 
-    const handleCommentEdit = async (commentId, newContent) => {
+    const startEditing = (commentId, content) => {
+        setEditingCommentId(commentId);
+        setEditedCommentContent(content);
+    };
+
+    const cancelEditing = () => {
+        setEditingCommentId(null);
+        setEditedCommentContent('');
+    };
+
+    const handleCommentEdit = async (commentId) => {
         try {
             await axiosConfig.put(`/api/comments/${commentId}`, {
-                commentContent: newContent
+                commentContent: editedCommentContent
             });
+            setEditingCommentId(null);
+            setEditedCommentContent('');
             fetchComments();
         } catch (error) {
             console.error('Error editing comment:', error);
@@ -134,19 +148,33 @@ const LifeTipDetail = () => {
                         <img src="/lib/채팅보내기.svg" alt="send" />
                     </button>
                 </div>
-                {comments.map((comment, index) => (
-                    <div className={styles.comment} key={index}>
+                {comments.map((comment) => (
+                    <div className={styles.comment} key={comment.commentId}>
                         <div className={styles.commentUser}>
                             <img src="/lib/마이페이지아이콘.svg" alt="user" />
                             <p>Lv.3 {comment.userName}</p>
-                            <div className={styles.commentActions}>
-                                <span onClick={() => handleCommentEdit(comment.commentId, prompt('댓글을 수정하세요:', comment.commentContent))}>수정</span>
-                                <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                        </div>
+                        {editingCommentId === comment.commentId ? (
+                            <div className={styles.commentEdit}>
+                                <input
+                                    type="text"
+                                    value={editedCommentContent}
+                                    onChange={(e) => setEditedCommentContent(e.target.value)}
+                                />
+                                <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
+                                <button onClick={cancelEditing}>취소</button>
                             </div>
-                        </div>
-                        <div className={styles.commentText}>
-                            <p>{comment.commentContent}</p>
-                        </div>
+                        ) : (
+                            <>
+                                <div className={styles.commentText}>
+                                    <p>{comment.commentContent}</p>
+                                </div>
+                                <div className={styles.commentActions}>
+                                    <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                    <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                                </div>
+                            </>
+                        )}
                         <div className={styles.commentDate}>
                             <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
                         </div>

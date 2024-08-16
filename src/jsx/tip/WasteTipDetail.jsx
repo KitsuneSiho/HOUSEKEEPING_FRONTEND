@@ -11,6 +11,8 @@ const WasteTipDetail = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(null);
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editedCommentContent, setEditedCommentContent] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -19,7 +21,6 @@ const WasteTipDetail = () => {
         }
     }, [id]);
 
-    //서버에서 게시글 불러옴
     const fetchTip = async () => {
         try {
             const response = await axiosConfig.get(`/api/tips/${id}`);
@@ -30,7 +31,6 @@ const WasteTipDetail = () => {
         }
     };
 
-    //서버에서 댓글 목록 불러옴
     const fetchComments = async () => {
         try {
             const response = await axiosConfig.get(`/api/comments/tip/${id}`);
@@ -41,12 +41,10 @@ const WasteTipDetail = () => {
         }
     };
 
-    //게시글 수정페이지로 이동
     const editPost = () => {
         navigate(`/tip/waste/edit/${id}`);
     };
 
-    //게시글 삭제
     const deletePost = async () => {
         if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
             try {
@@ -58,16 +56,14 @@ const WasteTipDetail = () => {
         }
     };
 
-    //게시글 목록으로 이동
     const goToList = () => {
         navigate('/tip/waste');
     };
 
-    //새 댓글 작성
     const handleCommentSubmit = async () => {
         try {
-            await axiosConfig.post(`/api/comments`, {
-                tipId: id,
+            await axiosConfig.post(`/api/comments/tip/${id}`, {
+                userId: 1, // 실제 사용자 ID로 대체해야 합니다
                 commentContent: newComment
             });
             setNewComment('');
@@ -77,19 +73,29 @@ const WasteTipDetail = () => {
         }
     };
 
-    //댓글 수정
-    const handleCommentEdit = async (commentId, newContent) => {
+    const startEditing = (commentId, content) => {
+        setEditingCommentId(commentId);
+        setEditedCommentContent(content);
+    };
+
+    const cancelEditing = () => {
+        setEditingCommentId(null);
+        setEditedCommentContent('');
+    };
+
+    const handleCommentEdit = async (commentId) => {
         try {
             await axiosConfig.put(`/api/comments/${commentId}`, {
-                commentContent: newContent
+                commentContent: editedCommentContent
             });
+            setEditingCommentId(null);
+            setEditedCommentContent('');
             fetchComments();
         } catch (error) {
             console.error('Error editing comment:', error);
         }
     };
 
-    //댓글 삭제
     const handleCommentDelete = async (commentId) => {
         if (window.confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
             try {
@@ -101,9 +107,7 @@ const WasteTipDetail = () => {
         }
     };
 
-    //에러 발생 시 에러 메시지 표시
     if (error) return <div>Error: {error}</div>;
-    //게시글 정보 로딩 중 로딩 메시지 표시
     if (!tip) return <div>Loading...</div>;
 
     return (
@@ -144,19 +148,33 @@ const WasteTipDetail = () => {
                         <img src="/lib/채팅보내기.svg" alt="send" />
                     </button>
                 </div>
-                {comments.map((comment, index) => (
-                    <div className={styles.comment} key={index}>
+                {comments.map((comment) => (
+                    <div className={styles.comment} key={comment.commentId}>
                         <div className={styles.commentUser}>
                             <img src="/lib/마이페이지아이콘.svg" alt="user" />
                             <p>Lv.3 {comment.userName}</p>
-                            <div className={styles.commentActions}>
-                                <span onClick={() => handleCommentEdit(comment.commentId, prompt('댓글을 수정하세요:', comment.commentContent))}>수정</span>
-                                <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                        </div>
+                        {editingCommentId === comment.commentId ? (
+                            <div className={styles.commentEdit}>
+                                <input
+                                    type="text"
+                                    value={editedCommentContent}
+                                    onChange={(e) => setEditedCommentContent(e.target.value)}
+                                />
+                                <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
+                                <button onClick={cancelEditing}>취소</button>
                             </div>
-                        </div>
-                        <div className={styles.commentText}>
-                            <p>{comment.commentContent}</p>
-                        </div>
+                        ) : (
+                            <>
+                                <div className={styles.commentText}>
+                                    <p>{comment.commentContent}</p>
+                                </div>
+                                <div className={styles.commentActions}>
+                                    <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                    <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                                </div>
+                            </>
+                        )}
                         <div className={styles.commentDate}>
                             <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
                         </div>
