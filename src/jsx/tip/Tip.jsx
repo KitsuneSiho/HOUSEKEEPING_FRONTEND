@@ -35,7 +35,7 @@ const Tip = () => {
                 </button>
             </div>
             <div className={styles.lifeTip}>
-                <button type="button" onClick={() => navigate('/tip/listfacks')}>
+                <button type="button" onClick={() => navigate('/tip/lifehacks')}>
                     <p>생활 Tip</p>
                 </button>
             </div>

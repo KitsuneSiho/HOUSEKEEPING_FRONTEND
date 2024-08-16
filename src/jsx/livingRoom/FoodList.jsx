@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import styles from '../../css/livingRoom/foodList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import {useNavigate, useParams} from 'react-router-dom';
-import axios from 'axios';
-import {BACK_URL} from "../../Constraints.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosConfig from "../../config/axiosConfig.js";
 
@@ -49,7 +47,7 @@ const FoodList = () => {
         expiry: '',
         memo: '',
     });
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
 
     //페이지 이동 함수
     const navigate = useNavigate();
@@ -73,7 +71,7 @@ const FoodList = () => {
     const fetchCategories = async () => {
         try {
             // axios를 사용하여 GET 요청
-            const response = await axiosConfig.get(`/food/livingroom?userId=${loginUserId}`);
+            const response = await axiosConfig.get(`/food/livingroom?userId=${user.userId}`);
             // 'ALL' 카테고리를 추가하고 받아온 카테고리 목록 설정
             setCategories(['ALL', ...response.data]);
         } catch (error) {
@@ -86,7 +84,7 @@ const FoodList = () => {
     const fetchFoods = async () => {
 
         try {
-            const response = await axiosConfig.get(`/food/foodlist/all?userId=${loginUserId}`);
+            const response = await axiosConfig.get(`/food/foodlist/all?userId=${user.userId}`);
             console.log('Fetched foods data:', response.data);  // 추가된 로그
             setFoods(Array.isArray(response.data) ? response.data : []);  // 배열 체크 추가
         } catch (error) {
@@ -100,9 +98,9 @@ const FoodList = () => {
         try {
             let response;
             if (category.toLowerCase() === 'all') {
-                response = await axiosConfig.get(`/food/foodlist/all?userId=${loginUserId}`);
+                response = await axiosConfig.get(`/food/foodlist/all?userId=${user.userId}`);
             } else {
-                response = await axiosConfig.get(`/food/foodlist/${category}?userId=${loginUserId}`);
+                response = await axiosConfig.get(`/food/foodlist/${category}?userId=${user.userId}`);
             }
             setFoods(response.data || []);
         } catch (error) {
@@ -152,7 +150,7 @@ const FoodList = () => {
 
         try {
             const foodData = {
-                userId: loginUserId,
+                userId: user.userId,
                 foodName: modalData.name,
                 foodQuantity: modalData.quantity,
                 foodCategory: modalData.category.toUpperCase(),
@@ -195,7 +193,7 @@ const FoodList = () => {
                 // 수정된 모든 식재료 정보를 DB에 업데이트
                 for (const food of foods) {
                     await axiosConfig.put(`/food/foodlist/update`, {
-                        userId: loginUserId,
+                        userId: user.userId,
                         foodId: food.foodId,
                         foodName: food.foodName,
                         foodQuantity: food.foodQuantity,
@@ -255,7 +253,7 @@ const FoodList = () => {
         try {
             for (const food of deletedFoods) {
                 await axiosConfig.delete(`/food/foodlist/delete/${food.foodId}`, {
-                    params: { userId: loginUserId }
+                    params: { userId: user.userId }
                 });
             }
             setDeletedFoods([]);
