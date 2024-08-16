@@ -5,7 +5,6 @@ import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const FirstLogin = () => {
-
     const {user, setUser} = useLogin();
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,11 +15,13 @@ const FirstLogin = () => {
         phoneNumber: '',
         userPlatform: '',
         role: 'ROLE_USER',
-        username: ''
+        username: '',
+        profileImageUrl: ''
     });
     const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [authError, setAuthError] = useState('');
+    const [profileImage, setProfileImage] = useState("/lib/profileImg.svg");
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -50,22 +51,51 @@ const FirstLogin = () => {
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axiosInstance.post('/files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setProfileImage(response.data);
+                setUserInfo(prevState => ({
+                    ...prevState,
+                    profileImageUrl: response.data
+                }));
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                setAuthError('프로필 이미지 업로드에 실패했습니다.');
+            }
+        }
+    };
+
     const handleSubmit = async () => {
         try {
-            const response = await axiosInstance.post('/api/auth/complete-registration', userInfo, {
+            const response = await axiosInstance.post('/api/auth/complete-registration', {
+                ...userInfo,
+                profileImageUrl: profileImage
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
             if (response.status === 200) {
-                console.log("userId:", user.userId);
+                console.log("userId:", response.data.userId);
                 setUser({
-                        ...user,
-                        nickname: userInfo.nickname,
-                    }
-                );
-                createNewRooms(user.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
+                    ...user,
+                    ...response.data,
+                    nickname: userInfo.nickname,
+                    profileImageUrl: profileImage
+                });
+                createNewRooms(response.data.userId).then(() => navigate('/design/myroom'));
             }
         } catch (error) {
             console.error('Error completing registration', error);
@@ -84,9 +114,7 @@ const FirstLogin = () => {
     };
 
     const createNewRooms = async (userId) => {
-
         try {
-
             const privateRoom = await axiosInstance.post(`/room/register`, {
                 userId: userId,
                 roomName: "내 방",
@@ -123,12 +151,10 @@ const FirstLogin = () => {
     }
 
     const placeFurniture = async (roomId) => {
-
         try {
-
             await axiosInstance.post(`/placement/register`, {
                 roomId: roomId,
-                furnitureId: 1,
+                furnitureId: 34,
                 placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
                 placementAngle: 0,
                 placementSize: 1.3,
@@ -144,8 +170,15 @@ const FirstLogin = () => {
                 <h1>가입 정보</h1>
             </div>
             <div className={styles.profileImg}>
-                <img src="/lib/profileImg.svg" alt="프로필 이미지"/>
-                <p>프로필 이미지 설정</p>
+                <img src={profileImage} alt="프로필 이미지"/>
+                <label htmlFor="profileImageUpload">프로필 이미지 설정</label>
+                <input
+                    type="file"
+                    id="profileImageUpload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                />
             </div>
             <div className={styles.information}>
                 <div className={styles.inputContainer}>

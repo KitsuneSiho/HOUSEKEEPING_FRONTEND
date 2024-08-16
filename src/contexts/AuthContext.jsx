@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }) => {
             const response = await axiosInstance.get(`/api/user/info?userId=${userId}`);
             setUser(prevUser => ({
                 ...prevUser,
-                ...response.data
+                ...response.data,
+                profileImageUrl: response.data.profileImageUrl
             }));
         } catch (error) {
             console.error('Error fetching user info', error);
