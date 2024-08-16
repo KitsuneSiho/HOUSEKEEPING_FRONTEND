@@ -6,7 +6,6 @@ import MyGuestBook from "../jsx/main/MyGuestBook.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import MyRoom from "../pages/room/MyRoom.jsx";
-import EditRoom from "../pages/room/EditRoom.jsx";
 
 const MainRouter = () => {
 

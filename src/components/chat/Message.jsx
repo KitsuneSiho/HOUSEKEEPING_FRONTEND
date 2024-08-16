@@ -83,7 +83,6 @@ const Message = ({message, userId, scrollToBottom}) => {
 
 Message.propTypes = {
     message: PropTypes.object.isRequired,
-    userId: PropTypes.string.isRequired,
     scrollToBottom: PropTypes.func.isRequired,
 }
 

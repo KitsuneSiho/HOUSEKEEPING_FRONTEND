@@ -3,18 +3,9 @@ import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../../config/axiosInstance.js";
 
-const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
+const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture, availableFurnitureTypes}) => {
 
     const [furnitureTypes, setFurnitureTypes] = useState([]);
-    const furnitureTypeNames = {
-        DESK: "책상",
-        BED: "침대",
-        SOFA: "소파",
-        CLOSET: "옷장",
-        CHAIR: "의자",
-        POCKETMON: "포켓몬",
-        ETC: "기타",
-    }
 
     useEffect(() => {
         getFurnitureTypes();
@@ -35,10 +26,15 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
     return (
         <>
             <div className={styles.furnitureCategories}>
-                <p onClick={() => handleCategoryClick('WALLFLOOR')}>벽</p>
-                {furnitureTypes.map((furnitureType, index) => (
+                {availableFurnitureTypes.slice(0, 7).map((furnitureType, index) => (
                     <p key={index}
-                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureTypeNames[furnitureType.furnitureType]}</p>
+                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.typeName}</p>
+                ))}
+            </div>
+            <div className={styles.furnitureCategories}>
+                {availableFurnitureTypes.slice(7).map((furnitureType, index) => (
+                    <p key={index}
+                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.typeName}</p>
                 ))}
             </div>
             {activeCategory && (
@@ -64,7 +60,9 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                                         placementAngle: 0,
                                         placementSize: 1
                                     }, true)}>
-                                        <img src={`/furniture/${furniture.furnitureType}/${furniture.furnitureName}.png`} alt={furniture.furnitureName}/>
+                                        <img
+                                            src={`/furniture/${furniture.furnitureType}/${furniture.furnitureName}.png`}
+                                            alt={furniture.furnitureName}/>
 
                                     </button>
                                 ))}
@@ -83,6 +81,7 @@ FurnitureList.propTypes = {
     handleCategoryClick: PropTypes.func,
     openColorModal: PropTypes.func,
     loadFurniture: PropTypes.func,
+    availableFurnitureTypes: PropTypes.array,
 }
 
 export default FurnitureList

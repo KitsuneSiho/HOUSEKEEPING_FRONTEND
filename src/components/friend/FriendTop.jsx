@@ -1,5 +1,5 @@
 import { useSocket } from "../../contexts/SocketContext.jsx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../css/friend/friendTop.module.css";
 import { useNavigate } from "react-router-dom";
 import {useLogin} from "../../contexts/AuthContext.jsx";
@@ -56,17 +56,8 @@ const FriendTop = () => {
                             <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>
                         </div>
                     ))}
-
-
-                    {/*{isReady && friends.map((friend, index) => (*/}
-                    {/*    <div className={styles.friend} key={index} onClick={() => navigate('/friendRoom')}>*/}
-                    {/*        <img src={`public/lib/친구${index + 1}.png`} alt={index}/>*/}
-                    {/*        <p>{friend.nickname}</p>*/}
-                    {/*        <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-                    <div className={styles.addFriend} onClick={() => navigate('/addFriend')}>
-                        <img src="public/lib/plus.svg" alt="add"/>
+                    <div className={styles.addFriend} onClick={() => navigate('/friend/add')}>
+                        <img src="/lib/plus.svg" alt="add"/>
                         <p>친구 추가</p>
                     </div>
                 </div>
