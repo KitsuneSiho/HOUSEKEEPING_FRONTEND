@@ -24,7 +24,7 @@ const Routine = () => {
                     params: { userId: user.userId }
                 });
                 setOldActiveRoutine(activeRoutineResponse.data);
-
+                setActiveRoutine(activeRoutineResponse.data);
             } catch (error) {
                 console.error('Error fetching routine groups:', error);
             }

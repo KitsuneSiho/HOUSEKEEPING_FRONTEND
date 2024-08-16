@@ -25,7 +25,7 @@ const Routine = () => {
                     params: { userId: user.userId }
                 });
                 console.log(activeRoutine);
-                setActiveRoutine(activeRoutineResponse.data.activeRoutineGroupName);
+                setActiveRoutine(activeRoutineResponse.data);
             } catch (error) {
                 console.error('Error fetching routine groups:', error);
             }
