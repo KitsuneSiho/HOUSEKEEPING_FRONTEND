@@ -69,6 +69,33 @@
     font-size: 16px;
 }
 
+.customTempContainer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.customTempInput {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100px;
+    text-align: center;
+}
+
+.customTempButton {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.customTempButton:hover {
+    background-color: #0056b3;
+}
 .recommendations-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
