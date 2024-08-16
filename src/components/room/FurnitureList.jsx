@@ -6,15 +6,6 @@ import axiosInstance from "../../config/axiosInstance.js";
 const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture, availableFurnitureTypes}) => {
 
     const [furnitureTypes, setFurnitureTypes] = useState([]);
-    const furnitureTypeNames = {
-        DESK: "책상",
-        BED: "침대",
-        SOFA: "소파",
-        CLOSET: "옷장",
-        CHAIR: "의자",
-        POCKETMON: "포켓몬",
-        ETC: "기타",
-    }
 
     useEffect(() => {
         getFurnitureTypes();
