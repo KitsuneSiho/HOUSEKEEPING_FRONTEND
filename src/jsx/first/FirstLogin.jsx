@@ -5,6 +5,7 @@ import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const FirstLogin = () => {
+
     const {user, setUser} = useLogin();
     const navigate = useNavigate();
     const location = useLocation();
@@ -95,7 +96,7 @@ const FirstLogin = () => {
                     nickname: userInfo.nickname,
                     profileImageUrl: profileImage
                 });
-                createNewRooms(response.data.userId).then(() => navigate('/design/myroom'));
+                createNewRooms(response.data.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
             }
         } catch (error) {
             console.error('Error completing registration', error);
@@ -114,7 +115,9 @@ const FirstLogin = () => {
     };
 
     const createNewRooms = async (userId) => {
+
         try {
+
             const privateRoom = await axiosInstance.post(`/room/register`, {
                 userId: userId,
                 roomName: "내 방",
@@ -151,10 +154,12 @@ const FirstLogin = () => {
     }
 
     const placeFurniture = async (roomId) => {
+
         try {
+
             await axiosInstance.post(`/placement/register`, {
                 roomId: roomId,
-                furnitureId: 34,
+                furnitureId: 1,
                 placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
                 placementAngle: 0,
                 placementSize: 1.3,
