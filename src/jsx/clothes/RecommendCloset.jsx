@@ -244,6 +244,8 @@ const RecommendCloset = () => {
             selectedDate.setDate(selectedDate.getDate() - 1); // 날짜를 하루 줄임
         }
 
+
+
         const forecast = weather.list.find((item) => {
             const forecastDate = new Date(item.dt_txt);
             const forecastTime = forecastDate.toTimeString().split(' ')[0].substring(0, 5);
@@ -371,6 +373,7 @@ const RecommendCloset = () => {
         maxDate.setDate(today.getDate() + 5);
         return maxDate.toISOString().split('T')[0];
     };
+
 
     const getMinDate = () => {
         const today = new Date();

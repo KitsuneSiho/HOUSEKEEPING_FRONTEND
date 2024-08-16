@@ -12,39 +12,65 @@ const TopList = () => {
     const [editMode, setEditMode] = useState(false);
     const [currentEdit, setCurrentEdit] = useState(null);
 
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
+    const getUserIdFromToken = () => {
+        const access = localStorage.getItem('access');
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return null;
+        }
+
+        const decodedToken = parseJwt(access);
+        return decodedToken ? decodedToken.userId : null;
+    };
+
     useEffect(() => {
         const fetchClothes = async () => {
-            try {
-                const response = await apiClient.get('/ware/items');
-                const topClothes = response.data.filter(item =>
-                    item.clothType === '반팔' || item.clothType === '긴팔' || item.clothType === '셔츠' ||
-                    item.clothType === '니트' || item.clothType === '민소매' || item.clothType === '카라티'
-                );
-                setClothes(topClothes);
-            } catch (error) {
-                console.error('옷 데이터를 불러오는 중 오류 발생:', error);
+            const userId = getUserIdFromToken();
+            if (!userId) {
+                console.error('User ID is null or undefined. Cannot proceed with fetching clothes data.');
+                return;
             }
+
+            try {
+                const response = await apiClient.get(`/ware/items`, {
+                    params: {
+                        user_id: userId,
+                        category: 'top'  // 상의 요청
+                    },
+                    withCredentials: true
+                });
+                setClothes(response.data);
+            } catch (error) {
+                console.error('데이터를 불러오는 중 오류 발생:', error.message);
+            }
+
         };
 
         fetchClothes();
     }, []);
 
-
-    useEffect(() => {
-        if (modalData) {
-            const modalElement = document.getElementById("myModal");
-            if (modalElement) {
-                modalElement.style.display = "block";
-            }
-        }
-    }, [modalData]);
-
-
     const openModal = (cloth) => {
         const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
         setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
+        setCurrentEdit({ ...cloth, clothHowWash });
     };
 
     const closeModal = () => {
@@ -99,9 +125,8 @@ const TopList = () => {
     };
 
     const getMaterialOptions = () => {
-        return ['면', '폴리에스터', '나일론','울','실크','가죽'];
+        return ['면', '폴리에스터', '나일론', '울', '실크', '가죽'];
     };
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>
