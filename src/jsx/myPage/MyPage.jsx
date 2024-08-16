@@ -2,9 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/myPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import axiosInstance from '../../config/axiosInstance.js';
+import { useAuth } from '../../contexts/AuthContext';
 
 const MyPage = () => {
     const navigate = useNavigate();
+    const { user, logout } = useAuth();
+
+    const handleLogout = async () => {
+        try {
+            await axiosInstance.post('/logout');
+            logout();
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout failed', error);
+            logout();
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -16,15 +30,15 @@ const MyPage = () => {
                 <div className={styles.profileInfo}>
                     <p className={styles.profileNickname}>
                         <img src="/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
-                        ddak님, 청소하세요.
+                        {user?.nickname}님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
                         <img src="/lib/루미.png" alt="아바타" />
-                        Lv.01 자린이
+                        Lv.{user?.level} {user?.levelName}
                     </p>
                     <div className={styles.xpContainer}>
-                        <progress className={styles.xpBar} value="20" max="100"></progress>
-                        <span className={styles.xpText}>20/100</span>
+                        <progress className={styles.xpBar} value={user?.exp} max={user?.nextLevelExp}></progress>
+                        <span className={styles.xpText}>{user?.exp}/{user?.nextLevelExp}</span>
                     </div>
                 </div>
             </div>
@@ -45,7 +59,7 @@ const MyPage = () => {
                     <p>방명록 보관함</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem}>
+                <div className={styles.menuItem} onClick={() => navigate(`/mypage/myroom/edit/${false}`)}>
                     <p>내 방 수정</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>
@@ -55,7 +69,7 @@ const MyPage = () => {
                 </div>
             </div>
             <div className={styles.footerMenu}>
-                <p onClick={() => navigate('/login')}>로그아웃</p>
+                <p onClick={handleLogout}>로그아웃</p>
                 <p onClick={() => navigate('/mypage/delete')}>회원탈퇴</p>
             </div>
             <Footer />

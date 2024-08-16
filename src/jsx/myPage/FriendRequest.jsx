@@ -4,18 +4,21 @@ import { BACK_URL } from '../../Constraints.js';
 import styles from '../../css/myPage/friendRequest.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { useNavigate } from 'react-router-dom';
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const FriendRequest = () => {
+
+    const {user} = useLogin();
     const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
-    const userId = 1; // 현재 로그인한 사용자 ID로 대체해야 함
+
 
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-
-                const response = await axios.get(`${BACK_URL}/friendRequest/received`, {
-                    params: { userId }
+                const response = await axiosInstance.get('/friendRequest/received', {
+                    params: { userId: user.userId }
                 });
                 setRequests(response.data);
             } catch (error) {
@@ -24,11 +27,11 @@ const FriendRequest = () => {
         };
 
         fetchRequests();
-    }, []);
+    }, [user.userId]);
 
     const handleAcceptRequest = async (requestId) => {
         try {
-            await axios.post(`${BACK_URL}/friendRequest/accept`, null, {
+            await axiosInstance.post('/friendRequest/accept', null, {
                 params: { requestId }
             });
             setRequests(requests.filter(req => req.requestId !== requestId));
@@ -38,13 +41,11 @@ const FriendRequest = () => {
     };
 
     const handleRejectRequest = async (requestSenderId) => {
-        console.log(requestSenderId);
-        console.log(userId);
         try {
-            await axios.post(`${BACK_URL}/friendRequest/reject`, null, {
+            await axiosInstance.post('/friendRequest/reject', null, {
                 params: {
-                    senderId: requestSenderId,  // 요청 걸었던 유저 아이디
-                    receiverId: userId  // 로그인 한 유저 아이디
+                    senderId: requestSenderId,
+                    receiverId: user.userId
                 }
             });
             setRequests(requests.filter(req => req.requestSenderId !== requestSenderId));

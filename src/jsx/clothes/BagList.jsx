@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/bagList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import apiClient from '../../api/axiosConfig';
+import apiClient from '../../config/axiosConfig';
+import {DetermineHowWash} from "./DetermineHowWash.jsx";
 
 const BagList = () => {
     const navigate = useNavigate();
@@ -38,9 +39,10 @@ const BagList = () => {
     }, [modalData]);
 
     const openModal = (cloth) => {
-        setModalData(cloth);
+        const clothHowWash = DetermineHowWash(cloth.clothType, cloth.clothMaterial);
+        setModalData({ ...cloth, clothHowWash });
         setEditMode(false);
-        setCurrentEdit({ ...cloth });
+        setCurrentEdit({ ...cloth, clothHowWash }); // 편집 중인 옷 데이터 복사
     };
 
     const closeModal = () => {
@@ -122,18 +124,39 @@ const BagList = () => {
                         {!editMode ? (
                             <>
                                 <h2>{modalData.clothName}</h2>
-                                <p>종류: {modalData.clothType}</p>
-                                <p>색상: {modalData.clothColor}</p>
-                                <p>소재: {modalData.clothMaterial}</p>
-                                <p>계절: {modalData.clothSeason}</p>
-                                <p>세탁 방법: {modalData.howWash}</p>
-                                <p>커스텀 태그: {modalData.clothCustomTag}</p>
-                                <button onClick={handleEdit}>수정</button>
-                                <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
+                                <div className={styles.clothInfo}>
+                                    <h4>종류</h4>
+                                    <p>{modalData.clothType}</p>
+                                </div>
+                                <div className={styles.clothInfo}>
+                                    <h4>색상</h4>
+                                    <p>{modalData.clothColor}</p>
+                                </div>
+                                <div className={styles.clothInfo}>
+                                    <h4>소재</h4>
+                                    <p>{modalData.clothMaterial}</p>
+                                </div>
+                                <div className={styles.clothInfo}>
+                                    <h4>계절</h4>
+                                    <p>{modalData.clothSeason}</p>
+                                </div>
+                                <div className={styles.clothInfo}>
+                                    <h4>세탁 방법</h4>
+                                    <p>{modalData.clothHowWash}</p>
+                                </div>
+                                <div className={styles.clothInfo}>
+                                    <h4>커스텀 태그</h4>
+                                    <p>{modalData.clothCustomTag}</p>
+                                </div>
+                                <div className={styles.buttons}>
+                                    <button onClick={handleEdit}>수정</button>
+                                    <button onClick={handleDelete} className={styles.deleteButton}>삭제</button>
+                                </div>
                             </>
                         ) : (
                             <>
                                 <h2>수정 모드</h2>
+                                <div className={styles.tags}>
                                 <div className={styles.tag}>
                                     <label htmlFor="clothName">옷 이름</label>
                                     <input
@@ -197,6 +220,16 @@ const BagList = () => {
                                     </select>
                                 </div>
                                 <div className={styles.tag}>
+                                    <label htmlFor="clothHowWash">세탁방법</label>
+                                    <input
+                                        type="text"
+                                        id="clothHowWash"
+                                        name="clothHowWash"
+                                        value={currentEdit.clothHowWash}
+                                        readOnly
+                                    />
+                                </div>
+                                <div className={styles.tag}>
                                     <label htmlFor="clothCustomTag">커스텀 태그</label>
                                     <input
                                         type="text"
@@ -206,8 +239,11 @@ const BagList = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <button onClick={handleSave}>저장</button>
-                                <button onClick={closeModal}>취소</button>
+                                </div>
+                                <div className={styles.buttons}>
+                                    <button onClick={handleSave}>저장</button>
+                                    <button onClick={closeModal}>취소</button>
+                                </div>
                             </>
                         )}
                     </div>

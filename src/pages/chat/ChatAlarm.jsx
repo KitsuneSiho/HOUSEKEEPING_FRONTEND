@@ -1,4 +1,4 @@
-import {useSocket} from "../../components/context/SocketContext.jsx";
+import {useSocket} from "../../contexts/SocketContext.jsx";
 import {useEffect, useState} from "react";
 import styles from "../../css/chat/chatAlarm.module.css";
 

@@ -1,34 +1,29 @@
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {BACK_URL} from "../../Constraints.js";
 import styles from '../../css/chat/createChat.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import axios from "axios";
 import ChatFriend from "../../components/chat/ChatFriend.jsx";
-import {useModal} from "../../components/context/ModalContext.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 // 채팅 방 생성
 const CreateChat = () => {
     const navigate = useNavigate();
     const { setModalType, setModalTitle, setModalBody, showModal, setModalCallback } = useModal();
-    const [userId, setUserId] = useState(null);
+    const {user} = useLogin();
     const [selectedFriends, setSelectedFriends] = useState([]);
     const [selectedNicknames, setSelectedNicknames] = useState("");
     const [friends, setFriends] = useState([]);
     const [isReady, setIsReady] = useState(false);
     const [chatRoomTitle, setChatRoomTitle] = useState("");
 
-    // 마운트 시 세션에서 유저 아이디를 받아옴
-    useEffect(() => {
-        setUserId(sessionStorage.getItem("userId"));
-    }, []);
-
     // 유저 아이디를 받아오는 데 성공하면 준비 완료 신호를 보냄
     useEffect(() => {
-        if (userId !== null) {
+        if (user.userId !== null) {
             getFriends().then(() => setIsReady(true));
         }
-    }, [userId]);
+    }, [user]);
 
     // 1대1 채팅인지 그룹 채팅인지 판별
     useEffect(() => {
@@ -40,7 +35,7 @@ const CreateChat = () => {
     // 친구 목록을 DB에서 받아옴
     const getFriends = async () => {
         try {
-            const response = await axios.get(BACK_URL + `/friend/list?userId=${userId}`);
+            const response = await axiosInstance.get(`/friend/list?userId=${user.userId}`);
             setFriends(response.data);
         } catch (error) {
             console.log("Error fetching friends: ", error);
@@ -52,7 +47,7 @@ const CreateChat = () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/chat/room/exist?myUserId=${userId}&friendUserId=${selectedFriends[0]}`);
+            const response = await axiosInstance.get(`/chat/room/exist?myUserId=${user.userId}&friendUserId=${selectedFriends[0]}`);
             const chatRoomId = response.data;
 
             if (chatRoomId === "") {
@@ -68,10 +63,10 @@ const CreateChat = () => {
     // 방 정보를 DB에 저장
     const createRoom = async (name, type) => {
         try {
-            const response = await axios.post(BACK_URL + `/chat/room/create`, {
+            const response = await axiosInstance.post(`/chat/room/create`, {
                 chatRoomName: name,
                 chatRoomType: type,
-                userIdList: [userId, ...selectedFriends],
+                userIdList: [user.userId, ...selectedFriends],
             });
 
             navigate(`/chat/${response.data.chatRoomId}`);

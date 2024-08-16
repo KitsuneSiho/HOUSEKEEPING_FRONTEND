@@ -4,19 +4,21 @@ import styles from '../../css/myPage/friendList.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axios from "axios";
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const FriendList = () => {
+
+    const {user} = useLogin();
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [friends, setFriends] = useState([]);
 
-    const loginUserId = 1; // 실제 userId를 적절히 변경해야 합니다.
-
     // 친구 목록 가져오기
     const fetchFriends = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/friend/list`, {
-                params: { userId : loginUserId }
+            const response = await axiosInstance.get(`/friend/list`, {
+                params: { userId: user.userId }
             });
             setFriends(response.data);
             console.log(response.data);
@@ -36,10 +38,13 @@ const FriendList = () => {
 
     // 팔로우 취소
     const cancelFriendRequest = async (receiverId) => {
+        console.log(user.userId);
+        console.log(receiverId);
+
         try {
-            const response = await axios.post(`${BACK_URL}/friendRequest/cancel`, null, {
+            const response = await axiosInstance.post(`/friendRequest/cancel`, null, {
                 params: {
-                    senderId: loginUserId,
+                    senderId: user.userId,
                     receiverId: receiverId
                 }
             });
@@ -54,12 +59,14 @@ const FriendList = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img
+                    className={styles.back}
                     src="/lib/back.svg"
                     alt="back"
                     onClick={() => navigate('/myPage')}
                 />
                 <h2>친구 관리</h2>
                 <img
+                    className={styles.searchIcon}
                     src="/lib/검색.svg"
                     alt="search"
                     id="search-icon"
@@ -89,13 +96,14 @@ const FriendList = () => {
                 {filteredFriends.map(friend => (
                     <div key={friend.userId} className={styles.searchResultItem}>
                         {/* 이미지 필드가 없으므로 제거 */}
+                        <img src={friend.img || '/lib/마이페이지아이콘.svg'} alt={friend.nickname}/>
                         <span>{friend.nickname}</span>
                         <button onClick={() => cancelFriendRequest(friend.userId)}>팔로우 취소</button>
                     </div>
                 ))}
             </div>
 
-            <Footer />
+            <Footer/>
         </div>
     );
 };

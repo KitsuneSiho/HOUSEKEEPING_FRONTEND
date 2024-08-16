@@ -4,6 +4,8 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import {BACK_URL} from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosConfig from "../../config/axiosConfig.js";
 
 const FoodCategory = {
     MILK: '유제품',
@@ -47,12 +49,12 @@ const FoodList = () => {
         expiry: '',
         memo: '',
     });
+    const {loginUserId} = useLogin();
 
     //페이지 이동 함수
     const navigate = useNavigate();
 
-    // 임시 사용자 ID
-    const userId = 1;
+
 
     // useEffect를 사용하여 컴포넌트가 마운트될 때 실행될 작업 정의
     useEffect(() => {
@@ -71,7 +73,7 @@ const FoodList = () => {
     const fetchCategories = async () => {
         try {
             // axios를 사용하여 GET 요청
-            const response = await axios.get(BACK_URL + `/food/livingroom?userId=${userId}`);
+            const response = await axiosConfig.get(`/food/livingroom?userId=${loginUserId}`);
             // 'ALL' 카테고리를 추가하고 받아온 카테고리 목록 설정
             setCategories(['ALL', ...response.data]);
         } catch (error) {
@@ -84,7 +86,7 @@ const FoodList = () => {
     const fetchFoods = async () => {
 
         try {
-            const response = await axios.get(BACK_URL + `/food/foodlist/all?userId=${userId}`);
+            const response = await axiosConfig.get(`/food/foodlist/all?userId=${loginUserId}`);
             console.log('Fetched foods data:', response.data);  // 추가된 로그
             setFoods(Array.isArray(response.data) ? response.data : []);  // 배열 체크 추가
         } catch (error) {
@@ -98,9 +100,9 @@ const FoodList = () => {
         try {
             let response;
             if (category.toLowerCase() === 'all') {
-                response = await axios.get(BACK_URL + `/food/foodlist/all?userId=${userId}`);
+                response = await axiosConfig.get(`/food/foodlist/all?userId=${loginUserId}`);
             } else {
-                response = await axios.get(BACK_URL + `/food/foodlist/${category}?userId=${userId}`);
+                response = await axiosConfig.get(`/food/foodlist/${category}?userId=${loginUserId}`);
             }
             setFoods(response.data || []);
         } catch (error) {
@@ -150,7 +152,7 @@ const FoodList = () => {
 
         try {
             const foodData = {
-                userId: userId,
+                userId: loginUserId,
                 foodName: modalData.name,
                 foodQuantity: modalData.quantity,
                 foodCategory: modalData.category.toUpperCase(),
@@ -160,13 +162,13 @@ const FoodList = () => {
 
             if (currentRow === null) {
                 // 새로운 항목 추가
-                const response = await axios.post(BACK_URL + `/food/foodlist/add`, foodData);
+                const response = await axiosConfig.post(`/food/foodlist/add`, foodData);
                 setFoods(prevFoods => [...prevFoods, response.data]);
             } else {
                 // 기존 항목 수정
                 const foodToUpdate = foods[currentRow];
                 foodData.foodId = foodToUpdate.foodId;
-                const response = await axios.put(BACK_URL + `/food/foodlist/update`, foodData);
+                const response = await axiosConfig.put(`/food/foodlist/update`, foodData);
                 const newFoods = foods.map((food, i) =>
                     i === currentRow ? response.data : food
                 );
@@ -192,8 +194,8 @@ const FoodList = () => {
             try {
                 // 수정된 모든 식재료 정보를 DB에 업데이트
                 for (const food of foods) {
-                    await axios.put(BACK_URL + `/food/foodlist/update`, {
-                        userId: userId,
+                    await axiosConfig.put(`/food/foodlist/update`, {
+                        userId: loginUserId,
                         foodId: food.foodId,
                         foodName: food.foodName,
                         foodQuantity: food.foodQuantity,
@@ -252,8 +254,8 @@ const FoodList = () => {
     const performDelete = async () => {
         try {
             for (const food of deletedFoods) {
-                await axios.delete(`${BACK_URL}/food/foodlist/delete/${food.foodId}`, {
-                    params: { userId: userId }
+                await axiosConfig.delete(`/food/foodlist/delete/${food.foodId}`, {
+                    params: { userId: loginUserId }
                 });
             }
             setDeletedFoods([]);
@@ -284,7 +286,7 @@ const FoodList = () => {
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/refrigerator/')}/>
                 <h2>{category}</h2>
-                <img src="/lib/검색.svg" alt="search" id={styles.searchIcon}
+                <img src="/lib/검색.svg" alt="search" className={styles.searchIcon}
                      onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)}/>
             </div>
 
@@ -406,7 +408,7 @@ const FoodList = () => {
                         </div>
                         <div className={styles.modalField}>
                             <label htmlFor="modal-memo">메모</label>
-                            <input type="text" id="modal-memo" name="modal-memo" value={modalData.memo}
+                            <textarea rows={3} cols={30} id="modal-memo" name="modal-memo" value={modalData.memo}
                                    onChange={(e) => setModalData({...modalData, memo: e.target.value})}/>
                         </div>
                         <div className={styles.modalButtons}>

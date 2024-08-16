@@ -2,10 +2,9 @@ import styles from "../../css/chat/chatRoom.module.css";
 import PropTypes from "prop-types";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useSocket} from "../context/SocketContext.jsx";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
-import {useModal} from "../context/ModalContext.jsx";
+import {useSocket} from "../../contexts/SocketContext.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 
@@ -20,7 +19,7 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
         if (inputName !== "") {
             try {
 
-                axios.put(BACK_URL + `/chat/room/rename?chatRoomId=${room}&chatRoomName=${inputName}`).then(response => {
+                axiosInstance.put(`/chat/room/rename?chatRoomId=${room}&chatRoomName=${inputName}`).then(response => {
                     if (response.status === 200) {
                         const message = `방의 이름이 ${inputName}으로 변경되었습니다`;
 
@@ -74,7 +73,7 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 
         try {
 
-            const response = await axios.post(BACK_URL + `/chat/room/invite?chatRoomId=${room}`, {
+            const response = await axiosInstance.post(`/chat/room/invite?chatRoomId=${room}`, {
                 chatRoomId: room,
                 users: selectedFriends,
             });
@@ -96,7 +95,7 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 
         try {
 
-            const response = await axios.delete(BACK_URL + `/chat/room/quit?chatRoomId=${room}&userId=${userId}`);
+            const response = await axiosInstance.delete(`/chat/room/quit?chatRoomId=${room}&userId=${userId}`);
 
             if (response.status === 200) {
 
@@ -113,7 +112,7 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
     // 공지 전송
     const announceMessage = async (message) => {
         try {
-            await axios.post(`${BACK_URL}/chat/message/send`, {
+            await axiosInstance.post(`/chat/message/send`, {
                 "chatRoomId": room,
                 "messageSenderId": 0,
                 "messageContent": message,
@@ -177,7 +176,6 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 ChatRoomHeader.propTypes = {
     chatRoomName: PropTypes.string,
     chatRoomType: PropTypes.string,
-    userId: PropTypes.string,
 }
 
 export default ChatRoomHeader;

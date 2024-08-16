@@ -1,10 +1,9 @@
 import styles from "../../css/first/firstRoomDesign.module.css";
 import PropTypes from "prop-types";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
+import React, {useEffect, useState} from "react";
+import axiosInstance from "../../config/axiosInstance.js";
 
-const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture}) => {
+const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClick, openColorModal, loadFurniture, availableFurnitureTypes}) => {
 
     const [furnitureTypes, setFurnitureTypes] = useState([]);
 
@@ -16,7 +15,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
 
         try {
 
-            const response = await axios.get(BACK_URL + `/furniture/type/list/${userLevel}`)
+            const response = await axiosInstance.get(`/furniture/type/list/${userLevel}`)
             setFurnitureTypes(response.data);
 
         } catch (error) {
@@ -27,10 +26,15 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
     return (
         <>
             <div className={styles.furnitureCategories}>
-                <p onClick={() => handleCategoryClick('WALLFLOOR')}>벽&바닥</p>
-                {furnitureTypes.map((furnitureType, index) => (
+                {availableFurnitureTypes.slice(0, 7).map((furnitureType, index) => (
                     <p key={index}
-                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.furnitureType}</p>
+                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.typeName}</p>
+                ))}
+            </div>
+            <div className={styles.furnitureCategories}>
+                {availableFurnitureTypes.slice(7).map((furnitureType, index) => (
+                    <p key={index}
+                       onClick={() => handleCategoryClick(furnitureType.furnitureType)}>{furnitureType.typeName}</p>
                 ))}
             </div>
             {activeCategory && (
@@ -55,7 +59,12 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                                         placementLocation: JSON.stringify({x: 0, y: 0, z: 0}),
                                         placementAngle: 0,
                                         placementSize: 1
-                                    }, true)}>{furniture.furnitureName}</button>
+                                    }, true)}>
+                                        <img
+                                            src={`/furniture/${furniture.furnitureType}/${furniture.furnitureName}.png`}
+                                            alt={furniture.furnitureName}/>
+
+                                    </button>
                                 ))}
                         </div>
                     ))}
@@ -72,6 +81,7 @@ FurnitureList.propTypes = {
     handleCategoryClick: PropTypes.func,
     openColorModal: PropTypes.func,
     loadFurniture: PropTypes.func,
+    availableFurnitureTypes: PropTypes.array,
 }
 
 export default FurnitureList

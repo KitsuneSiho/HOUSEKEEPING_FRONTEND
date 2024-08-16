@@ -118,7 +118,7 @@ const IntroAnimation = () => {
                         className="roomie"
                     />
 
-                    <div className="door-area" onClick={() => navigate('/temp/login')}>
+                    <div className="door-area" onClick={() => navigate('/login')}>
                         <img src="/animationImage/닫힌문-배경없.png" alt="img not found"
                              className={`door-closed ${doorStatus}`}/>
                         <img src="/animationImage/문틀왼쪽.png" alt="img not found"

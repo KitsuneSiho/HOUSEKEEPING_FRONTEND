@@ -6,7 +6,7 @@ const inputModal = ({modalState, modalTitle, modalBody, modalCallback, hideModal
 
     const handleConfirm = () => {
 
-        modalCallback();
+        modalCallback(true);
         hideModal();
     }
 

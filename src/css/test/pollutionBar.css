@@ -6,28 +6,34 @@
 }
 
 .loader {
-    display: block;
+    font-family: 'Fre', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     position: relative;
-    height: 25px;
-    width: 100%;
+    height: 3px;
+    width: 95%;
     /*background: #fff;*/
     /*background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
-    background: linear-gradient(90deg, #66FF66, #FFFF66, #FF3333); /* 녹색, 노란색, 빨간색 그라데이션 */
+    background: linear-gradient(90deg, #72ff72, #dbffb0, #ffffb0, #ffceb0, #ff3b3b); /* 녹색, 노란색, 빨간색 그라데이션 */
     /*background: linear-gradient(90deg, #8CF064, #FFE146, #FF3232); !* 녹색, 노란색, 빨간색 그라데이션 *!*/
     border-radius: 20px;
     overflow: hidden;
     --loader-width: 0%;
     --loader-content: "0%";
     margin: 0;
+    padding: 5px;
+
 }
 
 .chat-icon-container {
-    width: 100%;
+    width: 90%;
+    z-index: 1000;
 }
 
 .chat-icon {
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     margin-left: var(--loader-width);
 }

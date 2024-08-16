@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
 import EditRoomModel from "../../components/room/EditRoomModel.jsx";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const RoomEditTest = () => {
 
-    const [userId, setUserId] = useState("");
+    const {user} = useLogin();
     const [userLevel, setUserLevel] = useState("");
     const [rooms, setRooms] = useState([]);
     const [placementLists, setPlacementLists] = useState([]);
@@ -13,9 +13,12 @@ const RoomEditTest = () => {
     const [isReady, setReady] = useState(false);
 
     useEffect(() => {
-        setUserId(sessionStorage.getItem("userId"));
-        setUserLevel(sessionStorage.getItem("userLevel"));
-    }, []);
+
+        if (user !== null) {
+            getUserLevel();
+            getRoomIds();
+        }
+    }, [user]);
 
     useEffect(() => {
 
@@ -26,24 +29,27 @@ const RoomEditTest = () => {
 
     useEffect(() => {
 
-        if (userId !== "") {
-
-            getRoomIds();
-        }
-    }, [userId])
-
-    useEffect(() => {
-
         if (JSON.stringify(rooms) !== JSON.stringify([])) {
             getPlacementLists().then(() => setReady(true));
         }
     }, [rooms])
 
+    const getUserLevel = async () => {
+
+        try {
+
+            const response = await axiosInstance.get(`/user/level?userId=${user.userId}`);
+            setUserLevel(response.data);
+        } catch (error) {
+            console.error("Error getting user level");
+        }
+    }
+
     const getRoomIds = async () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/room/list?userId=${userId}`);
+            const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
 
             setRooms(response.data)
         } catch (error) {
@@ -55,7 +61,7 @@ const RoomEditTest = () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
+            const response = await axiosInstance.get(`/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
 
             setPlacementLists(response.data);
         } catch (error) {
@@ -67,7 +73,7 @@ const RoomEditTest = () => {
 
         try {
 
-            const response = await axios.get(BACK_URL + `/furniture/list/${userLevel}`);
+            const response = await axiosInstance.get(`/furniture/list/${userLevel}`);
 
             setFurniture(response.data);
         } catch (error) {
@@ -79,7 +85,7 @@ const RoomEditTest = () => {
 
         try {
 
-            await axios.post(BACK_URL + `/placement/register`, {
+            await axiosInstance.post(`/placement/register`, {
                 ...placement,
                 roomId: roomId,
                 placementLocation: JSON.stringify(placement.placementLocation),
@@ -93,7 +99,7 @@ const RoomEditTest = () => {
 
         try {
 
-            await axios.delete(BACK_URL + `/placement/delete?placementId=${placementId}`)
+            await axiosInstance.delete(`/placement/delete?placementId=${placementId}`)
         } catch (error) {
             console.error("error deleting placemnet:", error)
         }

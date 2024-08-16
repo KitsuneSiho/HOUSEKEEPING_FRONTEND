@@ -10,6 +10,8 @@ const RoomView = () => {
     const rendererRef = useRef(null);
     const cameraRef = useRef(null);
     const controlsRef = useRef(null);
+    const raycasterRef = useRef(new THREE.Raycaster());
+    const mouseRef = useRef(new THREE.Vector2());
 
     useEffect(() => {
         const mount = mountRef.current;
@@ -47,12 +49,12 @@ const RoomView = () => {
         scene.add(ambientLight);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(10, 10, 10);
+        directionalLight.position.set(10, 10, 5);
         scene.add(directionalLight);
 
         // 바닥 설정
         const floorGeometry = new THREE.BoxGeometry(20, 1, 20);
-        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xc5f1cf });
+        const floorMaterial = new THREE.MeshStandardMaterial({ color: 0xf2e0c8 });
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.name = 'floor'; // 바닥 이름 지정
         floor.position.set(0, 0, 0);
@@ -60,7 +62,7 @@ const RoomView = () => {
 
         // 왼쪽 벽 설정
         const wallLeftGeometry = new THREE.BoxGeometry(1, 15, 20);
-        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xa9f2ff });
+        const wallLeftMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallLeft = new THREE.Mesh(wallLeftGeometry, wallLeftMaterial);
         wallLeft.name = 'leftWall'; // 벽 이름 지정
         wallLeft.position.set(-9.5, 7.5, 0);
@@ -68,11 +70,14 @@ const RoomView = () => {
 
         // 뒤쪽 벽 설정
         const wallBackGeometry = new THREE.BoxGeometry(20, 15, 1);
-        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0 });
+        const wallBackMaterial = new THREE.MeshStandardMaterial({ color: 0xcdcdcd });
         const wallBack = new THREE.Mesh(wallBackGeometry, wallBackMaterial);
         wallBack.name = 'backWall'; // 벽 이름 지정
         wallBack.position.set(0, 7.5, -9.5);
         scene.add(wallBack);
+
+        // 기본 가구 배치 - 원하는 가구를 이곳에 추가합니다.
+        loadFurniture('/furniture/ETC/게시판.glb', { x: -8.8, y: 10, z: 6}, 0, 1.3);
 
         // 로컬 스토리지에서 저장된 가구 위치 불러오기
         const savedFurniture = JSON.parse(localStorage.getItem('furniture')) || [];
@@ -88,8 +93,28 @@ const RoomView = () => {
 
         animate();
 
+        // 마우스 클릭 이벤트 리스너 추가
+        const handleClick = (event) => {
+            event.preventDefault();
+            const bounds = mount.getBoundingClientRect();
+            mouseRef.current.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;
+            mouseRef.current.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1;
+
+            raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+            const intersects = raycasterRef.current.intersectObjects(scene.children, true);
+
+            if (intersects.length > 0) {
+                const object = intersects[0].object;
+                console.log(`Clicked on: ${object.name}`);
+                onclick(window.location.href='/main/guestbook');
+            }
+        };
+
+        mount.addEventListener('click', handleClick);
+
         return () => {
             rendererRef.current.dispose();
+            mount.removeEventListener('click', handleClick);
         };
     }, []);
 

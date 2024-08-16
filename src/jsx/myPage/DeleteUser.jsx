@@ -1,18 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../services/axiosInstance';
+import axiosInstance from '../../config/axiosInstance.js';
 import styles from '../../css/myPage/deleteUser.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import {useAuth, useLogin} from '../../contexts/AuthContext';
 
 const DeleteUser = () => {
+    const {user} = useLogin();
     const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const handleDeleteUser = async () => {
         try {
-            await axiosInstance.delete('/api/user/delete', {
-                params: { userId: 1 } // 사용자의 ID를 여기에 설정해야 합니다.
-            });
-            localStorage.removeItem('jwtToken'); // JWT 토큰 삭제
+            await axiosInstance.delete(`/api/user/delete?userId=${user.userId}`);
+            logout(); // 로그아웃 처리
             navigate('/login');
         } catch (error) {
             console.error('Error deleting user', error);

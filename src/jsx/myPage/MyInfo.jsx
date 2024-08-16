@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../services/axiosInstance';
+import axiosInstance from '../../config/axiosInstance.js';
 import styles from '../../css/myPage/myInfo.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import { useAuth } from '../../contexts/AuthContext';
 
 const MyInfo = () => {
     const navigate = useNavigate();
+    const { user, fetchUserInfo } = useAuth();
     const [userInfo, setUserInfo] = useState({
-        userId: '', // userId 추가
         name: '',
         nickname: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
     });
 
     useEffect(() => {
-        const loadUserInfo = async () => {
-            try {
-                const response = await axiosInstance.get('/api/user/info', {
-                    params: { userId: 1 } // 사용자의 ID를 여기에 설정해야 합니다.
-                });
-                setUserInfo(response.data);
-            } catch (error) {
-                console.error('Error loading user info', error);
-            }
-        };
-        loadUserInfo();
+        fetchUserInfo(user.userId);
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            setUserInfo({
+                name: user.name || '',
+                nickname: user.nickname || '',
+                email: user.email || '',
+                phoneNumber: user.phoneNumber || '',
+            });
+        }
+    }, [user]);
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -38,7 +40,12 @@ const MyInfo = () => {
 
     const handleUpdate = async () => {
         try {
-            await axiosInstance.put('/api/user/update', userInfo);
+            const updatedUserInfo = {
+                ...userInfo,
+                userId: user.userId  // 사용자 ID 추가
+            };
+            await axiosInstance.put('/api/user/update', updatedUserInfo);
+            await fetchUserInfo(user.userId);
             navigate('/myPage');
         } catch (error) {
             console.error('Error updating user info', error);
@@ -58,7 +65,7 @@ const MyInfo = () => {
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" value={userInfo.name} onChange={handleInputChange} />
+                    <input type="text" id="name" value={userInfo.name} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
@@ -66,11 +73,11 @@ const MyInfo = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="email" id="email" value={userInfo.email} onChange={handleInputChange} />
+                    <input type="email" id="email" value={userInfo.email} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
-                    <label htmlFor="phone">전화번호</label>
-                    <input type="text" id="phone" value={userInfo.phone} onChange={handleInputChange} />
+                    <label htmlFor="phoneNumber">전화번호</label>
+                    <input type="text" id="phoneNumber" value={userInfo.phoneNumber} readOnly/>
                 </div>
             </div>
             <div className={styles.submit}>

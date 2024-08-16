@@ -60,12 +60,17 @@
 }
 
 .inputContainer input {
+    font-family: Fre, sans-serif;
     width: 65%;
     padding: 10px;
     border: none;
     border-bottom: 1px solid #535353;
     outline: none;
     font-size: 16px;
+}
+
+.inputContainer input[type=email] {
+    text-align: center;
 }
 
 .submit {
@@ -76,6 +81,7 @@
 }
 
 .submit button {
+    font-family: Fre, sans-serif;
     width: 45%;
     padding: 10px 0;
     border: none;
@@ -87,6 +93,7 @@
 
 .submit .cancel,
 .submit .next{
+    font-family: Fre, sans-serif;
     background: none;
     color: black;
 }
