@@ -4,6 +4,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 import styles from '../../css/first/firstRoomDesign.module.css';
 import PropTypes from "prop-types";
+import {useNavigate} from "react-router-dom";
 
 // 방 배치를 출력
 const RoomModel = ({room, placementList}) => {
@@ -16,8 +17,8 @@ const RoomModel = ({room, placementList}) => {
     const [position, setPosition] = useState({x: 0, y: 0, z: 0});
     const [rotation, setRotation] = useState(0);  // Only Y-axis rotation
     const [scale, setScale] = useState(1);
-
     const [floorAndWallsColor, setFloorAndWallsColor] = useState(null);
+    const navigate = useNavigate();
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -151,7 +152,7 @@ const RoomModel = ({room, placementList}) => {
 
             const group = new THREE.Group();
             group.add(model);
-            group.userData = {type: placement.furnitureType}; // Add type information
+            group.userData = {name: placement.furnitureName}; // Add type information
             sceneRef.current.add(group);
 
             // 좌표를 JSON화
@@ -202,8 +203,10 @@ const RoomModel = ({room, placementList}) => {
                 setScale(intersectedObject.scale.x);
 
                 // 타입 정보 출력
-                const furnitureType = intersectedObject.userData.type;
-                console.log(`Selected Furniture Type: ${furnitureType}`);
+                const furnitureName = intersectedObject.userData.name;
+                if (furnitureName === "게시판") {
+                    navigate(`/main/guestbook`);
+                }
             }
         }
     };

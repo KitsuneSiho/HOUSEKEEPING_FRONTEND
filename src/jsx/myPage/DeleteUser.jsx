@@ -3,15 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../config/axiosInstance.js';
 import styles from '../../css/myPage/deleteUser.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import { useAuth } from '../../contexts/AuthContext';
+import {useAuth, useLogin} from '../../contexts/AuthContext';
 
 const DeleteUser = () => {
+    const {user} = useLogin();
     const navigate = useNavigate();
     const { logout } = useAuth();
 
     const handleDeleteUser = async () => {
         try {
-            await axiosInstance.delete('/api/user/delete');
+            await axiosInstance.delete(`/api/user/delete?userId=${user.userId}`);
             logout(); // 로그아웃 처리
             navigate('/login');
         } catch (error) {

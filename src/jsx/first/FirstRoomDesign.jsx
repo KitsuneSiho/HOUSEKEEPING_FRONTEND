@@ -243,7 +243,6 @@ const FirstRoomDesign = () => {
                 });
             }
         });
-        localStorage.setItem('furniture', JSON.stringify(furnitureState));
     };
 
     return (

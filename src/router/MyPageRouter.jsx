@@ -22,7 +22,7 @@ const MyPageRouter = () => {
                         <Route path="/setting" element={<Setting/>}/> {/* 설정 */}
                         <Route path="/delete" element={<DeleteUser/>}/> {/* 회원탈퇴 */}
                         <Route path="/guestBook/storage" element={<GuestBook/>}/> {/* 방명록 보관함 */}
-                        <Route path="/myroom/edit" element={<EditRoom/>}/>
+                        <Route path="/myroom/edit/:isFirst" element={<EditRoom/>}/>
                     </Routes>
                 </RouteAuthProvider>
             </SocketProvider>
