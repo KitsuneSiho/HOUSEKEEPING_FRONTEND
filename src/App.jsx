@@ -20,6 +20,7 @@ import EditRoom from "./pages/room/EditRoom.jsx";
 import Test from "./pages/Test.jsx";
 import {RoutineProvider} from "./contexts/RoutineContext.jsx";
 import {SocketProvider} from "./contexts/SocketContext.jsx";
+import Manager from "./jsx/fix/Manager.jsx";
 
 function App() {
     return (
@@ -65,9 +66,9 @@ function App() {
                             <Route path="/test/modal" element={<ModalExample/>}/>
                             <Route path="/test/room" element={<RoomDisplayTest/>}/>
                             <Route path="/test/room/edit" element={<RoomEditTest/>}/>
-                            <Route path="/test/myroom" element={<MyRoom/>}/>
-                            <Route path="/test/myroom/edit" element={<EditRoom/>}/>
                             <Route path="/test" element={<Test/>}/>
+
+                            <Route path="/manager" element={<Manager/>}/>
                         </Routes>
                     </Router>
                 </RoutineProvider>

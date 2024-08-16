@@ -13,22 +13,60 @@ const ShoesList = () => {
     const [editMode, setEditMode] = useState(false);
     const [currentEdit, setCurrentEdit] = useState(null);
 
+// JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
+    const getUserIdFromToken = () => {
+        const access = localStorage.getItem('access');
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return null;
+        }
+
+        const decodedToken = parseJwt(access);
+        return decodedToken ? decodedToken.userId : null;
+    };
+
     useEffect(() => {
         const fetchClothes = async () => {
-            try {
-                const response = await apiClient.get('/ware/items');
-                const shoesClothes = response.data.filter(item =>
-                    item.clothType === '운동화' || item.clothType === '스니커즈' || item.clothType === '구두' ||
-                    item.clothType === '샌들/슬리퍼'
-                );
-                setClothes(shoesClothes);
-            } catch (error) {
-                console.error('신발 데이터를 불러오는 중 오류 발생:', error);
+            const userId = getUserIdFromToken();
+            if (!userId) {
+                console.error('User ID is null or undefined. Cannot proceed with fetching clothes data.');
+                return;
             }
+
+            try {
+                const response = await apiClient.get(`/ware/items`, {
+                    params: {
+                        user_id: userId,
+                        category: 'shoes'  // 상의 요청
+                    },
+                    withCredentials: true
+                });
+                setClothes(response.data);
+            } catch (error) {
+                console.error('데이터를 불러오는 중 오류 발생:', error.message);
+            }
+
         };
 
         fetchClothes();
     }, []);
+
 
     useEffect(() => {
         if (modalData) {

@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { BACK_URL } from "../../Constraints.js";
+
+import axiosConfig from "../../config/axiosConfig.js";
 
 //API 호출 담당
 export const searchRecipe = async (query) => {
     console.log('searchRecipe 함수 호출됨, query:', query);
     try {
         console.log('API 요청 시작');
-        const response = await axios.post(`${BACK_URL}/api/recipe-search`, query);
+        const response = await axiosConfig.post(`/api/recipe-search`, query);
         console.log('API 응답:', response.data);
 
         if (response.data && response.data.error) {

@@ -71,7 +71,7 @@ const MyPage = () => {
                     <p>방명록 보관함</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem}>
+                <div className={styles.menuItem} onClick={() => navigate('/mypage/myroom/edit')}>
                     <p>내 방 수정</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>

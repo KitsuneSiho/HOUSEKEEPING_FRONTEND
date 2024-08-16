@@ -5,6 +5,7 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
 import { recommendClothes } from "./recommendClothes.jsx";
 
+
 const RecommendCloset = () => {
     const navigate = useNavigate();
     const [city, setCity] = useState('');
@@ -13,6 +14,7 @@ const RecommendCloset = () => {
     const [weather, setWeather] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
     const [bgColor, setBgColor] = useState('royalblue'); // 기본 배경색
+    const [customTemperature, setCustomTemperature] = useState(''); // 사용자 입력 온도 상태
     const [recommendations, setRecommendations] = useState({
         top: [],
         bottom: [],
@@ -25,7 +27,8 @@ const RecommendCloset = () => {
 
     // userId 변수 정의
     //const userId = localStorage.getItem('userId'); // 예시: localStorage에서 가져오기
-    const userId = localStorage.getItem('userId') || 1;
+    const userId = localStorage.getItem('userId');
+    console.log("유저 id:", userId);
 
 
     useEffect(() => {
@@ -67,50 +70,114 @@ const RecommendCloset = () => {
 
     //--------------------------------------------------------------------
 
-    // const fetchRecommendations = async (temperature) => {
-    //     const access = localStorage.getItem('access');
-    //     localStorage.setItem('access', access); // 토큰을 localStorage에 저장
-    //
-    //
-    //     if (!access) {
-    //         console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
-    //         navigate('/login');
-    //         return;
-    //     }
-    //
-    //     try {
-    //         const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`, {
-    //             headers: {
-    //                 Authorization: `Bearer ${access}`
-    //             }
-    //         });
-    //         const serverRecommendations = response.data;
-    //         if (serverRecommendations && Object.keys(serverRecommendations).length > 0) {
-    //             setRecommendations(serverRecommendations);
-    //         } else {
-    //             const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
-    //             setRecommendations(localRecommendations);
-    //         }
-    //     } catch (error) {
-    //         console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
-    //         const localRecommendations = recommendClothes('WINTER', temperature, 'gray');
-    //         setRecommendations(localRecommendations);
-    //     }
-    // };
-
-
-
-    const fetchRecommendations = async (temperature) => {
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
         try {
-            const response = await apiClient.get(`/clothes/recommend?temperature=${temperature}&user_id=${userId}`);
-            setRecommendations(response.data);
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
         } catch (error) {
-            console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
-            // 오류가 발생하면 기본 추천 목록을 설정
-            setRecommendations(recommendClothes('WINTER', temperature, 'gray'));
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
         }
     };
 
+    const fetchRecommendations = async (temperature) => {
+        const access = localStorage.getItem('access');
+
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return;
+        }
+
+        // 토큰에서 user_id 추출
+        const decodedToken = parseJwt(access);
+        let userId; // 기본 userId
+        if (decodedToken && decodedToken.userId) {
+            userId = decodedToken.userId;
+        }
+
+        console.log("유저 id:", userId);
+
+        try {
+            const response = await apiClient.get(`/ware/recommend?temperature=${temperature}&user_id=${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${access}`
+                }
+            });
+            console.log("응답 데이터:", response.data); // 백엔드에서 받은 데이터를 콘솔에 출력
+
+
+            const serverRecommendations = response.data;
+            if (serverRecommendations && serverRecommendations.length > 0) {
+                const newRecommendations = {
+                    top: [],
+                    bottom: [],
+                    outer: [],
+                    shoes: [],
+                    bag: [],
+                    accessory: []
+                };
+
+                serverRecommendations.forEach(item => {
+                    switch(item.clothType) {
+                        case '반팔':
+                        case '셔츠':
+                        case '니트':
+                        case '민소매':
+                        case '긴팔':
+                            newRecommendations.top.push(item);
+                            break;
+                        case '반바지':
+                        case '긴바지':
+                        case '스커트':
+                        case '원피스':
+                            newRecommendations.bottom.push(item);
+                            break;
+                        case '코트':
+                        case '패딩':
+                        case '가디건':
+                        case '후드 집업':
+                            newRecommendations.outer.push(item);
+                            break;
+                        case '운동화':
+                        case '구두':
+                        case '샌들/슬리퍼':
+                            newRecommendations.shoes.push(item);
+                            break;
+                        case '백팩':
+                        case '크로스백':
+                            newRecommendations.bag.push(item);
+                            break;
+                        case '모자':
+                        case '양말':
+                        case '선글라스':
+                            newRecommendations.accessory.push(item);
+                            break;
+                        default:
+                            console.warn(`Unknown clothType: ${item.clothType}`);
+                    }
+                });
+
+                setRecommendations(newRecommendations);
+                console.log("추천 설정:", newRecommendations);
+            } else {
+                const localRecommendations = recommendClothes(temperature);
+                setRecommendations(localRecommendations);
+            }
+        } catch (error) {
+            console.error("옷 추천 데이터를 가져오는 중 오류 발생:", error);
+            const localRecommendations = recommendClothes(temperature);
+            setRecommendations(localRecommendations);
+        }
+    };
+
+// -----------------------------------------옷추천----------------------------------------------
 
     const setDefaultTime = (forecastList) => {
         const now = new Date();
@@ -342,7 +409,7 @@ const RecommendCloset = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/closet')}/>
                 <h2>Dress Room</h2>
             </div>
             <div className={styles.weather} style={{backgroundColor: bgColor}}>
@@ -365,7 +432,8 @@ const RecommendCloset = () => {
                     <option value="제주도">제주도</option>
                 </select>
                 <label htmlFor="date">날짜 선택:</label>
-                <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()} max={getMaxDate()} />
+                <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()}
+                       max={getMaxDate()}/>
                 <label htmlFor="time">시간 선택:</label>
                 <select id="time" value={selectedTime} onChange={handleTimeChange}>
                     {timeOptions.map(time => (
@@ -373,26 +441,70 @@ const RecommendCloset = () => {
                     ))}
                 </select>
             </div>
-            <div className={styles.recommendations}>
-                {recommendations.top.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
-                {recommendations.bottom.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
-                {recommendations.outer.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
-                {recommendations.shoes.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
-                {recommendations.bag.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
-                {recommendations.accessory.map((recommendation, index) => (
-                    <img key={index} src={recommendation.image_url} alt={recommendation.item}/>
-                ))}
+
+            <div className={styles.customTempContainer}>
+                <input
+                    type="number"
+                    placeholder="온도 입력 (°C)"
+                    value={customTemperature}
+                    onChange={(e) => setCustomTemperature(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            fetchRecommendations(customTemperature);
+                        }
+                    }}
+                    className={styles.customTempInput}
+                />
+                <button
+                    onClick={() => fetchRecommendations(customTemperature)}
+                    className={styles.customTempButton}
+                >
+                    추천 받기
+                </button>
             </div>
+
+            <div className="recommendations-container">
+                <div className="image-category top-category">
+                    {recommendations.top?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item top"/>
+                    ))}
+                </div>
+
+                <div className="image-category bottom-category">
+                    {recommendations.bottom?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item bottom"/>
+                    ))}
+                </div>
+
+                <div className="image-category outer-category">
+                    {recommendations.outer?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item outer"/>
+                    ))}
+                </div>
+
+                <div className="image-category shoes-category">
+                    {recommendations.shoes?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item shoes"/>
+                    ))}
+                </div>
+
+                <div className="image-category bag-category">
+                    {recommendations.bag?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item bag"/>
+                    ))}
+                </div>
+
+                <div className="image-category accessory-category">
+                    {recommendations.accessory?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item accessory"/>
+                    ))}
+                </div>
+            </div>
+
 
             <Footer/>
         </div>

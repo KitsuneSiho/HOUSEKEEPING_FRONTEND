@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/livingRoom/livingRoom.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 
 const LivingRoom = () => {
@@ -20,6 +21,7 @@ const LivingRoom = () => {
         { name: '음료', img: '/lib/음료.svg', route: '/refrigerator/list/beverage' },
         { name: '기타', img: '/lib/기타.svg', route: '/refrigerator/list/etc' },
     ];
+    const {loginUserId} = useLogin();
 
     return (
         <div className={styles.container}>

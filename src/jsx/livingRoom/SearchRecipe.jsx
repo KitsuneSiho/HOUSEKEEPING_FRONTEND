@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import styles from '../../css/livingRoom/searchRecipe.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import { BACK_URL } from "../../Constraints.js";
 import {searchRecipe} from "./recipeService.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosConfig from "../../config/axiosConfig.js";
 
 const SearchRecipe = () => {
     const navigate = useNavigate();
@@ -18,6 +18,7 @@ const SearchRecipe = () => {
     const [cuisine, setCuisine] = useState('');
     const [cookingTime, setCookingTime] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const {loginUserId} = useLogin();
 
     useEffect(() => {
         fetchIngredients();
@@ -25,7 +26,7 @@ const SearchRecipe = () => {
 
     const fetchIngredients = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/food/ingredients`);
+            const response = await axiosConfig.get(`/food/ingredients`);
             setIngredientsList(response.data);
         } catch (error) {
             console.error('식재료 리스트를 가져오는데 실패했습니다:', error);
@@ -128,9 +129,7 @@ const SearchRecipe = () => {
                                         type="button"
                                         onClick={() => removeMainIngredient(ingredient.key)}
                                         className={styles.removeBtn}
-                                    >
-                                        X
-                                    </button>
+                                    ><p>✖</p></button>
                                 )}
                             </div>
                         ))}
@@ -162,9 +161,7 @@ const SearchRecipe = () => {
                                         type="button"
                                         onClick={() => removeSubIngredient(ingredient.key)}
                                         className={styles.removeBtn}
-                                    >
-                                        X
-                                    </button>
+                                    ><p>✖</p></button>
                                 )}
                             </div>
                         ))}

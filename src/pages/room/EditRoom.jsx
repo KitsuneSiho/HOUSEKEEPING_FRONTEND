@@ -6,7 +6,7 @@ import axiosInstance from "../../config/axiosInstance.js";
 
 const EditRoom = () => {
 
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
     const [userLevel, setUserLevel] = useState("");
     const [rooms, setRooms] = useState([]);
     const [furniture, setFurniture] = useState([]);
@@ -21,11 +21,11 @@ const EditRoom = () => {
 
     useEffect(() => {
 
-        if (loginUserId !== null) {
+        if (user !== null) {
             getUserLevel();
             getRoomIds();
         }
-    }, [loginUserId]);
+    }, [user]);
 
     useEffect(() => {
 
@@ -45,7 +45,7 @@ const EditRoom = () => {
 
         try {
 
-            const response = await axiosInstance.get(`/user/level?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/api/user/level?userId=${user.userId}`);
             setUserLevel(response.data);
         } catch (error) {
             console.error("Error getting user level");
@@ -56,7 +56,7 @@ const EditRoom = () => {
 
         try {
 
-            const response = await axiosInstance.get(`/room/list?userId=${loginUserId}`);
+            const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
 
             setRooms(response.data)
         } catch (error) {
