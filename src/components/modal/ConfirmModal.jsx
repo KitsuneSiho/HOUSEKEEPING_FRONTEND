@@ -13,12 +13,14 @@ const inputModal = ({modalState, modalTitle, modalBody, modalCallback, hideModal
     return (
         <div className={`modal ${modalState}`}>
             <div className="modal-content">
-                <span className="modal-title">{modalTitle}</span>
+                <p className="modal-title">{modalTitle}</p>
                 <div className="modal-body">
                     {modalBody}
                 </div>
-                <button className="close-button" onClick={handleConfirm}>예</button>
-                <button className="close-button" onClick={hideModal}>아니오</button>
+                <div className="closeButtons">
+                    <button className="close-button" onClick={handleConfirm}>예</button>
+                    <button className="close-button" onClick={hideModal}>아니오</button>
+                </div>
             </div>
         </div>
     );

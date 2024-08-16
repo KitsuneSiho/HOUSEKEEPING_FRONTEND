@@ -250,6 +250,11 @@ const MonthlyRoutineInfo = () => {
 
     const weeks = getWeeks(daysOfMonth);
 
+    const getAddButtonBackgroundColor = (index) => {
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
+    };
+
     // 알림 켜기 요청을 보내는 함수
     const toggleRoomAlarms = async (roomId, routineGroupName) => {
         try {
@@ -318,7 +323,7 @@ const MonthlyRoutineInfo = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')}/>
                 <h2>{groupName}</h2>
                 <h3 onClick={deleteRoutineGroup}>루틴 삭제</h3>
             </div>
@@ -343,13 +348,14 @@ const MonthlyRoutineInfo = () => {
                 </div>
             </div>
             <div className={styles.routineContainer}>
-                {rooms.map(room => (
+                {rooms.map((room, index) => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}
+                                 style={{
+                                     backgroundColor: getAddButtonBackgroundColor(index),
+                                     color: '#000'
+                                 }}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
                             </div>

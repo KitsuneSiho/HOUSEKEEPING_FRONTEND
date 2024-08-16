@@ -28,21 +28,21 @@ const Manager = () => {
         labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월'],
         datasets: [
             {
-                label: '게시판 1',
+                label: '루미`s Tip',
                 data: [28, 48, 40, 19, 86, 27, 90],
                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
                 borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1,
             },
             {
-                label: '게시판 2',
+                label: '폐기물 Tip',
                 data: [35, 50, 60, 55, 80, 45, 70],
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgba(255, 159, 64, 1)',
                 borderWidth: 1,
             },
             {
-                label: '게시판 3',
+                label: '생활 Tip',
                 data: [50, 65, 75, 85, 95, 100, 120],
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -64,6 +64,20 @@ const Manager = () => {
         ],
     };
 
+    // 레벨별 사용자 수 데이터
+    const levelData = {
+        labels: ['레벨 1', '레벨 2', '레벨 3', '레벨 4', '레벨 5'],
+        datasets: [
+            {
+                label: '사용자 수',
+                data: [5, 8, 12, 7, 10],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
     // 사용자 및 게시물 데이터 (샘플)
     const users = [
         { id: 1, name: '홍길동', email: 'hong@example.com', nickname: '길동이', phone: '010-1234-5678', platform: '카카오', level: '5' },
@@ -80,10 +94,10 @@ const Manager = () => {
     ];
 
     const comments = [
-        { id: 1, postId: 1, author: '김철수', content: '좋은 글입니다.', time: '2024-01-02 12:30' },
-        { id: 2, postId: 1, author: '이영희', content: '동의합니다.', time: '2024-01-02 13:00' },
-        { id: 3, postId: 2, author: '박민수', content: '유익한 정보네요.', time: '2024-02-02 14:00' },
-        { id: 4, postId: 3, author: '홍길동', content: '잘 읽었습니다.', time: '2024-03-02 15:00' },
+        { id: 1, postTitle: '김김김', author: '김철수', content: '좋은 글입니다.', time: '2024-01-02 12:30' },
+        { id: 2, postTitle: '이이이', author: '이영희', content: '동의합니다.', time: '2024-01-02 13:00' },
+        { id: 3, postTitle: '박박박', author: '박민수', content: '유익한 정보네요.', time: '2024-02-02 14:00' },
+        { id: 4, postTitle: '홍홍홍', author: '홍길동', content: '잘 읽었습니다.', time: '2024-03-02 15:00' },
     ];
 
     // 회원 탈퇴 기능
@@ -137,6 +151,10 @@ const Manager = () => {
                         <div className={styles.chartBox}>
                             <h2>방명록 많이 받은 사용자</h2>
                             <Bar data={guestbookData} options={{ responsive: true }} />
+                        </div>
+                        <div className={styles.chartBox}>
+                            <h2>레벨별 사용자 수</h2>
+                            <Bar data={levelData} options={{ responsive: true }} />
                         </div>
                     </div>
                 );
@@ -230,7 +248,7 @@ const Manager = () => {
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>게시물 ID</th>
+                                <th>게시물 제목</th>
                                 <th>작성자</th>
                                 <th>내용</th>
                                 <th>시간</th>
@@ -241,7 +259,7 @@ const Manager = () => {
                             {comments.map(comment => (
                                 <tr key={comment.id}>
                                     <td>{comment.id}</td>
-                                    <td>{comment.postId}</td>
+                                    <td>{comment.postTitle}</td>
                                     <td>{comment.author}</td>
                                     <td>{comment.content}</td>
                                     <td>{comment.time}</td>
@@ -266,7 +284,9 @@ const Manager = () => {
 
     return (
         <div className={styles.managerContainer}>
-            <h1>House Keeping</h1>
+            <div className={styles.managerHeader}>
+                <img src="/lib/HouseKeeping로고.png" alt="House Keeping 로고"/>
+            </div>
             <nav className={styles.navbar}>
                 <button onClick={() => setActiveSection('dashboard')}>대시보드</button>
                 <button onClick={() => setActiveSection('users')}>사용자 관리</button>

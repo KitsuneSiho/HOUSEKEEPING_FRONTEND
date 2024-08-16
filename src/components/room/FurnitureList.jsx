@@ -1,4 +1,4 @@
-import styles from "../../css/first/firstRoomDesign.module.css";
+import styles from "../../css/myPage/editRoomModel.module.css";
 import PropTypes from "prop-types";
 import React, {useEffect, useState} from "react";
 import axiosInstance from "../../config/axiosInstance.js";
@@ -39,7 +39,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
             </div>
             {activeCategory && (
                 <div className={styles.furnitureAddButton}>
-                    {activeCategory === 'WALLFLOOR' && (
+                    {activeCategory === 'WALL' && (
                         <>
                             <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
                             <button onClick={() => openColorModal('backWall')}>오른쪽 벽</button>
@@ -48,7 +48,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                     )}
 
                     {furnitureTypes.map((furnitureType, index) => (
-                        <div key={index}>
+                        <div key={index} className={styles.furnitureList}>
                             {activeCategory === furnitureType.furnitureType
                                 &&
                                 furniture.filter(furniture => (furniture.furnitureType === furnitureType.furnitureType)).map((furniture, index) => (

@@ -5,6 +5,16 @@
     font-family: 'Fre', sans-serif;
 }
 
+.managerHeader{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.managerHeader img{
+    width: 150px;
+}
+
 .navbar {
     display: flex;
     justify-content: center;
@@ -52,8 +62,8 @@
     border-radius: 5px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     flex: 1;
-    min-width: 400px;
-    max-width: 48%;
+    min-width: 500px;
+    max-width: 50%;
     margin-bottom: 20px;
 }
 
@@ -95,8 +105,8 @@
 }
 
 .userManagement h2, .postManagement h2, .commentManagement h2 {
-    font-size: 1.4em;
-    color: #ff6f61;
+    font-size: 25px;
+    color: black;
     text-align: center;
     margin-bottom: 20px;
     font-weight: bold;
@@ -116,21 +126,22 @@
 }
 
 .modalContent {
-    background-color: #ffeead;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
+    max-width: 700px;
     width: 100%;
-    border: 2px dashed #ff6f61;
+
 }
 
 .closeButton {
+    font-family: 'Fre', sans-serif;
     background-color: #ff6f61;
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -142,16 +153,16 @@
 
 .closeButton:hover {
     background-color: #ff4f4f;
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
-/* Link button styling for posts */
 .linkButton {
+    font-family: 'Fre', sans-serif;
     background: none;
     border: none;
-    color: #3498db;
+    color: black;
     cursor: pointer;
-    text-decoration: underline;
+    text-decoration: none;
     font-size: 1em;
 }
 
@@ -160,17 +171,18 @@
 }
 
 .deleteButton {
+    font-family: 'Fre', sans-serif;
     padding: 5px 10px;
     background-color: #ff4f4f;
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 0.9em;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .deleteButton:hover {
-    background-color: #c0392b;
+    background-color: #ff250e;
     transform: scale(1.05);
 }
