@@ -69,20 +69,32 @@
     font-size: 16px;
 }
 
-.image-container {
-    position: relative; /* 부모 컨테이너에 상대적 위치 지정 */
-    width: 3000px; /* 적절한 너비로 조정 */
-    height: 100px; /* 적절한 높이로 조정 */
-    display: flex; /* 플렉스 박스를 사용하여 이미지가 가로로 나란히 배치되도록 설정 */
-    align-items: center; /* 이미지를 세로로 중앙 정렬 */
+.recommendations-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
+    gap: 10px; /* 이미지 간의 간격 */
+    padding: 20px; /* 컨테이너 패딩 */
+}
+
+.image-category {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* 이미지 중앙 정렬 */
 }
 
 .item {
-    flex-shrink: 0; /* 이미지가 축소되지 않도록 설정 */
-    width: 100px; /* 원하는 크기로 조정 */
+    width: 100px; /* 이미지를 4분의 1 크기로 줄이기 */
     height: auto;
-    margin-right: 10px; /* 각 이미지 간의 간격을 설정 */
+    border-radius: 8px;
+    transition: transform 0.3s ease; /* 호버 시 확대 효과 */
+    cursor: pointer;
 }
+
+.item:hover {
+    transform: scale(1.1); /* 호버 시 이미지 확대 */
+}
+
 
 /* recommendCloset.module.css */
 .weather {

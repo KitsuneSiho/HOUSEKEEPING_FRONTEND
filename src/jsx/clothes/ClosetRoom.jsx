@@ -8,10 +8,44 @@ const ClosetRoom = () => {
     const navigate = useNavigate();
     const [clothes, setClothes] = useState([]);
 
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
+    const getUserIdFromToken = () => {
+        const access = localStorage.getItem('access');
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return null;
+        }
+
+        const decodedToken = parseJwt(access);
+        return decodedToken ? decodedToken.userId : null;
+    };
+
     useEffect(() => {
         const fetchClothes = async () => {
+            const userId = getUserIdFromToken(); // JWT 토큰에서 userId 추출
+            if (!userId) {
+                console.error('User ID is null or undefined. Cannot proceed with fetching clothes data.');
+                return;
+            }
+
             try {
-                const response = await apiClient.get('/ware/items');
+                const response = await apiClient.get(`/ware/items?user_id=${userId}`);
                 setClothes(response.data);
             } catch (error) {
                 console.error('옷장 갱신에 실패:', error);
