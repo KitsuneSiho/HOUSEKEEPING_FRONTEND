@@ -4,6 +4,8 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from '../../Constraints.js';
 import axios from 'axios';
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const DailyRoutineInfo = () => {
     const navigate = useNavigate();
@@ -19,12 +21,12 @@ const DailyRoutineInfo = () => {
     const [selectedRoomId, setSelectedRoomId] = useState(null);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
 
-    const loginUserId = 1;
+    const { user } = useLogin();
 
     // 그룹 이름으로 루틴 정보 가져오기
     const fetchDailyRoutines = async () => {
         try {
-            const response = await axios.get(`${BACK_URL}/routine/group/${groupName}`);
+            const response = await axiosInstance.get(`/routine/group/${groupName}`);
             const dailyRoutines = response.data.filter(routine => routine.routineFrequency === 'DAILY')
                 .reduce((acc, routine) => {
                     if (!acc[routine.roomId]) {
@@ -47,8 +49,8 @@ const DailyRoutineInfo = () => {
         // 모든 방 정보 가져오기
         const fetchRooms = async () => {
             try {
-                const response = await axios.get(`${BACK_URL}/room/list`, {
-                    params: { userId: loginUserId } // userId는 사용자의 ID로 대체
+                const response = await axiosInstance.get(`/room/list`, {
+                    params: { userId: user.userId }
                 });
                 setRooms(response.data);
             } catch (error) {
@@ -77,7 +79,7 @@ const DailyRoutineInfo = () => {
         };
 
         try {
-            const response = await axios.post(`${BACK_URL}/routine/add`, newRoutine);
+            const response = await axiosInstance.post(`/routine/add`, newRoutine);
 
             if (response.status === 200) {
                 const addedRoutine = response.data;
@@ -109,7 +111,7 @@ const DailyRoutineInfo = () => {
         }
 
         try {
-            const response = await axios.delete(`${BACK_URL}/routine/deleteGroup/${groupName}`);
+            const response = await axiosInstance.delete(`/routine/deleteGroup/${groupName}`);
             if (response.status === 200) {
                 alert('루틴 그룹이 성공적으로 삭제되었습니다.');
                 navigate('/routine'); // 루틴 페이지로 이동하거나 다른 적절한 페이지로 이동
@@ -140,7 +142,7 @@ const DailyRoutineInfo = () => {
         };
 
         try {
-            const response = await axios.put(`${BACK_URL}/routine/update`, updatedRoutine);
+            const response = await axiosInstance.put(`/routine/update`, updatedRoutine);
 
             if (response.status === 200) {
                 const updatedItem = response.data;
@@ -174,7 +176,7 @@ const DailyRoutineInfo = () => {
         }
 
         try {
-            const response = await axios.delete(`${BACK_URL}/routine/delete/${routineToEdit.id}`);
+            const response = await axiosInstance.delete(`/routine/delete/${routineToEdit.id}`);
 
             if (response.status === 200) {
                 setRoutineItems(prevItems => ({

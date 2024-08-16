@@ -11,6 +11,7 @@
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
+    font-family: Fre, sans-serif;
 }
 
 /* 모달이 표시될 때 적용될 스타일 */
@@ -20,12 +21,12 @@
 
 /* 모달 컨텐츠 스타일 */
 .modal-content {
-    background-color: rgb(231, 206, 255);
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     max-width: 500px;
-    width: 90%;
+    width: 80%;
     animation: fadeIn 0.3s ease-in-out;
     font-weight: bold;
     text-align: center; /* 텍스트를 중앙 정렬 */
@@ -34,7 +35,7 @@
 /* 모달 제목 스타일 */
 .modal-title {
     font-size: 1.5em;
-    color: #4b0082; /* 진한 인디고 */
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -47,19 +48,17 @@
 
 /* 닫기 버튼 스타일 */
 .close-button {
-    background-color:  #8a2be2;
-    color: white;
+    font-family: Fre, sans-serif;
+    background: none;
+    color: black;
     padding: 10px 20px;
     margin-top: 15px;
-    border: none;
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.close-button:hover {
-    background-color: #7a1bbd;
-}
 
 /* 키프레임 애니메이션 */
 @keyframes fadeIn {

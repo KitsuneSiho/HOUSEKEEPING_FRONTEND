@@ -176,7 +176,6 @@ const ChatRoomHeader = ({chatRoomType, chatRoomName, userId}) => {
 ChatRoomHeader.propTypes = {
     chatRoomName: PropTypes.string,
     chatRoomType: PropTypes.string,
-    userId: PropTypes.string,
 }
 
 export default ChatRoomHeader;

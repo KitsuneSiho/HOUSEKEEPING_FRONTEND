@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import styles from '../../css/first/firstLogin.module.css';
 import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const FirstLogin = () => {
 
-    const {user} = useLogin();
+    const {user, setUser} = useLogin();
     const navigate = useNavigate();
     const location = useLocation();
     const [userInfo, setUserInfo] = useState({
@@ -16,11 +16,13 @@ const FirstLogin = () => {
         phoneNumber: '',
         userPlatform: '',
         role: 'ROLE_USER',
-        username: ''
+        username: '',
+        profileImageUrl: ''
     });
     const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [authError, setAuthError] = useState('');
+    const [profileImage, setProfileImage] = useState("/lib/profileImg.svg");
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -43,24 +45,58 @@ const FirstLogin = () => {
     }, [location]);
 
     const handleInputChange = (e) => {
-        const { id, value } = e.target;
+        const {id, value} = e.target;
         setUserInfo(prevState => ({
             ...prevState,
             [id]: value
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axiosInstance.post('/files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setProfileImage(response.data);
+                setUserInfo(prevState => ({
+                    ...prevState,
+                    profileImageUrl: response.data
+                }));
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                setAuthError('프로필 이미지 업로드에 실패했습니다.');
+            }
+        }
+    };
+
     const handleSubmit = async () => {
         try {
-            const response = await axiosInstance.post('/api/auth/complete-registration', userInfo, {
+            const response = await axiosInstance.post('/api/auth/complete-registration', {
+                ...userInfo,
+                profileImageUrl: profileImage
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
             if (response.status === 200) {
-                console.log("userId:", user.userId);
-                createNewRooms(user.userId).then(() => navigate('/design/myroom'));
+                console.log("userId:", response.data.userId);
+                setUser({
+                    ...user,
+                    ...response.data,
+                    nickname: userInfo.nickname,
+                    profileImageUrl: profileImage
+                });
+                createNewRooms(response.data.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
             }
         } catch (error) {
             console.error('Error completing registration', error);
@@ -80,58 +116,58 @@ const FirstLogin = () => {
 
     const createNewRooms = async (userId) => {
 
-            try {
+        try {
 
-                const privateRoom = await axiosInstance.post(`/room/register`, {
-                    userId: userId,
-                    roomName: "내 방",
-                    roomType: "PRIVATE",
-                    roomPollution: 0,
-                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
-                })
+            const privateRoom = await axiosInstance.post(`/room/register`, {
+                userId: userId,
+                roomName: "내 방",
+                roomType: "PRIVATE",
+                roomPollution: 0,
+                roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+            })
 
-                placeFurniture(privateRoom.data.roomId);
+            placeFurniture(privateRoom.data.roomId);
 
-                const kitchen = await axiosInstance.post(`/room/register`, {
-                    userId: userId,
-                    roomName: "부엌",
-                    roomType: "KITCHEN",
-                    roomPollution: 0,
-                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
-                })
+            const kitchen = await axiosInstance.post(`/room/register`, {
+                userId: userId,
+                roomName: "부엌",
+                roomType: "KITCHEN",
+                roomPollution: 0,
+                roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+            })
 
-                placeFurniture(kitchen.data.roomId);
+            placeFurniture(kitchen.data.roomId);
 
-                const toilet = await axiosInstance.post(`/room/register`, {
-                    userId: userId,
-                    roomName: "화장실",
-                    roomType: "TOILET",
-                    roomPollution: 0,
-                    roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
-                })
+            const toilet = await axiosInstance.post(`/room/register`, {
+                userId: userId,
+                roomName: "화장실",
+                roomType: "TOILET",
+                roomPollution: 0,
+                roomWallsColor: "{\"floor\":\"#f2e0c8\",\"leftWall\":\"#cdcdcd\",\"backWall\":\"#cdcdcd\"}"
+            })
 
-                placeFurniture(toilet.data.roomId);
+            placeFurniture(toilet.data.roomId);
 
-            } catch (error) {
-                console.error("error saving room:", error);
-            }
+        } catch (error) {
+            console.error("error saving room:", error);
         }
+    }
 
-        const placeFurniture = async (roomId) => {
+    const placeFurniture = async (roomId) => {
 
-            try {
+        try {
 
-                await axiosInstance.post(`/placement/register`, {
-                    roomId: roomId,
-                    furnitureId: 34,
-                    placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
-                    placementAngle: 0,
-                    placementSize: 1.3,
-                })
-            } catch (error) {
-                console.error("error placing furniture:", error);
-            }
+            await axiosInstance.post(`/placement/register`, {
+                roomId: roomId,
+                furnitureId: 1,
+                placementLocation: JSON.stringify({x: -8.8, y: 10, z: 6}),
+                placementAngle: 0,
+                placementSize: 1.3,
+            })
+        } catch (error) {
+            console.error("error placing furniture:", error);
         }
+    }
 
     return (
         <div className={styles.container}>
@@ -139,22 +175,29 @@ const FirstLogin = () => {
                 <h1>가입 정보</h1>
             </div>
             <div className={styles.profileImg}>
-                <img src="/lib/profileImg.svg" alt="프로필 이미지" />
-                <p>프로필 이미지 설정</p>
+                <img src={profileImage} alt="프로필 이미지"/>
+                <label htmlFor="profileImageUpload">프로필 이미지 설정</label>
+                <input
+                    type="file"
+                    id="profileImageUpload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                />
             </div>
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
                     <label htmlFor="name">이름</label>
-                    <input type="text" id="name" value={userInfo.name} readOnly />
+                    <input type="text" id="name" value={userInfo.name} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
-                    <input type="text" id="nickname" value={userInfo.nickname} onChange={handleInputChange} />
+                    <input type="text" id="nickname" value={userInfo.nickname} onChange={handleInputChange}/>
                     {nicknameError && <p className={styles.error}>{nicknameError}</p>}
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
-                    <input type="text" id="email" value={userInfo.email} readOnly />
+                    <input type="text" id="email" value={userInfo.email} readOnly/>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="phoneNumber">전화번호</label>
@@ -173,12 +216,14 @@ const FirstLogin = () => {
                     type="button"
                     className={styles.cancel}
                     onClick={() => navigate('/login')}
-                >취소</button>
+                >취소
+                </button>
                 <button
                     type="button"
                     className={styles.next}
                     onClick={handleSubmit}
-                >다음</button>
+                >다음
+                </button>
             </div>
         </div>
     );

@@ -22,6 +22,36 @@ const UploadClosetCheck = () => {
         clothCustomTag: ''
     });
 
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
+    const getUserIdFromToken = () => {
+        const access = localStorage.getItem('access');
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return null;
+        }
+
+        const decodedToken = parseJwt(access);
+        return decodedToken ? decodedToken.userId : null;
+    };
+
+
+
     useEffect(() => {
         // clothType 또는 clothMaterial이 변경될 때 세탁 방법 설정
         if (clothDetails.clothType && clothDetails.clothMaterial) {
@@ -57,7 +87,20 @@ const UploadClosetCheck = () => {
     };
 
     const handleSave = async () => {
-        const clothData = { ...clothDetails, userId: 1, imageUrl: fileUrl, clothHowWash: clothDetails.clothHowWash };
+        const userId = getUserIdFromToken(); // JWT 토큰에서 userId 추출
+        if (!userId) {
+            console.error('User ID is null or undefined. Cannot proceed with saving cloth data.');
+            return;
+        }
+
+        const clothData = {
+            ...clothDetails,
+            userId: userId,
+            imageUrl: fileUrl,
+            clothHowWash: clothDetails.clothHowWash
+        };
+
+        console.log('Saving cloth data:', clothData); // 전송 전에 데이터 확인
 
 
         try {

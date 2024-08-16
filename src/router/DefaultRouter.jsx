@@ -20,32 +20,32 @@ const DefaultRouter = () => {
                 <Route path="/first" element={<FirstMain/>}/> {/* HouseKeeping로고만 있는 첫 화면 */}
                 <Route path="/login" element={<Login/>}/> {/* 로그인 화면 */}
                 <Route path="/*" element={
-                    // <RouteAuthProvider>
+                    <RouteAuthProvider>
                         <SocketProvider>
                             <FirstLogin/>
                         </SocketProvider>
-                    // </RouteAuthProvider>
+                    </RouteAuthProvider>
                 }/> {/* 첫 로그인시 추가 정보 입력창 */}
                 <Route path="/design/myroom" element={
-                    // <RouteAuthProvider>
+                    <RouteAuthProvider>
                         <SocketProvider>
                             <FirstRoomDesign/>
                         </SocketProvider>
-                    // </RouteAuthProvider>
+                    </RouteAuthProvider>
                 }/> {/* 첫 로그인시 방 디자인 화면 */}
                 <Route path="/design/livingroom" element={
-                    // <RouteAuthProvider>
+                    <RouteAuthProvider>
                         <SocketProvider>
                             <FirstLivingRoom/>
                         </SocketProvider>
-                    // </RouteAuthProvider>
+                    </RouteAuthProvider>
                 }/> {/* 첫 로그인시 주방 디자인 화면 */}
                 <Route path="/design/toilet" element={
-                    // <RouteAuthProvider>
+                    <RouteAuthProvider>
                         <SocketProvider>
                             <FirstToiletRoom/>
                         </SocketProvider>
-                    // </RouteAuthProvider>
+                    </RouteAuthProvider>
                 }/> {/* 첫 로그인시 화장실 디자인 화면 */}
             </Routes>
         </>

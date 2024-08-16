@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../../css/main/visitorBoard.module.css';
+import styles from '../../css/main/myGuestBook.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { BACK_URL } from "../../Constraints.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 const colorMapping = {
     BLUE: '#c5f1ff',
@@ -12,8 +14,9 @@ const colorMapping = {
 };
 
 const MyGuestBook = () => {
+
+    const {user} = useLogin();
     const navigate = useNavigate();
-    const { userId } = useParams();
     const [guestbook, setGuestbook] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [content, setContent] = useState('');
@@ -21,13 +24,12 @@ const MyGuestBook = () => {
     const [isPrivate, setIsPrivate] = useState(false);
     const [isArchived, setIsArchived] = useState(false);
 
-    // 현재 로그인 중인 사용자
-    const ownerId = 1;
 
     useEffect(() => {
         const fetchGuestbook = async () => {
             try {
-                const response = await axios.get(`${BACK_URL}/guestbook/list/${ownerId}`);
+                console.log(user.userId);
+                const response = await axiosInstance.get(`/guestbook/list/${user.userId}`);
                 if (Array.isArray(response.data)) {
                     setGuestbook(response.data);
                 } else {
@@ -40,7 +42,7 @@ const MyGuestBook = () => {
             }
         };
         fetchGuestbook();
-    }, [ownerId]);
+    }, [user.userId]);
 
     const addEntry = async () => {
         if (content.trim() === '') {
@@ -53,8 +55,8 @@ const MyGuestBook = () => {
             guestbookIsSecret: isPrivate,
             guestbookIsRead: false,
             guestbookTimestamp: new Date().toISOString(),
-            guestbookOwnerId: userId,
-            guestbookWriterId: loginUserId,
+            guestbookOwnerId: user.userId,
+            guestbookWriterId: user.userId,
             guestbookColor: Object.keys(colorMapping).find(key => colorMapping[key] === color),
             guestbookIsArchived: isArchived
         };
@@ -74,7 +76,7 @@ const MyGuestBook = () => {
 
     const handleDelete = async (guestbookId) => {
         try {
-            await axios.delete(`${BACK_URL}/guestbook/delete/${guestbookId}`);
+            await axiosInstance.delete(`/guestbook/delete/${guestbookId}`);
             setGuestbook(prevEntries => prevEntries.filter(entry => entry.guestbookId !== guestbookId));
         } catch (error) {
             console.error('Error deleting guestbook entry:', error);
@@ -83,7 +85,7 @@ const MyGuestBook = () => {
 
     const handleArchive = async (guestbookId) => {
         try {
-            await axios.patch(`${BACK_URL}/guestbook/archive/${guestbookId}`);
+            await axiosInstance.patch(`/guestbook/archive/${guestbookId}`);
             // Remove the archived entry from the list
             setGuestbook(prevEntries =>
                 prevEntries.filter(entry => entry.guestbookId !== guestbookId)
@@ -92,7 +94,6 @@ const MyGuestBook = () => {
             console.error('Error updating guestbook entry:', error);
         }
     };
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>

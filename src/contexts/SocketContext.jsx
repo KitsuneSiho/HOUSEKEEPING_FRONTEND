@@ -1,16 +1,15 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {createContext, useContext, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
-import { io } from "socket.io-client";
+import {io} from "socket.io-client";
 import axiosInstance from "../config/axiosInstance.js";
-import {useLogin} from "./AuthContext.jsx";
+import {jwtDecode} from "jwt-decode";
 
 // Context 생성
 const SocketContext = createContext();
 
 // Context Provider
-export const SocketProvider = ({ children }) => {
+export const SocketProvider = ({children}) => {
     const socketRef = useRef(null);
-    const {user} = useLogin();
     const [receivedMessage, setReceivedMessage] = useState("");
     const [messageSender, setMessageSender] = useState("");
     const [friendMessage, setFriendMessage] = useState("");
@@ -35,24 +34,27 @@ export const SocketProvider = ({ children }) => {
         socketRef.current = socket;
 
         socket.on('connect', () => {
-            const sessionNickname = user.nickname;
+            const access = localStorage.getItem("access");
+            const decode = jwtDecode(access);
+            const loginNickname = decode.nickname;
+
             setIsConnected(true);
             console.log(`Socket connected: ${socket.id}, ${nickname}`);
 
-            if (sessionNickname) {
-                socketLogin(sessionNickname);
-                setNickname(sessionNickname);
+            if (loginNickname) {
+                socketLogin(loginNickname);
+                setNickname(loginNickname);
             }
         });
 
         socket.on('receive_message', (data) => {
-            const { nickname, message } = data;
+            const {nickname, message} = data;
             setMessageSender(nickname);
             setReceivedMessage(message);
         });
 
         socket.on('friend_message', (data) => {
-            const { nickname, message } = data;
+            const {nickname, message} = data;
             setFriendMessageSender(nickname);
             setFriendMessage(message);
         });
@@ -61,7 +63,7 @@ export const SocketProvider = ({ children }) => {
 
             console.log(data);
 
-            const { message } = data;
+            const {message} = data;
             setAnnounceMessage(message);
         });
 
@@ -100,13 +102,12 @@ export const SocketProvider = ({ children }) => {
         setNickname(nickname);
 
         const accessToken = localStorage.getItem('access');
-        console.log(accessToken);
 
         // 로그인 이벤트를 서버로 전송
         socketRef.current.emit('login', {
-                nickname: nickname,
-                accessToken: accessToken,
-            });
+            nickname: nickname,
+            accessToken: accessToken,
+        });
 
         getOnlineFriends(nickname);
         console.log("login: ", nickname);
@@ -126,7 +127,7 @@ export const SocketProvider = ({ children }) => {
     const announceRoom = (message) => {
 
         if (room) {
-            socketRef.current.emit('announce', { room, message });
+            socketRef.current.emit('announce', {room, message});
         } else {
             alert('Please join a room first.');
         }
@@ -134,8 +135,8 @@ export const SocketProvider = ({ children }) => {
 
     const sendMessageUsingSocket = (message) => {
         if (room) {
-            socketRef.current.emit('send_message', { room, nickname, message });
-            socketRef.current.emit('send_message_to_friends', { nickname, message });
+            socketRef.current.emit('send_message', {room, nickname, message});
+            socketRef.current.emit('send_message_to_friends', {nickname, message});
         } else {
             alert('Please join a room first.');
         }

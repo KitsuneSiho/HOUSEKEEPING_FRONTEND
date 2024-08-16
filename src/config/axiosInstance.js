@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const BACK_URL = 'http://localhost:8080';
+import {BACK_URL} from "../Constraints.js";
 
 const apiClient = axios.create({
     baseURL: BACK_URL,
@@ -17,6 +16,7 @@ apiClient.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.error('Request interceptor error:', error);
         return Promise.reject(error);
     }
 );
@@ -36,17 +36,22 @@ apiClient.interceptors.response.use(
                 const Authorization = response.headers['authorization'];
                 console.log("Authorization Header:", Authorization);
 
-                const newAccessToken = Authorization.split(' ')[1];
+                const newAccessToken = Authorization ? Authorization.split(' ')[1] : null;
 
                 console.log("newAccessToken", newAccessToken);
 
-                localStorage.setItem('access', newAccessToken);
+                if (newAccessToken) {
+                    localStorage.setItem('access', newAccessToken);
 
-                // 재시도할 요청에 새로운 토큰 적용
-                originalRequest.headers['Authorization'] = Authorization;
+                    // 재시도할 요청에 새로운 토큰 적용
+                    originalRequest.headers['Authorization'] = Authorization;
 
-                // 원래의 요청을 재시도
-                return apiClient(originalRequest);
+                    // 원래의 요청을 재시도
+                    return apiClient(originalRequest);
+                } else {
+                    console.error("Failed to get new access token");
+                    throw new Error("Token refresh failed");
+                }
             } catch (refreshError) {
                 // 재발급 실패 시 토큰 삭제 및 로그인 페이지로 리다이렉트
                 // localStorage.removeItem('access');

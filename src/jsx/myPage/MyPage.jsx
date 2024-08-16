@@ -11,7 +11,7 @@ const MyPage = () => {
 
     const handleLogout = async () => {
         try {
-            await axiosInstance.post('/logout');
+            await axiosInstance.post('/api/auth/logout');
             logout();
             navigate('/login');
         } catch (error) {
@@ -29,11 +29,23 @@ const MyPage = () => {
             <div className={styles.profile}>
                 <div className={styles.profileInfo}>
                     <p className={styles.profileNickname}>
-                        <img src="/lib/마이페이지아이콘.svg" alt="프로필 아이콘" />
+                        {user?.profileImageUrl ? (
+                            <img
+                                src={user.profileImageUrl}
+                                alt="프로필 이미지"
+                                className={styles.profileImage}
+                            />
+                        ) : (
+                            <img
+                                src="/lib/마이페이지아이콘.svg"
+                                alt="프로필 아이콘"
+                                className={styles.defaultProfileIcon}
+                            />
+                        )}
                         {user?.nickname}님, 청소하세요.
                     </p>
                     <p className={styles.profileLevel}>
-                        <img src="/lib/루미.png" alt="아바타" />
+                        <img src="/lib/루미.png" alt="아바타"/>
                         Lv.{user?.level} {user?.levelName}
                     </p>
                     <div className={styles.xpContainer}>
@@ -59,7 +71,7 @@ const MyPage = () => {
                     <p>방명록 보관함</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>
-                <div className={styles.menuItem}>
+                <div className={styles.menuItem} onClick={() => navigate(`/mypage/myroom/edit/${false}`)}>
                     <p>내 방 수정</p>
                     <img src="/lib/front.svg" alt="화살표"/>
                 </div>

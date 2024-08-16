@@ -1,4 +1,3 @@
-import {ModalProvider} from "../contexts/ModalContext.jsx";
 import {Route, Routes} from "react-router-dom";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import ChatRoomList from "../pages/chat/ChatRoomList.jsx";

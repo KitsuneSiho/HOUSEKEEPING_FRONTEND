@@ -4,41 +4,39 @@ import axios from 'axios';
 import Footer from '../fix/Footer.jsx';
 import styles from '../../css/main/addFriend.module.css';
 import { BACK_URL } from "../../Constraints.js";
+import axiosInstance from "../../config/axiosInstance.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const AddFriend = () => {
+
+    const {user} = useLogin();
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     const navigate = useNavigate();
-    const loginUserId = 1; // 실제 userId를 적절히 설정해야 합니다.
 
     useEffect(() => {
-        // 검색어가 변경될 때마다 검색 함수 호출
         const fetchData = async () => {
             if (searchQuery.trim() !== '') {
                 try {
+
                     // 사용자 검색
-                    const response = await axios.get(`${BACK_URL}/friend/search`, {
+                    const response = await axiosInstance.get('/friend/search', {
                         params: { nickname: searchQuery }
                     });
 
                     // 검색 결과에서 자기 자신을 제외
-                    const filteredResults = response.data.filter(user => user.userId !== loginUserId);
+                    const filteredResults = response.data.filter(friend => friend.userId != user.userId);
 
                     // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                     const userIds = filteredResults.map(user => user.userId).join(',');
 
-                    console.log(loginUserId);
-                    console.log(userIds);
-
-                    const requestStatusResponse = await axios.get(`${BACK_URL}/friendRequest/status`, {
+                    const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                         params: {
-                            senderId: loginUserId,
+                            senderId: user.userId,
                             receiverIds: userIds
                         }
                     });
-
-
 
                     const requestStatusMap = requestStatusResponse.data;
                     const updatedResults = filteredResults.map(user => ({
@@ -56,23 +54,18 @@ const AddFriend = () => {
         };
 
         fetchData();
-    }, [searchQuery, loginUserId]);
+    }, [searchQuery, user.userId]);
 
-    // 친구 요청 보내기
     const sendFriendRequest = async (receiverId) => {
         try {
             const requestDTO = {
-                requestSenderId: loginUserId,
+                requestSenderId: user.userId,
                 requestReceiverId: receiverId,
                 requestStatus: "PENDING",
                 requestDate: new Date().toISOString()
             };
 
-            await axios.post(`${BACK_URL}/friendRequest/send`, requestDTO, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            await axiosInstance.post('/friendRequest/send', requestDTO);
 
             console.log('팔로우 요청을 보냈습니다.');
             fetchSearchResults(); // 상태 갱신을 위해 검색 결과를 새로 가져옵니다.
@@ -81,12 +74,11 @@ const AddFriend = () => {
         }
     };
 
-    // 팔로우 취소
     const cancelFriendRequest = async (receiverId) => {
         try {
-            await axios.post(`${BACK_URL}/friendRequest/cancel`, null, {
+            await axiosInstance.post('/friendRequest/cancel', null, {
                 params: {
-                    senderId: loginUserId,
+                    senderId: user.userId,
                     receiverId: receiverId
                 }
             });
@@ -97,33 +89,32 @@ const AddFriend = () => {
         }
     };
 
-    // 검색 결과 새로 가져오기
     const fetchSearchResults = async () => {
         if (searchQuery.trim() !== '') {
             try {
                 // 사용자 검색
-                const response = await axios.get(`${BACK_URL}/friend/search`, {
+                const response = await axiosInstance.get('/friend/search', {
                     params: { nickname: searchQuery }
                 });
 
                 // 검색 결과에서 자기 자신을 제외
-                const filteredResults = response.data.filter(user => user.userId !== loginUserId);
+                const filteredResults = response.data.filter(friend => friend.userId !== user.userId);
 
                 // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                 const userIds = filteredResults.map(user => user.userId).join(',');
-                const requestStatusResponse = await axios.get(`${BACK_URL}/friendRequest/status`, {
+
+                const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                     params: {
-                        senderId: loginUserId,
+                        senderId: user.userId,
                         receiverIds: userIds
                     }
                 });
 
                 const requestStatusMap = requestStatusResponse.data;
-                const updatedResults = filteredResults.map(user => ({
-                    ...user,
-                    requestStatus: requestStatusMap[user.userId] || null
+                const updatedResults = filteredResults.map(friend => ({
+                    ...friend,
+                    requestStatus: requestStatusMap[friend.userId] || null
                 }));
-
                 setSearchResults(updatedResults);
             } catch (error) {
                 console.error("친구 검색 중 오류가 발생했습니다:", error);

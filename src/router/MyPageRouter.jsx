@@ -6,6 +6,7 @@ import DeleteUser from "../jsx/myPage/DeleteUser.jsx";
 import GuestBook from "../jsx/myPage/GuestBook.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import EditRoom from "../pages/room/EditRoom.jsx";
 
 const MyPageRouter = () => {
 
@@ -21,6 +22,7 @@ const MyPageRouter = () => {
                         <Route path="/setting" element={<Setting/>}/> {/* 설정 */}
                         <Route path="/delete" element={<DeleteUser/>}/> {/* 회원탈퇴 */}
                         <Route path="/guestBook/storage" element={<GuestBook/>}/> {/* 방명록 보관함 */}
+                        <Route path="/myroom/edit/:isFirst" element={<EditRoom/>}/>
                     </Routes>
                 </RouteAuthProvider>
             </SocketProvider>

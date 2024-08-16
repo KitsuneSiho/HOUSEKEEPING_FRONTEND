@@ -129,9 +129,7 @@ const SearchRecipe = () => {
                                         type="button"
                                         onClick={() => removeMainIngredient(ingredient.key)}
                                         className={styles.removeBtn}
-                                    >
-                                        X
-                                    </button>
+                                    ><p>✖</p></button>
                                 )}
                             </div>
                         ))}
@@ -163,9 +161,7 @@ const SearchRecipe = () => {
                                         type="button"
                                         onClick={() => removeSubIngredient(ingredient.key)}
                                         className={styles.removeBtn}
-                                    >
-                                        X
-                                    </button>
+                                    ><p>✖</p></button>
                                 )}
                             </div>
                         ))}
