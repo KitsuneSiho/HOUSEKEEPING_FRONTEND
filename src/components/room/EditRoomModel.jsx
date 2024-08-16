@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
@@ -7,6 +7,7 @@ import styles from '../../css/myPage/editRoomModel.module.css';
 import PropTypes from "prop-types";
 import FurnitureList from "./FurnitureList.jsx";
 import FurnitureController from "./FurnitureController.jsx";
+import {useModal} from "../../contexts/ModalContext.jsx";
 
 const EditRoomModel = ({
                            room,
@@ -20,6 +21,9 @@ const EditRoomModel = ({
                            setDeletedPlacementList,
                            availableFurnitureTypes,
                        }) => {
+
+    const {isFirst} = useParams();
+    const {setModalType, setModalTitle, setModalBody, setModalCallback, showModal} = useModal();
     const navigate = useNavigate();
     const mountRef = useRef(null);
     const sceneRef = useRef(new THREE.Scene());
@@ -30,20 +34,21 @@ const EditRoomModel = ({
     const [position, setPosition] = useState({x: 0, y: 0, z: 0});
     const [rotation, setRotation] = useState(0);  // Only Y-axis rotation
     const [scale, setScale] = useState(1);
-    const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState('furniture'); // 'furniture' or 'color'
+    const [showModalCustom, setShowModalCustom] = useState(false);
+    const [modalTypeCustom, setModalTypeCustom] = useState('furniture'); // 'furniture' or 'color'
     const [activeCategory, setActiveCategory] = useState(null);
     const [selectedObject, setSelectedObject] = useState(null); // Selected wall or floor for color change
     const [floorAndWallsColor, setFloorAndWallsColor] = useState(null);
     const [changedFloorAndWallsColor, setChangedFloorAndWallsColor] = useState({});
     const [changedPlacementList, setChangedPlacementList] = useState([]);
+    const [modalResult, setModalResult] = useState(false);
+    const [canExit, setCanExit] = useState(false);
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
 
         setFloorAndWallsColor(JSON.parse(room.roomWallsColor));
-        console.log("asdf", availableFurnitureTypes);
     }, [])
 
     useEffect(() => {
@@ -172,8 +177,8 @@ const EditRoomModel = ({
                 setScale(existingPlacement.placementSize);
 
                 if (isModalOpen) {
-                    setModalType('furniture');
-                    setShowModal(true);
+                    setModalTypeCustom('furniture');
+                    setShowModalCustom(true);
                 }
             }
             return;
@@ -231,10 +236,10 @@ const EditRoomModel = ({
             });
             setRotation(placement.placementAngle); // Reset rotation on Y-axis
             setScale(placement.placementSize); // Reset scale
-            setModalType('furniture');
+            setModalTypeCustom('furniture');
 
             if (isModalOpen) {
-                setShowModal(true);
+                setShowModalCustom(true);
             }
         }, undefined, (error) => {
             console.error('Error loading model:', error);
@@ -267,15 +272,15 @@ const EditRoomModel = ({
                 });
                 setRotation(intersectedObject.rotation.y);
                 setScale(intersectedObject.scale.x);
-                setModalType('furniture');
-                setShowModal(true);
+                setModalTypeCustom('furniture');
+                setShowModalCustom(true);
             }
         }
     };
 
     const handleCategoryClick = (category) => {
         setActiveCategory(category);
-        setShowModal(false);
+        setShowModalCustom(false);
     };
 
     const handleDelete = () => {
@@ -291,7 +296,7 @@ const EditRoomModel = ({
             }
 
             setSelectedFurniture(null);
-            setShowModal(false);
+            setShowModalCustom(false);
         }
     };
 
@@ -303,7 +308,7 @@ const EditRoomModel = ({
                 ...changedFloorAndWallsColor,
                 [selectedObject.name]: floorAndWallsColor[selectedObject.name],
             });
-            setShowModal(false);
+            setShowModalCustom(false);
         }
     }
 
@@ -311,8 +316,8 @@ const EditRoomModel = ({
         const selected = sceneRef.current.getObjectByName(objectName);
         if (selected) {
             setSelectedObject(selected);
-            setModalType('color');
-            setShowModal(true);
+            setModalTypeCustom('color');
+            setShowModalCustom(true);
         }
     };
 
@@ -362,7 +367,7 @@ const EditRoomModel = ({
     };
 
     const closeModal = () => {
-        setShowModal(false);
+        setShowModalCustom(false);
     };
 
     // 가구 정보를 업데이트하거나 추가하는 함수
@@ -417,22 +422,81 @@ const EditRoomModel = ({
         });
     };
 
+    const getParticle = (word) => {
+        const lastChar = word[word.length - 1];
+        const lastCharCode = lastChar.charCodeAt(0);
+
+        const baseCode = 44032; // '가'의 유니코드 값
+        const isKorean = lastCharCode >= baseCode && lastCharCode <= 55203; // 한글 범위
+
+        if (isKorean) {
+            const lastCharIndex = (lastCharCode - baseCode) % 28;
+            return lastCharIndex === 0 ? '를' : '을';
+        } else {
+            // 한글이 아닌 경우 기본적으로 '를'을 사용합니다.
+            return '를';
+        }
+    }
+
+    useEffect(() => {
+
+        if (modalResult) {
+
+            // 완료 버튼을 눌렀을 경우
+            if (canExit) {
+                if (isFirst === "true") {
+                    navigate(`/main`);
+                } else if (isFirst === "false") {
+                    navigate(`/mypage`);
+                }
+            // 저장 버튼을 눌렀을 경우
+            } else {
+                if (deletedPlacementList.length > 0) {
+
+                    deletedPlacementList.forEach(placement => {
+                        deletePlacement(placement.placementId);
+                    })
+                }
+
+                if (placementList.length > 0) {
+
+                    placementList.forEach(placement => {
+                        savePlacement(placement, room.roomId);
+                    });
+                }
+
+                setModalType("inform");
+                setModalTitle("저장 완료");
+                setModalBody(`${room.roomName}의 가구 배치가 저장되었습니다`);
+                showModal();
+            }
+
+        }
+
+    }, [modalResult])
+
     // 변경사항 저장
     const savePlacements = () => {
 
-        if (deletedPlacementList.length > 0) {
+        setCanExit(false);
+        setModalType("confirm");
+        setModalTitle("가구 배치 저장");
+        setModalBody(`${room.roomName}${getParticle(room.roomName)} 수정하시겠습니까?`);
+        setModalCallback(() => setModalResult);
 
-            deletedPlacementList.forEach(placement => {
-                deletePlacement(placement.placementId);
-            })
-        }
+        showModal();
+    };
 
-        if (placementList.length > 0) {
+    // 나가기
+    const exitPlacements = () => {
 
-            placementList.forEach(placement => {
-                savePlacement(placement, room.roomId);
-            });
-        }
+        setCanExit(true);
+        setModalType("confirm");
+        setModalTitle("가구 배치 완료");
+        setModalBody(`가구 배치를 완료하고 나가시겠습니까? 저장되지 않은 사항은 사라집니다`);
+        setModalCallback(() => setModalResult);
+
+        showModal();
     };
 
     return (
@@ -445,7 +509,8 @@ const EditRoomModel = ({
                 <FurnitureList furniture={furniture} userLevel={userLevel} activeCategory={activeCategory}
                                handleCategoryClick={handleCategoryClick} openColorModal={openColorModal}
                                loadFurniture={loadFurniture} availableFurnitureTypes={availableFurnitureTypes}/>
-                <FurnitureController showModal={showModal} modalType={modalType} position={position} rotation={rotation}
+                <FurnitureController showModal={showModalCustom} modalType={modalTypeCustom} position={position}
+                                     rotation={rotation}
                                      scale={scale} updatePosition={updatePosition} updateRotation={updateRotation}
                                      updateScale={updateScale} handleColorChange={handleColorChange}
                                      handleDelete={handleDelete} closeModal={closeModal}
@@ -455,9 +520,9 @@ const EditRoomModel = ({
                 <button
                     type="button"
                     className={styles.cancel}
-                    onClick={() => navigate('/myPage')}
+                    onClick={() => exitPlacements()}
                 >
-                    취소
+                    완료
                 </button>
                 <button
                     type="button"
@@ -483,6 +548,7 @@ EditRoomModel.propTypes = {
     setPlacementList: PropTypes.func,
     setDeletedPlacementList: PropTypes.func,
     availableFurnitureTypes: PropTypes.array,
+    isFirst: PropTypes.string,
 }
 
 export default EditRoomModel;

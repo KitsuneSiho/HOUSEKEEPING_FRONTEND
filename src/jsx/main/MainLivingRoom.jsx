@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/main/mainLivingRoom.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import RoomView from '../../jsx/room/RoomView.jsx';
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
 import moment from "moment-timezone";
 import PullutionBar from "../../components/test/PollutionBar.jsx";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
+import RoomModel from "../../components/room/RoomModel.jsx";
+import FriendTop from "../../components/friend/FriendTop.jsx";
 
 const MainToiletRoom = () => {
 
@@ -28,7 +28,10 @@ const MainToiletRoom = () => {
     const [roomNames, setRoomNames] = useState({});
     const [selectedRoom, setSelectedRoom] = useState({ roomId: null, roomName: '' });
     const [updatedRoomName, setUpdatedRoomName] = useState('');
-
+    // 방 모델 출력 관련
+    const [rooms, setRooms] = useState([]);
+    const [placementLists, setPlacementLists] = useState([]);
+    const [isReady, setReady] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -265,24 +268,50 @@ const MainToiletRoom = () => {
         setUpdatedRoomName('');
     };
 
+    // 방 모델 출력 관련
+    useEffect(() => {
+
+        if (user !== null) {
+
+            getRoomIds();
+        }
+    }, [user])
+
+    useEffect(() => {
+
+        if (JSON.stringify(rooms) !== JSON.stringify([])) {
+            getPlacementLists().then(() => setReady(true));
+        }
+    }, [rooms])
+
+    const getRoomIds = async () => {
+
+        try {
+
+            const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
+
+            setRooms(response.data);
+        } catch (error) {
+            console.error("Error fetching room:", error);
+        }
+    }
+
+    const getPlacementLists = async () => {
+
+        try {
+
+            const response = await axiosInstance.get(`/placement/list/all?roomIds=${rooms[0].roomId}&roomIds=${rooms[1].roomId}&roomIds=${rooms[2].roomId}`);
+
+            setPlacementLists(response.data);
+        } catch (error) {
+            console.error("Error fetching placementLists", error);
+        }
+    }
+
 
     return (
         <div className={styles.container}>
-            <div className={styles.friendsContainer}>
-                <div className={styles.friendsList}>
-                    {friends.map(friend => (
-                        <div className={styles.friend} key={friend.userId}
-                             onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
-                            <img src={`public/lib/${friend.userId}.png`} alt={friend.userId}/>
-                            <p>{friend.nickname}</p>
-                        </div>
-                    ))}
-                    <div className={styles.addFriend} onClick={() => navigate('/friend/add')}>
-                        <img src="/lib/plus.svg" alt="add"/>
-                        <p>친구 추가</p>
-                    </div>
-                </div>
-            </div>
+            <FriendTop/>
 
             <div className={styles.dirtyBar}>
                 <PullutionBar pollution={0}/>
@@ -290,7 +319,7 @@ const MainToiletRoom = () => {
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main')}/>
                 <div className={styles.roomView}>
-                    <RoomView/>
+                    {isReady && <RoomModel room={rooms[1]} placementList={placementLists[1]}/>}
                 </div>
                 <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/toilet')}/>
             </div>

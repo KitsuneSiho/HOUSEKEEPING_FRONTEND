@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from '../../css/first/login.module.css';
+import {BACK_URL} from "../../Constraints.js";
 
 const Login = () => {
     const handleOAuth2Login = (provider) => {
-        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+        window.location.href = `${BACK_URL}/oauth2/authorization/${provider}`;
     };
 
     return (

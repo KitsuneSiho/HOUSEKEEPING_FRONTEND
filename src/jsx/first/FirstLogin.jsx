@@ -65,7 +65,7 @@ const FirstLogin = () => {
                         nickname: userInfo.nickname,
                     }
                 );
-                createNewRooms(user.userId).then(() => navigate('/design/myroom'));
+                createNewRooms(user.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
             }
         } catch (error) {
             console.error('Error completing registration', error);

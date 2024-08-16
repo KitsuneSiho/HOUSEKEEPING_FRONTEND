@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const BACK_URL = 'http://localhost:8080';
+import {BACK_URL} from "../Constraints.js";
 
 const apiClient = axios.create({
     baseURL: BACK_URL,
