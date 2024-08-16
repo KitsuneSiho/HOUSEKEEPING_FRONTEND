@@ -43,7 +43,7 @@ const RoomModel = ({room, placementList}) => {
         }
 
         if (!cameraRef.current) {
-            const camera = new THREE.PerspectiveCamera(50, mount.clientWidth / mount.clientHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(52, mount.clientWidth / mount.clientHeight, 0.1, 1000);
             camera.position.set(25, 25, 25);
             camera.lookAt(new THREE.Vector3(0, 0, 0));
             cameraRef.current = camera;

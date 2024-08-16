@@ -34,16 +34,25 @@
 
 /* 모달 제목 스타일 */
 .modal-title {
-    font-size: 1.5em;
+    font-size: 30px;
     color: black;
     margin-bottom: 20px;
+    margin-top: 5px;
 }
 
 /* 모달 본문 스타일 */
 .modal-body {
-    font-size: 1em;
+    font-size: 23px;
     color: #333;
     margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.closeButtons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
 
 /* 닫기 버튼 스타일 */

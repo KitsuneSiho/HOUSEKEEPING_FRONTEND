@@ -48,7 +48,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
                     )}
 
                     {furnitureTypes.map((furnitureType, index) => (
-                        <div key={index}>
+                        <div key={index} className={styles.furnitureList}>
                             {activeCategory === furnitureType.furnitureType
                                 &&
                                 furniture.filter(furniture => (furniture.furnitureType === furnitureType.furnitureType)).map((furniture, index) => (
