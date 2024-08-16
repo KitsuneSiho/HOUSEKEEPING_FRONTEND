@@ -250,10 +250,80 @@ const MonthlyRoutineInfo = () => {
 
     const weeks = getWeeks(daysOfMonth);
 
+    const getAddButtonBackgroundColor = (index) => {
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
+    };
+
+    // 알림 켜기 요청을 보내는 함수
+    const toggleRoomAlarms = async (roomId, routineGroupName) => {
+        try {
+            const response = await axiosInstance.post(`/routine/toggle-alarms`, {
+                roomId,
+                routineGroupName
+            });
+
+            if (response.status === 200) {
+                const updatedRoutines = response.data;
+                setRoutineItems(prevItems => {
+                    const newItems = { ...prevItems };
+                    newItems[roomId] = newItems[roomId].map(item => {
+                        return {
+                            ...item,
+                            notification: 'on'
+                        };
+                    });
+                    return newItems;
+                });
+                fetchMonthlyRoutines(); // 업데이트된 루틴들을 다시 가져옴
+            } else {
+                throw new Error('Failed to toggle alarms for room and group');
+            }
+        } catch (error) {
+            console.error('Error toggling alarms for room and group:', error);
+            alert('알림 설정 중 오류가 발생했습니다.');
+        }
+    };
+
+// "모든 알림 켜기" 버튼을 누를 때 호출되는 함수
+    const handleToggleAlarmsClick = (roomId) => {
+        if (!window.confirm('이 방의 모든 알림을 켜시겠습니까?')) {
+            return;
+        }
+
+        toggleRoomAlarms(roomId, groupName);
+    };
+
+    const handleNotificationClick = async (roomId, routine) => {
+        try {
+            const newNotificationStatus = routine.notification === 'on' ? 'off' : 'on';
+
+            // 서버에 알림 상태 변경 요청
+            await axiosInstance.put(`/routine/toggle-notification`, null, {
+                params: {
+                    routineId: routine.id,
+                    routineIsAlarm: newNotificationStatus
+                }
+            });
+
+            // 상태 업데이트
+            setRoutineItems(prevItems => ({
+                ...prevItems,
+                [roomId]: prevItems[roomId].map(item =>
+                    item.id === routine.id ? { ...item, notification: newNotificationStatus } : item
+                )
+            }));
+        } catch (error) {
+            console.error('Error toggling notification status:', error);
+            alert('알림 상태 변경 중 오류가 발생했습니다.');
+        }
+    }
+
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/routine')}/>
                 <h2>{groupName}</h2>
                 <h3 onClick={deleteRoutineGroup}>루틴 삭제</h3>
             </div>
@@ -278,18 +348,19 @@ const MonthlyRoutineInfo = () => {
                 </div>
             </div>
             <div className={styles.routineContainer}>
-                {rooms.map(room => (
+                {rooms.map((room, index) => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}
+                                 style={{
+                                     backgroundColor: getAddButtonBackgroundColor(index),
+                                     color: '#000'
+                                 }}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
                             </div>
                             <div className={styles.alramOnOff}>
-                                <p>모든 알림 켜기</p>
+                                <p onClick={() => handleToggleAlarmsClick(room.roomId)}>모든 알림 켜기</p>
                                 <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
                                      onClick={() => openAddModal(room.roomId)}/>
                             </div>
@@ -301,7 +372,11 @@ const MonthlyRoutineInfo = () => {
                                         <label htmlFor={`routine-${item.id}`} onClick={() => openEditModal(item)}>
                                             {item.text}
                                         </label>
-                                        <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                        <img
+                                            src={`/lib/알림${item.notification}.svg`}
+                                            alt={`notification ${item.notification}`}
+                                            onClick={() => handleNotificationClick(room.roomId, item)}
+                                        />
                                     </li>
                                 ))}
                             </ul>

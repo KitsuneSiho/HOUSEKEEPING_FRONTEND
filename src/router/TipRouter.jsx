@@ -11,6 +11,8 @@ import LifeTipWrite from "../jsx/tip/LifeTipWrite.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import CreatePost from "../jsx/tip/CreatePost.jsx";
+import WasteTipEdit from "../jsx/tip/WasteTipEdit.jsx";
+import LifeTipEdit from "../jsx/tip/LifeTipEdit.jsx";
 
 const TipRouter = () => {
 
@@ -28,12 +30,14 @@ const TipRouter = () => {
                         <Route path="/roome/create" element={<CreatePost/>}/> {/* 루미`s 팁 게시글 작성 */}
 
                         <Route path="/waste" element={<WasteTip/>}/> {/* 폐기물 팁 */}
-                        <Route path="/waste/detail" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
+                        <Route path="/waste/detail/:id" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}
                         <Route path="/waste/post" element={<WasteTipWrite/>}/> {/* 폐기물 팁 게시글 작성 내용 */}
+                        <Route path="/waste/edit/:id" element={<WasteTipEdit/>}/> {/* 폐기물 팁 게시글 수정 내용 */}
 
-                        <Route path="/listfacks" element={<LifeTip/>}/> {/* 일상 팁 */}
-                        <Route path="/listfacks/detail" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
-                        <Route path="/listfacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/lifehacks" element={<LifeTip/>}/> {/* 일상 팁 */}
+                        <Route path="/lifehacks/detail/:id" element={<LifeTipDetail/>}/> {/* 일상 팁 게시글 내용 */}
+                        <Route path="/lifehacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
+                        <Route path="/lifehacks/edit/:id" element={<LifeTipEdit/>}/> {/* 일상 팁 게시글 작성 */}
                     </Routes>
                 </RouteAuthProvider>
             </SocketProvider>

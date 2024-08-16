@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/lifeTipWrite.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
 
-const LifeTipWrite = () => {
+const LifeTipEdit = () => {
     const navigate = useNavigate();
-
+    const { id } = useParams();
     const [tip, setTip] = useState({
         tipCategory: 'LIFEHACKS',
         tipTitle: '',
@@ -15,6 +15,20 @@ const LifeTipWrite = () => {
         tipCreatedDate: new Date().toISOString(),
         comments: []
     });
+
+    useEffect(() => {
+        fetchTip();
+    }, []);
+
+    const fetchTip = async () => {
+        try {
+            const response = await axiosConfig.get(`/api/tips/${id}`);
+            setTip(response.data);
+        } catch (error) {
+            console.error('Error fetching tip:', error);
+            handleAxiosError(error);
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,9 +45,9 @@ const LifeTipWrite = () => {
         }
 
         try {
-            const response = await axiosConfig.post('/api/tips/save', tip);
+            const response = await axiosConfig.put(`/api/tips/update`, tip);
             console.log('Server response:', response.data);
-            alert("성공적으로 등록되었습니다!");
+            alert("성공적으로 수정되었습니다!");
             navigate('/tip/lifehacks');
         } catch (error) {
             console.error('Error:', error);
@@ -51,7 +65,7 @@ const LifeTipWrite = () => {
                 localStorage.removeItem('access');
                 navigate('/login');
             } else {
-                alert(`팁 등록에 실패했습니다: ${error.response.data.message || '알 수 없는 오류'}`);
+                alert(`팁 수정에 실패했습니다: ${error.response.data.message || '알 수 없는 오류'}`);
             }
         } else if (error.request) {
             console.log('Error request:', error.request);
@@ -66,7 +80,7 @@ const LifeTipWrite = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/lifehacks')} />
-                <h2>생활 Tip 작성</h2>
+                <h2>생활 Tip 수정</h2>
             </div>
 
             <div className={styles.formContainer}>
@@ -92,7 +106,7 @@ const LifeTipWrite = () => {
                     />
                 </div>
                 <div className={styles.submitButton}>
-                    <button onClick={submitForm}>등록</button>
+                    <button onClick={submitForm}>수정</button>
                 </div>
             </div>
             <Footer />
@@ -100,4 +114,4 @@ const LifeTipWrite = () => {
     );
 };
 
-export default LifeTipWrite;
+export default LifeTipEdit;

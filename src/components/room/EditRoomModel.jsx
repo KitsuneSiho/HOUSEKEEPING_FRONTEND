@@ -3,7 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-import styles from '../../css/first/firstRoomDesign.module.css';
+import styles from '../../css/myPage/editRoomModel.module.css';
 import PropTypes from "prop-types";
 import FurnitureList from "./FurnitureList.jsx";
 import FurnitureController from "./FurnitureController.jsx";
@@ -67,7 +67,7 @@ const EditRoomModel = ({
         }
 
         if (!cameraRef.current) {
-            const camera = new THREE.PerspectiveCamera(50, mount.clientWidth / mount.clientHeight, 0.1, 1000);
+            const camera = new THREE.PerspectiveCamera(52, mount.clientWidth / mount.clientHeight, 0.1, 1000);
             camera.position.set(25, 25, 25);
             camera.lookAt(new THREE.Vector3(0, 0, 0));
             cameraRef.current = camera;

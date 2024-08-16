@@ -459,7 +459,7 @@ const RecommendCloset = () => {
                     onClick={() => fetchRecommendations(customTemperature)}
                     className={styles.customTempButton}
                 >
-                    추천 받기
+                    입력 온도별 추천
                 </button>
             </div>
 

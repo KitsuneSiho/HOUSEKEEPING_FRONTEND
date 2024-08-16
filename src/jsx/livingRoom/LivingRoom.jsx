@@ -21,7 +21,7 @@ const LivingRoom = () => {
         { name: '음료', img: '/lib/음료.svg', route: '/refrigerator/list/beverage' },
         { name: '기타', img: '/lib/기타.svg', route: '/refrigerator/list/etc' },
     ];
-    const {loginUserId} = useLogin();
+    const {user} = useLogin();
 
     return (
         <div className={styles.container}>

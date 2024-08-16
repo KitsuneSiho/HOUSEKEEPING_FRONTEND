@@ -92,20 +92,6 @@ const Routine = () => {
                                 onChange={(e) => setNewRoutineName(e.target.value)} // 입력값 상태 업데이트
                             />
                         </div>
-                        <div className={styles.routineColor}>
-                            <label>색상</label>
-                            <div className={styles.colorOptions}>
-                                <input type="radio" id="color1" name="routineColor" value="color1"/>
-                                <label htmlFor="color1" className={styles.colorBox}
-                                       style={{backgroundColor: '#c5f1ff'}}></label>
-                                <input type="radio" id="color2" name="routineColor" value="color2"/>
-                                <label htmlFor="color2" className={styles.colorBox}
-                                       style={{backgroundColor: '#ffc5d1'}}></label>
-                                <input type="radio" id="color3" name="routineColor" value="color3"/>
-                                <label htmlFor="color3" className={styles.colorBox}
-                                       style={{backgroundColor: '#ffebc5'}}></label>
-                            </div>
-                        </div>
                         <div className={styles.routineGroupList}>
                             <h3>루틴 그룹명</h3>
                             <ul>
