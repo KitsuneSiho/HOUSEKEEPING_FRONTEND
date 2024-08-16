@@ -39,7 +39,7 @@ const FurnitureList = ({furniture, activeCategory, userLevel, handleCategoryClic
             </div>
             {activeCategory && (
                 <div className={styles.furnitureAddButton}>
-                    {activeCategory === 'WALLFLOOR' && (
+                    {activeCategory === 'WALL' && (
                         <>
                             <button onClick={() => openColorModal('leftWall')}>왼쪽 벽</button>
                             <button onClick={() => openColorModal('backWall')}>오른쪽 벽</button>

@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 20px;
+    padding: 15px;
 }
 
 .friend, .addFriend {
@@ -87,6 +87,7 @@
     width: 90%;
     display: flex;
     flex-direction: column;
+    margin-top: 3%;
 }
 
 .roomSection {
@@ -100,7 +101,7 @@
     flex-direction: column;
 }
 
-.roomSectionTitle{
+.roomSectionTitle {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -112,11 +113,13 @@
     padding: 10px 20px;
     text-align: center;
     background-color: #ffc5f2;
-    max-width: 100%;
+    width: auto;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
-.roomSectionTitle h3{
+.roomSectionTitle h3 {
     margin: 0;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 /* 스케줄 아이템 */
@@ -225,59 +228,4 @@
     margin: 0;
     max-height: calc(30px* 4);
     overflow-y: auto;
-}
-
-/* 반응형 디자인 */
-@media (min-width: 394px) {
-    .container {
-        padding: 20px;
-    }
-
-    .friendsContainer {
-        justify-content: center; /* 큰 화면에서 중앙 정렬 */
-    }
-
-    .friend, .addFriend {
-        width: 80px; /* 큰 화면에서 아이콘 크기 증가 */
-        height: 80px;
-    }
-
-    .friend p, .addFriend p {
-        font-size: 14px;
-    }
-
-    .dirtyBar {
-        margin-top: 3%;
-    }
-
-    .roomDesign .myRoom {
-        width: 60%;
-    }
-
-    .routineContainer {
-        width: 90%;
-    }
-
-    .roomRoutine {
-        padding: 20px;
-        margin: 30px;
-    }
-
-    .roomRoutine .roomRoutineTitle {
-        padding: 10px 20px;
-        gap: 20px;
-    }
-
-    .roomRoutine .roomRoutineInfo ul {
-        max-height: calc(40px * 4); /* 목록 항목 높이 증가 */
-    }
-
-    .submit {
-        width: 60%;
-        margin-top: 5%;
-    }
-
-    .submit button {
-        font-size: 18px; /* 큰 화면에서 버튼 텍스트 크기 증가 */
-    }
 }
