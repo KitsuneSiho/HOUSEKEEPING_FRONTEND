@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/roomeTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
@@ -13,24 +13,28 @@ const RoomeTipDetail = () => {
     const { id } = useParams();
     const { user } = useAuth();
 
-    useEffect(() => {
-        console.log("Fetching post with id:", id);
-        fetchPost();
-    }, [id]);
-
-    const fetchPost = async () => {
+    const fetchPost = useCallback(async () => {
         try {
-            setLoading(true);
             const response = await axiosInstance.get(`/api/posts/${id}`);
-            console.log('Fetched post data:', response.data);
             setPost(response.data);
         } catch (error) {
             console.error('Error fetching post:', error.response?.data || error.message);
             setError('게시글을 불러오는 데 실패했습니다.');
-        } finally {
-            setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+
+        fetchPost().then(() => {
+            if (isMounted) setLoading(false);
+        });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [fetchPost]);
 
     const editPost = () => {
         navigate(`/tip/roome/edit/${id}`);
@@ -54,10 +58,14 @@ const RoomeTipDetail = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/roome')} />
+                <img
+                    className={styles.back}
+                    src="/lib/back.svg"
+                    alt="back"
+                    onClick={() => navigate('/tip/roome')}
+                />
                 <h2>루미`s Tip</h2>
             </div>
-
             <div className={styles.postContainer}>
                 <div className={styles.postInfoTitle}>
                     <p>제목</p>
@@ -65,7 +73,7 @@ const RoomeTipDetail = () => {
                 </div>
                 <div className={styles.postInfoDate}>
                     <p>{new Date(post.createdAt).toLocaleDateString()}</p>
-                    <p>{post.authorName || '익명'}</p>  {/* post.author.nickname 대신 post.authorName 사용 */}
+                    <p>{post.authorName || '익명'}</p>
                 </div>
                 <div className={styles.postContent}>
                     <p>{post.content}</p>
@@ -79,32 +87,6 @@ const RoomeTipDetail = () => {
                     )}
                     <button onClick={() => navigate('/tip/roome')}>목록</button>
                 </div>
-            </div>
-
-
-            <div className={styles.commentsSection}>
-                <div className={styles.commentInput}>
-                    <input type="text" placeholder="댓글을 입력하세요" />
-                    <button>
-                        <img src="/lib/채팅보내기.svg" alt="send" />
-                    </button>
-                </div>
-                {/* 댓글 목록을 여기에 렌더링합니다. 현재는 더미 데이터를 사용합니다. */}
-                {[...Array(5)].map((_, index) => (
-                    <div className={styles.comment} key={index}>
-                        <div className={styles.commentUser}>
-                            <img src="/lib/마이페이지아이콘.svg" alt="user icon" />
-                            <p>Lv.3 ddak</p>
-                            <div className={styles.commentActions}>
-                                <span>수정</span>
-                                <span>삭제</span>
-                            </div>
-                        </div>
-                        <div className={styles.commentText}>
-                            <p>네 맞습니다.</p>
-                        </div>
-                    </div>
-                ))}
             </div>
             <Footer />
         </div>
