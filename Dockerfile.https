@@ -15,7 +15,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # 필요한 패키지를 설치
-RUN apk add --no-cache certbot certbot-nginx openssl bash
+RUN apk add --no-cache certbot certbot-nginx openssl
 
 # Nginx 설정 파일을 복사
 COPY --from=build /app/dist /usr/share/nginx/html
@@ -28,8 +28,5 @@ RUN mkdir -p /var/www/certbot /etc/letsencrypt && \
 # 컨테이너가 80번 포트를 외부에 노출
 EXPOSE 80
 
-# ENTRYPOINT를 사용하여 기본 명령어 설정
-ENTRYPOINT ["sh", "-c"]
-
-# CMD를 사용하여 실행할 명령어 설정
-CMD ["nginx -g 'daemon off;'"]
+# Nginx를 실행
+CMD ["nginx", "-g", "daemon off;"]
