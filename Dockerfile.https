@@ -28,5 +28,8 @@ RUN mkdir -p /var/www/certbot /etc/letsencrypt && \
 # 컨테이너가 80번 포트를 외부에 노출
 EXPOSE 80
 
-# Nginx를 실행
-CMD ["sh", "-c", "nginx -g 'daemon off;'"]
+# ENTRYPOINT를 사용하여 기본 명령어 설정
+ENTRYPOINT ["sh", "-c"]
+
+# CMD를 사용하여 실행할 명령어 설정
+CMD ["nginx -g 'daemon off;'"]
