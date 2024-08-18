@@ -34,6 +34,158 @@ const MainPage = () => {
     const [isReady, setReady] = useState(false);
     const navigate = useNavigate();
 
+    const [pollution, setPollution] = useState(0); // 초기값을 0으로 설정
+    const [specificRoomId, setSpecificRoomId] = useState(null); // 특정 방 ID를 저장할 상태
+    const [lastCheckedTimes, setLastCheckedTimes] = useState({}); // 각 스케줄의 마지막 체크 시간
+
+    // JWT 토큰에서 user_id 추출 함수
+    const parseJwt = (token) => {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error("JWT 토큰 파싱 중 오류 발생:", error);
+            return null;
+        }
+    };
+
+    // 토큰에서 userId 추출 함수
+    const getUserIdFromToken = () => {
+        const access = localStorage.getItem('access');
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return null;
+        }
+
+        const decodedToken = parseJwt(access);
+        return decodedToken ? decodedToken.userId : null;
+    };
+
+    // DB에서 초기 오염도 값을 로드하는 함수
+    const fetchInitialPollution = async (specificRoomId) => {
+        const access = localStorage.getItem('access');
+
+        if (!access) {
+            console.error("토큰이 없습니다. 로그인 페이지로 이동합니다.");
+            navigate('/login');
+            return;
+        }
+
+        // 유저 id 확인
+        const userId = getUserIdFromToken();
+        if (!userId) {
+            console.error("userId를 토큰에서 추출할 수 없습니다.");
+            return;
+        }
+
+        console.log("유저 id:", userId);
+
+        try {
+            const response = await axiosInstance.get(`/room/getPollution`, {
+                params: {
+                    roomIds: [specificRoomId], // 현재 페이지에 해당하는 specificRoomId만 전달
+
+                },
+                headers: {
+                    Authorization: `Bearer ${access}`, // 인증 토큰 포함
+                },
+            });
+            const pollutionData = response.data;
+
+            if (pollutionData.length > 0) {
+                setPollution(pollutionData[0].roomPollution); // specificRoomId에 해당하는 오염도 설정
+            } else {
+                console.error("No pollution data found for the specified room.");
+            }
+        } catch (error) {
+            console.error("Error fetching pollution data:", error);
+        }
+    };
+
+    // roomIds에서 특정 roomId 설정
+    useEffect(() => {
+        if (roomIds.length > 0) {
+            setSpecificRoomId(roomIds[0]); // roomIds 배열의 첫 번째 방 ID를 specificRoomId로 설정
+        }
+    }, [roomIds]);
+
+    // DB에서 초기 오염도 값을 로드하는 함수 호출
+    useEffect(() => {
+        if (user && specificRoomId) {
+            fetchInitialPollution(specificRoomId); // 유저가 존재하고 specificRoomId가 있을 때만 호출
+        }
+    }, [user, specificRoomId]);
+
+    // 오염도 업데이트 함수
+    const updateRoomPollution = async (pollutionValue) => {
+        const access = localStorage.getItem('access');
+        const userId = getUserIdFromToken();
+
+        if (!access || !userId) {
+            console.error("토큰이 없거나 사용자 ID가 없습니다.");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            // 현재 방(specificRoomId)의 오염도 업데이트
+            await axiosInstance.patch(
+                `/room/updatePollution`,
+                {
+                    roomId: specificRoomId,
+                    pollution: pollutionValue,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${access}`,
+                    },
+                }
+            );
+        } catch (error) {
+            console.error("Error updating room pollution:", error);
+        }
+    };
+
+// 일정 시간마다 오염도를 증가시키는 타이머 설정
+    useEffect(() => {
+        const interval = setInterval(() => {
+            let additionalPollution = 0; // 추가로 더할 오염도
+            const currentTime = Date.now();
+
+            // 스케줄별로 마지막 체크 시간에 따라 오염도 계산
+            Object.values(schedules).flatMap(room => room.schedules).forEach(schedule => {
+                const lastChecked = lastCheckedTimes[schedule.scheduleId] || currentTime;
+                const timeElapsed = currentTime - lastChecked;
+
+                // 예: 1초 이상 경과하면 오염도 증가
+                if (timeElapsed > 3000 && !schedule.scheduleIsChecked) {
+                    additionalPollution += 5;
+                }
+            });
+
+            setPollution(prevPollution => {
+                const newPollution = prevPollution + additionalPollution;
+                const finalPollution = newPollution > 100 ? 100 : newPollution;
+
+                // roomId가 설정되어 있는 경우에만 DB 업데이트
+                if (roomIds.length > 0) {
+                    updateRoomPollution(finalPollution, roomIds);
+                }
+
+                return finalPollution;
+            });
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, [schedules, lastCheckedTimes, roomIds]);
+
+
     useEffect(() => {
 
 
@@ -79,6 +231,11 @@ const MainPage = () => {
                 }))
             );
             setEvents(fetchedEvents);
+            const initialLastCheckedTimes = fetchedEvents.reduce((acc, event) => {
+                acc[event.extendedProps.scheduleId] = Date.now();
+                return acc;
+            }, {});
+            setLastCheckedTimes(initialLastCheckedTimes);
         } catch (error) {
             console.error('Error fetching room data:', error);
         }
@@ -114,6 +271,18 @@ const MainPage = () => {
         try {
             await axiosInstance.patch(`/calendar/updateChecked/${scheduleId}`, {
                 checked: isChecked
+            });
+
+            if (isChecked) {
+                // 사용자가 체크박스를 클릭하면 오염도를 감소시킵니다.
+                const newPollution = Math.max(0, pollution - 10); // 예: 20만큼 감소
+                setPollution(newPollution);
+                await updateRoomPollution(newPollution, roomIds); // 업데이트된 오염도를 DB에 저장
+            }
+
+            setLastCheckedTimes({
+                ...lastCheckedTimes,
+                [scheduleId]: Date.now(),
             });
             await fetchRoomData(); // 전체 데이터를 다시 가져옵니다.
         } catch (error) {
@@ -303,12 +472,14 @@ const MainPage = () => {
         }
     }
 
+
     return (
         <div className={styles.container}>
-            <FriendTop />
+            <FriendTop/>
 
             <div className={styles.dirtyBar}>
-                <PullutionBar pollution={100}/>
+                    <PullutionBar pollution={pollution}/>
+
             </div>
             <div className={styles.roomDesign}>
                 <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
@@ -334,7 +505,9 @@ const MainPage = () => {
                                             className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
                                             onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
                                         >
-                                            <img src={schedule.scheduleIsChecked ? "/lib/내방체크on.svg" : "/lib/내방체크off.svg"} alt="check"/>
+                                            <img
+                                                src={schedule.scheduleIsChecked ? "/lib/내방체크on.svg" : "/lib/내방체크off.svg"}
+                                                alt="check"/>
                                         </span>
                                         <span
                                             className={styles.scheduleName}
@@ -346,7 +519,8 @@ const MainPage = () => {
                                             className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                             onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                         >
-                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"} alt="alarm"/>
+                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"}
+                                                 alt="alarm"/>
                                         </span>
                                     </li>
                                 ))}
