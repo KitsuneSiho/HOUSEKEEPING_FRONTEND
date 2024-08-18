@@ -15,7 +15,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # 필요한 패키지를 설치
-RUN apk add --no-cache certbot certbot-nginx openssl bash
+RUN apk add --no-cache certbot certbot-nginx openssl
 
 # Nginx 설정 파일을 복사
 COPY --from=build /app/dist /usr/share/nginx/html
@@ -29,4 +29,4 @@ RUN mkdir -p /var/www/certbot /etc/letsencrypt && \
 EXPOSE 80
 
 # Nginx를 실행
-CMD ["sh", "-c", "nginx -g 'daemon off;'"]
+CMD ["nginx", "-g", "daemon off;"]
