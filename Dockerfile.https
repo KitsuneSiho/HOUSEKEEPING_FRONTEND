@@ -29,4 +29,4 @@ RUN mkdir -p /var/www/certbot /etc/letsencrypt && \
 EXPOSE 80
 
 # Nginx를 실행
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
