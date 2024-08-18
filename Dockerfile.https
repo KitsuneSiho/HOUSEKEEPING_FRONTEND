@@ -1,25 +1,15 @@
-# Node.js를 기반으로 이미지 생성
-FROM node:18-alpine AS build
-
-WORKDIR /app
-
-# 패키지 파일을 복사하고 종속성 설치
-COPY package*.json ./
-RUN npm install
-
-# 애플리케이션 소스를 복사하고 빌드
-COPY . .
-RUN npm run build
-
-# Nginx를 사용하여 정적 파일 서빙
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
 
 # Nginx 설정 파일을 복사
-COPY nginx.https.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.https.conf /etc/nginx/conf.d/default.conf
 
-# 컨테이너가 80번 포트를 외부에 노출
-EXPOSE 80
+# 빌드된 React 파일들 (index.html 포함) 복사
+COPY ./ /usr/share/nginx/html
 
-# Nginx를 실행
+# 인증서 관련 파일은 도커 컴포즈에서 마운트되므로 여기서는 추가 설정 불필요
+
+# 컨테이너가 80번 포트와 443번 포트를 외부에 노출
+EXPOSE 80 443
+
+# Nginx 실행
 CMD ["nginx", "-g", "daemon off;"]
