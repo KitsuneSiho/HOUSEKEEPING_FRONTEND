@@ -44,7 +44,6 @@ const RoomeTip = () => {
 
             <div className={`${styles.searchBar} ${isSearchVisible ? styles.visible : ''}`} id={styles.searchBar}>
                 <input type="text" placeholder="검색어를 입력하세요" id={styles.searchInput} />
-                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.postContainer}>
@@ -53,9 +52,6 @@ const RoomeTip = () => {
                         <option value="latest">최신순</option>
                         <option value="popular">인기순</option>
                     </select>
-                    {user && user.role === 'ROLE_ADMIN' && (
-                        <button onClick={() => navigate('/tip/roome/create')}>글쓰기</button>
-                    )}
                 </div>
 
                 <div className={styles.postList}>
@@ -72,6 +68,12 @@ const RoomeTip = () => {
                         </div>
                     ))}
                 </div>
+                {user && user.role === 'ROLE_ADMIN' && (
+                    <div className={styles.createButton} onClick={() => navigate('/tip/roome/create')}>
+                        <img src="/lib/연필.svg" alt="write"/>
+                        <span>작성</span>
+                    </div>
+                )}
             </div>
             <Footer/>
         </div>

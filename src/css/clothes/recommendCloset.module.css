@@ -33,6 +33,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .weatherArea, .weatherDate, .weatherTime{
@@ -59,7 +60,7 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 80%;
+    width: 30%;
     height: 30px;
     background: none;
     border-radius: 5px;
@@ -67,6 +68,18 @@
     outline: none;
     margin: 10px 0;
     font-size: 16px;
+}
+
+.selection .customTempButton{
+    font-family: Fre, sans-serif;
+    width: 15%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    margin: 10px 0;
+    font-size: 13px;
 }
 
 .recommendations-container {

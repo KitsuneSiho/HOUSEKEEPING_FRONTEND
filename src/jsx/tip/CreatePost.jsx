@@ -20,23 +20,34 @@ const CreatePost = () => {
 
     return (
         <div className={styles.container}>
-            <h2>새 게시글 작성</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="제목"
-                    required
-                />
-                <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="내용"
-                    required
-                />
-                <button type="submit">게시</button>
-            </form>
+            <div className={styles.header}>
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/tip/roome')}/>
+                <h2>루미`s Tip 작성</h2>
+            </div>
+            <div className={styles.formContainer} onSubmit={handleSubmit}>
+                <div className={styles.formGroup}>
+                    <label>제목</label>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="제목을 입력하세요"
+                        required
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                    <label>내용</label>
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="내용을 입력하세요"
+                        required
+                    />
+                </div>
+                <div className={styles.submitButton}>
+                    <button type="submit">등록</button>
+                </div>
+            </div>
         </div>
     );
 };
