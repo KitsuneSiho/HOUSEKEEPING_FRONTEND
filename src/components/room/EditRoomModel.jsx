@@ -442,6 +442,31 @@ const EditRoomModel = ({
 
         if (modalResult) {
 
+            // 저장 버튼을 눌렀을 경우
+            if (deletedPlacementList.length > 0) {
+
+                deletedPlacementList.forEach(placement => {
+                    deletePlacement(placement.placementId);
+                })
+            }
+
+            if (placementList.length > 0) {
+
+                placementList.forEach(placement => {
+                    savePlacement(placement, room.roomId);
+                });
+            }
+
+            setModalType("inform");
+            setModalTitle("저장 완료");
+            setModalBody(`${room.roomName}의 가구 배치가 저장되었습니다`);
+            showModal();
+        }
+
+    }, [modalResult])
+
+    useEffect(() => {
+
             // 완료 버튼을 눌렀을 경우
             if (canExit) {
                 if (isFirst === "true") {
@@ -449,36 +474,13 @@ const EditRoomModel = ({
                 } else if (isFirst === "false") {
                     navigate(`/mypage`);
                 }
-            // 저장 버튼을 눌렀을 경우
-            } else {
-                if (deletedPlacementList.length > 0) {
-
-                    deletedPlacementList.forEach(placement => {
-                        deletePlacement(placement.placementId);
-                    })
-                }
-
-                if (placementList.length > 0) {
-
-                    placementList.forEach(placement => {
-                        savePlacement(placement, room.roomId);
-                    });
-                }
-
-                setModalType("inform");
-                setModalTitle("저장 완료");
-                setModalBody(`${room.roomName}의 가구 배치가 저장되었습니다`);
-                showModal();
             }
-
-        }
-
-    }, [modalResult])
+        }, [canExit]
+    )
 
     // 변경사항 저장
     const savePlacements = () => {
 
-        setCanExit(false);
         setModalType("confirm");
         setModalTitle("가구 배치 저장");
         setModalBody(`${room.roomName}${getParticle(room.roomName)} 수정하시겠습니까?`);
@@ -490,11 +492,10 @@ const EditRoomModel = ({
     // 나가기
     const exitPlacements = () => {
 
-        setCanExit(true);
         setModalType("confirm");
         setModalTitle("가구 배치 완료");
         setModalBody(`가구 배치를 완료하고 나가시겠습니까? 저장되지 않은 사항은 사라집니다`);
-        setModalCallback(() => setModalResult);
+        setModalCallback(() => setCanExit);
 
         showModal();
     };
