@@ -22,9 +22,9 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.https.conf /etc/nginx/conf.d/default.conf
 
 # 필요한 디렉토리를 생성하고 SSL/TLS 강화를 위한 dhparam 파일 생성
-RUN mkdir -p /var/www/certbot /etc/letsencrypt && \
-    curl -o /etc/letsencrypt/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf && \
-    openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
+RUN mkdir -p /var/www/certbot /etc/letsencrypt
+
+RUN openssl dhparam -out /etc/letsencrypt/ssl-dhparams.pem 2048
 
 # 컨테이너가 80번 포트를 외부에 노출
 EXPOSE 80
