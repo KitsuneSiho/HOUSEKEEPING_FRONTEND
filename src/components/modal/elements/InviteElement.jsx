@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import React from "react";
 
 const InviteElement = ({users, type, selectedFriends, handleCheckboxChange}) => {
 
@@ -6,7 +7,7 @@ const InviteElement = ({users, type, selectedFriends, handleCheckboxChange}) => 
         <>
             {users.map((roomMember, index) => (
                     <div className="user-element" key={index}>
-                        <img className="user-image" src={users.userImage} alt="profile"/>
+                        <img src={roomMember.profileImageUrl} alt={`/lib/profileImg.svg`}/>
                         <div className="user-nickname">{roomMember.nickname}</div>
                         {type === "invite" &&
                             <input
