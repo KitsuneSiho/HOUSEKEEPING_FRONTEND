@@ -60,7 +60,7 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 30%;
+    width: 29%;
     height: 30px;
     background: none;
     border-radius: 5px;
@@ -68,18 +68,20 @@
     outline: none;
     margin: 10px 0;
     font-size: 16px;
+    z-index: 100;
 }
 
 .selection button{
     font-family: Fre, sans-serif;
-    width: 25%;
-    height: 30px;
+    width: 21%;
+    height: 34px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 14px;
+    z-index: 100;
 }
 
 .recommendationsContainer {
@@ -95,50 +97,47 @@
 
 .itemTop {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 10; /* 다른 요소들 위에 위치하도록 설정 */
+    z-index: 5; /* 다른 요소들 위에 위치하도록 설정 */
+    width: 80%;
+    right: 0;
 }
 
 .itemBottom {
     position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 9; /* itemTop 아래에 위치 */
+    z-index:7; /* itemTop 아래에 위치 */
+    width: 80%;
+    left: 0;
 }
 
 .itemOuter {
     position: absolute;
-    top: 140px;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 8; /* itemBottom 아래에 위치 */
+    z-index: 6; /* itemBottom 아래에 위치 */
+    width: 80%;
+    right: 25%;
 }
 
 .itemShoes {
     position: absolute;
-    top: 210px;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 7; /* itemOuter 아래에 위치 */
+    z-index: 8; /* itemOuter 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    right: 0;
 }
 
 .itemBag {
     position: absolute;
-    top: 280px;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 6; /* itemShoes 아래에 위치 */
+    z-index: 9; /* itemShoes 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    right: 25%;
 }
 
 .itemAccessory {
     position: absolute;
-    top: 350px;
-    left: 50%;
-    transform: translate(-50%, 0); /* 중앙 정렬 */
-    z-index: 5; /* itemBag 아래에 위치 */
+    z-index: 10; /* itemBag 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    left: 0;
 }
 
 
