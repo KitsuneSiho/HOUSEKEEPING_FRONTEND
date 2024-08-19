@@ -76,11 +76,18 @@
     padding: 10px 20px;
     font-size: 12px;
     cursor: pointer;
+    font-family: Fre, sans-serif;
 }
 
 .commentsSection {
     width: 90%;
     margin-top: 20px;
+}
+
+.commentTitle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .commentInput {
@@ -111,6 +118,23 @@
     padding: 0;
 }
 
+.commentEditButtons{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+}
+
+.commentEditButtons button{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    font-family: Fre, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
 .comment {
     border-bottom: 1px solid #ccc;
     margin-top: 10px;
@@ -124,18 +148,22 @@
     flex-grow: 1;
 }
 
+.commentDate p{
+    color: gray;
+}
+
 .commentText {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 10px;
 }
 
 .commentActions {
     display: flex;
     align-items: center;
-    position: absolute;
-    right: 5%;
 }
+
 
 .commentActions span {
     cursor: pointer;

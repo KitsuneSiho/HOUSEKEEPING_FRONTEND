@@ -138,6 +138,7 @@
 .comment {
     border-bottom: 1px solid #ccc;
     margin-top: 10px;
+    padding-bottom: 10px;
 }
 
 .commentUser {
@@ -145,6 +146,10 @@
     align-items: center;
     gap: 10px;
     flex-grow: 1;
+}
+
+.commentDate p{
+    color: gray;
 }
 
 .commentText {
@@ -157,8 +162,6 @@
 .commentActions {
     display: flex;
     align-items: center;
-    position: absolute;
-    right: 5%;
 }
 
 .commentActions span {
