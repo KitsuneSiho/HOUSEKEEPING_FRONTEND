@@ -150,9 +150,14 @@ const LifeTipDetail = () => {
                 </div>
                 {comments.map((comment) => (
                     <div className={styles.comment} key={comment.commentId}>
-                        <div className={styles.commentUser}>
-                            <img src="/lib/마이페이지아이콘.svg" alt="user" />
-                            <p>Lv.3 {comment.userName}</p>
+                        <div className={styles.commentTitle}>
+                            <div className={styles.commentUser}>
+                                <img src="/lib/마이페이지아이콘.svg" alt="user"/>
+                                <p>Lv.3 {comment.userName}</p>
+                            </div>
+                            <div className={styles.commentDate}>
+                                <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
+                            </div>
                         </div>
                         {editingCommentId === comment.commentId ? (
                             <div className={styles.commentEdit}>
@@ -161,27 +166,28 @@ const LifeTipDetail = () => {
                                     value={editedCommentContent}
                                     onChange={(e) => setEditedCommentContent(e.target.value)}
                                 />
-                                <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
-                                <button onClick={cancelEditing}>취소</button>
+                                <div className={styles.commentEditButtons}>
+                                    <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
+                                    <button onClick={cancelEditing}>취소</button>
+                                </div>
                             </div>
                         ) : (
                             <>
                                 <div className={styles.commentText}>
                                     <p>{comment.commentContent}</p>
+                                    <div className={styles.commentActions}>
+                                        <span
+                                            onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                        <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                                    </div>
                                 </div>
-                                <div className={styles.commentActions}>
-                                    <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
-                                    <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
-                                </div>
+
                             </>
                         )}
-                        <div className={styles.commentDate}>
-                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
-                        </div>
                     </div>
                 ))}
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

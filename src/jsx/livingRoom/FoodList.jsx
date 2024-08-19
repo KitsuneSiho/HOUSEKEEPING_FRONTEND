@@ -296,7 +296,6 @@ const FoodList = () => {
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
                 />
-                <img src="/lib/검색.svg" alt="search"/>
             </div>
 
 

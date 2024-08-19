@@ -33,6 +33,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .weatherArea, .weatherDate, .weatherTime{
@@ -59,7 +60,7 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 80%;
+    width: 30%;
     height: 30px;
     background: none;
     border-radius: 5px;
@@ -69,59 +70,59 @@
     font-size: 16px;
 }
 
-.customTempContainer {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.customTempInput {
-    padding: 8px;
+.selection button{
+    font-family: Fre, sans-serif;
+    width: 30%;
+    height: 30px;
+    background: none;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100px;
-    text-align: center;
+    outline: none;
+    margin: 10px 0;
+    font-size: 16px;
 }
 
-.customTempButton {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.recommendationsContainer {
+    width: 100%;
+    height: 350px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+
 }
 
-.customTempButton:hover {
-    background-color: #0056b3;
-}
-.recommendations-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
-    gap: 10px; /* 이미지 간의 간격 */
-    padding: 20px; /* 컨테이너 패딩 */
+
+.itemTop, .itemBottom, .itemOuter, .itemShoes,
+.itemBag, .itemAccessory{
+    width: 80%;
+    position: absolute;
 }
 
-.image-category {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center; /* 이미지 중앙 정렬 */
+.itemTop{
+    z-index: 10;
+    left: 22%;
+    top: 32%;
 }
 
-.item {
-    width: 100px; /* 이미지를 4분의 1 크기로 줄이기 */
-    height: auto;
-    border-radius: 8px;
-    transition: transform 0.3s ease; /* 호버 시 확대 효과 */
-    cursor: pointer;
+.itemBottom{
+    z-index: 11;
+
 }
 
-.item:hover {
-    transform: scale(1.1); /* 호버 시 이미지 확대 */
+.itemOuter{
+    z-index: 12;
 }
 
+.itemShoes{
+    z-index: 13;
+}
+
+.itemBag{
+    z-index: 14;
+}
+
+.itemAccessory{
+    z-index: 15;
+}
 
 /* recommendCloset.module.css */
 .weather {

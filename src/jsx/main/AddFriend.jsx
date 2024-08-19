@@ -146,7 +146,6 @@ const AddFriend = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.searchResults}>

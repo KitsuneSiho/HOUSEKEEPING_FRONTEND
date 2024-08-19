@@ -89,7 +89,6 @@ const FriendList = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <img src="public/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.searchResults} id="search-results">
