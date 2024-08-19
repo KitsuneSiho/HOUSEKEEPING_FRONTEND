@@ -8,7 +8,10 @@ const ChatFriend = ({index, friend, selectedFriends, handleCheckboxChange}) => {
     return (
         <>
             <div key={index} className={styles.friendItem}>
-                <img src={friend.profileImageUrl} alt={`/lib/profileImg.svg`}/>
+                <img
+                    src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                    alt="Profile Image"
+                />
                 <div className={styles.friendInfo}>
                     <div className={styles.friendName}>{friend.nickname}</div>
                 </div>

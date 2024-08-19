@@ -7,7 +7,10 @@ const InviteElement = ({users, type, selectedFriends, handleCheckboxChange}) => 
         <>
             {users.map((roomMember, index) => (
                     <div className="user-element" key={index}>
-                        <img src={roomMember.profileImageUrl} alt={`/lib/profileImg.svg`}/>
+                        <img
+                            src={roomMember.profileImageUrl || "/lib/profileImg.svg"}
+                            alt="Profile Image"
+                        />
                         <div className="user-nickname">{roomMember.nickname}</div>
                         {type === "invite" &&
                             <input
