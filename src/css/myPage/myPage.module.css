@@ -118,6 +118,8 @@
 
 .menuItem p {
     margin: 0;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .menuItem img {
@@ -132,6 +134,11 @@
     margin: 20px 0;
     padding: 10px 0;
     font-size: 14px;
+}
+
+.footerMenu p{
+    font-size: 15px;
+    font-weight: bold;
 }
 
 /* 반응형 디자인 */

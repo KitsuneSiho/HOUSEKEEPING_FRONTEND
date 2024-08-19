@@ -434,15 +434,15 @@ const RecommendCloset = () => {
                 <label htmlFor="date">날짜 선택:</label>
                 <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()}
                        max={getMaxDate()}/>
+            </div>
+            <div className={styles.selection}>
                 <label htmlFor="time">시간 선택:</label>
                 <select id="time" value={selectedTime} onChange={handleTimeChange}>
                     {timeOptions.map(time => (
                         <option key={time} value={time}>{getDisplayTime(time)}</option>
                     ))}
                 </select>
-            </div>
 
-            <div className={styles.customTempContainer}>
                 <input
                     type="number"
                     placeholder="온도 입력 (°C)"
@@ -461,8 +461,8 @@ const RecommendCloset = () => {
                 >
                     입력 온도별 추천
                 </button>
+            
             </div>
-
             <div className="recommendations-container">
                 <div className="image-category top-category">
                     {recommendations.top?.map((recommendation, index) => (

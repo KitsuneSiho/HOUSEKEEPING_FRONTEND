@@ -71,7 +71,7 @@
 
 .submitButton button {
     padding: 10px 20px;
-    background-color: #ffc5f2;
+    background-color: #c5f1ff;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -80,20 +80,26 @@
     font-family: Fre, sans-serif;
 }
 
-/* 반응형 디자인 */
+/* 반응형 디자인 추가 */
 @media (min-width: 768px) {
     .formContainer {
         width: 80%;
     }
 
-    .formGroup label,
+    .formGroup label {
+        width: 15%;
+        font-size: 18px;
+    }
+
     .formGroup input,
     .formGroup textarea {
+        width: 85%;
         font-size: 18px;
     }
 
     .submitButton button {
-        padding: 12px 25px;
+        padding: 12px 24px;
+        font-size: 18px;
     }
 }
 
@@ -102,13 +108,19 @@
         width: 70%;
     }
 
-    .formGroup label,
+    .formGroup label {
+        width: 15%;
+        font-size: 20px;
+    }
+
     .formGroup input,
     .formGroup textarea {
+        width: 85%;
         font-size: 20px;
     }
 
     .submitButton button {
-        padding: 15px 30px;
+        padding: 14px 28px;
+        font-size: 20px;
     }
 }
