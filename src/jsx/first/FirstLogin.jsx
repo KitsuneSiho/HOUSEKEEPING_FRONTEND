@@ -16,11 +16,13 @@ const FirstLogin = () => {
         phoneNumber: '',
         userPlatform: '',
         role: 'ROLE_USER',
-        username: ''
+        username: '',
+        profileImageUrl: ''
     });
     const [token, setToken] = useState('');
     const [nicknameError, setNicknameError] = useState('');
     const [authError, setAuthError] = useState('');
+    const [profileImage, setProfileImage] = useState("/lib/profileImg.svg");
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -50,22 +52,51 @@ const FirstLogin = () => {
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await axiosInstance.post('/files/upload', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setProfileImage(response.data);
+                setUserInfo(prevState => ({
+                    ...prevState,
+                    profileImageUrl: response.data
+                }));
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                setAuthError('프로필 이미지 업로드에 실패했습니다.');
+            }
+        }
+    };
+
     const handleSubmit = async () => {
         try {
-            const response = await axiosInstance.post('/api/auth/complete-registration', userInfo, {
+            const response = await axiosInstance.post('/api/auth/complete-registration', {
+                ...userInfo,
+                profileImageUrl: profileImage
+            }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
             if (response.status === 200) {
-                console.log("userId:", user.userId);
+                console.log("userId:", response.data.userId);
                 setUser({
-                        ...user,
-                        nickname: userInfo.nickname,
-                    }
-                );
-                createNewRooms(user.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
+                    ...user,
+                    ...response.data,
+                    nickname: userInfo.nickname,
+                    profileImageUrl: profileImage
+                });
+                createNewRooms(response.data.userId).then(() => navigate(`/mypage/myroom/edit/${true}`));
             }
         } catch (error) {
             console.error('Error completing registration', error);
@@ -144,8 +175,15 @@ const FirstLogin = () => {
                 <h1>가입 정보</h1>
             </div>
             <div className={styles.profileImg}>
-                <img src="/lib/profileImg.svg" alt="프로필 이미지"/>
-                <p>프로필 이미지 설정</p>
+                <img src={profileImage} alt="프로필 이미지"/>
+                <label htmlFor="profileImageUpload">프로필 이미지 설정</label>
+                <input
+                    type="file"
+                    id="profileImageUpload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                />
             </div>
             <div className={styles.information}>
                 <div className={styles.inputContainer}>

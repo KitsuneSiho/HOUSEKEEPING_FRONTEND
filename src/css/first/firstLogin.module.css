@@ -18,6 +18,14 @@
 .profileImg img {
     display: block;
     margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+.profileImg label:hover{
+    color: dodgerblue;
 }
 
 .information {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/routine/routine.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import {useLogin} from "../../contexts/AuthContext.jsx";
+import { useLogin } from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 
 const Routine = () => {
@@ -10,7 +10,7 @@ const Routine = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [routineGroups, setRoutineGroups] = useState([]);
     const [newRoutineName, setNewRoutineName] = useState('');
-
+    const [activeRoutine, setActiveRoutine] = useState(''); // 현재 적용 중인 루틴 상태
     const { user } = useLogin();
 
     useEffect(() => {
@@ -20,6 +20,12 @@ const Routine = () => {
                     params: { userId: user.userId }
                 });
                 setRoutineGroups(response.data);
+                // 예를 들어, 현재 적용 중인 루틴을 API로부터 가져오는 경우
+                const activeRoutineResponse = await axiosInstance.get('/routine/checked-group-names', {
+                    params: { userId: user.userId }
+                });
+                console.log(activeRoutine);
+                setActiveRoutine(activeRoutineResponse.data);
             } catch (error) {
                 console.error('Error fetching routine groups:', error);
             }
@@ -50,12 +56,6 @@ const Routine = () => {
         navigate(`/routine/daily/${newRoutineName}`);
     };
 
-    const handleRecommendRoutineClick = () => {
-        // 새 루틴 이름을 URL에 포함시켜 이동
-        navigate(`/routine/recommend/daily`);
-    };
-
-
     return (
         <div className={styles.container}>
             <div className={styles.routineTitle}>
@@ -66,28 +66,17 @@ const Routine = () => {
                 <p className={styles.add} onClick={openModal}>루틴 추가<img src="/lib/plus.svg" alt="add"/></p>
             </div>
 
-            <div className={styles.routine}>
-                <button
-                    type="button"
-                    className={styles.roomRoutine}
-                    onClick={() => handleRecommendRoutineClick()}
-                >
-                    <p>루미의 추천 루틴</p>
-                </button>
-            </div>
-
             {routineGroups.map((groupName, index) => (
                 <div className={styles.routine} key={`routine-group-${index}`}>
                     <button
                         type="button"
-                    className={styles.roomRoutine}
-                    onClick={() => handleRoutineClick(groupName)}
-                >
-                    <p>{groupName}</p>
-                </button>
-            </div>
+                        className={activeRoutine === groupName ? styles.myRoutine : styles.roomRoutine} // Apply different styles based on active routine
+                        onClick={() => handleRoutineClick(groupName)}
+                    >
+                        <p>{groupName}</p>
+                    </button>
+                </div>
             ))}
-
 
             {isModalOpen && (
                 <div className={styles.modal}>
@@ -102,20 +91,6 @@ const Routine = () => {
                                 value={newRoutineName}
                                 onChange={(e) => setNewRoutineName(e.target.value)} // 입력값 상태 업데이트
                             />
-                        </div>
-                        <div className={styles.routineColor}>
-                            <label>색상</label>
-                            <div className={styles.colorOptions}>
-                                <input type="radio" id="color1" name="routineColor" value="color1"/>
-                                <label htmlFor="color1" className={styles.colorBox}
-                                       style={{backgroundColor: '#c5f1ff'}}></label>
-                                <input type="radio" id="color2" name="routineColor" value="color2"/>
-                                <label htmlFor="color2" className={styles.colorBox}
-                                       style={{backgroundColor: '#ffc5d1'}}></label>
-                                <input type="radio" id="color3" name="routineColor" value="color3"/>
-                                <label htmlFor="color3" className={styles.colorBox}
-                                       style={{backgroundColor: '#ffebc5'}}></label>
-                            </div>
                         </div>
                         <div className={styles.routineGroupList}>
                             <h3>루틴 그룹명</h3>

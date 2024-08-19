@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 20px;
+    padding: 15px;
 }
 
 .friend, .addFriend {
@@ -53,7 +53,7 @@
 }
 
 .dirtyBar {
-    margin-top: 5%;
+    margin-top: 2%;
     width: 95%;
     display: flex;
     justify-content: center;
@@ -85,9 +85,9 @@
 /* 스케줄 목록 */
 .scheduleList {
     width: 90%;
-    margin: 20px 0 12% 0;
     display: flex;
     flex-direction: column;
+    margin-top: 3%;
 }
 
 .roomSection {
@@ -101,23 +101,25 @@
     flex-direction: column;
 }
 
-.roomSectionTitle{
+.roomSectionTitle {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     border-radius: 20px;
     gap: 10px;
     color: black;
     font-size: 1rem;
     margin: 0;
-    padding: 10px;
+    padding: 10px 20px;
     text-align: center;
     background-color: #ffc5f2;
-    width: 25%;
+    width: auto;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
-.roomSectionTitle h3{
+.roomSectionTitle h3 {
     margin: 0;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 /* 스케줄 아이템 */
@@ -150,7 +152,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    margin: 0 auto; /* 수평 가운데 정렬 */
+    margin: 10px auto 0 auto;
     display: flex;
     align-items: center;
     max-width: 200px;
@@ -221,62 +223,9 @@
 }
 
 .scheduleList ul {
-    list-style-type: none; /* 불릿 포인트 제거 */
-    padding-left: 10px; /* ul 요소의 기본 패딩 제거 */
-    margin-left: 0; /* ul 요소의 기본 마진 제거 */
-}
-
-/* 반응형 디자인 */
-@media (min-width: 394px) {
-    .container {
-        padding: 20px;
-    }
-
-    .friendsContainer {
-        justify-content: center; /* 큰 화면에서 중앙 정렬 */
-    }
-
-    .friend, .addFriend {
-        width: 80px; /* 큰 화면에서 아이콘 크기 증가 */
-        height: 80px;
-    }
-
-    .friend p, .addFriend p {
-        font-size: 14px;
-    }
-
-    .dirtyBar {
-        margin-top: 3%;
-    }
-
-    .roomDesign .myRoom {
-        width: 60%;
-    }
-
-    .routineContainer {
-        width: 90%;
-    }
-
-    .roomRoutine {
-        padding: 20px;
-        margin: 30px;
-    }
-
-    .roomRoutine .roomRoutineTitle {
-        padding: 10px 20px;
-        gap: 20px;
-    }
-
-    .roomRoutine .roomRoutineInfo ul {
-        max-height: calc(40px * 4); /* 목록 항목 높이 증가 */
-    }
-
-    .submit {
-        width: 60%;
-        margin-top: 5%;
-    }
-
-    .submit button {
-        font-size: 18px; /* 큰 화면에서 버튼 텍스트 크기 증가 */
-    }
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: calc(30px* 4);
+    overflow-y: auto;
 }

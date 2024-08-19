@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import styles from '../../css/routine/dailyRoutineInfo.module.css';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Footer from '../../jsx/fix/Footer.jsx';
-import { BACK_URL } from '../../Constraints.js';
-import axios from 'axios';
 import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 
@@ -20,6 +18,8 @@ const DailyRoutineInfo = () => {
     const [editRoutineText, setEditRoutineText] = useState('');
     const [selectedRoomId, setSelectedRoomId] = useState(null);
     const [routineToEdit, setRoutineToEdit] = useState(null); // Routine to edit
+    const [isGroupActive, setIsGroupActive] = useState(false);
+    const [alarmStatus, setAlarmStatus] = useState({});
 
     const { user } = useLogin();
 
@@ -40,6 +40,15 @@ const DailyRoutineInfo = () => {
                     return acc;
                 }, {});
             setRoutineItems(dailyRoutines);
+
+            const activeRoutineResponse = await axiosInstance.get('/routine/checked-group-names', {
+                params: { userId: user.userId }
+            });
+            console.log(groupName);
+            console.log(activeRoutineResponse.data);
+            if(groupName === activeRoutineResponse.data){
+                setIsGroupActive(true);
+            }
         } catch (error) {
             console.error('Error fetching daily routines:', error);
         }
@@ -62,6 +71,8 @@ const DailyRoutineInfo = () => {
         fetchDailyRoutines();
     }, [groupName]);
 
+
+
     const addRoutineItem = async () => {
         if (selectedRoomId === null || newRoutineText.trim() === '') {
             alert('방 ID가 없거나 새로운 루틴 이름이 비어 있습니다.');
@@ -80,7 +91,6 @@ const DailyRoutineInfo = () => {
 
         try {
             const response = await axiosInstance.post(`/routine/add`, newRoutine);
-
             if (response.status === 200) {
                 const addedRoutine = response.data;
                 setRoutineItems(prevItems => ({
@@ -94,6 +104,11 @@ const DailyRoutineInfo = () => {
                         }
                     ]
                 }));
+                // isGroupActive가 true이면 루틴 그룹 업데이트 요청
+                if (isGroupActive) {
+                    await applyRoutineGroupUpdate(groupName, groupName);
+                }
+
                 closeAddModal();
                 fetchDailyRoutines();
             } else {
@@ -158,6 +173,11 @@ const DailyRoutineInfo = () => {
                     }
                     return newItems;
                 });
+                // isGroupActive가 true이면 루틴 그룹 업데이트 요청
+                if (isGroupActive) {
+                    await applyRoutineGroupUpdate(groupName, groupName);
+                }
+
                 closeEditModal();
                 fetchDailyRoutines();
             } else {
@@ -183,6 +203,7 @@ const DailyRoutineInfo = () => {
                     ...prevItems,
                     [routineToEdit.roomId]: (prevItems[routineToEdit.roomId] || []).filter(item => item.id !== routineToEdit.id)
                 }));
+
                 closeEditModal();
                 fetchDailyRoutines();
             } else {
@@ -193,6 +214,27 @@ const DailyRoutineInfo = () => {
             alert('일정 삭제 중 오류가 발생했습니다.');
         }
     };
+
+    const applyRoutineGroupUpdate = async (oldRoutineGroupName, newRoutineGroupName) => {
+        try {
+            const response = await axiosInstance.post('/routine/apply', null, {
+                params: {
+                    oldRoutineGroupName: oldRoutineGroupName,
+                    newRoutineGroupName: newRoutineGroupName
+                }
+            });
+
+            if (response.status === 200) {
+                console.log('Routine group successfully updated.');
+            } else {
+                throw new Error('Failed to apply routine group update');
+            }
+        } catch (error) {
+            console.error('Error applying routine group update:', error);
+            alert('루틴 그룹 업데이트 중 오류가 발생했습니다.');
+        }
+    };
+
 
     const handleTabClick = (frequency) => {
         navigate(`/routine/${frequency}/${groupName}`);
@@ -220,6 +262,74 @@ const DailyRoutineInfo = () => {
         setEditRoutineId(null);
         setEditRoutineText('');
     };
+
+    const getAddButtonBackgroundColor = (index) => {
+        const colors = ['#ffc5f2', '#ffebc5', '#c5f1ff'];
+        return colors[index % colors.length] || '#ffffff';
+    };
+
+    // 알림 켜기 요청을 보내는 함수
+    const toggleRoomAlarms = async (roomId, routineGroupName) => {
+        try {
+            const response = await axiosInstance.post(`/routine/toggle-alarms`, {
+                roomId,
+                routineGroupName
+            });
+
+            if (response.status === 200) {
+                const updatedRoutines = response.data;
+                setRoutineItems(prevItems => {
+                    const newItems = { ...prevItems };
+                    newItems[roomId] = newItems[roomId].map(item => {
+                        return {
+                            ...item,
+                            notification: 'on'
+                        };
+                    });
+                    return newItems;
+                });
+                fetchDailyRoutines(); // 업데이트된 루틴들을 다시 가져옴
+            } else {
+                throw new Error('Failed to toggle alarms for room and group');
+            }
+        } catch (error) {
+            console.error('Error toggling alarms for room and group:', error);
+            alert('알림 설정 중 오류가 발생했습니다.');
+        }
+    };
+
+    const handleToggleAlarmsClick = (roomId) => {
+        if (!window.confirm('이 방의 모든 알림을 켜시겠습니까?')) {
+            return;
+        }
+
+        toggleRoomAlarms(roomId, groupName);
+    };
+
+    const handleNotificationClick = async (roomId, routine) => {
+        try {
+            const newNotificationStatus = routine.notification === 'on' ? 'off' : 'on';
+
+            // 서버에 알림 상태 변경 요청
+            await axiosInstance.put(`/routine/toggle-notification`, null, {
+                params: {
+                    routineId: routine.id,
+                    routineIsAlarm: newNotificationStatus
+                }
+            });
+
+            // 상태 업데이트
+            setRoutineItems(prevItems => ({
+                ...prevItems,
+                [roomId]: prevItems[roomId].map(item =>
+                    item.id === routine.id ? { ...item, notification: newNotificationStatus } : item
+                )
+            }));
+        } catch (error) {
+            console.error('Error toggling notification status:', error);
+            alert('알림 상태 변경 중 오류가 발생했습니다.');
+        }
+    }
 
     return (
         <div className={styles.container}>
@@ -249,18 +359,19 @@ const DailyRoutineInfo = () => {
                 </div>
             </div>
             <div className={styles.routineContainer}>
-                {rooms.map(room => (
+                {rooms.map((room, index) => (
                     <div key={room.roomId} className={styles.roomRoutine}>
                         <div className={styles.roomRoutineHeader}>
-                            <div className={`${styles.roomRoutineTitle} 
-                                            ${room.roomName === '내 방' ? styles.roomRoutineTitle : ''} 
-                                            ${room.roomName === '주방' ? styles.livingRoomRoutineTitle : ''} 
-                                            ${room.roomName === '화장실' ? styles.toiletRoutineTitle : ''}`}>
+                            <div className={styles.roomRoutineTitle}
+                                 style={{
+                                backgroundColor: getAddButtonBackgroundColor(index),
+                                color: '#000'
+                            }}>
                                 <p>{room.roomName}</p>
                                 <img src="/lib/연필.svg" alt="edit"/>
                             </div>
                             <div className={styles.alramOnOff}>
-                                <p>모든 알림 켜기</p>
+                                <p onClick={() => handleToggleAlarmsClick(room.roomId)}>모든 알람 켜기</p>
                                 <img src="/lib/plus.svg" alt="plus" className={styles.plusIcon}
                                      onClick={() => openAddModal(room.roomId)}/>
                             </div>
@@ -272,7 +383,11 @@ const DailyRoutineInfo = () => {
                                         <label htmlFor={`routine-${item.id}`} onClick={() => openEditModal(item)}>
                                             {item.text}
                                         </label>
-                                        <img src={`/lib/알림${item.notification}.svg`} alt={`notification ${item.notification}`} />
+                                        <img
+                                            src={`/lib/알림${item.notification}.svg`}
+                                            alt={`notification ${item.notification}`}
+                                            onClick={() => handleNotificationClick(room.roomId, item)}
+                                        />
                                     </li>
                                 ))}
                             </ul>

@@ -77,7 +77,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    margin: 0 auto; /* 수평 가운데 정렬 */
+    margin: 10px auto 0 auto;
     display: flex;
     align-items: center;
     max-width: 200px;
@@ -156,11 +156,11 @@
     color: black;
     font-size: 1rem;
     margin: 0;
-    padding: 10px;
+    padding: 10px 20px;
     text-align: center;
     background-color: gold;
-    justify-content: center;
-    width: 25%;
+    justify-content: space-between;
+    max-width: 100%;
 }
 
 .roomHeader h3{
@@ -184,7 +184,9 @@
 }
 
 .scheduleList ul {
-    list-style-type: none; /* 불릿 포인트 제거 */
-    padding-left: 10px; /* ul 요소의 기본 패딩 제거 */
-    margin-left: 0; /* ul 요소의 기본 마진 제거 */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: calc(30px* 4);
+    overflow-y: auto;
 }

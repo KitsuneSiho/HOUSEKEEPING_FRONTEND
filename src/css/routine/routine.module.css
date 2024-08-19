@@ -68,12 +68,9 @@
 
 .myRoutine {
     background-color: #ffebc5;
-    border: 3px solid #ff2c2c;
+    border: none;
 }
 
-.roomRoutine:hover, .myRoutine:hover {
-    border: 3px solid #ff2c2c;
-}
 
 .modal {
     display: flex;
@@ -112,25 +109,6 @@
     color: black;
 }
 
-.colorOptions {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
-}
-
-.colorBox {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.colorBox:hover {
-    border: 2px solid #000;
-}
-
 .modalAddBtn, .modalCancelBtn {
     width: 100%;
     padding: 10px;
@@ -156,6 +134,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .routineName input[type="text"]{

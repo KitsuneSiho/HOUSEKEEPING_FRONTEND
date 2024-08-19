@@ -5,6 +5,7 @@ import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
 import { recommendClothes } from "./recommendClothes.jsx";
 
+
 const RecommendCloset = () => {
     const navigate = useNavigate();
     const [city, setCity] = useState('');
@@ -13,6 +14,7 @@ const RecommendCloset = () => {
     const [weather, setWeather] = useState(null);
     const [selectedTime, setSelectedTime] = useState('');
     const [bgColor, setBgColor] = useState('royalblue'); // 기본 배경색
+    const [customTemperature, setCustomTemperature] = useState(''); // 사용자 입력 온도 상태
     const [recommendations, setRecommendations] = useState({
         top: [],
         bottom: [],
@@ -439,31 +441,70 @@ const RecommendCloset = () => {
                     ))}
                 </select>
             </div>
-            <div className={styles.recommendations}>
-                {recommendations.top?.length > 0 && recommendations.top.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
 
-                {recommendations.bottom?.length > 0 && recommendations.bottom.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
-
-                {recommendations.outer?.length > 0 && recommendations.outer.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
-
-                {recommendations.shoes?.length > 0 && recommendations.shoes.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
-
-                {recommendations.bag?.length > 0 && recommendations.bag.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
-
-                {recommendations.accessory?.length > 0 && recommendations.accessory.map((recommendation, index) => (
-                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}/>
-                ))}
+            <div className={styles.customTempContainer}>
+                <input
+                    type="number"
+                    placeholder="온도 입력 (°C)"
+                    value={customTemperature}
+                    onChange={(e) => setCustomTemperature(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            fetchRecommendations(customTemperature);
+                        }
+                    }}
+                    className={styles.customTempInput}
+                />
+                <button
+                    onClick={() => fetchRecommendations(customTemperature)}
+                    className={styles.customTempButton}
+                >
+                    입력 온도별 추천
+                </button>
             </div>
+
+            <div className="recommendations-container">
+                <div className="image-category top-category">
+                    {recommendations.top?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item top"/>
+                    ))}
+                </div>
+
+                <div className="image-category bottom-category">
+                    {recommendations.bottom?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item bottom"/>
+                    ))}
+                </div>
+
+                <div className="image-category outer-category">
+                    {recommendations.outer?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item outer"/>
+                    ))}
+                </div>
+
+                <div className="image-category shoes-category">
+                    {recommendations.shoes?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item shoes"/>
+                    ))}
+                </div>
+
+                <div className="image-category bag-category">
+                    {recommendations.bag?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item bag"/>
+                    ))}
+                </div>
+
+                <div className="image-category accessory-category">
+                    {recommendations.accessory?.map((recommendation, index) => (
+                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                             className="item accessory"/>
+                    ))}
+                </div>
+            </div>
+
 
             <Footer/>
         </div>
