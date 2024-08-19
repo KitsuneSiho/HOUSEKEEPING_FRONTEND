@@ -151,8 +151,11 @@ const WasteTipDetail = () => {
                 {comments.map((comment) => (
                     <div className={styles.comment} key={comment.commentId}>
                         <div className={styles.commentUser}>
-                            <img src="/lib/마이페이지아이콘.svg" alt="user" />
+                            <img src="/lib/마이페이지아이콘.svg" alt="user"/>
                             <p>Lv.3 {comment.userName}</p>
+                        </div>
+                        <div className={styles.commentDate}>
+                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
                         </div>
                         {editingCommentId === comment.commentId ? (
                             <div className={styles.commentEdit}>
@@ -170,18 +173,17 @@ const WasteTipDetail = () => {
                                     <p>{comment.commentContent}</p>
                                 </div>
                                 <div className={styles.commentActions}>
-                                    <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                    <span
+                                        onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
                                     <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                                 </div>
                             </>
                         )}
-                        <div className={styles.commentDate}>
-                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
-                        </div>
+
                     </div>
                 ))}
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

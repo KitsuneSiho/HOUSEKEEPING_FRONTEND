@@ -112,6 +112,16 @@
     padding: 0;
 }
 
+.commentEdit button{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: none;
+    font-family: Fre, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
 .comment {
     border-bottom: 1px solid #ccc;
     margin-top: 10px;
