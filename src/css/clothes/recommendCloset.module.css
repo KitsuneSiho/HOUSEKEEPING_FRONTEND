@@ -33,7 +33,6 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .weatherArea, .weatherDate, .weatherTime{
@@ -60,7 +59,7 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 30%;
+    width: 80%;
     height: 30px;
     background: none;
     border-radius: 5px;
@@ -70,33 +69,24 @@
     font-size: 16px;
 }
 
-.selection .customTempButton{
-    font-family: Fre, sans-serif;
-    width: 15%;
-    height: 30px;
-    background: none;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    outline: none;
-    margin: 10px 0;
-    font-size: 13px;
-}
-
-.recommendations-container {
+.recommendationsContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
     gap: 10px; /* 이미지 간의 간격 */
     padding: 20px; /* 컨테이너 패딩 */
 }
 
-.image-category {
+.imageCategoryTopCategory, .imageCategoryBottomCategory,
+.imageCategoryOuterCategory, .imageCategoryShoesCategory,
+.imageCategoryBagCategory, .imageCategoryAccessoryCategory {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center; /* 이미지 중앙 정렬 */
 }
 
-.item {
+.itemTop, .itemBottom, .itemOuter, .itemShoes,
+.itemBag, .itemAccessory{
     width: 100px; /* 이미지를 4분의 1 크기로 줄이기 */
     height: auto;
     border-radius: 8px;
