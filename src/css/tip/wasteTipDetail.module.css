@@ -162,6 +162,7 @@
 .commentActions {
     display: flex;
     align-items: center;
+    min-width: 21%;
 }
 
 .commentActions span {

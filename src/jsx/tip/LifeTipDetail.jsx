@@ -175,17 +175,19 @@ const LifeTipDetail = () => {
                             <>
                                 <div className={styles.commentText}>
                                     <p>{comment.commentContent}</p>
+                                    <div className={styles.commentActions}>
+                                        <span
+                                            onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                        <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
+                                    </div>
                                 </div>
-                                <div className={styles.commentActions}>
-                                    <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
-                                    <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
-                                </div>
+
                             </>
                         )}
                     </div>
                 ))}
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
