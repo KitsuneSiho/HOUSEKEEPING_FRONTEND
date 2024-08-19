@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams  } from 'react-router-dom';
+import {useState, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import styles from '../../css/main/friendRoom.module.css'; // CSS 모듈 임포트
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosInstance from "../../config/axiosInstance.js";
@@ -88,7 +88,7 @@ const FriendRoom = () => {
                     alt="back"
                     onClick={() => navigate('/main')}
                 />
-                <h2>${friend.nickname}님의 House</h2>
+                <h2>{friend.nickname}님의 House</h2>
             </div>
 
             <div className={styles.dirtyBar}>
@@ -96,28 +96,16 @@ const FriendRoom = () => {
             </div>
 
             <div className={styles.roomDesign}>
-                <img
-                    src="/lib/왼쪽화살표.svg"
-                    alt="left arrow"
-                    onClick={() => navigate('')} // 필요한 경로로 설정
-                />
-                <div className={styles.roomDesign}>
-                    <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => changeCurrentRoom(-1)}/>
-                    <div className={styles.roomView}>
-                        {isReady && rooms.map((room, index) => (
-                            <div key={index}>
-                                {currentRoom === index &&
-                                    <RoomModel room={room} placementList={placementLists[index]}/>}
-                            </div>
-                        ))}
-                    </div>
-                    <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => changeCurrentRoom(1)}/>
+                <img className={styles.arrowImg} src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => changeCurrentRoom(-1)}/>
+                <div className={styles.roomView}>
+                    {isReady && rooms.map((room, index) => (
+                        <div key={index}>
+                            {currentRoom === index &&
+                                <RoomModel room={room} placementList={placementLists[index]}/>}
+                        </div>
+                    ))}
                 </div>
-                <img
-                    src="/lib/오른쪽화살표.svg"
-                    alt="right arrow"
-                    onClick={() => navigate('')} // 필요한 경로로 설정
-                />
+                <img className={styles.arrowImg} src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => changeCurrentRoom(1)}/>
             </div>
 
             <div className={styles.visitorBoard}>

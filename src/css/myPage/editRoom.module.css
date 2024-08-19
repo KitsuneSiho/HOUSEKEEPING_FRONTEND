@@ -19,6 +19,12 @@
     height: 350px;
 }
 
+.roomDesign .arrowImg {
+    width: 20px;
+    height: 20px;
+    margin-top: 60%;
+}
+
 .furniture {
     width: 95%;
     height: 280px;

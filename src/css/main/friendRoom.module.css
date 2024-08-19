@@ -48,6 +48,12 @@
     height: 350px;
 }
 
+.roomDesign .arrowImg {
+    width: 20px;
+    height: 20px;
+    margin-top: 50%;
+}
+
 .visitorBoard {
     width: 80%;
     margin-top: 5%;
