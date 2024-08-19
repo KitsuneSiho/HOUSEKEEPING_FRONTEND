@@ -39,20 +39,13 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 5%;
-    position: relative;
 }
 
-.roomDesign img {
-    cursor: pointer;
-}
-
-.roomDesign .myRoom {
-    width: 85%;
-    height: auto;
+.roomDesign .roomView {
+    width: 100%;
     margin: 0;
     padding: 0;
+    height: 350px;
 }
 
 .visitorBoard {
@@ -80,7 +73,7 @@
     }
 
     .roomDesign .myRoom {
-        width: 70%;
+        width: 60%;
     }
 
     .visitorBoard button {
