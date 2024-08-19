@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import styles from '../../css/clothes/recommendCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
-import { recommendClothes } from "./recommendClothes.jsx";
+import {recommendClothes} from "./recommendClothes.jsx";
 
 
 const RecommendCloset = () => {
@@ -75,7 +75,7 @@ const RecommendCloset = () => {
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
 
@@ -125,7 +125,7 @@ const RecommendCloset = () => {
                 };
 
                 serverRecommendations.forEach(item => {
-                    switch(item.clothType) {
+                    switch (item.clothType) {
                         case '반팔':
                         case '셔츠':
                         case '니트':
@@ -394,7 +394,7 @@ const RecommendCloset = () => {
 
 
 // 시간 옵션을 원래 값으로 정의합니다.
-    const timeOptions = ['21:00','00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
+    const timeOptions = ['21:00', '00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
 
 // 시간을 6시간 더한 값으로 표시하는 함수
     const getDisplayTime = (time) => {
@@ -402,8 +402,6 @@ const RecommendCloset = () => {
         const adjustedHours = (hours + 6) % 24;  // 6시간 더하기 및 24시간 형식 유지
         return `${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     };
-
-
 
 
     return (
@@ -461,51 +459,34 @@ const RecommendCloset = () => {
                 >
                     입력 온도별 추천
                 </button>
-            
+
             </div>
             <div className={styles.recommendationsContainer}>
-                <div className={styles.imageCategoryTopCategory}>
-                    {recommendations.top?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className={styles.itemTop}/>
-                    ))}
-                </div>
-
-                <div className={styles.imageCategoryBottomCategory}>
-                    {recommendations.bottom?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className={styles.itemBottom}/>
-                    ))}
-                </div>
-
-                <div className={styles.imageCategoryOuterCategory}>
-                    {recommendations.outer?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className={styles.itemOuter}/>
-                    ))}
-                </div>
-
-                <div className={styles.imageCategoryShoesCategory}>
-                    {recommendations.shoes?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className={styles.itemShoes}/>
-                    ))}
-                </div>
-
-                <div className={styles.imageCategoryBagCategory}>
-                    {recommendations.bag?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className={styles.itemBag}/>
-                    ))}
-                </div>
-
-                <div className={styles.imageCategoryAccessoryCategory}>
-                    {recommendations.accessory?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className={styles.itemAccessory}/>
-                    ))}
-                </div>
+                {recommendations.top?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemTop}/>
+                ))}
+                {recommendations.bottom?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemBottom}/>
+                ))}
+                {recommendations.outer?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemOuter}/>
+                ))}
+                {recommendations.shoes?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemShoes}/>
+                ))}
+                {recommendations.bag?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemBag}/>
+                ))}
+                {recommendations.accessory?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemAccessory}/>
+                ))}
             </div>
-
-
             <Footer/>
         </div>
     );
