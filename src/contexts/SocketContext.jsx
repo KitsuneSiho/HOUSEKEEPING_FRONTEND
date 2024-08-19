@@ -22,7 +22,7 @@ export const SocketProvider = ({children}) => {
 
     // 소켓 연결 및 이벤트 핸들러 설정
     useEffect(() => {
-        const socket = io('https://socket.bit-two.com', {
+        const socket = io('http://localhost:3000', {
             reconnection: true,
             reconnectionAttempts: 10,
             reconnectionDelay: 1000,
