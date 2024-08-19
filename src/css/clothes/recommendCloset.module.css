@@ -73,20 +73,20 @@
 
 .selection button{
     font-family: Fre, sans-serif;
-    width: 21%;
+    width: 17%;
     height: 34px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 14px;
+    font-size: 12px;
     z-index: 100;
 }
 
 .recommendationsContainer {
     width: 100%;
-    height: auto; /* 내용에 맞게 높이가 자동으로 조절되도록 변경 */
+    height: 400px; /* 내용에 맞게 높이가 자동으로 조절되도록 변경 */
     position: relative; /* 자식 요소들이 이 컨테이너를 기준으로 위치하게 설정 */
     display: flex;
     justify-content: center;
