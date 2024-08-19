@@ -2,9 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useNavigate } from 'react-router-dom'; // useNavigate import 추가
 import styles from '../../css/first/firstRoomDesign.module.css';
 
 const RoomView = () => {
+    const navigate = useNavigate(); // useNavigate 훅 사용
     const mountRef = useRef(null);
     const sceneRef = useRef(new THREE.Scene());
     const rendererRef = useRef(null);
@@ -106,7 +108,7 @@ const RoomView = () => {
             if (intersects.length > 0) {
                 const object = intersects[0].object;
                 console.log(`Clicked on: ${object.name}`);
-                onclick(window.location.href='/main/guestbook');
+                navigate('/main/guestbook'); // navigate를 사용하여 경로 이동
             }
         };
 
@@ -116,7 +118,7 @@ const RoomView = () => {
             rendererRef.current.dispose();
             mount.removeEventListener('click', handleClick);
         };
-    }, []);
+    }, [navigate]);
 
     const loadFurniture = (path, position = { x: 0, y: 0, z: 0 }, rotation = 0, scale = 1) => {
         const loader = new GLTFLoader();

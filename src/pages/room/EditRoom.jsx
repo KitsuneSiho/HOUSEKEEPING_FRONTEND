@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import EditRoomModel from "../../components/room/EditRoomModel.jsx";
-import styles from "../../css/main/mainLivingRoom.module.css";
+import styles from "../../css/myPage/editRoom.module.css";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 

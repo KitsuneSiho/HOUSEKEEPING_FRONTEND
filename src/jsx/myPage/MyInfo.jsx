@@ -14,6 +14,7 @@ const MyInfo = () => {
         email: '',
         phoneNumber: '',
     });
+    const [profileImage, setProfileImage] = useState(null);
 
     useEffect(() => {
         fetchUserInfo(user.userId);
@@ -27,6 +28,7 @@ const MyInfo = () => {
                 email: user.email || '',
                 phoneNumber: user.phoneNumber || '',
             });
+            setProfileImage(user.profileImageUrl || "/lib/profileImg.svg");
         }
     }, [user]);
 
@@ -38,11 +40,32 @@ const MyInfo = () => {
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('userId', user.userId);
+
+            try {
+                const response = await axiosInstance.post('/api/user/update-profile-image', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                setProfileImage(response.data.profileImageUrl);
+                await fetchUserInfo(user.userId);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
+    };
+
     const handleUpdate = async () => {
         try {
             const updatedUserInfo = {
                 ...userInfo,
-                userId: user.userId  // 사용자 ID 추가
+                userId: user.userId
             };
             await axiosInstance.put('/api/user/update', updatedUserInfo);
             await fetchUserInfo(user.userId);
@@ -55,12 +78,19 @@ const MyInfo = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')} />
+                <img className={styles.back} src="/lib/back.svg" alt="뒤로가기" onClick={() => navigate('/myPage')}/>
                 <h2>내 정보</h2>
             </div>
             <div className={styles.profileImg}>
-                <img src="/lib/profileImg.svg" alt="프로필 이미지" />
-                <p>프로필 이미지 수정</p>
+                <img src={profileImage} alt="프로필 이미지"/>
+                <label htmlFor="profileImageUpload">프로필 이미지 수정</label>
+                <input
+                    type="file"
+                    id="profileImageUpload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{display: 'none'}}
+                />
             </div>
             <div className={styles.information}>
                 <div className={styles.inputContainer}>
@@ -69,7 +99,7 @@ const MyInfo = () => {
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="nickname">닉네임</label>
-                    <input type="text" id="nickname" value={userInfo.nickname} onChange={handleInputChange} />
+                    <input type="text" id="nickname" value={userInfo.nickname} onChange={handleInputChange}/>
                 </div>
                 <div className={styles.inputContainer}>
                     <label htmlFor="email">이메일</label>
@@ -84,7 +114,7 @@ const MyInfo = () => {
                 <button type="button" className={styles.cancel} onClick={() => navigate('/myPage')}>취소</button>
                 <button type="button" className={styles.next} onClick={handleUpdate}>수정</button>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

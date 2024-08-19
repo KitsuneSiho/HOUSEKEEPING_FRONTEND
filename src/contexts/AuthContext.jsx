@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }) => {
             const response = await axiosInstance.get(`/api/user/info?userId=${userId}`);
             setUser(prevUser => ({
                 ...prevUser,
-                ...response.data
+                ...response.data,
+                profileImageUrl: response.data.profileImageUrl
             }));
         } catch (error) {
             console.error('Error fetching user info', error);
@@ -50,6 +51,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('access');
+        document.cookie = "refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         setIsLoggedIn(false);
         setUser(null);
     };

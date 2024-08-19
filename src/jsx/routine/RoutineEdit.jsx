@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../../css/routine/routine.module.css';
+import styles from '../../css/routine/routineEdit.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
@@ -24,7 +24,7 @@ const Routine = () => {
                     params: { userId: user.userId }
                 });
                 setOldActiveRoutine(activeRoutineResponse.data);
-
+                setActiveRoutine(activeRoutineResponse.data);
             } catch (error) {
                 console.error('Error fetching routine groups:', error);
             }
@@ -60,16 +60,16 @@ const Routine = () => {
     };
 
 
+
     return (
         <div className={styles.container}>
             <div className={styles.routineTitle}>
                 <h1>내 청소 루틴</h1>
             </div>
             <div className={styles.routineEditAdd}>
-                <p className={styles.edit} onClick={handleEditComplete}>수정 완료</p>
+                <p className={styles.edit} onClick={handleEditComplete}>선택 루틴 적용</p>
             </div>
             <div className={styles.routine}>
-                <p className={styles.onRoutine}>현재 적용 중인 루틴</p>
                 {routineGroups.map((groupName, index) => (
                     <button
                         key={`routine-group-${index}`}
