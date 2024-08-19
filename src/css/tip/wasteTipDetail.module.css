@@ -84,6 +84,12 @@
     margin-top: 20px;
 }
 
+.commentTitle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .commentInput {
     display: flex;
     align-items: center;
@@ -112,7 +118,14 @@
     padding: 0;
 }
 
-.commentEdit button{
+.commentEditButtons{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+}
+
+.commentEditButtons button{
     border: 1px solid #ccc;
     border-radius: 5px;
     background: none;
@@ -137,6 +150,7 @@
 .commentText {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 10px;
 }
 
