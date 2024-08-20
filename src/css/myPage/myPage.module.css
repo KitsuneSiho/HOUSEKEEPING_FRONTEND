@@ -75,10 +75,11 @@
     display: flex;
     align-items: center;
     margin-top: 5px;
+    width: 100%;
 }
 
 .xpBar {
-    width: calc(100% - 50px);
+    width: calc(100% - 60px);
     height: 8px;
     border-radius: 4px;
     overflow: hidden;
@@ -97,7 +98,7 @@
     margin-left: 10px;
     font-size: 12px;
     color: #555;
-    min-width: 50px;
+    min-width: 60px;
     text-align: right;
 }
 
@@ -136,6 +137,31 @@
     font-size: 14px;
 }
 
+.attendanceButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.attendanceButton:disabled {
+    background-color: #cccccc;
+    cursor: default;
+}
+
+.attendanceChecked {
+    background-color: #45a049;
+}
+
 .footerMenu p{
     font-size: 15px;
     font-weight: bold;
@@ -164,6 +190,10 @@
     }
 
     .footerMenu p {
+        font-size: 16px;
+    }
+
+    .attendanceButton {
         font-size: 16px;
     }
 }

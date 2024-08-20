@@ -60,14 +60,14 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 29%;
+    width: 25%;
     height: 30px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 11px;
     z-index: 100;
 }
 
@@ -80,7 +80,7 @@
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 12px;
+    font-size: 10px;
     z-index: 100;
 }
 
