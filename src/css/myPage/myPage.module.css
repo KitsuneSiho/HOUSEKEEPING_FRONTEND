@@ -48,6 +48,10 @@
     text-align: right;
 }
 
+.profileNickname img{
+    border-radius: 50%;
+}
+
 .profileLevel {
     display: flex;
     align-items: center;
@@ -87,11 +91,11 @@
 }
 
 .xpBar::-webkit-progress-bar {
-    background-color: #e0e0e0;
+    background-color: #e3e3e3;
 }
 
 .xpBar::-webkit-progress-value {
-    background-color: #4caf50;
+    background-color: #82d982;
 }
 
 .xpText {
@@ -100,6 +104,7 @@
     color: #555;
     min-width: 60px;
     text-align: right;
+    font-family: Fre, sans-serif;
 }
 
 .menu {
@@ -138,19 +143,20 @@
 }
 
 .attendanceButton {
-    background-color: #4CAF50;
+    background-color: #82d982;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 16px;
     margin: 10px 0;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
     width: 100%;
+    font-family: Fre, sans-serif;
 }
 
 .attendanceButton:disabled {

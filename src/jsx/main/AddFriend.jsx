@@ -152,7 +152,7 @@ const AddFriend = () => {
                 {searchResults.length > 0 ? (
                     searchResults.map((friend, index) => (
                         <div key={index} className={styles.searchResultItem}>
-                            <img src={`public/lib/친구${index + 1}.png`} alt={friend.nickname}/>
+                            <img src={friend.profileImageUrl || "/lib/profileImg.svg"} alt={friend.nickname}/>
                             <span>{friend.nickname}</span>
                             {friend.requestStatus === "PENDING" ? (
                                 <button>승인 대기중</button>

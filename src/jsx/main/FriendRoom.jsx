@@ -111,8 +111,8 @@ const FriendRoom = () => {
             <div className={styles.visitorBoard}>
                 <button
                     type="button"
-                    onClick={() => navigate(`/friend/visitorBoard/${userId}`)} // 수정된 부분
-                />
+                    onClick={() => navigate(`/friend/visitorBoard/${userId}`)}>
+                    방명록 작성</button>
             </div>
             <Footer/>
         </div>

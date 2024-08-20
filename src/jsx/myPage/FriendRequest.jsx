@@ -66,9 +66,9 @@ const FriendRequest = () => {
             </div>
 
             <div className={styles.searchResults}>
-                {requests.map((request, index) => (
+                {requests.map((request, friend) => (
                     <div key={request.requestId} className={styles.searchResultItem}>
-                        <img src={`public/lib/친구${index + 1}.png`} alt={request.senderNickname}/>
+                        <img src={friend.profileImageUrl || "/lib/profileImg.svg"} alt={request.senderNickname}/>
                         <span>{request.senderNickname}</span>
                         <button onClick={() => handleAcceptRequest(request.requestId)}>승인</button>
                         <button onClick={() => handleRejectRequest(request.requestSenderId)}>거부</button>
