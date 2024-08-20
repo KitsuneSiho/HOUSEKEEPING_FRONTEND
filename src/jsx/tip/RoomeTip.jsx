@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/tip/roomeTip.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosInstance from '../../config/axiosInstance.js';
+import { useAuth } from '../../contexts/AuthContext';
 
 const RoomeTip = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();  // 현재 로그인한 사용자 정보 가져오기
     const [searchVisible, setSearchVisible] = useState(false);
     const [posts, setPosts] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
@@ -117,10 +119,13 @@ const RoomeTip = () => {
                     ))}
                 </div>
 
-                <div className={styles.createButton} onClick={() => navigate('/tip/roome/post')}>
-                    <img src="/lib/연필.svg" alt="write" />
-                    <span>작성</span>
-                </div>
+                {/* ADMIN 권한이 있는 사용자만 작성 버튼 표시 */}
+                {user && user.role === 'ROLE_ADMIN' && (
+                    <div className={styles.createButton} onClick={() => navigate('/tip/roome/post')}>
+                        <img src="/lib/연필.svg" alt="write" />
+                        <span>작성</span>
+                    </div>
+                )}
             </div>
             <Footer />
         </div>
