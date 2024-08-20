@@ -91,21 +91,25 @@ const MainPage = () => {
             );
             setEvents(fetchedEvents);
 
-            // 총 스케줄 개수를 기준으로 초기 오염도 설정
-            const totalSchedules = fetchedEvents.length;
-            const checkedSchedules = fetchedEvents.filter(event => event.extendedProps.checked).length;
-            const initialPollution = 100 - (checkedSchedules / totalSchedules) * 100;
 
-            // 초기 데이터 로드 후에만 오염도 설정
+            // 첫 로드 시에만 오염도 설정
             if (initialLoad) {
-                setPollution(initialPollution);
+                const totalSchedules = fetchedEvents.length;
+                const checkedSchedules = fetchedEvents.filter(event => event.extendedProps.checked).length;
+                const initialPollution = totalSchedules > 0
+                    ? 90 - (checkedSchedules / totalSchedules) * 130
+                    : 100;
                 console.log("Initial Pollution Set after Fetch:", initialPollution);
-                setInitialLoad(false); // 초기 로드 완료
+                setPollution(initialPollution);
+                setInitialLoad(false); // 초기 로드 완료 후 더 이상 초기화하지 않도록 설정
+            } else {
+                console.log("Using existing pollution level:", pollution);
             }
         } catch (error) {
             console.error('Error fetching room data:', error);
         }
     };
+
 
     useEffect(() => {
         fetchRoomData();
@@ -159,7 +163,10 @@ const MainPage = () => {
         const totalSchedules = Object.values(schedules).flatMap(room => room.schedules).length;
         const checkedSchedules = Object.values(schedules).flatMap(room => room.schedules).filter(schedule => schedule.scheduleIsChecked).length;
 
-        const newPollution = 100 - ((checkedSchedules + (isChecked ? 1 : -1)) / totalSchedules) * 100;
+        const newPollution = isChecked
+            ? 100 - ((checkedSchedules + 1) / totalSchedules) * 100  // 체크시 오염도가 감소
+            : 100 - ((checkedSchedules - 1) / totalSchedules) * 100; // 체크 해제시 오염도가 증가
+
         console.log(`New Pollution Calculated: ${newPollution}`);
         setPollution(newPollution);
 
