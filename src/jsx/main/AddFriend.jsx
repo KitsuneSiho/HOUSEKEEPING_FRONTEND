@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Footer from '../fix/Footer.jsx';
 import styles from '../../css/main/addFriend.module.css';
-import { BACK_URL } from "../../Constraints.js";
 import axiosInstance from "../../config/axiosInstance.js";
-import {useLogin} from "../../contexts/AuthContext.jsx";
+import { useLogin } from "../../contexts/AuthContext.jsx";
 
 const AddFriend = () => {
-
-    const {user} = useLogin();
+    const { user } = useLogin();
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -19,17 +16,27 @@ const AddFriend = () => {
         const fetchData = async () => {
             if (searchQuery.trim() !== '') {
                 try {
-
                     // 사용자 검색
                     const response = await axiosInstance.get('/friend/search', {
                         params: { nickname: searchQuery }
                     });
 
                     // 검색 결과에서 자기 자신을 제외
-                    const filteredResults = response.data.filter(friend => friend.userId != user.userId);
+                    const filteredResults = response.data.filter(friend => friend.userId !== user.userId);
+
+                    // 각 친구의 프로필 이미지를 가져오기 위해 users 테이블 조회
+                    const updatedResults = await Promise.all(filteredResults.map(async (friend) => {
+                        const userResponse = await axiosInstance.get(`/user/${friend.userId}`);
+                        const profileImageUrl = userResponse.data.profileImageUrl || "/lib/default_profile.png"; // 기본 프로필 이미지 설정
+
+                        return {
+                            ...friend,
+                            profileImageUrl: profileImageUrl
+                        };
+                    }));
 
                     // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
-                    const userIds = filteredResults.map(user => user.userId).join(',');
+                    const userIds = updatedResults.map(user => user.userId).join(',');
 
                     const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                         params: {
@@ -39,12 +46,13 @@ const AddFriend = () => {
                     });
 
                     const requestStatusMap = requestStatusResponse.data;
-                    const updatedResults = filteredResults.map(user => ({
-                        ...user,
-                        requestStatus: requestStatusMap[user.userId] || null
+
+                    const finalResults = updatedResults.map(friend => ({
+                        ...friend,
+                        requestStatus: requestStatusMap[friend.userId] || null
                     }));
 
-                    setSearchResults(updatedResults);
+                    setSearchResults(finalResults);
                 } catch (error) {
                     console.error("친구 검색 중 오류가 발생했습니다:", error);
                 }
@@ -100,8 +108,19 @@ const AddFriend = () => {
                 // 검색 결과에서 자기 자신을 제외
                 const filteredResults = response.data.filter(friend => friend.userId !== user.userId);
 
+                // 각 친구의 프로필 이미지를 가져오기 위해 users 테이블 조회
+                const updatedResults = await Promise.all(filteredResults.map(async (friend) => {
+                    const userResponse = await axiosInstance.get(`/user/${friend.userId}`);
+                    const profileImageUrl = userResponse.data.profileImageUrl || "/lib/default_profile.png"; // 기본 프로필 이미지 설정
+
+                    return {
+                        ...friend,
+                        profileImageUrl: profileImageUrl
+                    };
+                }));
+
                 // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
-                const userIds = filteredResults.map(user => user.userId).join(',');
+                const userIds = updatedResults.map(user => user.userId).join(',');
 
                 const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                     params: {
@@ -111,11 +130,13 @@ const AddFriend = () => {
                 });
 
                 const requestStatusMap = requestStatusResponse.data;
-                const updatedResults = filteredResults.map(friend => ({
+
+                const finalResults = updatedResults.map(friend => ({
                     ...friend,
                     requestStatus: requestStatusMap[friend.userId] || null
                 }));
-                setSearchResults(updatedResults);
+
+                setSearchResults(finalResults);
             } catch (error) {
                 console.error("친구 검색 중 오류가 발생했습니다:", error);
             }
@@ -152,7 +173,7 @@ const AddFriend = () => {
                 {searchResults.length > 0 ? (
                     searchResults.map((friend, index) => (
                         <div key={index} className={styles.searchResultItem}>
-                            <img src={`public/lib/친구${index + 1}.png`} alt={friend.nickname}/>
+                            <img src={friend.profileImageUrl} alt={friend.nickname} className={styles.profileImage} />
                             <span>{friend.nickname}</span>
                             {friend.requestStatus === "PENDING" ? (
                                 <button>승인 대기중</button>
