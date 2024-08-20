@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/setting.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
+import axiosConfig from "../../config/axiosConfig.js";
 
 const Setting = () => {
     const navigate = useNavigate();
@@ -9,6 +10,28 @@ const Setting = () => {
     const [cleaningNotifications, setCleaningNotifications] = useState(true);
     const [floatingPeriodNotifications, setFloatingPeriodNotifications] = useState(false);
     const [accountSearchAllowed, setAccountSearchAllowed] = useState(false);
+
+    useEffect(() => {
+        fetchUserSettings();
+    }, []);
+
+    const fetchUserSettings = async () => {
+        try {
+            const response = await axiosConfig.get('/api/user/settings');
+            setFloatingPeriodNotifications(response.data.settingFoodNotice);
+        } catch (error) {
+            console.error('설정을 불러오는 중 오류가 발생했습니다:', error);
+        }
+    };
+
+    const updateFoodNotificationSetting = async (value) => {
+        try {
+            await axiosConfig.put('/api/user/settings/food-notice', { settingFoodNotice: value });
+            setFloatingPeriodNotifications(value);
+        } catch (error) {
+            console.error('설정을 업데이트하는 중 오류가 발생했습니다:', error);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -49,7 +72,7 @@ const Setting = () => {
                         <input
                             type="checkbox"
                             checked={floatingPeriodNotifications}
-                            onChange={() => setFloatingPeriodNotifications(!floatingPeriodNotifications)}
+                            onChange={(e) => updateFoodNotificationSetting(e.target.checked)}
                         />
                         <span className={`${styles.slider} ${styles.round}`}></span>
                     </label>
