@@ -1,5 +1,6 @@
 import styles from "../../css/chat/createChat.module.css";
 import PropTypes from "prop-types";
+import React from "react";
 
 // 친구 element
 const ChatFriend = ({index, friend, selectedFriends, handleCheckboxChange}) => {
@@ -7,9 +8,10 @@ const ChatFriend = ({index, friend, selectedFriends, handleCheckboxChange}) => {
     return (
         <>
             <div key={index} className={styles.friendItem}>
-                {friend.userImage ? <img src={friend.userImage} alt="profile"/> :
-                    <img src="/lib/마이페이지아이콘.svg" alt="profile"/>}
-
+                <img
+                    src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                    alt="Profile Image"
+                />
                 <div className={styles.friendInfo}>
                     <div className={styles.friendName}>{friend.nickname}</div>
                 </div>

@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/roomeTipWrite.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosInstance from '../../config/axiosInstance.js';
+import { useAuth } from '../../contexts/AuthContext';
 
 const RoomeTipEdit = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+    const { user } = useAuth(); // 현재 로그인한 사용자 정보 가져오기
     const [post, setPost] = useState({
         title: '',
         content: '',
@@ -14,8 +16,13 @@ const RoomeTipEdit = () => {
     });
 
     useEffect(() => {
-        fetchPost();
-    }, []);
+        if (user.role !== 'ROLE_ADMIN') {
+            alert('권한이 없습니다.');
+            navigate('/'); // 권한이 없을 시 홈으로 리다이렉트
+        } else {
+            fetchPost();
+        }
+    }, [user, navigate]);
 
     const fetchPost = async () => {
         try {
