@@ -43,7 +43,10 @@ const FriendTop = () => {
                 <div className={styles.friendsList}>
                     {isReady && friends.filter((friend) => isOnline(friend.nickname)).map((friend, index) => (
                         <div className={styles.friend} key={index} onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
-                            <img src={friend.profileImageUrl} alt={`/lib/profileImg.svg`}/>
+                            <img
+                                src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                                alt="Profile Image"
+                            />
                             <p>{friend.nickname}</p>
                             <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>
                         </div>
@@ -51,7 +54,10 @@ const FriendTop = () => {
 
                     {isReady && friends.filter((friend) => !isOnline(friend.nickname)).map((friend, index) => (
                         <div className={styles.friend} key={index} onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
-                            <img src={friend.profileImageUrl} alt={`/lib/profileImg.svg`}/>
+                            <img
+                                src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                                alt="Profile Image"
+                            />
                             <p>{friend.nickname}</p>
                             <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>
                         </div>
