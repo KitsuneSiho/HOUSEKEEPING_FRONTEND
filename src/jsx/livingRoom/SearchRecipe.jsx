@@ -24,11 +24,11 @@ const SearchRecipe = () => {
 
     useEffect(() => {
         fetchIngredients();
-    }, []);
+    }, [user]);
 
     const fetchIngredients = async () => {
         try {
-            const response = await axiosConfig.get(`/food/ingredients`);
+            const response = await axiosConfig.get(`/food/ingredients/${user.userId}`);
             setIngredientsList(response.data);
         } catch (error) {
             console.error('식재료 리스트를 가져오는데 실패했습니다:', error);
@@ -54,7 +54,7 @@ const SearchRecipe = () => {
     };
 
     const handleSearch = async (e) => {
-        e.preventDefault(); // 폼 제출 기본 동작 방지
+        e.preventDefault();
         console.log('handleSearch 함수 실행');
 
         const ingredients = [...mainIngredients, ...subIngredients]
@@ -84,9 +84,7 @@ const SearchRecipe = () => {
     };
 
     useEffect(() => {
-
         if (isLoading) {
-
         }
     }, [isLoading])
 
