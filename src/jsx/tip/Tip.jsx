@@ -20,8 +20,7 @@ const Tip = () => {
             </div>
 
             <div className={`${styles.searchBar} ${isSearchVisible ? styles.visible : ''}`} id={styles.searchBar}>
-                <input type="text" placeholder="닉네임 검색" id={styles.searchInput} />
-                <img src="/lib/검색.svg" alt="search" />
+                <input type="text" placeholder="검색어를 입력하세요" id={styles.searchInput} />
             </div>
 
             <div className={styles.roomeTip}>

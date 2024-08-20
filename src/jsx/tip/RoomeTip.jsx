@@ -96,7 +96,6 @@ const RoomeTip = () => {
                     value={searchKeyword}
                     onChange={handleSearchChange}
                 />
-                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.postContainer}>

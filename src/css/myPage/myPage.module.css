@@ -119,6 +119,8 @@
 
 .menuItem p {
     margin: 0;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .menuItem img {
@@ -158,6 +160,11 @@
 
 .attendanceChecked {
     background-color: #45a049;
+}
+
+.footerMenu p{
+    font-size: 15px;
+    font-weight: bold;
 }
 
 /* 반응형 디자인 */

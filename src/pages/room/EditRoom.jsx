@@ -146,7 +146,7 @@ const EditRoom = () => {
     return (
         <>
             <div className={styles.roomDesign}>
-                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => changeCurrentRoom(-1)}/>
+                <img className={styles.arrowImg} src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => changeCurrentRoom(-1)}/>
                 <div className={styles.roomView}>
                     {isReady && <>
                         {currentRoom === 0 &&
@@ -173,7 +173,7 @@ const EditRoom = () => {
                     </>
                     }
                 </div>
-                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => changeCurrentRoom(1)}/>
+                <img className={styles.arrowImg} src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => changeCurrentRoom(1)}/>
             </div>
         </>
     )

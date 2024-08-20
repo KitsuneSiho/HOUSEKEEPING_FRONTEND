@@ -42,16 +42,22 @@ const FriendTop = () => {
             <div className={styles.friendsContainer}>
                 <div className={styles.friendsList}>
                     {isReady && friends.filter((friend) => isOnline(friend.nickname)).map((friend, index) => (
-                        <div className={styles.friend} key={index} onClick={() => navigate('/friendRoom')}>
-                            <img src={`public/lib/친구${index + 1}.png`} alt={index}/>
+                        <div className={styles.friend} key={index} onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
+                            <img
+                                src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                                alt="Profile Image"
+                            />
                             <p>{friend.nickname}</p>
                             <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>
                         </div>
                     ))}
 
                     {isReady && friends.filter((friend) => !isOnline(friend.nickname)).map((friend, index) => (
-                        <div className={styles.friend} key={index} onClick={() => navigate('/friendRoom')}>
-                            <img src={`public/lib/친구${index + 1}.png`} alt={index}/>
+                        <div className={styles.friend} key={index} onClick={() => navigate(`/friend/friendRoom/${friend.userId}`)}>
+                            <img
+                                src={friend.profileImageUrl || "/lib/profileImg.svg"}
+                                alt="Profile Image"
+                            />
                             <p>{friend.nickname}</p>
                             <span className={`${styles.statusIndicator} ${isOnline(friend.nickname) ? styles.online : styles.offline}`}></span>
                         </div>
