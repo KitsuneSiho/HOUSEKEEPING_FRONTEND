@@ -3,11 +3,9 @@ import {useNavigate, useParams} from 'react-router-dom';
 import styles from '../../css/tip/wasteTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
-import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const WasteTipDetail = () => {
     const navigate = useNavigate();
-    const {user} = useLogin();
     const {id} = useParams();
     const [tip, setTip] = useState(null);
     const [comments, setComments] = useState([]);
