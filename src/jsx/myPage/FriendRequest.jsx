@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BACK_URL } from '../../Constraints.js';
 import styles from '../../css/myPage/friendRequest.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -13,14 +11,21 @@ const FriendRequest = () => {
     const [requests, setRequests] = useState([]);
     const navigate = useNavigate();
 
-
     useEffect(() => {
         const fetchRequests = async () => {
             try {
                 const response = await axiosInstance.get('/friendRequest/received', {
                     params: { userId: user.userId }
                 });
-                setRequests(response.data);
+
+                // getUserImage를 사용하여 각 요청의 프로필 이미지를 가져옵니다.
+                const requestsWithImages = await Promise.all(
+                    response.data.map(async (request) => {
+                        const profileImageUrl = await getUserImage(request.senderNickname);
+                        return { ...request, profileImageUrl };
+                    })
+                );
+                setRequests(requestsWithImages);
             } catch (error) {
                 console.error("친구 요청 가져오기 실패:", error);
             }
@@ -54,6 +59,11 @@ const FriendRequest = () => {
         }
     };
 
+    const getUserImage = async (nickname) => {
+        const response = await axiosInstance.get(`/friend/search?nickname=${nickname}`);
+        return response.data[0].profileImageUrl;
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -66,9 +76,12 @@ const FriendRequest = () => {
             </div>
 
             <div className={styles.searchResults}>
-                {requests.map((request, index) => (
+                {requests.map((request) => (
                     <div key={request.requestId} className={styles.searchResultItem}>
-                        <img src={`public/lib/친구${index + 1}.png`} alt={request.senderNickname}/>
+                        <img
+                            src={request.profileImageUrl || "/lib/profileImg.svg"}
+                            alt={request.senderNickname}
+                        />
                         <span>{request.senderNickname}</span>
                         <button onClick={() => handleAcceptRequest(request.requestId)}>승인</button>
                         <button onClick={() => handleRejectRequest(request.requestSenderId)}>거부</button>

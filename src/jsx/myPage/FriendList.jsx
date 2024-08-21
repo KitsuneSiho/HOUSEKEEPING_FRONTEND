@@ -92,10 +92,10 @@ const FriendList = () => {
             </div>
 
             <div className={styles.searchResults} id="search-results">
-                {filteredFriends.map((friend, index) => (
+                {filteredFriends.map(friend => (
                     <div key={friend.userId} className={styles.searchResultItem}>
                         {/* 이미지 필드가 없으므로 제거 */}
-                        <img src={`public/lib/친구${index + 1}.png`} alt={friend.nickname}/>
+                        <img src={friend.profileImageUrl || '/lib/마이페이지아이콘.svg'} alt={friend.nickname}/>
                         <span>{friend.nickname}</span>
                         <button onClick={() => cancelFriendRequest(friend.userId)}>팔로우 취소</button>
                     </div>

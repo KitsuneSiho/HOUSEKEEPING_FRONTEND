@@ -15,7 +15,7 @@
     justify-content: flex-start; /* 시작점 정렬 */
     scrollbar-width: none; /* Firefox 용 */
     -ms-overflow-style: none;  /* IE 및 Edge 용 */
-    white-space: nowrap; /* 한 줄로 유지 */
+    white-space: nowrap;
 }
 
 .friendsContainer::-webkit-scrollbar {
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 20px;
+    padding: 15px;
 }
 
 .friend, .addFriend {
@@ -74,6 +74,12 @@
     height: 350px;
 }
 
+.roomDesign .arrowImg {
+    width: 20px;
+    height: 20px;
+    margin-top: 50%;
+}
+
 .furniture {
     width: 80%;
     height: 200px;
@@ -82,6 +88,7 @@
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
+
 
 /* 스케줄 목록 */
 .scheduleList {
@@ -117,8 +124,9 @@
     max-width: 100%;
 }
 
-.roomSectionTitle h3{
+.roomSectionTitle h3 {
     margin: 0;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 /* 스케줄 아이템 */
