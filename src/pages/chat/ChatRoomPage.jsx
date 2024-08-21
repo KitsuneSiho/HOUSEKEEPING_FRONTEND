@@ -220,7 +220,6 @@ const ChatRoomPage = () => {
 
     return (
         <div className={styles.container}>
-            <FriendTop />
             { chatRoomType !== "" && chatRoomName !== "" && <>
                 <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={user.userId}/>
                 <div className={styles.chatRoom}>
