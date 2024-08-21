@@ -2,8 +2,8 @@
 
 .chatAlarm {
     position: fixed;
-    bottom: 100px;
-    right: 100px;
+    bottom: 70px;
+    right: 10px;
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px;
