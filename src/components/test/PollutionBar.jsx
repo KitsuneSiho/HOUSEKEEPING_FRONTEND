@@ -4,7 +4,7 @@ import '../../css/test/pollutionBar.css'
 const PollutionBar = ({pollution}) => {
 
     const loaderStyle = {
-        '--loader-width': `${pollution-7}%`,
+        '--loader-width': `${pollution-8}%`,
         '--loader-content': `"${pollution}%"`,
     };
 
@@ -18,7 +18,7 @@ const PollutionBar = ({pollution}) => {
                     {pollution < 34 ?
                         <img className="chat-icon" src="/lib/오염도좋아.svg" style={loaderStyle}
                              alt="not found"/> :
-                        pollution < 67 ?
+                        pollution < 66 ?
                             <img className="chat-icon" src="/lib/오염도중간.svg" style={loaderStyle}
                                  alt="not found"/> :
                             <img className="chat-icon" src="/lib/오염도나빠.svg" style={loaderStyle}
