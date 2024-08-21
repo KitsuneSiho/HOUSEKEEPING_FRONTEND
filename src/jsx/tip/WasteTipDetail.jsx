@@ -13,13 +13,29 @@ const WasteTipDetail = () => {
     const [error, setError] = useState(null);
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedCommentContent, setEditedCommentContent] = useState('');
+    const [currentUserId, setCurrentUserId] = useState(null);
 
     useEffect(() => {
         if (id) {
             fetchTip();
             fetchComments();
+            fetchCurrentUser();
         }
     }, [id]);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await axiosConfig.get('/api/tips/current-user');
+            console.log('Current user response:', response.data);
+            setCurrentUserId(response.data.userId);
+        } catch (error) {
+            console.error('Error fetching current user:', error);
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('access');
+                navigate('/login');
+            }
+        }
+    };
 
     const fetchTip = async () => {
         try {
@@ -61,9 +77,13 @@ const WasteTipDetail = () => {
     };
 
     const handleCommentSubmit = async () => {
+        if (!currentUserId) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
         try {
             await axiosConfig.post(`/api/comments/tip/${id}`, {
-                userId: 1, // 실제 사용자 ID로 대체해야 합니다
+                userId: currentUserId,
                 commentContent: newComment
             });
             setNewComment('');
@@ -129,11 +149,13 @@ const WasteTipDetail = () => {
                 <div className={styles.postContent}>
                     <p>{tip.tipContent}</p>
                 </div>
-                <div className={styles.buttonContainer}>
-                    <button onClick={editPost}>수정</button>
-                    <button onClick={deletePost}>삭제</button>
-                    <button onClick={goToList}>목록</button>
-                </div>
+                {currentUserId === tip.userId && (
+                    <div className={styles.buttonContainer}>
+                        <button onClick={editPost}>수정</button>
+                        <button onClick={deletePost}>삭제</button>
+                    </div>
+                )}
+                <button onClick={goToList}>목록</button>
             </div>
 
             <div className={styles.commentsSection}>
@@ -175,20 +197,22 @@ const WasteTipDetail = () => {
                             <>
                                 <div className={styles.commentText}>
                                     <p>{comment.commentContent}</p>
+                                </div>
+                                {currentUserId === comment.userId && (
                                     <div className={styles.commentActions}>
-                                    <span
-                                        onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                        <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
                                         <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                                     </div>
-                                </div>
-
+                                )}
                             </>
                         )}
-
+                        <div className={styles.commentDate}>
+                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
+                        </div>
                     </div>
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

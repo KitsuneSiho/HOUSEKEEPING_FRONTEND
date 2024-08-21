@@ -36,7 +36,7 @@ const WasteTipWrite = () => {
         try {
             const response = await axiosConfig.post('/api/tips/save', tip);
             console.log('Server response:', response.data);
-            alert("성공적으로 등록되었습니다!");
+            alert("게시글을 등록했습니다.");
             navigate('/tip/waste');
         } catch (error) {
             console.error('Error:', error);
