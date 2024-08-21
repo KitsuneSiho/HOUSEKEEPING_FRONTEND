@@ -51,7 +51,6 @@ const WasteTipDetail = () => {
         try {
             const response = await axiosConfig.get(`/api/comments/tip/${id}`);
             setComments(response.data);
-            console.log("comments", response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
             setError('댓글을 불러오는 데 실패했습니다.');
