@@ -6,6 +6,8 @@ import {useSocket} from "../../contexts/SocketContext.jsx";
 import ChatRoomHeader from "../../components/chat/ChatRoomHeader.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
+import Footer from "../../jsx/fix/Footer.jsx";
+import FriendTop from "../../components/friend/FriendTop.jsx";
 
 const ChatRoomPage = () => {
     const {
@@ -218,6 +220,7 @@ const ChatRoomPage = () => {
 
     return (
         <div className={styles.container}>
+            <FriendTop />
             { chatRoomType !== "" && chatRoomName !== "" && <>
                 <ChatRoomHeader chatRoomType={chatRoomType} chatRoomName={chatRoomType === "SINGLE" ? chatRoomMembers[0] : chatRoomName} userId={user.userId}/>
                 <div className={styles.chatRoom}>
@@ -241,6 +244,7 @@ const ChatRoomPage = () => {
                 </div>
             </>
             }
+            <Footer />
         </div>
     );
 };
