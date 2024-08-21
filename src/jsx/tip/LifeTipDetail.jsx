@@ -216,7 +216,7 @@ const LifeTipDetail = () => {
                     </div>
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

@@ -217,7 +217,7 @@ const WasteTipDetail = () => {
                     </div>
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
