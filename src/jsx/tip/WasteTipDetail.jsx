@@ -3,9 +3,11 @@ import {useNavigate, useParams} from 'react-router-dom';
 import styles from '../../css/tip/wasteTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
+import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const WasteTipDetail = () => {
     const navigate = useNavigate();
+    const {user} = useLogin();
     const {id} = useParams();
     const [tip, setTip] = useState(null);
     const [comments, setComments] = useState([]);
@@ -35,6 +37,7 @@ const WasteTipDetail = () => {
         try {
             const response = await axiosConfig.get(`/api/comments/tip/${id}`);
             setComments(response.data);
+            console.log("comments", response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
             setError('댓글을 불러오는 데 실패했습니다.');
@@ -63,7 +66,7 @@ const WasteTipDetail = () => {
     const handleCommentSubmit = async () => {
         try {
             await axiosConfig.post(`/api/comments/tip/${id}`, {
-                userId: 1, // 실제 사용자 ID로 대체해야 합니다
+                userId: user.userId, // 실제 사용자 ID로 대체해야 합니다
                 commentContent: newComment
             });
             setNewComment('');
