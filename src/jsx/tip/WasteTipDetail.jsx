@@ -173,8 +173,12 @@ const WasteTipDetail = () => {
                 {comments.map((comment) => (
                     <div className={styles.comment} key={comment.commentId}>
                         <div className={styles.commentUser}>
-                            <img src="/lib/마이페이지아이콘.svg" alt="user" />
-                            <p>Lv.3 {comment.userName}</p>
+                            <img
+                                src={comment.userProfileImageUrl || "/lib/마이페이지아이콘.svg"}
+                                alt="user"
+                                className={styles.userProfileImage}
+                            />
+                            <p>Lv.{comment.userLevel} {comment.userLevelName} {comment.userNickname}</p>
                         </div>
                         {editingCommentId === comment.commentId ? (
                             <div className={styles.commentEdit}>
