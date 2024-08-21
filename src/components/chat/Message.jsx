@@ -1,11 +1,13 @@
 import styles from "../../css/chat/chatRoom.module.css";
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
+import axiosInstance from "../../config/axiosInstance.js";
 
 // 메시지 element
 const Message = ({message, userId, scrollToBottom}) => {
 
     const [messageType, setMessageType] = useState("");
+    const [userImage, setUserImage] = useState(null);
     const [isReady, setIsReady] = useState(false);
 
     // 내가 보낸 메시지인지, 받은 메시지인지 구별
@@ -13,10 +15,12 @@ const Message = ({message, userId, scrollToBottom}) => {
 
         if (Number(message.messageSenderId) === Number(userId)) {
             setMessageType("sent");
+            getUserImage(message.messageSenderNickname);
         } else if (Number(message.messageSenderId) === 0) {
             setMessageType("announce");
         } else {
             setMessageType("received");
+            getUserImage(message.messageSenderNickname);
         }
 
     }, [message]);
@@ -54,12 +58,17 @@ const Message = ({message, userId, scrollToBottom}) => {
         return `${hour}:${minute}`;
     }
 
+    const getUserImage = async (nickname) => {
+        const response = await axiosInstance.get(`/friend/search?nickname=${nickname}`);
+        setUserImage(response.data[0].profileImageUrl);
+    }
+
     return (
         <>
             {
                 isReady && messageType !== "announce" &&
                 <div className={`${styles.message} ${styles[messageType]}`}>
-                    <img src="/lib/마이페이지아이콘.svg" alt="profile"/>
+                    <img src= {userImage || "/lib/마이페이지아이콘.svg"} alt="profile"/>
                     <div className={styles.nicknameAndMessage}>
                         <div className={styles.nickname}>{message.messageSenderNickname}</div>
                         <div className={styles.messageAndTime}>

@@ -243,7 +243,6 @@ const ChatRoomPage = () => {
                 </div>
             </>
             }
-            <Footer />
         </div>
     );
 };
