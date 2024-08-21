@@ -155,7 +155,9 @@ const WasteTipDetail = () => {
                         <button onClick={deletePost}>삭제</button>
                     </div>
                 )}
+                <div className={styles.buttonContainer}>
                 <button onClick={goToList}>목록</button>
+                </div>
             </div>
 
             <div className={styles.commentsSection}>
@@ -206,9 +208,6 @@ const WasteTipDetail = () => {
                                 )}
                             </>
                         )}
-                        <div className={styles.commentDate}>
-                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
-                        </div>
                     </div>
                 ))}
             </div>

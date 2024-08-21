@@ -163,6 +163,7 @@
     display: flex;
     align-items: center;
     min-width: 21%;
+    justify-content: right;
 }
 
 .commentActions span {
