@@ -79,6 +79,7 @@ const RoomeTipDetail = () => {
                     <p>{post.content}</p>
                 </div>
                 <div className={styles.buttonContainer}>
+                    {/* ADMIN 권한이 있는 사용자만 수정 및 삭제 버튼 표시 */}
                     {user && user.role === 'ROLE_ADMIN' && (
                         <>
                             <button onClick={editPost}>수정</button>

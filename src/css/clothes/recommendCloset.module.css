@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
+    margin: 5% 0 15%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,69 +60,86 @@
 .selection select,
 .selection input {
     font-family: Fre, sans-serif;
-    width: 30%;
+    width: 25%;
     height: 30px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 11px;
+    z-index: 100;
 }
 
 .selection button{
     font-family: Fre, sans-serif;
-    width: 30%;
-    height: 30px;
+    width: 17%;
+    height: 34px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 16px;
+    font-size: 10px;
+    z-index: 100;
 }
 
 .recommendationsContainer {
     width: 100%;
-    height: 350px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-
+    height: 400px; /* 내용에 맞게 높이가 자동으로 조절되도록 변경 */
+    position: relative; /* 자식 요소들이 이 컨테이너를 기준으로 위치하게 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px; /* 상단에 간격 추가 */
 }
 
-
-.itemTop, .itemBottom, .itemOuter, .itemShoes,
-.itemBag, .itemAccessory{
-    width: 80%;
+.itemTop {
     position: absolute;
+    z-index: 5; /* 다른 요소들 위에 위치하도록 설정 */
+    width: 80%;
+    right: 0;
 }
 
-.itemTop{
-    z-index: 10;
-    left: 22%;
-    top: 32%;
+.itemBottom {
+    position: absolute;
+    z-index:7; /* itemTop 아래에 위치 */
+    width: 80%;
+    left: 0;
 }
 
-.itemBottom{
-    z-index: 11;
-
+.itemOuter {
+    position: absolute;
+    z-index: 6; /* itemBottom 아래에 위치 */
+    width: 80%;
+    right: 25%;
 }
 
-.itemOuter{
-    z-index: 12;
+.itemShoes {
+    position: absolute;
+    z-index: 8; /* itemOuter 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    right: 0;
 }
 
-.itemShoes{
-    z-index: 13;
+.itemBag {
+    position: absolute;
+    z-index: 9; /* itemShoes 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    right: 25%;
 }
 
-.itemBag{
-    z-index: 14;
+.itemAccessory {
+    position: absolute;
+    z-index: 10; /* itemBag 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    left: 0;
 }
 
-.itemAccessory{
-    z-index: 15;
-}
 
 /* recommendCloset.module.css */
 .weather {

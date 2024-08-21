@@ -9,6 +9,7 @@ import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
 import RoomModel from "../../components/room/RoomModel.jsx";
 import FriendTop from "../../components/friend/FriendTop.jsx";
+import PollutionBar from "../../components/test/PollutionBar.jsx";
 
 const MainToiletRoom = () => {
 
@@ -33,6 +34,14 @@ const MainToiletRoom = () => {
     const [placementLists, setPlacementLists] = useState([]);
     const [isReady, setReady] = useState(false);
     const navigate = useNavigate();
+
+    //오염도
+    const [pollution, setPollution] = useState(100);
+    const [initialLoad, setInitialLoad] = useState(true); // 초기 로드 상태 추적
+
+    useEffect(() => {
+        console.log("Initial Pollution Set:", pollution);
+    }, [pollution]);
 
     useEffect(() => {
 
@@ -82,10 +91,25 @@ const MainToiletRoom = () => {
                 }))
             );
             setEvents(fetchedEvents);
+
+            // 첫 로드 시에만 오염도 설정
+            if (initialLoad) {
+                const totalSchedules = fetchedEvents.length;
+                const checkedSchedules = fetchedEvents.filter(event => event.extendedProps.checked).length;
+                const initialPollution = totalSchedules > 0
+                    ? 90 - (checkedSchedules / totalSchedules) * 130
+                    : 100;
+                console.log("Initial Pollution Set after Fetch:", initialPollution);
+                setPollution(initialPollution);
+                setInitialLoad(false); // 초기 로드 완료 후 더 이상 초기화하지 않도록 설정
+            } else {
+                console.log("Using existing pollution level:", pollution);
+            }
         } catch (error) {
             console.error('Error fetching room data:', error);
         }
     };
+
 
 
     useEffect(() => {
@@ -125,11 +149,41 @@ const MainToiletRoom = () => {
         }
     };
 
+// 체크박스 상태 변경 처리
     const handleCheckboxToggle = (scheduleId, e) => {
         e.stopPropagation();
         const schedule = Object.values(schedules).flatMap(room => room.schedules).find(sch => sch.scheduleId === scheduleId);
         if (schedule) {
             handleCheckboxChange(scheduleId, !schedule.scheduleIsChecked);
+            updatePollutionLevel(!schedule.scheduleIsChecked, schedule.roomId); // roomId를 함께 전달
+        }
+    };
+
+// 오염도 업데이트 로직
+    const updatePollutionLevel = (isChecked, roomId) => {
+        const totalSchedules = Object.values(schedules).flatMap(room => room.schedules).length;
+        const checkedSchedules = Object.values(schedules).flatMap(room => room.schedules).filter(schedule => schedule.scheduleIsChecked).length;
+
+        const newPollution = isChecked
+            ? 100 - ((checkedSchedules + 1) / totalSchedules) * 100  // 체크시 오염도가 감소
+            : 100 - ((checkedSchedules - 1) / totalSchedules) * 100; // 체크 해제시 오염도가 증가
+
+        console.log(`New Pollution Calculated: ${newPollution}`);
+        setPollution(newPollution);
+
+        // 서버에 오염도 업데이트 요청
+        updatePollutionOnServer(roomId, newPollution);
+    };
+
+// 서버에 오염도 업데이트 요청
+    const updatePollutionOnServer = async (roomId, newPollution) => {
+        try {
+            await axiosInstance.patch(`/room/updatePollution/${roomId}`, {
+                roomPollution: newPollution
+            });
+            console.log(`Room ${roomId} pollution updated to ${newPollution}`);
+        } catch (error) {
+            console.error("Error updating pollution on server:", error);
         }
     };
 
@@ -314,14 +368,16 @@ const MainToiletRoom = () => {
             <FriendTop/>
 
             <div className={styles.dirtyBar}>
-                <PullutionBar pollution={0}/>
+                <PollutionBar pollution={pollution}/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main')}/>
+                <img className={styles.arrowImg} src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표"
+                     onClick={() => navigate('/main')}/>
                 <div className={styles.roomView}>
                     {isReady && <RoomModel room={rooms[1]} placementList={placementLists[1]}/>}
                 </div>
-                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/toilet')}/>
+                <img className={styles.arrowImg} src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표"
+                     onClick={() => navigate('/main/toilet')}/>
             </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (
@@ -340,7 +396,9 @@ const MainToiletRoom = () => {
                                             className={`${styles.checkbox} ${schedule.scheduleIsChecked ? styles.checked : ''}`}
                                             onClick={(e) => handleCheckboxToggle(schedule.scheduleId, e)}
                                         >
-                                            <img src={schedule.scheduleIsChecked ? "/lib/주방체크on.svg" : "/lib/주방체크off.svg"} alt="check"/>
+                                            <img
+                                                src={schedule.scheduleIsChecked ? "/lib/주방체크on.svg" : "/lib/주방체크off.svg"}
+                                                alt="check"/>
                                         </span>
                                         <span
                                             className={styles.scheduleName}
@@ -352,7 +410,8 @@ const MainToiletRoom = () => {
                                             className={`${styles.alarm} ${schedule.scheduleIsAlarm ? styles.alarmed : ''}`}
                                             onClick={(e) => handleAlarmToggle(schedule.scheduleId, e)}
                                         >
-                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"} alt="alarm"/>
+                                            <img src={schedule.scheduleIsAlarm ? "/lib/알림on.svg" : "/lib/알림off.svg"}
+                                                 alt="alarm"/>
                                         </span>
                                     </li>
                                 ))}
