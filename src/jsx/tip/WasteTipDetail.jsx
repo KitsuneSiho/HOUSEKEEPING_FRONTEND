@@ -155,7 +155,9 @@ const WasteTipDetail = () => {
                         <button onClick={deletePost}>삭제</button>
                     </div>
                 )}
-                <button onClick={goToList}>목록</button>
+                <div className={styles.buttonContainer}>
+                    <button onClick={goToList}>목록</button>
+                </div>
             </div>
 
             <div className={styles.commentsSection}>
