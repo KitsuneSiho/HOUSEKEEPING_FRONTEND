@@ -16,44 +16,7 @@ const AddFriend = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (searchQuery.trim() !== '') {
-                try {
-
-                    // 사용자 검색
-                    const response = await axiosInstance.get('/friend/search', {
-                        params: { nickname: searchQuery }
-                    });
-
-                    // 검색 결과에서 자기 자신을 제외
-                    const filteredResults = response.data.filter(friend => friend.userId != user.userId);
-
-                    // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
-                    const userIds = filteredResults.map(user => user.userId).join(',');
-
-                    const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
-                        params: {
-                            senderId: user.userId,
-                            receiverIds: userIds
-                        }
-                    });
-
-                    const requestStatusMap = requestStatusResponse.data;
-                    const updatedResults = filteredResults.map(user => ({
-                        ...user,
-                        requestStatus: requestStatusMap[user.userId] || null
-                    }));
-
-                    setSearchResults(updatedResults);
-                } catch (error) {
-                    console.error("친구 검색 중 오류가 발생했습니다:", error);
-                }
-            } else {
-                setSearchResults([]);
-            }
-        };
-
-        fetchData();
+        fetchSearchResults();
     }, [searchQuery, user.userId]);
 
     const sendFriendRequest = async (receiverId) => {
@@ -102,6 +65,11 @@ const AddFriend = () => {
 
                 // 사용자 ID 목록을 쉼표로 구분된 문자열로 변환
                 const userIds = filteredResults.map(user => user.userId).join(',');
+
+                if (userIds.length === 0) {
+                    setSearchResults(filteredResults);
+                    return;
+                }
 
                 const requestStatusResponse = await axiosInstance.get('/friendRequest/status', {
                     params: {
@@ -152,7 +120,7 @@ const AddFriend = () => {
                 {searchResults.length > 0 ? (
                     searchResults.map((friend, index) => (
                         <div key={index} className={styles.searchResultItem}>
-                            <img src={friend.profileImageUrl || "/lib/profileImg.svg"} alt={friend.nickname}/>
+                            <img src={friend.profileImageUrl || '/lib/profileImg.svg'} alt={friend.nickname}/>
                             <span>{friend.nickname}</span>
                             {friend.requestStatus === "PENDING" ? (
                                 <button>승인 대기중</button>

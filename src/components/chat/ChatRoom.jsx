@@ -35,9 +35,15 @@ const ChatRoom = ({chatRoom, timeFormatter}) => {
             const result = await axiosInstance.get(`/chat/room/member/list?chatRoomId=${chatRoom.chatRoomId}&userId=${user.userId}`);
 
             setChatRoomMembers(result.data);
+            setUserImage(await getUserImage(result.data[0]));
         } catch (error) {
             console.error("error getting room members:", error);
         }
+    }
+
+    const getUserImage = async (nickname) => {
+        const response = await axiosInstance.get(`/friend/search?nickname=${nickname}`);
+        return response.data[0].profileImageUrl;
     }
 
     return (

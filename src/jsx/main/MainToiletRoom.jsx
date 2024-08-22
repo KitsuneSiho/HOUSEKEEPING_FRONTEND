@@ -380,11 +380,13 @@ const MainToiletRoom = () => {
                 <PollutionBar pollution={pollution}/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
+                <img className={styles.arrowImg} src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표"
+                     onClick={() => navigate('/main/livingroom')}/>
                 <div className={styles.roomView}>
                     {isReady && <RoomModel room={rooms[2]} placementList={placementLists[2]}/>}
                 </div>
-                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main')}/>
+                <img className={styles.arrowImg} src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표"
+                     onClick={() => navigate('/main')}/>
             </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (

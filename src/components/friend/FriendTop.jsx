@@ -30,6 +30,7 @@ const FriendTop = () => {
     const getFriends = async () => {
         try {
             const response = await axiosInstance.get(`/friend/list?userId=${user.userId}`);
+            console.log("fridnds", response.data);
             setFriends(response.data);
         } catch (error) {
             console.log("Error fetching friends: ", error);
