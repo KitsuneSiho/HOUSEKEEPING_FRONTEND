@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
+    margin: 5% 0 15%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -19,7 +19,195 @@
 .header .back {
     position: absolute;
     left: 10px;
-    cursor: pointer;
+    cursor: pointer;.container {
+    padding: 0;
+    margin: 5% 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: Fre, sans-serif;
+}
+
+    .header {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0;
+        position: relative;
+    }
+
+    .header .back {
+        position: absolute;
+        left: 10px;
+        cursor: pointer;
+    }
+
+    .header h2{
+        margin: 0;
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .searchIcon{
+        cursor: pointer;
+        margin: 0;
+        position: absolute;
+        right: 5% ;
+    }
+
+    .searchBar {
+        width: 70%;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #000;
+        border-radius: 10px;
+        padding: 0 10px;
+        transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+    }
+
+    .searchBar input {
+        width: 85%;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+
+    .searchBar img {
+        cursor: pointer;
+    }
+
+    .visible {
+        max-height: 50px;
+        opacity: 1;
+        padding: 5px 10px;
+    }
+
+    .postContainer {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+
+    .sortOptions {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .sortOptions select {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .postList {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid #ccc;
+    }
+
+    .postItem {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .postInfo {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 14px;
+        color: gray;
+        margin-top: 5px;
+    }
+
+    .postContent {
+        font-size: 16px;
+    }
+
+    .createButton {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        background-color: #c5f1ff;
+        border-radius: 20px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .createButton img {
+        margin-right: 10px;
+    }
+
+    /* 반응형 디자인 추가 */
+    @media (min-width: 768px) {
+        .header, .postContainer {
+            width: 80%;
+        }
+
+        .searchBar {
+            width: 75%;
+        }
+
+        .sortOptions select {
+            padding: 7px;
+            font-size: 14px;
+        }
+
+        .postContent {
+            font-size: 18px;
+        }
+
+        .postInfo {
+            font-size: 16px;
+        }
+
+        .createButton {
+            padding: 12px 25px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .header, .postContainer {
+            width: 70%;
+        }
+
+        .searchBar {
+            width: 80%;
+        }
+
+        .sortOptions select {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .postContent {
+            font-size: 20px;
+        }
+
+        .postInfo {
+            font-size: 18px;
+        }
+
+        .createButton {
+            padding: 15px 30px;
+        }
+    }
+
 }
 
 .header h2{
@@ -57,10 +245,11 @@
 }
 
 .searchBar input {
-    width: 85%;
+    width: 100%;
     border: none;
     outline: none;
     font-size: 16px;
+    text-align: center;
 }
 
 .searchBar img {

@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
     display: flex;
     align-items: center;
     flex-direction: column;
     font-family: Fre, sans-serif;
+    margin: 5% 0 15%;
 }
 
 .header {
@@ -48,6 +48,7 @@
     border-radius: 10px;
     padding: 0 10px;
     transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+    text-align: center;
 }
 
 .searchBar.visible {
@@ -57,11 +58,12 @@
 }
 
 .searchBar input {
-    width: 85%;
+    width: 100%;
     border: none !important;
     outline: none;
     font-size: 16px;
     font-family: 'Fre', sans-serif;
+    text-align: center;
 }
 
 .searchIcon {

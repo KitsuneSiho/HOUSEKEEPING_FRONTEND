@@ -10,9 +10,10 @@ import LifeTipDetail from "../jsx/tip/LifeTipDetail.jsx";
 import LifeTipWrite from "../jsx/tip/LifeTipWrite.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
-import CreatePost from "../jsx/tip/CreatePost.jsx";
+import RoomeTipWrite from "../jsx/tip/RoomeTipWrite.jsx";
 import WasteTipEdit from "../jsx/tip/WasteTipEdit.jsx";
 import LifeTipEdit from "../jsx/tip/LifeTipEdit.jsx";
+import RoomeTipEdit from "../jsx/tip/RoomeTipEdit.jsx";
 
 const TipRouter = () => {
 
@@ -27,7 +28,8 @@ const TipRouter = () => {
 
                         <Route path="/roome" element={<RoomeTip/>}/> {/* 루미`s 팁 */}
                         <Route path="/roome/detail/:id" element={<RoomeTipDetail/>}/> {/* 루미`s 팁 게시글 내용 */}
-                        <Route path="/roome/create" element={<CreatePost/>}/> {/* 루미`s 팁 게시글 작성 */}
+                        <Route path="/roome/post" element={<RoomeTipWrite/>}/> {/* 루미`s 팁 게시글 작성 */}
+                        <Route path="/roome/edit/:id" element={<RoomeTipEdit/>}/> {/* 루미`s 팁 게시글 수정 내용 */}
 
                         <Route path="/waste" element={<WasteTip/>}/> {/* 폐기물 팁 */}
                         <Route path="/waste/detail/:id" element={<WasteTipDetail/>}/> {/* 폐기물 팁 게시글 내용 */}

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/main/mainPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
-import RoomView from '../../jsx/room/RoomView.jsx';
 import moment from 'moment-timezone';
 import PollutionBar from '../../components/test/PollutionBar.jsx';
 import axiosInstance from "../../config/axiosInstance.js";
@@ -355,6 +354,7 @@ const MainPage = () => {
             const response = await axiosInstance.get(`/room/list?userId=${user.userId}`);
 
             setRooms(response.data);
+            console.log("adsf", response.data);
         } catch (error) {
             console.error("Error fetching room:", error);
         }
@@ -380,11 +380,11 @@ const MainPage = () => {
                 <PollutionBar pollution={pollution}/>
             </div>
             <div className={styles.roomDesign}>
-                <img src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
+                <img className={styles.arrowImg} src="/lib/왼쪽화살표.svg" alt="왼쪽 화살표" onClick={() => navigate('/main/toilet')}/>
                 <div className={styles.roomView}>
                     {isReady && <RoomModel room={rooms[0]} placementList={placementLists[0]}/>}
                 </div>
-                <img src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
+                <img className={styles.arrowImg} src="/lib/오른쪽화살표.svg" alt="오른쪽 화살표" onClick={() => navigate('/main/livingroom')}/>
             </div>
             <div className={styles.scheduleList}>
                 {Object.keys(schedules).map((roomId, idx) => (

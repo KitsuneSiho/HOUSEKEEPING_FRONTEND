@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     font-family: Fre, sans-serif;
+    margin-bottom: 15%;
 }
 
 .roomDesign {
@@ -17,6 +18,12 @@
     margin: 0;
     padding: 0;
     height: 350px;
+}
+
+.roomDesign .arrowImg {
+    width: 20px;
+    height: 20px;
+    margin-top: 60%;
 }
 
 .furniture {

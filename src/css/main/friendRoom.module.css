@@ -1,10 +1,10 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: Fre, sans-serif;
+    margin: 5% 0 15%;
 }
 
 .header {
@@ -39,20 +39,19 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 5%;
-    position: relative;
 }
 
-.roomDesign img {
-    cursor: pointer;
-}
-
-.roomDesign .myRoom {
-    width: 85%;
-    height: auto;
+.roomDesign .roomView {
+    width: 100%;
     margin: 0;
     padding: 0;
+    height: 350px;
+}
+
+.roomDesign .arrowImg {
+    width: 20px;
+    height: 20px;
+    margin-top: 50%;
 }
 
 .visitorBoard {
@@ -67,6 +66,8 @@
     border: 10px solid burlywood;
     cursor: pointer;
     border-radius: 10px;
+    font-family: Fre, sans-serif;
+    font-size: 20px;
 }
 
 /* 반응형 디자인 */
@@ -80,7 +81,7 @@
     }
 
     .roomDesign .myRoom {
-        width: 70%;
+        width: 60%;
     }
 
     .visitorBoard button {

@@ -146,14 +146,13 @@ const AddFriend = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <img src="/lib/검색.svg" alt="search" />
             </div>
 
             <div className={styles.searchResults}>
                 {searchResults.length > 0 ? (
                     searchResults.map((friend, index) => (
                         <div key={index} className={styles.searchResultItem}>
-                            <img src={friend.img || '/lib/마이페이지아이콘.svg'} alt={friend.nickname}/>
+                            <img src={friend.profileImageUrl || "/lib/profileImg.svg"} alt={friend.nickname}/>
                             <span>{friend.nickname}</span>
                             {friend.requestStatus === "PENDING" ? (
                                 <button>승인 대기중</button>

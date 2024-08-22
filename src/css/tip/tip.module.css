@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
+    margin: 5% 0 15%;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -57,10 +57,11 @@
 }
 
 .searchBar input {
-    width: 85%;
+    width: 100%;
     border: none;
     outline: none;
     font-size: 16px;
+    text-align: center;
 }
 
 .searchBar img {
@@ -86,14 +87,20 @@
 
 .roomeTip button {
     background-color: #c5f1ff;
+    font-family: Fre, sans-serif;
+    font-size: 20px;
 }
 
 .wasteTip button {
     background-color: #ffebc5;
+    font-family: Fre, sans-serif;
+    font-size: 20px;
 }
 
 .lifeTip button {
     background-color: #ffc5f2;
+    font-family: Fre, sans-serif;
+    font-size: 20px;
 }
 
 /* 반응형 디자인 */

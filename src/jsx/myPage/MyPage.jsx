@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/myPage/myPage.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
@@ -7,7 +7,21 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const MyPage = () => {
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user, logout, fetchUserInfo } = useAuth();
+    const [attendanceChecked, setAttendanceChecked] = useState(false);
+
+    useEffect(() => {
+        checkAttendanceStatus();
+    }, []);
+
+    const checkAttendanceStatus = async () => {
+        try {
+            const response = await axiosInstance.get(`/api/user/attendance/status?userId=${user.userId}`);
+            setAttendanceChecked(response.data.checked);
+        } catch (error) {
+            console.error('Failed to check attendance status', error);
+        }
+    };
 
     const handleLogout = async () => {
         try {
@@ -17,6 +31,18 @@ const MyPage = () => {
         } catch (error) {
             console.error('Logout failed', error);
             logout();
+        }
+    };
+
+    const handleAttendanceCheck = async () => {
+        if (attendanceChecked) return;
+
+        try {
+            await axiosInstance.post(`/api/user/attendance?userId=${user.userId}`);
+            setAttendanceChecked(true);
+            fetchUserInfo(user.userId);
+        } catch (error) {
+            console.error('Attendance check failed', error);
         }
     };
 
@@ -52,6 +78,13 @@ const MyPage = () => {
                         <progress className={styles.xpBar} value={user?.exp} max={user?.nextLevelExp}></progress>
                         <span className={styles.xpText}>{user?.exp}/{user?.nextLevelExp}</span>
                     </div>
+                    <button
+                        onClick={handleAttendanceCheck}
+                        className={`${styles.attendanceButton} ${attendanceChecked ? styles.attendanceChecked : ''}`}
+                        disabled={attendanceChecked}
+                    >
+                        {attendanceChecked ? '출석체크 완료' : '출석체크'}
+                    </button>
                 </div>
             </div>
             <div className={styles.menu}>

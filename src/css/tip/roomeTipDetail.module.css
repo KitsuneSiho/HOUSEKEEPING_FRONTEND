@@ -1,6 +1,6 @@
 .container {
     padding: 0;
-    margin: 5% 0 0;
+    margin: 5% 0 15%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -114,7 +114,6 @@
 .comment {
     border-bottom: 1px solid #ccc;
     margin-top: 10px;
-    padding-bottom: 10px;
 }
 
 .commentUser {
@@ -142,61 +141,59 @@
     margin-left: 10px;
 }
 
-/* 반응형 디자인 */
+/* 반응형 디자인 추가 */
 @media (min-width: 768px) {
-    .header,
-    .postContainer,
-    .commentsSection {
+    .header, .postContainer, .commentsSection {
         width: 80%;
     }
 
-    .postInfoTitle,
-    .postContent,
-    .postInfoDate,
-    .buttonContainer {
+    .postInfoTitle {
         font-size: 16px;
     }
 
+    .postInfoDate {
+        font-size: 14px;
+    }
+
+    .postContent {
+        font-size: 18px;
+    }
+
     .buttonContainer button {
-        padding: 12px 25px;
+        height: 35px;
+        padding: 10px 25px;
         font-size: 14px;
     }
 
     .commentInput input {
         font-size: 18px;
     }
-
-    .commentText,
-    .commentUser p {
-        font-size: 16px;
-    }
 }
 
 @media (min-width: 1024px) {
-    .header,
-    .postContainer,
-    .commentsSection {
+    .header, .postContainer, .commentsSection {
         width: 70%;
     }
 
-    .postInfoTitle,
-    .postContent,
-    .postInfoDate,
-    .buttonContainer {
+    .postInfoTitle {
         font-size: 18px;
     }
 
+    .postInfoDate {
+        font-size: 16px;
+    }
+
+    .postContent {
+        font-size: 20px;
+    }
+
     .buttonContainer button {
+        height: 40px;
         padding: 15px 30px;
         font-size: 16px;
     }
 
     .commentInput input {
         font-size: 20px;
-    }
-
-    .commentText,
-    .commentUser p {
-        font-size: 18px;
     }
 }
