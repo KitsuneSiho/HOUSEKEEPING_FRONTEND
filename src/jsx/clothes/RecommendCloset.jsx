@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/recommendCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
-import {recommendClothes} from "./recommendClothes.jsx";
+import { recommendClothes } from "./recommendClothes.jsx";
 
 
 const RecommendCloset = () => {
@@ -75,7 +75,7 @@ const RecommendCloset = () => {
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
 
@@ -125,7 +125,7 @@ const RecommendCloset = () => {
                 };
 
                 serverRecommendations.forEach(item => {
-                    switch (item.clothType) {
+                    switch(item.clothType) {
                         case '반팔':
                         case '셔츠':
                         case '니트':
@@ -142,10 +142,12 @@ const RecommendCloset = () => {
                         case '코트':
                         case '패딩':
                         case '가디건':
+                        case '바람막이':
                         case '후드 집업':
                             newRecommendations.outer.push(item);
                             break;
                         case '운동화':
+                        case '스니커즈':
                         case '구두':
                         case '샌들/슬리퍼':
                             newRecommendations.shoes.push(item);
@@ -394,7 +396,7 @@ const RecommendCloset = () => {
 
 
 // 시간 옵션을 원래 값으로 정의합니다.
-    const timeOptions = ['21:00', '00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
+    const timeOptions = ['21:00','00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00'];
 
 // 시간을 6시간 더한 값으로 표시하는 함수
     const getDisplayTime = (time) => {
@@ -402,7 +404,6 @@ const RecommendCloset = () => {
         const adjustedHours = (hours + 6) % 24;  // 6시간 더하기 및 24시간 형식 유지
         return `${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     };
-
 
     return (
         <div className={styles.container}>
@@ -443,7 +444,7 @@ const RecommendCloset = () => {
 
                 <input
                     type="number"
-                    placeholder="온도 입력 (°C)"
+                    placeholder="온도(°C)"
                     value={customTemperature}
                     onChange={(e) => setCustomTemperature(e.target.value)}
                     onKeyPress={(e) => {

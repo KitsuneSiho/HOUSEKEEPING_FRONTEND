@@ -133,7 +133,7 @@ const ShoesList = () => {
     };
 
     const getColorOptions = () => {
-        return ['초록', '검정', '회색', '흰색'];
+        return ['검정', '회색', '흰색','베이지','초록','빨강','네이비','노랑','주황','핑크','기타'];
     };
 
     const getMaterialOptions = () => {

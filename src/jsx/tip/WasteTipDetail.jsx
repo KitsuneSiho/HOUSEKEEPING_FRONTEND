@@ -1,27 +1,41 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/tip/wasteTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
-import {useLogin} from "../../contexts/AuthContext.jsx";
 
 const WasteTipDetail = () => {
     const navigate = useNavigate();
-    const {user} = useLogin();
-    const {id} = useParams();
+    const { id } = useParams();
     const [tip, setTip] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(null);
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedCommentContent, setEditedCommentContent] = useState('');
+    const [currentUserId, setCurrentUserId] = useState(null);
 
     useEffect(() => {
         if (id) {
             fetchTip();
             fetchComments();
+            fetchCurrentUser();
         }
     }, [id]);
+
+    const fetchCurrentUser = async () => {
+        try {
+            const response = await axiosConfig.get('/api/tips/current-user');
+            console.log('Current user response:', response.data);
+            setCurrentUserId(response.data.userId);
+        } catch (error) {
+            console.error('Error fetching current user:', error);
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('access');
+                navigate('/login');
+            }
+        }
+    };
 
     const fetchTip = async () => {
         try {
@@ -37,7 +51,6 @@ const WasteTipDetail = () => {
         try {
             const response = await axiosConfig.get(`/api/comments/tip/${id}`);
             setComments(response.data);
-            console.log("comments", response.data);
         } catch (error) {
             console.error('Error fetching comments:', error);
             setError('댓글을 불러오는 데 실패했습니다.');
@@ -64,9 +77,13 @@ const WasteTipDetail = () => {
     };
 
     const handleCommentSubmit = async () => {
+        if (!currentUserId) {
+            alert('로그인이 필요합니다.');
+            return;
+        }
         try {
             await axiosConfig.post(`/api/comments/tip/${id}`, {
-                userId: user.userId, // 실제 사용자 ID로 대체해야 합니다
+                userId: currentUserId,
                 commentContent: newComment
             });
             setNewComment('');
@@ -116,7 +133,7 @@ const WasteTipDetail = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={goToList}/>
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={goToList} />
                 <h2>폐기물 Tip</h2>
             </div>
 
@@ -132,9 +149,13 @@ const WasteTipDetail = () => {
                 <div className={styles.postContent}>
                     <p>{tip.tipContent}</p>
                 </div>
+                {currentUserId === tip.userId && (
+                    <div className={styles.buttonContainer}>
+                        <button onClick={editPost}>수정</button>
+                        <button onClick={deletePost}>삭제</button>
+                    </div>
+                )}
                 <div className={styles.buttonContainer}>
-                    <button onClick={editPost}>수정</button>
-                    <button onClick={deletePost}>삭제</button>
                     <button onClick={goToList}>목록</button>
                 </div>
             </div>
@@ -148,19 +169,18 @@ const WasteTipDetail = () => {
                         onChange={(e) => setNewComment(e.target.value)}
                     />
                     <button onClick={handleCommentSubmit}>
-                        <img src="/lib/채팅보내기.svg" alt="send"/>
+                        <img src="/lib/채팅보내기.svg" alt="send" />
                     </button>
                 </div>
                 {comments.map((comment) => (
                     <div className={styles.comment} key={comment.commentId}>
-                        <div className={styles.commentTitle}>
-                            <div className={styles.commentUser}>
-                                <img src="/lib/마이페이지아이콘.svg" alt="user"/>
-                                <p>Lv.3 {comment.userName}</p>
-                            </div>
-                            <div className={styles.commentDate}>
-                                <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
-                            </div>
+                        <div className={styles.commentUser}>
+                            <img
+                                src={comment.userProfileImageUrl || "/lib/마이페이지아이콘.svg"}
+                                alt="user"
+                                className={styles.userProfileImage}
+                            />
+                            <p>Lv.{comment.userLevel} {comment.userLevelName} {comment.userNickname}</p>
                         </div>
                         {editingCommentId === comment.commentId ? (
                             <div className={styles.commentEdit}>
@@ -169,29 +189,29 @@ const WasteTipDetail = () => {
                                     value={editedCommentContent}
                                     onChange={(e) => setEditedCommentContent(e.target.value)}
                                 />
-                                <div className={styles.commentEditButtons}>
-                                    <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
-                                    <button onClick={cancelEditing}>취소</button>
-                                </div>
+                                <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
+                                <button onClick={cancelEditing}>취소</button>
                             </div>
                         ) : (
                             <>
                                 <div className={styles.commentText}>
                                     <p>{comment.commentContent}</p>
+                                </div>
+                                {currentUserId === comment.userId && (
                                     <div className={styles.commentActions}>
-                                    <span
-                                        onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                        <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
                                         <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                                     </div>
-                                </div>
-
+                                )}
                             </>
                         )}
-
+                        <div className={styles.commentDate}>
+                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
+                        </div>
                     </div>
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

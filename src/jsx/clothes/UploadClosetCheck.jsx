@@ -18,7 +18,7 @@ const UploadClosetCheck = () => {
         clothColor: '초록',
         clothMaterial: '면',
         clothSeason: 'SUMMER',
-        clothHowWash : '일반 세탁',
+        clothHowWash: '일반 세탁',
         clothCustomTag: ''
     });
 
@@ -27,7 +27,7 @@ const UploadClosetCheck = () => {
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
 
@@ -50,7 +50,27 @@ const UploadClosetCheck = () => {
         return decodedToken ? decodedToken.userId : null;
     };
 
+    // classify 값에 따른 카테고리 자동 선택
+    useEffect(() => {
+        if (location.state && location.state.fileUrl) {
+            setFileUrl(location.state.fileUrl);
+        }
 
+        if (location.state && location.state.classify) {
+            const classify = location.state.classify;
+            if (["드레스", "긴팔", "셔츠"].includes(classify)) {
+                setCategory("top");
+            } else if (classify === "아우터") {
+                setCategory("outer");
+            } else if (["바지", "반바지", "치마"].includes(classify)) {
+                setCategory("bottom");
+            } else if (classify === "신발") {
+                setCategory("shoes");
+            } else if (classify === "모자") {
+                setCategory("accessory");
+            }
+        }
+    }, [location.state]);
 
     useEffect(() => {
         // clothType 또는 clothMaterial이 변경될 때 세탁 방법 설정
@@ -61,13 +81,6 @@ const UploadClosetCheck = () => {
             }));
         }
     }, [clothDetails.clothType, clothDetails.clothMaterial]);
-
-
-    useEffect(() => {
-        if (location.state && location.state.fileUrl) {
-            setFileUrl(location.state.fileUrl);
-        }
-    }, [location.state]);
 
     useEffect(() => {
         if (category) {
@@ -101,7 +114,6 @@ const UploadClosetCheck = () => {
         };
 
         console.log('Saving cloth data:', clothData); // 전송 전에 데이터 확인
-
 
         try {
             const response = await apiClient.post('/ware/items', clothData);
@@ -160,17 +172,24 @@ const UploadClosetCheck = () => {
                         <select id="clothType" value={clothDetails.clothType} onChange={handleInputChange}>
                             {getOptions(category).map(option => (
                                 <option key={option} value={option}>{option}</option>
-                            ))}
+                             ))}
                         </select>
                     </div>
                 )}
                 <div className={styles.tag}>
                     <label htmlFor="clothColor">색상</label>
                     <select id="clothColor" value={clothDetails.clothColor} onChange={handleInputChange}>
-                        <option value="초록">초록</option>
                         <option value="검정">검정</option>
                         <option value="회색">회색</option>
                         <option value="흰색">흰색</option>
+                        <option value="베이지">베이지</option>
+                        <option value="초록">초록</option>
+                        <option value="빨강">빨강</option>
+                        <option value="네이비">네이비</option>
+                        <option value="노랑">노랑</option>
+                        <option value="주황">주황</option>
+                        <option value="핑크">핑크</option>
+                        <option value="기타">기타</option>
                     </select>
                 </div>
                 <div className={styles.tag}>
@@ -182,7 +201,6 @@ const UploadClosetCheck = () => {
                         <option value="울">울</option>
                         <option value="실크">실크</option>
                         <option value="가죽">가죽</option>
-
                     </select>
                 </div>
                 <div className={styles.tag}>
@@ -196,11 +214,11 @@ const UploadClosetCheck = () => {
                 <div className={styles.tag}>
                     <label htmlFor="clothCustomTag">커스텀 태그</label>
                     <input type="text" id="clothCustomTag" value={clothDetails.clothCustomTag}
-                           onChange={handleInputChange}/>
+                           onChange={handleInputChange} />
                 </div>
-                <input type="hidden" id="clothHowWash" value={clothDetails.clothHowWash}/>
+                <input type="hidden" id="clothHowWash" value={clothDetails.clothHowWash} />
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

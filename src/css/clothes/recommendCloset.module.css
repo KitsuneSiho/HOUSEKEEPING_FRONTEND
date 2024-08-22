@@ -33,6 +33,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -67,20 +68,35 @@
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 11px;
+    font-size: 14px;
+    text-align: center;
     z-index: 100;
 }
 
-.selection button{
+.selection .customTempInput{
     font-family: Fre, sans-serif;
-    width: 17%;
-    height: 34px;
+    width: 15% !important;
+    height: 30px;
     background: none;
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
     margin: 10px 0;
-    font-size: 10px;
+    font-size: 14px;
+    text-align: center;
+    z-index: 100;
+}
+
+.selection button{
+    font-family: Fre, sans-serif;
+    width: 25%;
+    height: 34px;
+    background: #c5f1ff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    margin: 10px 0;
+    font-size: 13px;
     z-index: 100;
 }
 
@@ -94,26 +110,27 @@
     padding: 20px;
     margin-top: 20px; /* 상단에 간격 추가 */
 }
-
 .itemTop {
     position: absolute;
-    z-index: 5; /* 다른 요소들 위에 위치하도록 설정 */
-    width: 80%;
-    right: 0;
-}
+    z-index:7; /* 다른 요소들 위에 위치하도록 설정 */
+    width: 75%;
+    left: 0;
+    bottom : 30%;
 
+}
 .itemBottom {
     position: absolute;
-    z-index:7; /* itemTop 아래에 위치 */
-    width: 80%;
-    left: 0;
+    z-index: 5; /* itemTop 아래에 위치 */
+    width: 65%;
+    left: 40%;
+    bottom : 33%;
 }
-
 .itemOuter {
     position: absolute;
     z-index: 6; /* itemBottom 아래에 위치 */
-    width: 80%;
+    width: 85%;
     right: 25%;
+    bottom : 35%;
 }
 
 .itemShoes {
@@ -128,18 +145,17 @@
     position: absolute;
     z-index: 9; /* itemShoes 아래에 위치 */
     width: 60%;
-    top: 50%;
-    right: 25%;
+    top: 40%;
+    right: 43%;
 }
 
 .itemAccessory {
     position: absolute;
     z-index: 10; /* itemBag 아래에 위치 */
-    width: 60%;
-    top: 50%;
-    left: 0;
+    width: 30%;
+    top: 65%;
+    left: 30%;
 }
-
 
 /* recommendCloset.module.css */
 .weather {
