@@ -16,7 +16,8 @@ const FoodCategory = {
     OIL: '기름',
     FLOUR: '밀가루',
     BEVERAGE: '음료',
-    ETC: '기타'
+    ETC: '기타',
+    ALL: '전체보기'
 };
 
 // 날짜 검증 함수 추가
@@ -80,7 +81,7 @@ const FoodList = () => {
         }
     };
 
-    // 모든 식품 목록을 가져오는 함수
+    // 모든 식품 목록을 가져오는 함수(사용안하는데 일단 남겨둠)
     const fetchFoods = async () => {
 
         try {
@@ -283,7 +284,7 @@ const FoodList = () => {
             {/* 헤더 섹션 */}
             <div className={styles.header}>
                 <img className={styles.back} src="/lib/back.svg" alt="back" onClick={() => navigate('/refrigerator/')}/>
-                <h2>{category}</h2>
+                <h2>{FoodCategory[category.toUpperCase()] || category}</h2>
                 <img src="/lib/검색.svg" alt="search" className={styles.searchIcon}
                      onClick={() => document.getElementById('search-bar').classList.toggle(styles.visible)}/>
             </div>
@@ -314,7 +315,7 @@ const FoodList = () => {
                 {filteredFoods.length > 0 ? (
                     filteredFoods.map((food, index) => (
                         <tr key={`food-${food.foodId || index}`}>
-                            <td>{food.foodCategory}</td>
+                            <td>{FoodCategory[food.foodCategory] || food.foodCategory}</td>
                             <td onClick={() => openModal(food, index)}>
                                 {food.foodName}
                             </td>

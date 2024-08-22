@@ -26,7 +26,7 @@ const LivingRoom = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h2>Living Room</h2>
+                <h2>Kitchen</h2>
             </div>
             <div className={styles.livingRoomHeader}>
                 <h3 onClick={() => navigate('/refrigerator/register')}>재료 등록</h3>
