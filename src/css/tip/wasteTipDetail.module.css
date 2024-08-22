@@ -149,18 +149,17 @@
 .commentActions {
     display: flex;
     align-items: center;
+    justify-content: right;
 }
 
 .commentActions span {
     cursor: pointer;
     margin-left: 10px;
     background: none;
-    border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: right;
     color: black;
-    border-radius: 5px;
     padding: 5px;
 }
 
