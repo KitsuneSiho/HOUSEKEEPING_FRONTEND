@@ -84,33 +84,33 @@ const ClosetRoom = () => {
             case '가디건':
             case '코트':
             case '바람막이':
-                return '/lib/상의1.svg';
+                return '';
             case '반팔':
             case '긴팔':
             case '셔츠':
             case '민소매':
             case '카라티':
             case '니트':
-                return '/lib/상의1.svg';
+                return '';
             case '반바지':
             case '긴바지':
             case '원피스':
             case '스커트':
-                return '/lib/하의1.svg';
+                return '';
             case '운동화':
             case '스니커즈':
             case '구두':
             case '샌들/슬리퍼':
-                return '/lib/신발1.svg';
+                return '';
             case '백팩':
             case '크로스백':
-                return '/lib/악세사리1.svg';
+                return '';
             case '모자':
             case '양말':
             case '선글라스':
-                return '/lib/악세사리1.svg';
+                return '';
             default:
-                return '/lib/default.svg'; // 기본 이미지
+                return ''; // 기본 이미지
         }
     };
 

@@ -78,9 +78,6 @@ const UploadCloset = () => {
                 )}
             </div>
             <div className={styles.cameraButton}>
-                <button type="button" onClick={() => navigate('/closet/register/check')}>
-                    촬영
-                </button>
                 <input
                     type="file"
                     accept="image/*"
