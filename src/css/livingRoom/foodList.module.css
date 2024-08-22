@@ -186,6 +186,7 @@
     border-radius: 5px;
     border: 1px solid #ccc;
     outline: none;
+    color: black;
 }
 
 .modalField label {
@@ -202,6 +203,8 @@
     border: none;
     border-bottom: 1px solid #ddd;
     box-sizing: border-box;
+    background: none;
+    color: black;
 }
 
 .modalField textarea{

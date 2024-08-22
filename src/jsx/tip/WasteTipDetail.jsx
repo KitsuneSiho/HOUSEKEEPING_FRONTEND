@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import styles from '../../css/tip/wasteTipDetail.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import axiosConfig from "../../config/axiosConfig.js";
 
 const WasteTipDetail = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const {id} = useParams();
     const [tip, setTip] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
@@ -133,7 +133,7 @@ const WasteTipDetail = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={goToList} />
+                <img className={styles.back} src="/lib/back.svg" alt="back" onClick={goToList}/>
                 <h2>폐기물 Tip</h2>
             </div>
 
@@ -169,18 +169,23 @@ const WasteTipDetail = () => {
                         onChange={(e) => setNewComment(e.target.value)}
                     />
                     <button onClick={handleCommentSubmit}>
-                        <img src="/lib/채팅보내기.svg" alt="send" />
+                        <img src="/lib/채팅보내기.svg" alt="send"/>
                     </button>
                 </div>
                 {comments.map((comment) => (
                     <div className={styles.comment} key={comment.commentId}>
                         <div className={styles.commentUser}>
-                            <img
-                                src={comment.userProfileImageUrl || "/lib/마이페이지아이콘.svg"}
-                                alt="user"
-                                className={styles.userProfileImage}
-                            />
-                            <p>Lv.{comment.userLevel} {comment.userLevelName} {comment.userNickname}</p>
+                            <div className={styles.commentUserHeader}>
+                                <img
+                                    src={comment.userProfileImageUrl || "/lib/마이페이지아이콘.svg"}
+                                    alt="user"
+                                    className={styles.userProfileImage}
+                                />
+                                <p>Lv.{comment.userLevel} {comment.userLevelName} {comment.userNickname}</p>
+                            </div>
+                            <div className={styles.commentDate}>
+                                <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
+                            </div>
                         </div>
                         {editingCommentId === comment.commentId ? (
                             <div className={styles.commentEdit}>
@@ -199,19 +204,18 @@ const WasteTipDetail = () => {
                                 </div>
                                 {currentUserId === comment.userId && (
                                     <div className={styles.commentActions}>
-                                        <span onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
+                                        <span
+                                            onClick={() => startEditing(comment.commentId, comment.commentContent)}>수정</span>
                                         <span onClick={() => handleCommentDelete(comment.commentId)}>삭제</span>
                                     </div>
                                 )}
                             </>
                         )}
-                        <div className={styles.commentDate}>
-                            <p>{new Date(comment.commentCreatedDate).toLocaleString()}</p>
-                        </div>
+
                     </div>
                 ))}
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };

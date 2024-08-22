@@ -72,6 +72,7 @@
 .submitButton button {
     padding: 10px 20px;
     background-color: #ffebc5;
+    color: black;
     border: none;
     border-radius: 20px;
     cursor: pointer;

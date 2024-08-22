@@ -89,18 +89,21 @@
     background-color: #c5f1ff;
     font-family: Fre, sans-serif;
     font-size: 20px;
+    color: black;
 }
 
 .wasteTip button {
     background-color: #ffebc5;
     font-family: Fre, sans-serif;
     font-size: 20px;
+    color: black;
 }
 
 .lifeTip button {
     background-color: #ffc5f2;
     font-family: Fre, sans-serif;
     font-size: 20px;
+    color: black;
 }
 
 /* 반응형 디자인 */
