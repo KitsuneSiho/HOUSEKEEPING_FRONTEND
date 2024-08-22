@@ -11,6 +11,7 @@ import BagList from "../jsx/clothes/BagList.jsx";
 import AccessoryList from "../jsx/clothes/AccessoryList.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const ClosetRouter = () => {
 
@@ -32,6 +33,7 @@ const ClosetRouter = () => {
                         <Route path="/register/check" element={<UploadClosetCheck/>}/> {/* 옷 등록 확인 */}
                         <Route path="/recommend" element={<RecommendCloset/>}/> {/* 옷 추천 */}
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

@@ -14,6 +14,7 @@ import RoomeTipWrite from "../jsx/tip/RoomeTipWrite.jsx";
 import WasteTipEdit from "../jsx/tip/WasteTipEdit.jsx";
 import LifeTipEdit from "../jsx/tip/LifeTipEdit.jsx";
 import RoomeTipEdit from "../jsx/tip/RoomeTipEdit.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const TipRouter = () => {
 
@@ -41,6 +42,7 @@ const TipRouter = () => {
                         <Route path="/lifehacks/post" element={<LifeTipWrite/>}/> {/* 일상 팁 게시글 작성 */}
                         <Route path="/lifehacks/edit/:id" element={<LifeTipEdit/>}/> {/* 일상 팁 게시글 작성 */}
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

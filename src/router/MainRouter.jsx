@@ -6,6 +6,7 @@ import MyGuestBook from "../jsx/main/MyGuestBook.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import MyRoom from "../pages/room/MyRoom.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const MainRouter = () => {
 
@@ -22,6 +23,7 @@ const MainRouter = () => {
                         <Route path="/guestbook" element={<MyGuestBook/>}/> {/* 내방 방명록 */}
                         <Route path="/myroom" element={<MyRoom/>}/>
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

@@ -30,10 +30,10 @@ const ChatAlarm = () => {
 
     return (
         showChat && <div className={styles.chatAlarm}>
-            <div>
+            <div className={styles.senderArea}>
                 {sender}
             </div>
-            <div>
+            <div className={styles.messageArea}>
                 {message}
             </div>
         </div>

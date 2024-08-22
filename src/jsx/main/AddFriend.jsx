@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Footer from '../fix/Footer.jsx';
 import styles from '../../css/main/addFriend.module.css';
-import { BACK_URL } from "../../Constraints.js";
 import axiosInstance from "../../config/axiosInstance.js";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 

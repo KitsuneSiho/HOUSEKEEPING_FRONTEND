@@ -7,6 +7,7 @@ import GuestBook from "../jsx/myPage/GuestBook.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
 import EditRoom from "../pages/room/EditRoom.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const MyPageRouter = () => {
 
@@ -24,6 +25,7 @@ const MyPageRouter = () => {
                         <Route path="/guestBook/storage" element={<GuestBook/>}/> {/* 방명록 보관함 */}
                         <Route path="/myroom/edit/:isFirst" element={<EditRoom/>}/>
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

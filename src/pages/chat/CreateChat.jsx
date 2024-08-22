@@ -6,6 +6,7 @@ import ChatFriend from "../../components/chat/ChatFriend.jsx";
 import {useModal} from "../../contexts/ModalContext.jsx";
 import {useLogin} from "../../contexts/AuthContext.jsx";
 import axiosInstance from "../../config/axiosInstance.js";
+import ChatAlarm from "./ChatAlarm.jsx";
 
 // 채팅 방 생성
 const CreateChat = () => {
@@ -123,6 +124,7 @@ const CreateChat = () => {
                                 handleCheckboxChange={handleCheckboxChange}/>
                 ))}
             </div>
+            <ChatAlarm/>
             <Footer />
         </div>
     );

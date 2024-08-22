@@ -7,6 +7,7 @@ import RecommendRecipe from "../jsx/livingRoom/RecommendRecipe.jsx";
 import FoodList from "../jsx/livingRoom/FoodList.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const RefrigeratorRouter = () => {
 
@@ -24,6 +25,7 @@ const RefrigeratorRouter = () => {
                         <Route path="/search" element={<SearchRecipe/>}/> {/* 레시피 검색 */}
                         <Route path="/recommend" element={<RecommendRecipe/>}/> {/* 레시피 추천(검색한거 결과나오는화면 */}
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

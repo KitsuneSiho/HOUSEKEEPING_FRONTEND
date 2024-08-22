@@ -2,16 +2,25 @@
 
 .chatAlarm {
     position: fixed;
-    width: 10%;
+    width: 30%;
+    max-width: 200px;
     bottom: 70px;
     right: 10px;
-    background-color: #fff;
+    background-color: #c5f1ff;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     z-index: 1000; /* Ensure it is on top of other elements */
     border-radius: 5px;
     animation: fadeInOut 3s;
+}
+
+.senderArea {
+    margin-bottom: 10px;
+}
+
+.messageArea {
+
 }
 
 @keyframes fadeInOut {

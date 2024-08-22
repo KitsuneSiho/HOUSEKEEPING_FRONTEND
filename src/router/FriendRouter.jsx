@@ -6,6 +6,7 @@ import FriendList from "../jsx/myPage/FriendList.jsx";
 import FriendRequest from "../jsx/myPage/FriendRequest.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 const FriendRouter = () => {
 
@@ -22,6 +23,7 @@ const FriendRouter = () => {
                         <Route path="/visitorBoard/:userId" element={<VisitorBoard/>}/>
                         <Route path="/request" element={<FriendRequest/>}/> {/* 친구요청 */}
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

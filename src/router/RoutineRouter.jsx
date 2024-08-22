@@ -7,6 +7,7 @@ import WeeklyRoutineInfo from "../jsx/routine/WeeklyRoutineInfo.jsx";
 import MonthlyRoutineInfo from "../jsx/routine/MonthlyRoutineInfo.jsx";
 import RouteAuthProvider from "../contexts/RouteAuthContext.jsx";
 import {SocketProvider} from "../contexts/SocketContext.jsx";
+import ChatAlarm from "../pages/chat/ChatAlarm.jsx";
 
 function RecommendMonthlyRoutine() {
     return null;
@@ -35,6 +36,7 @@ const RoutineRouter = () => {
                         <Route path="/weekly/:groupName" element={<WeeklyRoutineInfo/>}/> {/* 주간 루틴 */}
                         <Route path="/monthly/:groupName" element={<MonthlyRoutineInfo/>}/> {/* 월간 루틴 */}
                     </Routes>
+                    <ChatAlarm/>
                 </RouteAuthProvider>
             </SocketProvider>
         </>

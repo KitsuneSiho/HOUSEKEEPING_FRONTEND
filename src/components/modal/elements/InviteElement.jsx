@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
-import React from "react";
+import styles from '../../../css/chat/inviteElement.module.css';
 
 const InviteElement = ({users, type, selectedFriends, handleCheckboxChange}) => {
 
     return (
         <>
             {users.map((roomMember, index) => (
-                    <div className="user-element" key={index}>
+                    <div className={styles.userElement} key={index}>
                         <img
+                            className={styles.profile}
                             src={roomMember.profileImageUrl || "/lib/profileImg.svg"}
                             alt="Profile Image"
                         />

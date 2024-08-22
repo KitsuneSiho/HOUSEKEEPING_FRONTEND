@@ -1,9 +1,8 @@
 import '../../css/modal/InviteFriendModal.css';
 import PropTypes from "prop-types";
 import {useEffect, useRef, useState} from "react";
-import axios from "axios";
-import {BACK_URL} from "../../Constraints.js";
 import InviteElement from "./elements/InviteElement.jsx";
+import axiosInstance from "../../config/axiosInstance.js";
 
 // 값을 입력받는 모달
 const InviteFriendModal = ({modalState, modalTitle, modalBody, modalCallback, hideModal}) => {
@@ -25,7 +24,7 @@ const InviteFriendModal = ({modalState, modalTitle, modalBody, modalCallback, hi
 
         try {
 
-            const response = await axios.get(BACK_URL + `/chat/room/invite/list?chatRoomId=${modalTitle}&userId=${modalBody}`);
+            const response = await axiosInstance.get(`/chat/room/invite/list?chatRoomId=${modalTitle}&userId=${modalBody}`);
 
             setRoomMembers(response.data.roomMembers);
             setFriends(response.data.friends);
