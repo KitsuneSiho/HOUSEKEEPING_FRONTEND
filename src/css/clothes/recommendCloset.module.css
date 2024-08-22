@@ -96,32 +96,62 @@
 .customTempButton:hover {
     background-color: #0056b3;
 }
-.recommendations-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 그리드 레이아웃: 열 크기 100px, 빈 공간에 자동 맞춤 */
-    gap: 10px; /* 이미지 간의 간격 */
-    padding: 20px; /* 컨테이너 패딩 */
-}
-
-.image-category {
+.recommendationsContainer {
+    width: 100%;
+    height: 400px; /* 내용에 맞게 높이가 자동으로 조절되도록 변경 */
+    position: relative; /* 자식 요소들이 이 컨테이너를 기준으로 위치하게 설정 */
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center; /* 이미지 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 20px; /* 상단에 간격 추가 */
+}
+.itemTop {
+    position: absolute;
+    z-index:7; /* 다른 요소들 위에 위치하도록 설정 */
+    width: 75%;
+    left: 0;
+    bottom : 30%;
+
+}
+.itemBottom {
+    position: absolute;
+    z-index: 5; /* itemTop 아래에 위치 */
+    width: 65%;
+    left: 40%;
+    bottom : 33%;
+}
+.itemOuter {
+    position: absolute;
+    z-index: 6; /* itemBottom 아래에 위치 */
+    width: 85%;
+    right: 25%;
+    bottom : 35%;
 }
 
-.item {
-    width: 100px; /* 이미지를 4분의 1 크기로 줄이기 */
-    height: auto;
-    border-radius: 8px;
-    transition: transform 0.3s ease; /* 호버 시 확대 효과 */
-    cursor: pointer;
+.itemShoes {
+    position: absolute;
+    z-index: 8; /* itemOuter 아래에 위치 */
+    width: 60%;
+    top: 50%;
+    right: 0;
 }
 
-.item:hover {
-    transform: scale(1.1); /* 호버 시 이미지 확대 */
+.itemBag {
+    position: absolute;
+    z-index: 9; /* itemShoes 아래에 위치 */
+    width: 60%;
+    top: 40%;
+    right: 43%;
 }
 
+.itemAccessory {
+    position: absolute;
+    z-index: 10; /* itemBag 아래에 위치 */
+    width: 30%;
+    top: 65%;
+    left: 30%;
+}
 
 /* recommendCloset.module.css */
 .weather {

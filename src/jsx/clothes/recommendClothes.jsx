@@ -17,7 +17,7 @@ export const recommendClothes = (temperature) => {
 
     // 온도에 따른 의상 추천 로직
     if (temperature >= 28) {
-        recommendations.top.push(topOptions[0], topOptions[2]); // 반팔, 셔츠
+        recommendations.top.push(topOptions[0], topOptions[5]); // 반팔, 셔츠
         recommendations.bottom.push(bottomOptions[0], bottomOptions[2]); // 반바지, 스커트
         recommendations.bag.push(bagOptions[0], bagOptions[2]);
         recommendations.shoes.push(shoesOptions[3]); // 샌들/슬리퍼

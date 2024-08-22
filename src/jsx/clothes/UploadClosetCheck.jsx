@@ -160,17 +160,24 @@ const UploadClosetCheck = () => {
                         <select id="clothType" value={clothDetails.clothType} onChange={handleInputChange}>
                             {getOptions(category).map(option => (
                                 <option key={option} value={option}>{option}</option>
-                            ))}
+                             ))}
                         </select>
                     </div>
                 )}
                 <div className={styles.tag}>
                     <label htmlFor="clothColor">색상</label>
                     <select id="clothColor" value={clothDetails.clothColor} onChange={handleInputChange}>
-                        <option value="초록">초록</option>
                         <option value="검정">검정</option>
                         <option value="회색">회색</option>
                         <option value="흰색">흰색</option>
+                        <option value="베이지">베이지</option>
+                        <option value="초록">초록</option>
+                        <option value="빨강">빨강</option>
+                        <option value="네이비">네이비</option>
+                        <option value="노랑">노랑</option>
+                        <option value="주황">주황</option>
+                        <option value="핑크">핑크</option>
+                        <option value="기타">기타</option>
                     </select>
                 </div>
                 <div className={styles.tag}>

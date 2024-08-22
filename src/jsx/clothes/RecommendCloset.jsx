@@ -142,10 +142,12 @@ const RecommendCloset = () => {
                         case '코트':
                         case '패딩':
                         case '가디건':
+                        case '바람막이':
                         case '후드 집업':
                             newRecommendations.outer.push(item);
                             break;
                         case '운동화':
+                        case '스니커즈':
                         case '구두':
                         case '샌들/슬리퍼':
                             newRecommendations.shoes.push(item);
@@ -461,48 +463,35 @@ const RecommendCloset = () => {
                 >
                     입력 온도별 추천
                 </button>
+
             </div>
 
-            <div className="recommendations-container">
-                <div className="image-category top-category">
-                    {recommendations.top?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item top"/>
-                    ))}
-                </div>
+            <div className={styles.recommendationsContainer}>
+                {recommendations.top?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemTop}/>
+                ))}
+                {recommendations.bottom?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemBottom}/>
+                ))}
+                {recommendations.outer?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemOuter}/>
+                ))}
+                {recommendations.shoes?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemShoes}/>
 
-                <div className="image-category bottom-category">
-                    {recommendations.bottom?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className="item bottom"/>
-                    ))}
-                </div>
-
-                <div className="image-category outer-category">
-                    {recommendations.outer?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className="item outer"/>
-                    ))}
-                </div>
-
-                <div className="image-category shoes-category">
-                    {recommendations.shoes?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className="item shoes"/>
-                    ))}
-                </div>
-
-                <div className="image-category bag-category">
-                    {recommendations.bag?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item} className="item bag"/>
-                    ))}
-                </div>
-
-                <div className="image-category accessory-category">
-                    {recommendations.accessory?.map((recommendation, index) => (
-                        <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
-                             className="item accessory"/>
-                    ))}
-                </div>
+                ))}
+                {recommendations.bag?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemBag}/>
+                ))}
+                {recommendations.accessory?.map((recommendation, index) => (
+                    <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
+                         className={styles.itemAccessory}/>
+                ))}
             </div>
 
 
