@@ -405,9 +405,6 @@ const RecommendCloset = () => {
         return `${String(adjustedHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     };
 
-
-
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -436,18 +433,18 @@ const RecommendCloset = () => {
                 <label htmlFor="date">날짜 선택:</label>
                 <input type="date" id="date" name="date" value={date} onChange={handleDateChange} min={getMinDate()}
                        max={getMaxDate()}/>
+            </div>
+            <div className={styles.selection}>
                 <label htmlFor="time">시간 선택:</label>
                 <select id="time" value={selectedTime} onChange={handleTimeChange}>
                     {timeOptions.map(time => (
                         <option key={time} value={time}>{getDisplayTime(time)}</option>
                     ))}
                 </select>
-            </div>
 
-            <div className={styles.customTempContainer}>
                 <input
                     type="number"
-                    placeholder="온도 입력 (°C)"
+                    placeholder="온도(°C)"
                     value={customTemperature}
                     onChange={(e) => setCustomTemperature(e.target.value)}
                     onKeyPress={(e) => {
@@ -465,7 +462,6 @@ const RecommendCloset = () => {
                 </button>
 
             </div>
-
             <div className={styles.recommendationsContainer}>
                 {recommendations.top?.map((recommendation, index) => (
                     <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
@@ -482,7 +478,6 @@ const RecommendCloset = () => {
                 {recommendations.shoes?.map((recommendation, index) => (
                     <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
                          className={styles.itemShoes}/>
-
                 ))}
                 {recommendations.bag?.map((recommendation, index) => (
                     <img key={index} src={recommendation.imageUrl} alt={recommendation.item}
@@ -493,8 +488,6 @@ const RecommendCloset = () => {
                          className={styles.itemAccessory}/>
                 ))}
             </div>
-
-
             <Footer/>
         </div>
     );
