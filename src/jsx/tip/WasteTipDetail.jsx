@@ -149,14 +149,16 @@ const WasteTipDetail = () => {
                 <div className={styles.postContent}>
                     <p>{tip.tipContent}</p>
                 </div>
-                {currentUserId === tip.userId && (
-                    <div className={styles.buttonContainer}>
-                        <button onClick={editPost}>수정</button>
-                        <button onClick={deletePost}>삭제</button>
-                    </div>
-                )}
                 <div className={styles.buttonContainer}>
-                    <button onClick={goToList}>목록</button>
+                    {currentUserId === tip.userId && (
+                        <div className={styles.buttonContainer}>
+                            <button onClick={editPost}>수정</button>
+                            <button onClick={deletePost}>삭제</button>
+                        </div>
+                    )}
+                    <div className={styles.buttonContainer}>
+                        <button onClick={goToList}>목록</button>
+                    </div>
                 </div>
             </div>
 

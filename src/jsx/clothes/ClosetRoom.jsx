@@ -63,7 +63,7 @@ const ClosetRoom = () => {
 
         const defaultItemsCount = 4 - items.length;
         const defaultItems = Array.from({ length: defaultItemsCount }, (_, i) => (
-            <img key={`default-${i}`} src={getDefaultImage(categories[0])} alt="기본 이미지" />
+            <img key={`default-${i}`} src={getDefaultImage(categories[0])} alt="" />
         ));
 
         return (

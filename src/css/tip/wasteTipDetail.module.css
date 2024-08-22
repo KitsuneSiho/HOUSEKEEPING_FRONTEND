@@ -149,8 +149,6 @@
 .commentActions {
     display: flex;
     align-items: center;
-    position: absolute;
-    right: 5%;
 }
 
 .commentActions span {
@@ -162,6 +160,8 @@
     align-items: center;
     justify-content: right;
     color: black;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 /* 반응형 디자인 추가 */
