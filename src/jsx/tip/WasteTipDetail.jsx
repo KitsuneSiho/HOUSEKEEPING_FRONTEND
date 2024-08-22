@@ -196,8 +196,10 @@ const WasteTipDetail = () => {
                                     value={editedCommentContent}
                                     onChange={(e) => setEditedCommentContent(e.target.value)}
                                 />
+                                <div className={styles.commentEditButton}>
                                 <button onClick={() => handleCommentEdit(comment.commentId)}>저장</button>
                                 <button onClick={cancelEditing}>취소</button>
+                                </div>
                             </div>
                         ) : (
                             <>

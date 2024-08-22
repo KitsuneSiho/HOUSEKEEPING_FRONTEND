@@ -146,6 +146,22 @@
     padding-left: 10px;
 }
 
+.commentEditButton{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 5px;
+}
+
+.commentEditButton button{
+    background: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+    color: black;
+    font-family: Fre, sans-serif;
+}
+
 .commentActions {
     display: flex;
     align-items: center;
