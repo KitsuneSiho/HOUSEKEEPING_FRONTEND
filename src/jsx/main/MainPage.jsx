@@ -169,16 +169,16 @@ const MainPage = () => {
         console.log(`New Pollution Calculated: ${newPollution}`);
         setPollution(newPollution);
 
-        // 오염도가 80 이상인 경우 알림 발송
-        if (newPollution > 80) {
-            // 서버로 요청하여 알림을 발송하도록 함
-            axiosInstance.post(`/pollution/alert`, null, {
-                params: {
-                    roomId: roomId,
-                    pollution: newPollution
-                }
-            });
-        }
+        // // 오염도가 80 이상인 경우 알림 발송
+        // if (newPollution > 80) {
+        //     // 서버로 요청하여 알림을 발송하도록 함
+        //     axiosInstance.post(`/pollution/alert`, null, {
+        //         params: {
+        //             roomId: roomId,
+        //             pollution: newPollution
+        //         }
+        //     });
+        // }
 
 
         // 서버에 오염도 업데이트 요청
