@@ -322,3 +322,10 @@ input:focus {
         bottom: 60px;
     }
 }
+
+@media (min-width: 0) {
+
+    .inputContainer {
+        bottom: 60px;
+    }
+}
