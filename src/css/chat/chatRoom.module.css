@@ -15,7 +15,8 @@
     justify-content: center;
     align-items: center;
     margin: 10px 0;
-    position: relative;
+    position: fixed;
+    background-color: white;
 }
 
 .header .back {
@@ -37,6 +38,7 @@
     flex-direction: column;
     padding: 10px;
     overflow-y: auto;
+    margin: 50px 0;
 }
 
 .chatDate {
@@ -180,7 +182,6 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    bottom: 5%;
     position: fixed;
     background-color: white;
 }
@@ -304,11 +305,18 @@ input:focus {
 
     .inputContainer {
         padding: 15px;
-        margin: 20px;
         border-radius: 30px;
+        bottom: 55px;
     }
 
     .inputContainer input {
         padding: 15px 20px;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .inputContainer {
+        bottom: 60px;
     }
 }
