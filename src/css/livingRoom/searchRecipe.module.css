@@ -125,9 +125,10 @@
 }
 
 .loaderArea {
-    position: absolute;
-    top: 40%;
-    left: 25%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10000;
     /*background: rgba(128, 128, 128, 0.5);*/
     height: 100px;
