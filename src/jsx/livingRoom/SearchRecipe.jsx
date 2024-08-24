@@ -257,9 +257,7 @@ const SearchRecipe = () => {
                 </form>
                 <Footer/>
             </div>
-            {isLoading && <div className={styles.loaderArea}>
-                <LoadingBar/>
-            </div>}
+            {isLoading && <LoadingBar/>}
         </>
     );
 };
