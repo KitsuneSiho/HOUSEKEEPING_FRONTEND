@@ -113,31 +113,31 @@
 .itemTop {
     position: absolute;
     z-index:7; /* 다른 요소들 위에 위치하도록 설정 */
-    width: 75%;
-    left: 0;
+    width: 70%;
+    left: 8%;
     bottom : 30%;
 
 }
 .itemBottom {
     position: absolute;
     z-index: 5; /* itemTop 아래에 위치 */
-    width: 65%;
-    left: 40%;
+    width: 60%;
+    left: 47%;
     bottom : 33%;
 }
 .itemOuter {
     position: absolute;
     z-index: 6; /* itemBottom 아래에 위치 */
-    width: 85%;
+    width: 87%;
     right: 25%;
-    bottom : 35%;
+    bottom : 30%;
 }
 
 .itemShoes {
     position: absolute;
     z-index: 8; /* itemOuter 아래에 위치 */
-    width: 60%;
-    top: 50%;
+    width: 50%;
+    top: 60%;
     right: 0;
 }
 
@@ -154,7 +154,7 @@
     z-index: 10; /* itemBag 아래에 위치 */
     width: 30%;
     top: 65%;
-    left: 30%;
+    left: 34%;
 }
 
 /* recommendCloset.module.css */
