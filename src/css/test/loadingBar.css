@@ -5,7 +5,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    z-index: 100;
+    background: #FFFED3;
+    border-radius: 10px;
+    box-shadow: #FFFED3 0 0 5px 1px;
+    height: 10%;
+    width: 20em;
+    transform: translate(-10em, -40px);
 }
 
 .roomie-forward,
@@ -35,12 +44,12 @@
     content: "Loading...";
     position: absolute;
     top: 0;
-    left: 0;
+    left: -1em;
     width: 0;
     height: 100%;
     /*border-right: 4px solid #BC9F8B;*/
     overflow: hidden;
-    color: #BC9F8B;
+    color: #6C4E31;
     animation: load91371 2s linear infinite;
 }
 
