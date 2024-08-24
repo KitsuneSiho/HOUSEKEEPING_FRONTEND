@@ -124,15 +124,15 @@
     background: none;
 }
 
-.loaderArea {
-    position: absolute;
-    top: 40%;
-    left: 25%;
-    z-index: 10000;
-    background: rgba(128, 128, 128, 0.5);
-    height: 100px;
-    width: 70%;
-}
+/*.loaderArea {*/
+/*    position: absolute;*/
+/*    top: 40%;*/
+/*    left: 15%;*/
+/*    z-index: 10000;*/
+/*    background: rgba(128, 128, 128, 0.5);*/
+/*    height: 100px;*/
+/*    width: 70%;*/
+/*}*/
 
 /* Responsive Design */
 @media (min-width: 768px) {
