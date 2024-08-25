@@ -3,22 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/clothes/uploadCloset.module.css';
 import Footer from '../../jsx/fix/Footer.jsx';
 import apiClient from '../../config/axiosConfig';
-import {useModal} from "../../contexts/ModalContext.jsx";
-
+import { useModal } from "../../contexts/ModalContext.jsx";
+import LoadingBar from "../../components/test/LoadingBar.jsx";
 
 const UploadCloset = () => {
     const navigate = useNavigate();
-    const {setModalType, setModalTitle, setModalBody, showModal, hideModal} = useModal();
+    const { setModalType, setModalTitle, setModalBody, showModal, hideModal } = useModal();
     const [file, setFile] = useState(null);
-    const [filePreview, setFilePreview] = useState(null); // 로컬에서 선택한 파일의 미리보기 URL
-    const [fileUrl, setFileUrl] = useState(null); // 서버에 업로드된 파일의 URL
+    const [filePreview, setFilePreview] = useState(null);
+    const [fileUrl, setFileUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         setFile(selectedFile);
-        setFileUrl(null); // 새로운 파일 선택 시 서버 URL 초기화
+        setFileUrl(null);
 
-        // 파일 미리보기 설정
         const reader = new FileReader();
         reader.onloadend = () => {
             setFilePreview(reader.result);
@@ -33,6 +33,7 @@ const UploadCloset = () => {
     const handleUpload = async () => {
         if (!file) return;
 
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
 
@@ -42,24 +43,20 @@ const UploadCloset = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            // const uploadedUrl = response.data; // 서버에서 반환한 URL
-            // setFileUrl(uploadedUrl); // URL 저장
             const combined_data = response.data;
             const [uploadedUrl, classify] = combined_data.split(',');
             setFileUrl(uploadedUrl);
-
-            // classify 값을 팝업으로 표시
-            // alert(`루미: 올린 사진은... ${classify}인 것 같아요!`);
 
             setModalType("inform");
             setModalTitle("루미의 알람");
             setModalBody(`루미: 올린 사진은... ${classify}인 것 같아요!`);
             showModal();
 
-            // 업로드 후 업로드된 파일의 URL과 옷 라벨을 상태로 전달하며 페이지 이동
             navigate('/closet/register/check', { state: { fileUrl: uploadedUrl, classify: classify } });
         } catch (error) {
             console.error('파일 업로드 실패:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -93,6 +90,7 @@ const UploadCloset = () => {
                 </button>
             </div>
             <Footer />
+            {isLoading && <LoadingBar />}
         </div>
     );
 };
